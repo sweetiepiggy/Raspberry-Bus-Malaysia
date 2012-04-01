@@ -22,7 +22,9 @@
 
 <resources>
 
-    <string name="hello">Hello World, RaspberryBusMalaysiaActivity!</string>
     <string name="app_name">RaspberryBusMalaysia</string>
+    
+    <string name="from">From</string>
+    <string name="to">To</string>
 
 </resources>
