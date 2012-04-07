@@ -20,13 +20,52 @@
 package com.sweetiepiggy.raspberrybusmalaysia;
 
 import android.app.Activity;
+import android.database.Cursor;
 import android.os.Bundle;
+import android.widget.SimpleCursorAdapter;
+import android.widget.Spinner;
+import android.widget.Toast;
 
 public class RaspberryBusMalaysiaActivity extends Activity {
+	private DbAdapter mDbHelper;
+
 	/** Called when the activity is first created. */
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.main);
+		mDbHelper = new DbAdapter(this);
+		mDbHelper.open();
+		init_data();
+		fill_data();
+	}
+
+	private void init_data() {
+		mDbHelper.clear();
+		mDbHelper.create_trip("KUL", "PEN");
+		mDbHelper.create_trip("PEN", "KUL");
+	}
+
+	private void fill_data() {
+		Cursor c = mDbHelper.fetch_from_cities();
+//		Toast.makeText(this, Integer.toString(c.getColumnCount()), Toast.LENGTH_SHORT).show();
+//		Toast.makeText(this, Integer.toString(c.getCount()), Toast.LENGTH_SHORT).show();
+//		Toast.makeText(this, c.getColumnName(0) + '|' + c.getColumnName(1), Toast.LENGTH_SHORT).show();
+//		c.moveToFirst();
+//		Toast.makeText(this, c.getString(1), Toast.LENGTH_SHORT).show();
+		startManagingCursor(c);
+//		SimpleCursorAdapter from_cities = new SimpleCursorAdapter(this, R.layout.list, c, new String[] {"from_city"}, new int[] {R.id.text1});
+		SimpleCursorAdapter from_cities = new SimpleCursorAdapter(this,
+				android.R.layout.simple_spinner_item,
+				c, new String[] {DbAdapter.KEY_FROM_CITY},
+				new int[] {android.R.id.text1});
+//		SimpleCursorAdapter from_cities = new SimpleCursorAdapter(this,
+//				R.layout.row,
+//				c, new String[] {DbAdapter.KEY_FROM_CITY},
+//				new int[] {R.id.row});
+//		from_cities.setDropDownViewResource(android.R.layout.simple_spinner_item);
+		Spinner from_spinner = (Spinner) findViewById(R.id.from_spinner);
+		from_spinner.setAdapter(from_cities);
 	}
 }
+

@@ -21,6 +21,7 @@ package com.sweetiepiggy.raspberrybusmalaysia;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
@@ -36,14 +37,15 @@ public class DbAdapter {
 	private DatabaseHelper mDbHelper;
 	private SQLiteDatabase mDb;
 
+	private static final String DATABASE_NAME = "bus";
+	private static final String DATABASE_TABLE = "trips";
+	private static final int DATABASE_VERSION = 2;
+
 	private static final String DATABASE_CREATE =
-		"create table notes (_id integer primary key autoincrement, " +
+		"create table " + DATABASE_TABLE + " (" + KEY_ROWID + " integer primary key autoincrement, " +
 	KEY_FROM_CITY + " text not null, " +
 	KEY_TO_CITY + " text not null);";
 
-	private static final String DATABASE_NAME = "bus";
-	private static final String DATABASE_TABLE = "trips";
-	private static final int DATABASE_VERSION = 1;
 
 	private final Context mCtx;
 
@@ -56,6 +58,7 @@ public class DbAdapter {
 		@Override
 		public void onCreate(SQLiteDatabase db) {
 			db.execSQL(DATABASE_CREATE);
+			//Toast.makeText(mCtx, "created", Toast.LENGTH_SHORT).show();
 		}
 
 		@Override
@@ -81,6 +84,10 @@ public class DbAdapter {
 		mDbHelper.close();
 	}
 
+	public int clear() {
+		return mDb.delete(DATABASE_TABLE, null, null);
+	}
+
 	/** @return row_id or -1 if failed */
 	public long create_trip(String from_city, String to_city) {
 		ContentValues initial_values = new ContentValues();
@@ -88,6 +95,13 @@ public class DbAdapter {
 		initial_values.put(KEY_TO_CITY, to_city);
 
 		return mDb.insert(DATABASE_TABLE, null, initial_values);
+	}
+
+	public Cursor fetch_from_cities() {
+//		return mDb.query(true, DATABASE_TABLE, new String[] {KEY_ROWID, KEY_FROM_CITY},
+//				null, null, null, null, null, null);
+		return mDb.query(DATABASE_TABLE, new String[] {KEY_ROWID, KEY_FROM_CITY},
+				null, null, null, null, null, null);
 	}
 
 }
