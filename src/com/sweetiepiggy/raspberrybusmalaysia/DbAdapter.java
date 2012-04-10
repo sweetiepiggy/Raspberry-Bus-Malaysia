@@ -102,5 +102,11 @@ public class DbAdapter {
 				null, null, KEY_FROM_CITY, null, KEY_FROM_CITY + " ASC", null);
 	}
 
+	public Cursor fetch_to_cities(String from_city) {
+		return mDb.query(true, DATABASE_TABLE, new String[] {KEY_ROWID, KEY_TO_CITY},
+				KEY_FROM_CITY + " = ?", new String[] {from_city},
+				KEY_TO_CITY, null, KEY_TO_CITY + " ASC", null);
+	}
+
 }
 

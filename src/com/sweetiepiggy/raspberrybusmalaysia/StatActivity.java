@@ -22,6 +22,9 @@ package com.sweetiepiggy.raspberrybusmalaysia;
 import android.app.Activity;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.SimpleCursorAdapter;
 import android.widget.Spinner;
 
@@ -41,8 +44,8 @@ public class StatActivity extends Activity {
 
 	private void init_data() {
 		mDbHelper.clear();
-		mDbHelper.create_trip("KUL", "PEN");
-		mDbHelper.create_trip("PEN", "KUL");
+		mDbHelper.create_trip("Kuala Lumpur", "Penang");
+		mDbHelper.create_trip("Penang", "Kuala Lumpur");
 	}
 
 	private void fill_data() {
@@ -54,6 +57,29 @@ public class StatActivity extends Activity {
 				new int[] {android.R.id.text1});
 		Spinner from_spinner = (Spinner) findViewById(R.id.from_spinner);
 		from_spinner.setAdapter(from_cities);
+
+		from_spinner.setOnItemSelectedListener(new OnItemSelectedListener() {
+			@Override
+			public void onItemSelected(AdapterView<?> parent,
+					View selected_item, int pos,
+					long id) {
+				String from_city = ((Cursor)parent.getItemAtPosition(pos)).getString(1);
+				Cursor c = mDbHelper.fetch_to_cities(from_city);
+				//Toast.makeText(getApplicationContext(), Integer.toString(c.getCount()), Toast.LENGTH_SHORT).show();
+				startManagingCursor(c);
+				SimpleCursorAdapter to_cities = new SimpleCursorAdapter(getApplicationContext(),
+						android.R.layout.simple_spinner_item,
+						c, new String[] {DbAdapter.KEY_TO_CITY},
+						new int[] {android.R.id.text1});
+				Spinner to_spinner = (Spinner) findViewById(R.id.to_spinner);
+				to_spinner.setAdapter(to_cities);
+			}
+
+			@Override
+			public void onNothingSelected(AdapterView<?> parentView) {
+			}
+
+		});
 	}
 }
 
