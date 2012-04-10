@@ -20,39 +20,11 @@
     Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA
 -->
 
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-	android:layout_width="fill_parent"
-	android:layout_height="fill_parent" >
-	<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	<GridView xmlns:android="http://schemas.android.com/apk/res/android"
+	    android:id="@+id/gridview"
 		android:layout_width="fill_parent"
 		android:layout_height="fill_parent"
-		android:orientation="vertical" >
-	
-		<TextView
-			android:id="@+id/from_label"
-			android:layout_width="fill_parent"
-			android:layout_height="wrap_content"
-			android:textStyle="bold"
-			android:text="@string/from" />
-		<Spinner
-			android:id="@+id/from_spinner"
-			android:layout_width="fill_parent"
-			android:layout_height="wrap_content"
-			android:drawSelectorOnTop="true"
-			android:prompt="@string/from"/>
-		<TextView
-			android:id="@+id/to_label"
-			android:layout_width="fill_parent"
-			android:layout_height="wrap_content"
-			android:textStyle="bold"
-			android:text="@string/to" />
-		<Spinner
-			android:id="@+id/to_spinner"
-			android:layout_width="fill_parent"
-			android:layout_height="wrap_content"
-			android:drawSelectorOnTop="true"
-			android:prompt="@string/to"/>
-
-	
-	</LinearLayout>
-</ScrollView>
+		android:numColumns="auto_fit"
+		android:stretchMode="columnWidth"
+		android:gravity="center" >
+	</GridView>

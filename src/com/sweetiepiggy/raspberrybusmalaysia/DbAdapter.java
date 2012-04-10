@@ -98,10 +98,8 @@ public class DbAdapter {
 	}
 
 	public Cursor fetch_from_cities() {
-//		return mDb.query(true, DATABASE_TABLE, new String[] {KEY_ROWID, KEY_FROM_CITY},
-//				null, null, null, null, null, null);
-		return mDb.query(DATABASE_TABLE, new String[] {KEY_ROWID, KEY_FROM_CITY},
-				null, null, null, null, null, null);
+		return mDb.query(true, DATABASE_TABLE, new String[] {KEY_ROWID, KEY_FROM_CITY},
+				null, null, KEY_FROM_CITY, null, KEY_FROM_CITY + " ASC", null);
 	}
 
 }

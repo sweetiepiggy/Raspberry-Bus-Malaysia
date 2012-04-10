@@ -20,33 +20,40 @@
 package com.sweetiepiggy.raspberrybusmalaysia;
 
 import android.app.Activity;
-import android.content.Intent;
+import android.database.Cursor;
 import android.os.Bundle;
-import android.view.View;
-import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemClickListener;
-import android.widget.GridView;
+import android.widget.SimpleCursorAdapter;
+import android.widget.Spinner;
 
-public class RaspberryBusMalaysiaActivity extends Activity {
+public class StatActivity extends Activity {
 	private DbAdapter mDbHelper;
 
 	/** Called when the activity is first created. */
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.main);
+		setContentView(R.layout.stat);
+		mDbHelper = new DbAdapter(this);
+		mDbHelper.open();
+		init_data();
+		fill_data();
+	}
 
-		GridView gridview = (GridView) findViewById(R.id.gridview);
-		gridview.setAdapter(new ImageAdapter(this));
+	private void init_data() {
+		mDbHelper.clear();
+		mDbHelper.create_trip("KUL", "PEN");
+		mDbHelper.create_trip("PEN", "KUL");
+	}
 
-		gridview.setOnItemClickListener(new OnItemClickListener() {
-		public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
-			if (position == 0) {
-				Intent intent = new Intent(getApplicationContext(), StatActivity.class);
-				startActivity(intent);
-			}
-		}
-		});
+	private void fill_data() {
+		Cursor c = mDbHelper.fetch_from_cities();
+		startManagingCursor(c);
+		SimpleCursorAdapter from_cities = new SimpleCursorAdapter(this,
+				android.R.layout.simple_spinner_item,
+				c, new String[] {DbAdapter.KEY_FROM_CITY},
+				new int[] {android.R.id.text1});
+		Spinner from_spinner = (Spinner) findViewById(R.id.from_spinner);
+		from_spinner.setAdapter(from_cities);
 	}
 }
 
