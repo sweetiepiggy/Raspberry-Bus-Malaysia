@@ -31,6 +31,9 @@ import android.util.Log;
 public class DbAdapter {
 	public static final String KEY_FROM_CITY = "from_city";
 	public static final String KEY_TO_CITY = "to_city";
+	public static final String KEY_COMP = "company";
+	public static final String KEY_SCHED_DEP = "scheduled_departure";
+	public static final String KEY_ARRIVAL = "arrival_time";
 	public static final String KEY_ROWID = "_id";
 
 	private static final String TAG = "DbAdapter";
@@ -39,12 +42,16 @@ public class DbAdapter {
 
 	private static final String DATABASE_NAME = "bus";
 	private static final String DATABASE_TABLE = "trips";
-	private static final int DATABASE_VERSION = 2;
+	private static final int DATABASE_VERSION = 3;
 
 	private static final String DATABASE_CREATE =
-		"create table " + DATABASE_TABLE + " (" + KEY_ROWID + " integer primary key autoincrement, " +
-	KEY_FROM_CITY + " text not null, " +
-	KEY_TO_CITY + " text not null);";
+		"create table " + DATABASE_TABLE + " (" +
+		KEY_ROWID + " integer primary key autoincrement, " +
+		KEY_FROM_CITY + " text not null, " +
+		KEY_TO_CITY + " text not null, " +
+		KEY_COMP + " text not null, " +
+		KEY_SCHED_DEP + " text not null, " +
+		KEY_ARRIVAL + " text not null);";
 
 
 	private final Context mCtx;
@@ -58,7 +65,6 @@ public class DbAdapter {
 		@Override
 		public void onCreate(SQLiteDatabase db) {
 			db.execSQL(DATABASE_CREATE);
-			//Toast.makeText(mCtx, "created", Toast.LENGTH_SHORT).show();
 		}
 
 		@Override
@@ -89,10 +95,14 @@ public class DbAdapter {
 	}
 
 	/** @return row_id or -1 if failed */
-	public long create_trip(String from_city, String to_city) {
+	public long create_trip(String from_city, String to_city, String company,
+			String scheduled_departure, String arrival_time) {
 		ContentValues initial_values = new ContentValues();
 		initial_values.put(KEY_FROM_CITY, from_city);
 		initial_values.put(KEY_TO_CITY, to_city);
+		initial_values.put(KEY_COMP, company);
+		initial_values.put(KEY_SCHED_DEP, scheduled_departure);
+		initial_values.put(KEY_ARRIVAL, arrival_time);
 
 		return mDb.insert(DATABASE_TABLE, null, initial_values);
 	}
@@ -106,6 +116,14 @@ public class DbAdapter {
 		return mDb.query(true, DATABASE_TABLE, new String[] {KEY_ROWID, KEY_TO_CITY},
 				KEY_FROM_CITY + " = ?", new String[] {from_city},
 				KEY_TO_CITY, null, KEY_TO_CITY + " ASC", null);
+	}
+
+	public Cursor fetch_avg_by_company(String from_city, String to_city) {
+		return mDb.query(true, DATABASE_TABLE, new String[] {KEY_COMP,
+					"avg(strftime('%s', " + KEY_ARRIVAL + ") - strftime('%s', " + KEY_SCHED_DEP + "))",
+					"count(" + KEY_COMP + ")"},
+				KEY_FROM_CITY + " = ? AND " + KEY_TO_CITY + " = ?", new String[] {from_city, to_city},
+				KEY_COMP, null, KEY_COMP + " ASC", null);
 	}
 
 }

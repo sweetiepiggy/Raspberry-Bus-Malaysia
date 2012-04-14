@@ -20,16 +20,21 @@
 package com.sweetiepiggy.raspberrybusmalaysia;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
+import android.widget.Button;
 import android.widget.SimpleCursorAdapter;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 public class StatActivity extends Activity {
 	private DbAdapter mDbHelper;
+	private String m_from_city = "";
+	private String m_to_city = "";
 
 	/** Called when the activity is first created. */
 	@Override
@@ -40,12 +45,13 @@ public class StatActivity extends Activity {
 		mDbHelper.open();
 		init_data();
 		fill_data();
+		init_submit_button();
 	}
 
 	private void init_data() {
 		mDbHelper.clear();
-		mDbHelper.create_trip("Kuala Lumpur", "Penang");
-		mDbHelper.create_trip("Penang", "Kuala Lumpur");
+		mDbHelper.create_trip("Kuala Lumpur", "Penang", "Plusliner", "2012-04-14 13:00", "2012-04-14 17:00");
+		mDbHelper.create_trip("Penang", "Kuala Lumpur", "Plusliner", "2012-04-13 13:00", "2012-04-14 17:00");
 	}
 
 	private void fill_data() {
@@ -63,8 +69,8 @@ public class StatActivity extends Activity {
 			public void onItemSelected(AdapterView<?> parent,
 					View selected_item, int pos,
 					long id) {
-				String from_city = ((Cursor)parent.getItemAtPosition(pos)).getString(1);
-				Cursor c = mDbHelper.fetch_to_cities(from_city);
+				m_from_city = ((Cursor)parent.getItemAtPosition(pos)).getString(1);
+				Cursor c = mDbHelper.fetch_to_cities(m_from_city);
 				//Toast.makeText(getApplicationContext(), Integer.toString(c.getCount()), Toast.LENGTH_SHORT).show();
 				startManagingCursor(c);
 				SimpleCursorAdapter to_cities = new SimpleCursorAdapter(getApplicationContext(),
@@ -73,12 +79,46 @@ public class StatActivity extends Activity {
 						new int[] {android.R.id.text1});
 				Spinner to_spinner = (Spinner) findViewById(R.id.to_spinner);
 				to_spinner.setAdapter(to_cities);
+
+				to_spinner.setOnItemSelectedListener(new OnItemSelectedListener() {
+					@Override
+					public void onItemSelected(AdapterView<?> parent,
+							View selected_item, int pos,
+							long id) {
+						m_to_city = ((Cursor)parent.getItemAtPosition(pos)).getString(1);
+					}
+					@Override
+					public void onNothingSelected(AdapterView<?> parentView) {
+					}
+
+				});
 			}
 
 			@Override
 			public void onNothingSelected(AdapterView<?> parentView) {
 			}
 
+		});
+	}
+
+	private void init_submit_button()
+	{
+		Button submit_button = (Button) findViewById(R.id.submit_button);
+		submit_button.setOnClickListener(new View.OnClickListener() {
+			public void onClick(View v) {
+				if (m_from_city.length() == 0) {
+					Toast.makeText(getApplicationContext(), "Select \"From City\"", Toast.LENGTH_SHORT).show();
+				} else if (m_to_city.length() == 0) {
+					Toast.makeText(getApplicationContext(), "Select \"To City\"", Toast.LENGTH_SHORT).show();
+				} else {
+					Intent intent = new Intent(getApplicationContext(), StatResultActivity.class);
+					Bundle b = new Bundle();
+					b.putString("from_city", m_from_city);
+					b.putString("to_city", m_to_city);
+					intent.putExtras(b);
+					startActivity(intent);
+				}
+			}
 		});
 	}
 }

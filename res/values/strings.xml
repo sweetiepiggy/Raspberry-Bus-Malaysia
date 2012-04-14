@@ -26,5 +26,6 @@
     
     <string name="from">From</string>
     <string name="to">To</string>
+	<string name="submit">submit</string>
 
 </resources>
