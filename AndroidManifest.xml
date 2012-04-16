@@ -20,6 +20,8 @@
         </activity>
         <activity android:name="StatActivity"></activity>
         <activity android:name="StatResultActivity"></activity>
+        <activity android:name="CompanyActivity"></activity>
+        <activity android:name="CompanyResultActivity"></activity>
     </application>
 
 </manifest>

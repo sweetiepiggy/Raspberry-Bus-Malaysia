@@ -211,9 +211,22 @@ public class DbAdapter {
 				null, null, KEY_FROM_CITY, null, KEY_FROM_CITY + " ASC", null);
 	}
 
+	public Cursor fetch_from_cities(String company) {
+		return mDb.query(true, DATABASE_TABLE, new String[] {KEY_ROWID, KEY_FROM_CITY},
+				KEY_COMP + " = ?", new String[] {company},
+				KEY_FROM_CITY, null, KEY_FROM_CITY + " ASC", null);
+	}
+
 	public Cursor fetch_to_cities(String from_city) {
 		return mDb.query(true, DATABASE_TABLE, new String[] {KEY_ROWID, KEY_TO_CITY},
 				KEY_FROM_CITY + " = ?", new String[] {from_city},
+				KEY_TO_CITY, null, KEY_TO_CITY + " ASC", null);
+	}
+
+	public Cursor fetch_to_cities(String from_city, String company) {
+		return mDb.query(true, DATABASE_TABLE, new String[] {KEY_ROWID, KEY_TO_CITY},
+				KEY_FROM_CITY + " = ? AND " + KEY_COMP + " = ?",
+				new String[] {from_city, company},
 				KEY_TO_CITY, null, KEY_TO_CITY + " ASC", null);
 	}
 
@@ -227,6 +240,34 @@ public class DbAdapter {
 				KEY_COMP, null,
 					avg_time + " ASC",
 				null);
+	}
+
+	public Cursor fetch_companies() {
+		return mDb.query(true, DATABASE_TABLE, new String[] {KEY_ROWID, KEY_COMP},
+				"length(" + KEY_COMP + ") != 0", null, KEY_COMP, null, KEY_COMP + " ASC", null);
+	}
+
+	public Cursor fetch_avg(String from_city, String to_city, String company) {
+		String avg = "avg(strftime('%s', " + KEY_ARRIVAL + ") - strftime('%s', " + KEY_SCHED_DEP + "))";
+		return mDb.query(true, DATABASE_TABLE, new String[] {avg},
+				KEY_COMP + " = ? AND " + KEY_FROM_CITY + " = ? AND " + KEY_TO_CITY + " = ?",
+				new String[] {company, from_city, to_city},
+				null, null, null, null);
+	}
+
+
+	public Cursor fetch_avg_delay(String from_city, String to_city, String company) {
+		String avg_delay = "avg(strftime('%s', " + KEY_ACTUAL_DEP + ") - strftime('%s', " + KEY_SCHED_DEP + "))";
+		return mDb.query(true, DATABASE_TABLE, new String[] {avg_delay},
+				KEY_COMP + " = ? AND " + KEY_FROM_CITY + " = ? AND " + KEY_TO_CITY + " = ?",
+				new String[] {company, from_city, to_city},
+				null, null, null, null);
+	}
+
+	public Cursor fetch_avg_delay(String company) {
+		String avg_delay = "avg(strftime('%s', " + KEY_ACTUAL_DEP + ") - strftime('%s', " + KEY_SCHED_DEP + "))";
+		return mDb.query(true, DATABASE_TABLE, new String[] {avg_delay},
+				KEY_COMP + " = ?", new String[] {company}, null, null, null, null);
 	}
 
 }

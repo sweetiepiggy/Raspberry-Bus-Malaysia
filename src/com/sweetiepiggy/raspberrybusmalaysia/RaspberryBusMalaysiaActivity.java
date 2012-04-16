@@ -44,6 +44,9 @@ public class RaspberryBusMalaysiaActivity extends Activity {
 			if (position == 0) {
 				Intent intent = new Intent(getApplicationContext(), StatActivity.class);
 				startActivity(intent);
+			} else if (position == 1) {
+				Intent intent = new Intent(getApplicationContext(), CompanyActivity.class);
+				startActivity(intent);
 			}
 		}
 		});

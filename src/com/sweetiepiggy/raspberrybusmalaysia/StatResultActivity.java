@@ -45,7 +45,6 @@ public class StatResultActivity extends Activity {
 
 		Cursor c = mDbHelper.fetch_avg_by_company(from_city, to_city);
 		startManagingCursor(c);
-		String results = c.getColumnName(0) + " " + c.getColumnName(1) + " " + c.getColumnName(2) + "\n";
 		if (c.moveToFirst()) do {
 			String company = c.getString(0);
 			String avg = format_time(c.getInt(1));

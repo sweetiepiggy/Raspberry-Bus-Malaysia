@@ -29,29 +29,17 @@
 		android:orientation="vertical" >
 	
 		<TextView
-			android:id="@+id/from_label"
+			android:id="@+id/company_label"
 			android:layout_width="fill_parent"
 			android:layout_height="wrap_content"
 			android:textStyle="bold"
-			android:text="@string/from" />
+			android:text="@string/company" />
 		<Spinner
-			android:id="@+id/from_spinner"
+			android:id="@+id/company_spinner"
 			android:layout_width="fill_parent"
 			android:layout_height="wrap_content"
 			android:drawSelectorOnTop="true"
-			android:prompt="@string/from"/>
-		<TextView
-			android:id="@+id/to_label"
-			android:layout_width="fill_parent"
-			android:layout_height="wrap_content"
-			android:textStyle="bold"
-			android:text="@string/to" />
-		<Spinner
-			android:id="@+id/to_spinner"
-			android:layout_width="fill_parent"
-			android:layout_height="wrap_content"
-			android:drawSelectorOnTop="true"
-			android:prompt="@string/to"/>
+			android:prompt="@string/company" />
 		<Button
 			android:id="@+id/submit_button"
 			android:layout_width="wrap_content"
