@@ -19,60 +19,141 @@
 
 package com.sweetiepiggy.raspberrybusmalaysia;
 
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteException;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.util.Log;
 
 
 public class DbAdapter {
-	public static final String KEY_FROM_CITY = "from_city";
-	public static final String KEY_TO_CITY = "to_city";
-	public static final String KEY_COMP = "company";
-	public static final String KEY_SCHED_DEP = "scheduled_departure";
-	public static final String KEY_ARRIVAL = "arrival_time";
 	public static final String KEY_ROWID = "_id";
+	public static final String KEY_COMP = "company";
+	public static final String KEY_BRAND = "bus_brand";
+	public static final String KEY_FROM_CITY = "from_city";
+	public static final String KEY_FROM_STN = "from_station";
+	public static final String KEY_TO_CITY = "to_city";
+	public static final String KEY_TO_STN = "to_station";
+	public static final String KEY_SCHED_DEP = "scheduled_departure";
+	public static final String KEY_ACTUAL_DEP = "actual_departure";
+	public static final String KEY_ARRIVAL = "arrival_time";
+	public static final String KEY_CTR = "counter";
+	public static final String KEY_CTR_NAME = "counter_name";
 
 	private static final String TAG = "DbAdapter";
 	private DatabaseHelper mDbHelper;
 	private SQLiteDatabase mDb;
 
-	private static final String DATABASE_NAME = "bus";
+	private static final String DATABASE_PATH = "/data/data/com.sweetiepiggy.raspberrybusmalaysia/databases/";
+	private static final String DATABASE_NAME = "bus.db";
 	private static final String DATABASE_TABLE = "trips";
-	private static final int DATABASE_VERSION = 3;
+	private static final int DATABASE_VERSION = 5;
 
 	private static final String DATABASE_CREATE =
 		"create table " + DATABASE_TABLE + " (" +
 		KEY_ROWID + " integer primary key autoincrement, " +
+		KEY_COMP + " text, " +
+		KEY_BRAND + " text, " +
 		KEY_FROM_CITY + " text not null, " +
+		KEY_FROM_STN + " text, " +
 		KEY_TO_CITY + " text not null, " +
-		KEY_COMP + " text not null, " +
+		KEY_TO_STN + " text, " +
 		KEY_SCHED_DEP + " text not null, " +
-		KEY_ARRIVAL + " text not null);";
+		KEY_ACTUAL_DEP + " text not null, " +
+		KEY_ARRIVAL + " text not null, " +
+		KEY_CTR + " text, " +
+		KEY_CTR_NAME + " text);";
 
 
 	private final Context mCtx;
 
 	private static class DatabaseHelper extends SQLiteOpenHelper {
+		private final Context mCtx;
+		private SQLiteDatabase mDb;
 
 		DatabaseHelper(Context context) {
 			super(context, DATABASE_NAME, null, DATABASE_VERSION);
+			mCtx = context;
 		}
 
 		@Override
 		public void onCreate(SQLiteDatabase db) {
-			db.execSQL(DATABASE_CREATE);
+//			db.execSQL(DATABASE_CREATE);
+		}
+
+		public void create_database() throws IOException {
+			if (!database_exists()) {
+				this.getReadableDatabase();
+				try {
+					copy_database();
+				} catch (IOException e) {
+					throw new Error(e);
+//					Toast.makeText(mCtx, "Error copying database",
+//							Toast.LENGTH_SHORT).show();
+				}
+			}
+		}
+
+		private boolean database_exists() {
+			return false;
+//			SQLiteDatabase db = null;
+//			try {
+//				String out_filename = DATABASE_PATH + DATABASE_NAME;
+//				db = SQLiteDatabase.openDatabase(out_filename, null, SQLiteDatabase.OPEN_READONLY);
+//			} catch (SQLiteException e) {
+//				/* database does not exist yet */
+//			}
+//			if (db != null) {
+//				db.close();
+//			}
+//			return db != null;
+		}
+
+		private void copy_database() throws IOException {
+			InputStream input = mCtx.getAssets().open(DATABASE_NAME);
+
+			String full_path = DATABASE_PATH + DATABASE_NAME;
+
+			OutputStream output = new FileOutputStream(full_path);
+
+			byte[] buffer = new byte[1024];
+			int length;
+			while ((length = input.read(buffer))>0){
+				output.write(buffer, 0, length);
+			}
+
+			output.flush();
+			output.close();
+			input.close();
+		}
+
+		public SQLiteDatabase open_database() throws SQLException {
+			String full_path = DATABASE_PATH + DATABASE_NAME;
+			mDb = SQLiteDatabase.openDatabase(full_path, null, SQLiteDatabase.OPEN_READONLY);
+			return mDb;
 		}
 
 		@Override
 		public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-			Log.w(TAG, "Upgrading database from version " + oldVersion + " to "
-					+ newVersion + ", which will destroy all old data");
-			db.execSQL("DROP TABLE IF EXISTS " + DATABASE_TABLE);
-			onCreate(db);
+//			Log.w(TAG, "Upgrading database from version " + oldVersion + " to "
+//					+ newVersion + ", which will destroy all old data");
+//			db.execSQL("DROP TABLE IF EXISTS " + DATABASE_TABLE);
+//			onCreate(db);
+		}
+
+		@Override
+		public synchronized void close() {
+			if (mDb != null) {
+				mDb.close();
+			}
+			super.close();
 		}
 	}
 
@@ -82,7 +163,15 @@ public class DbAdapter {
 
 	public DbAdapter open() throws SQLException {
 		mDbHelper = new DatabaseHelper(mCtx);
-		mDb = mDbHelper.getWritableDatabase();
+//		mDb = mDbHelper.getWritableDatabase();
+		try {
+			mDbHelper.create_database();
+		} catch (IOException e) {
+			throw new Error("Unable to create database");
+		}
+
+		mDb = mDbHelper.open_database();
+
 		return this;
 	}
 
@@ -91,18 +180,28 @@ public class DbAdapter {
 	}
 
 	public int clear() {
-		return mDb.delete(DATABASE_TABLE, null, null);
+//		return mDb.delete(DATABASE_TABLE, null, null);
+		return 0;
 	}
 
 	/** @return row_id or -1 if failed */
-	public long create_trip(String from_city, String to_city, String company,
-			String scheduled_departure, String arrival_time) {
+	public long create_trip(String company, String bus_brand,
+			String from_city, String from_station, String to_city,
+			String to_station, String scheduled_departure,
+			String actual_departure, String arrival_time,
+			String counter, String counter_name) {
 		ContentValues initial_values = new ContentValues();
-		initial_values.put(KEY_FROM_CITY, from_city);
-		initial_values.put(KEY_TO_CITY, to_city);
 		initial_values.put(KEY_COMP, company);
+		initial_values.put(KEY_BRAND, bus_brand);
+		initial_values.put(KEY_FROM_CITY, from_city);
+		initial_values.put(KEY_FROM_STN, from_station);
+		initial_values.put(KEY_TO_CITY, to_city);
+		initial_values.put(KEY_TO_STN, to_station);
 		initial_values.put(KEY_SCHED_DEP, scheduled_departure);
+		initial_values.put(KEY_ACTUAL_DEP, actual_departure);
 		initial_values.put(KEY_ARRIVAL, arrival_time);
+		initial_values.put(KEY_CTR, counter);
+		initial_values.put(KEY_CTR_NAME, counter_name);
 
 		return mDb.insert(DATABASE_TABLE, null, initial_values);
 	}
@@ -119,11 +218,15 @@ public class DbAdapter {
 	}
 
 	public Cursor fetch_avg_by_company(String from_city, String to_city) {
+		String avg_time = "avg(strftime('%s', " + KEY_ARRIVAL + ") - strftime('%s', " + KEY_SCHED_DEP + "))";
 		return mDb.query(true, DATABASE_TABLE, new String[] {KEY_COMP,
-					"avg(strftime('%s', " + KEY_ARRIVAL + ") - strftime('%s', " + KEY_SCHED_DEP + "))",
+					avg_time,
 					"count(" + KEY_COMP + ")"},
-				KEY_FROM_CITY + " = ? AND " + KEY_TO_CITY + " = ?", new String[] {from_city, to_city},
-				KEY_COMP, null, KEY_COMP + " ASC", null);
+				KEY_FROM_CITY + " = ? AND " + KEY_TO_CITY + " = ? AND " + KEY_ARRIVAL + "!= 'Cancelled'",
+				new String[] {from_city, to_city},
+				KEY_COMP, null,
+					avg_time + " ASC",
+				null);
 	}
 
 }

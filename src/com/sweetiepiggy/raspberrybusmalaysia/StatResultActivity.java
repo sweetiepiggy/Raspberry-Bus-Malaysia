@@ -22,6 +22,8 @@ package com.sweetiepiggy.raspberrybusmalaysia;
 import android.app.Activity;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.widget.TableLayout;
+import android.widget.TableRow;
 import android.widget.TextView;
 
 public class StatResultActivity extends Activity {
@@ -44,14 +46,51 @@ public class StatResultActivity extends Activity {
 		Cursor c = mDbHelper.fetch_avg_by_company(from_city, to_city);
 		startManagingCursor(c);
 		String results = c.getColumnName(0) + " " + c.getColumnName(1) + " " + c.getColumnName(2) + "\n";
-		for (int i=0; i < c.getCount(); ++i) {
-			c.moveToPosition(i);
+		if (c.moveToFirst()) do {
 			String company = c.getString(0);
-			String avg = c.getString(1);
+			String avg = format_time(c.getInt(1));
 			String count = c.getString(2);
-			results += company + "\t" + avg +  "\t" + count + "\n";
+			print_row(company, avg, count);
+		} while (c.moveToNext());
+
+		mDbHelper.close();
+	}
+
+	private String format_time(int time) {
+		String negative = "";
+		if (time < 0) {
+			negative = "-";
+			time *= -1;
 		}
-		((TextView) findViewById(R.id.title)).setText(results);
+
+		int hr = time / 3600;
+		time -= hr * 3600;
+		int min = time / 60;
+		return String.format("%s%dhr %02dmin", negative, hr, min);
+	}
+
+	private void print_row(String company, String avg, String count) {
+		if (company.length() > 20) {
+			company = company.substring(0, 20);
+		} else if (company.length() == 0) {
+//			company = "Unknown";
+			return;
+		}
+
+		TextView company_view = new TextView(getApplicationContext());
+		TextView avg_view = new TextView(getApplicationContext());
+		TextView count_view = new TextView(getApplicationContext());
+		company_view.setText(company);
+		avg_view.setText(avg);
+		count_view.setText(count);
+
+		TableRow tr = new TableRow(getApplicationContext());
+		tr.addView(company_view);
+		tr.addView(avg_view);
+		tr.addView(count_view);
+
+		TableLayout results_layout = (TableLayout) findViewById(R.id.results_layout);
+		results_layout.addView(tr);
 	}
 
 }

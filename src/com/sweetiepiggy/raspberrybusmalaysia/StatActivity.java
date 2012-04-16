@@ -50,8 +50,8 @@ public class StatActivity extends Activity {
 
 	private void init_data() {
 		mDbHelper.clear();
-		mDbHelper.create_trip("Kuala Lumpur", "Penang", "Plusliner", "2012-04-14 13:00", "2012-04-14 17:00");
-		mDbHelper.create_trip("Penang", "Kuala Lumpur", "Plusliner", "2012-04-13 13:00", "2012-04-14 17:00");
+//		mDbHelper.create_trip("Kuala Lumpur", "Penang", "Plusliner", "2012-04-14 13:00", "2012-04-14 17:00");
+//		mDbHelper.create_trip("Penang", "Kuala Lumpur", "Plusliner", "2012-04-13 13:00", "2012-04-14 17:00");
 	}
 
 	private void fill_data() {
