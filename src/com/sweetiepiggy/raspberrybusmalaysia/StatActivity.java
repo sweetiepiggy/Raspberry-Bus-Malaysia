@@ -32,27 +32,31 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 public class StatActivity extends Activity {
-	private DbAdapter mDbHelper;
 	private String m_from_city = "";
 	private String m_to_city = "";
+
+	DbAdapter mDbHelper = new DbAdapter();
 
 	/** Called when the activity is first created. */
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.stat);
-		mDbHelper = new DbAdapter(this);
-		mDbHelper.open();
-		init_data();
+
+		mDbHelper = new DbAdapter();
+		mDbHelper.open(this);
 		fill_data();
+
 		init_submit_button();
 	}
 
-	private void init_data() {
-		mDbHelper.clear();
-//		mDbHelper.create_trip("Kuala Lumpur", "Penang", "Plusliner", "2012-04-14 13:00", "2012-04-14 17:00");
-//		mDbHelper.create_trip("Penang", "Kuala Lumpur", "Plusliner", "2012-04-13 13:00", "2012-04-14 17:00");
-	}
+//	@Override
+//	protected void onDestroy() {
+//		super.onDestroy();
+//		if (mDbHelper != null) {
+//			mDbHelper.close();
+//		}
+//	}
 
 	private void fill_data() {
 		Cursor c = mDbHelper.fetch_from_cities();
@@ -71,7 +75,6 @@ public class StatActivity extends Activity {
 					long id) {
 				m_from_city = ((Cursor)parent.getItemAtPosition(pos)).getString(1);
 				Cursor c = mDbHelper.fetch_to_cities(m_from_city);
-				//Toast.makeText(getApplicationContext(), Integer.toString(c.getCount()), Toast.LENGTH_SHORT).show();
 				startManagingCursor(c);
 				SimpleCursorAdapter to_cities = new SimpleCursorAdapter(getApplicationContext(),
 						android.R.layout.simple_spinner_item,

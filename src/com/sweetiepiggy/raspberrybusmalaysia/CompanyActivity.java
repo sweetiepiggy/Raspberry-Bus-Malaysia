@@ -32,7 +32,6 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 public class CompanyActivity extends Activity {
-	private DbAdapter mDbHelper;
 	private String m_company = "";
 
 	/** Called when the activity is first created. */
@@ -40,18 +39,21 @@ public class CompanyActivity extends Activity {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.company);
-		mDbHelper = new DbAdapter(this);
-		mDbHelper.open();
-		fill_data();
+
+		DbAdapter dbHelper = new DbAdapter();
+		dbHelper.open(this);
+		fill_data(dbHelper);
+//		dbHelper.close();
+
 		init_submit_button();
 	}
 
-	private void fill_data() {
-		Cursor c = mDbHelper.fetch_companies();
+	private void fill_data(DbAdapter dbHelper) {
+		Cursor c = dbHelper.fetch_companies();
 		startManagingCursor(c);
 		SimpleCursorAdapter companies = new SimpleCursorAdapter(this,
 				android.R.layout.simple_spinner_item,
-				c, new String[] {DbAdapter.KEY_COMP},
+				c, new String[] {DbAdapter.KEY_CTR_NAME},
 				new int[] {android.R.id.text1});
 		Spinner company_spinner = (Spinner) findViewById(R.id.company_spinner);
 		company_spinner.setAdapter(companies);

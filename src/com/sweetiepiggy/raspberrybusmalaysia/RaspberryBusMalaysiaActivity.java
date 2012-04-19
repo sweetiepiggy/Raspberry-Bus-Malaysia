@@ -28,7 +28,6 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.GridView;
 
 public class RaspberryBusMalaysiaActivity extends Activity {
-	private DbAdapter mDbHelper;
 
 	/** Called when the activity is first created. */
 	@Override

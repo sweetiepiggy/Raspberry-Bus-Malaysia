@@ -28,8 +28,6 @@ import android.widget.TextView;
 
 public class StatResultActivity extends Activity {
 
-	private DbAdapter mDbHelper;
-
 	/** Called when the activity is first created. */
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -40,10 +38,10 @@ public class StatResultActivity extends Activity {
 		String to_city = (b == null) ? "<NULL>" : b.getString("to_city");
 		((TextView) findViewById(R.id.title)).setText(from_city + " to " + to_city);
 
-		mDbHelper = new DbAdapter(this);
-		mDbHelper.open();
+		DbAdapter dbHelper = new DbAdapter();
+		dbHelper.open(this);
 
-		Cursor c = mDbHelper.fetch_avg_by_company(from_city, to_city);
+		Cursor c = dbHelper.fetch_avg_by_company(from_city, to_city);
 		startManagingCursor(c);
 		if (c.moveToFirst()) do {
 			String company = c.getString(0);
@@ -52,7 +50,7 @@ public class StatResultActivity extends Activity {
 			print_row(company, avg, count);
 		} while (c.moveToNext());
 
-		mDbHelper.close();
+//		dbHelper.close();
 	}
 
 	private String format_time(int time) {

@@ -47,36 +47,32 @@ public class DbAdapter {
 	public static final String KEY_CTR = "counter";
 	public static final String KEY_CTR_NAME = "counter_name";
 
-	private static final String TAG = "DbAdapter";
+//	private static final String TAG = "DbAdapter";
 	private DatabaseHelper mDbHelper;
-	private SQLiteDatabase mDb;
 
 	private static final String DATABASE_PATH = "/data/data/com.sweetiepiggy.raspberrybusmalaysia/databases/";
 	private static final String DATABASE_NAME = "bus.db";
 	private static final String DATABASE_TABLE = "trips";
 	private static final int DATABASE_VERSION = 5;
 
-	private static final String DATABASE_CREATE =
-		"create table " + DATABASE_TABLE + " (" +
-		KEY_ROWID + " integer primary key autoincrement, " +
-		KEY_COMP + " text, " +
-		KEY_BRAND + " text, " +
-		KEY_FROM_CITY + " text not null, " +
-		KEY_FROM_STN + " text, " +
-		KEY_TO_CITY + " text not null, " +
-		KEY_TO_STN + " text, " +
-		KEY_SCHED_DEP + " text not null, " +
-		KEY_ACTUAL_DEP + " text not null, " +
-		KEY_ARRIVAL + " text not null, " +
-		KEY_CTR + " text, " +
-		KEY_CTR_NAME + " text);";
-
-
-	private final Context mCtx;
+//	private static final String DATABASE_CREATE =
+//		"create table " + DATABASE_TABLE + " (" +
+//		KEY_ROWID + " integer primary key autoincrement, " +
+//		KEY_COMP + " text, " +
+//		KEY_BRAND + " text, " +
+//		KEY_FROM_CITY + " text not null, " +
+//		KEY_FROM_STN + " text, " +
+//		KEY_TO_CITY + " text not null, " +
+//		KEY_TO_STN + " text, " +
+//		KEY_SCHED_DEP + " text not null, " +
+//		KEY_ACTUAL_DEP + " text not null, " +
+//		KEY_ARRIVAL + " text not null, " +
+//		KEY_CTR + " text, " +
+//		KEY_CTR_NAME + " text);";
 
 	private static class DatabaseHelper extends SQLiteOpenHelper {
 		private final Context mCtx;
-		private SQLiteDatabase mDb;
+		public SQLiteDatabase mDb;
 
 		DatabaseHelper(Context context) {
 			super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -95,25 +91,22 @@ public class DbAdapter {
 					copy_database();
 				} catch (IOException e) {
 					throw new Error(e);
-//					Toast.makeText(mCtx, "Error copying database",
-//							Toast.LENGTH_SHORT).show();
 				}
 			}
 		}
 
 		private boolean database_exists() {
-			return false;
-//			SQLiteDatabase db = null;
-//			try {
-//				String out_filename = DATABASE_PATH + DATABASE_NAME;
-//				db = SQLiteDatabase.openDatabase(out_filename, null, SQLiteDatabase.OPEN_READONLY);
-//			} catch (SQLiteException e) {
-//				/* database does not exist yet */
-//			}
-//			if (db != null) {
-//				db.close();
-//			}
-//			return db != null;
+			SQLiteDatabase db = null;
+			try {
+				String out_filename = DATABASE_PATH + DATABASE_NAME;
+				db = SQLiteDatabase.openDatabase(out_filename, null, SQLiteDatabase.OPEN_READONLY);
+			} catch (SQLiteException e) {
+				/* database does not exist yet */
+			}
+			if (db != null) {
+				db.close();
+			}
+			return db != null;
 		}
 
 		private void copy_database() throws IOException {
@@ -134,10 +127,9 @@ public class DbAdapter {
 			input.close();
 		}
 
-		public SQLiteDatabase open_database() throws SQLException {
+		public void open_database() throws SQLException {
 			String full_path = DATABASE_PATH + DATABASE_NAME;
 			mDb = SQLiteDatabase.openDatabase(full_path, null, SQLiteDatabase.OPEN_READONLY);
-			return mDb;
 		}
 
 		@Override
@@ -157,31 +149,25 @@ public class DbAdapter {
 		}
 	}
 
-	public DbAdapter(Context ctx) {
-		this.mCtx = ctx;
+	public DbAdapter() {
 	}
 
-	public DbAdapter open() throws SQLException {
-		mDbHelper = new DatabaseHelper(mCtx);
-//		mDb = mDbHelper.getWritableDatabase();
+	public DbAdapter open(Context ctx) throws SQLException {
+		mDbHelper = new DatabaseHelper(ctx);
+
 		try {
 			mDbHelper.create_database();
 		} catch (IOException e) {
 			throw new Error("Unable to create database");
 		}
 
-		mDb = mDbHelper.open_database();
+		mDbHelper.open_database();
 
 		return this;
 	}
 
 	public void close() {
 		mDbHelper.close();
-	}
-
-	public int clear() {
-//		return mDb.delete(DATABASE_TABLE, null, null);
-		return 0;
 	}
 
 	/** @return row_id or -1 if failed */
@@ -203,54 +189,54 @@ public class DbAdapter {
 		initial_values.put(KEY_CTR, counter);
 		initial_values.put(KEY_CTR_NAME, counter_name);
 
-		return mDb.insert(DATABASE_TABLE, null, initial_values);
+		return mDbHelper.mDb.insert(DATABASE_TABLE, null, initial_values);
 	}
 
 	public Cursor fetch_from_cities() {
-		return mDb.query(true, DATABASE_TABLE, new String[] {KEY_ROWID, KEY_FROM_CITY},
+		return mDbHelper.mDb.query(true, DATABASE_TABLE, new String[] {KEY_ROWID, KEY_FROM_CITY},
 				null, null, KEY_FROM_CITY, null, KEY_FROM_CITY + " ASC", null);
 	}
 
 	public Cursor fetch_from_cities(String company) {
-		return mDb.query(true, DATABASE_TABLE, new String[] {KEY_ROWID, KEY_FROM_CITY},
-				KEY_COMP + " = ?", new String[] {company},
+		return mDbHelper.mDb.query(true, DATABASE_TABLE, new String[] {KEY_ROWID, KEY_FROM_CITY},
+				KEY_CTR_NAME + " = ?", new String[] {company},
 				KEY_FROM_CITY, null, KEY_FROM_CITY + " ASC", null);
 	}
 
 	public Cursor fetch_to_cities(String from_city) {
-		return mDb.query(true, DATABASE_TABLE, new String[] {KEY_ROWID, KEY_TO_CITY},
+		return mDbHelper.mDb.query(true, DATABASE_TABLE, new String[] {KEY_ROWID, KEY_TO_CITY},
 				KEY_FROM_CITY + " = ?", new String[] {from_city},
 				KEY_TO_CITY, null, KEY_TO_CITY + " ASC", null);
 	}
 
 	public Cursor fetch_to_cities(String from_city, String company) {
-		return mDb.query(true, DATABASE_TABLE, new String[] {KEY_ROWID, KEY_TO_CITY},
-				KEY_FROM_CITY + " = ? AND " + KEY_COMP + " = ?",
+		return mDbHelper.mDb.query(true, DATABASE_TABLE, new String[] {KEY_ROWID, KEY_TO_CITY},
+				KEY_FROM_CITY + " = ? AND " + KEY_CTR_NAME + " = ?",
 				new String[] {from_city, company},
 				KEY_TO_CITY, null, KEY_TO_CITY + " ASC", null);
 	}
 
 	public Cursor fetch_avg_by_company(String from_city, String to_city) {
 		String avg_time = "avg(strftime('%s', " + KEY_ARRIVAL + ") - strftime('%s', " + KEY_SCHED_DEP + "))";
-		return mDb.query(true, DATABASE_TABLE, new String[] {KEY_COMP,
+		return mDbHelper.mDb.query(true, DATABASE_TABLE, new String[] {KEY_CTR_NAME,
 					avg_time,
-					"count(" + KEY_COMP + ")"},
+					"count(" + KEY_CTR_NAME + ")"},
 				KEY_FROM_CITY + " = ? AND " + KEY_TO_CITY + " = ? AND " + KEY_ARRIVAL + "!= 'Cancelled'",
 				new String[] {from_city, to_city},
-				KEY_COMP, null,
+				KEY_CTR_NAME, null,
 					avg_time + " ASC",
 				null);
 	}
 
 	public Cursor fetch_companies() {
-		return mDb.query(true, DATABASE_TABLE, new String[] {KEY_ROWID, KEY_COMP},
-				"length(" + KEY_COMP + ") != 0", null, KEY_COMP, null, KEY_COMP + " ASC", null);
+		return mDbHelper.mDb.query(true, DATABASE_TABLE, new String[] {KEY_ROWID, KEY_CTR_NAME},
+				"length(" + KEY_CTR_NAME + ") != 0", null, KEY_CTR_NAME, null, KEY_CTR_NAME + " ASC", null);
 	}
 
 	public Cursor fetch_avg(String from_city, String to_city, String company) {
 		String avg = "avg(strftime('%s', " + KEY_ARRIVAL + ") - strftime('%s', " + KEY_SCHED_DEP + "))";
-		return mDb.query(true, DATABASE_TABLE, new String[] {avg},
-				KEY_COMP + " = ? AND " + KEY_FROM_CITY + " = ? AND " + KEY_TO_CITY + " = ?",
+		return mDbHelper.mDb.query(true, DATABASE_TABLE, new String[] {avg},
+				KEY_CTR_NAME + " = ? AND " + KEY_FROM_CITY + " = ? AND " + KEY_TO_CITY + " = ?",
 				new String[] {company, from_city, to_city},
 				null, null, null, null);
 	}
@@ -258,16 +244,16 @@ public class DbAdapter {
 
 	public Cursor fetch_avg_delay(String from_city, String to_city, String company) {
 		String avg_delay = "avg(strftime('%s', " + KEY_ACTUAL_DEP + ") - strftime('%s', " + KEY_SCHED_DEP + "))";
-		return mDb.query(true, DATABASE_TABLE, new String[] {avg_delay},
-				KEY_COMP + " = ? AND " + KEY_FROM_CITY + " = ? AND " + KEY_TO_CITY + " = ?",
+		return mDbHelper.mDb.query(true, DATABASE_TABLE, new String[] {avg_delay},
+				KEY_CTR_NAME + " = ? AND " + KEY_FROM_CITY + " = ? AND " + KEY_TO_CITY + " = ?",
 				new String[] {company, from_city, to_city},
 				null, null, null, null);
 	}
 
 	public Cursor fetch_avg_delay(String company) {
 		String avg_delay = "avg(strftime('%s', " + KEY_ACTUAL_DEP + ") - strftime('%s', " + KEY_SCHED_DEP + "))";
-		return mDb.query(true, DATABASE_TABLE, new String[] {avg_delay},
-				KEY_COMP + " = ?", new String[] {company}, null, null, null, null);
+		return mDbHelper.mDb.query(true, DATABASE_TABLE, new String[] {avg_delay},
+				KEY_CTR_NAME + " = ?", new String[] {company}, null, null, null, null);
 	}
 
 }

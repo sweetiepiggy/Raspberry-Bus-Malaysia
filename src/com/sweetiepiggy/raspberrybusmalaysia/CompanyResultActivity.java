@@ -28,8 +28,6 @@ import android.widget.TextView;
 
 public class CompanyResultActivity extends Activity {
 
-	private DbAdapter mDbHelper;
-
 	/** Called when the activity is first created. */
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -39,34 +37,34 @@ public class CompanyResultActivity extends Activity {
 		String company = (b == null) ? "<NULL>" : b.getString("company");
 		((TextView) findViewById(R.id.title)).setText(company);
 
-		mDbHelper = new DbAdapter(this);
-		mDbHelper.open();
+		DbAdapter dbHelper = new DbAdapter();
+		dbHelper.open(this);
 
-		Cursor c_comp = mDbHelper.fetch_avg_delay(company);
+		Cursor c_comp = dbHelper.fetch_avg_delay(company);
 		startManagingCursor(c_comp);
 		if (c_comp.moveToFirst()) do {
 			String avg_delay = format_time_min(c_comp.getInt(0));
 			((TextView) findViewById(R.id.total_avg_delay)).setText(avg_delay);
 		} while (c_comp.moveToNext());
 
-		Cursor c_from = mDbHelper.fetch_from_cities(company);
+		Cursor c_from = dbHelper.fetch_from_cities(company);
 		startManagingCursor(c_from);
 		if (c_from.moveToFirst()) do {
 			String from_city = c_from.getString(1);
 
-			Cursor c_to = mDbHelper.fetch_to_cities(from_city, company);
+			Cursor c_to = dbHelper.fetch_to_cities(from_city, company);
 			startManagingCursor(c_to);
 			if (c_to.moveToFirst()) do {
 				String to_city = c_to.getString(1);
 
-				Cursor c_avg = mDbHelper.fetch_avg(from_city, to_city, company);
+				Cursor c_avg = dbHelper.fetch_avg(from_city, to_city, company);
 				startManagingCursor(c_avg);
 				String avg = "<NULL>";
 				if (c_avg.moveToFirst()) {
 					avg = format_time(c_avg.getInt(0));
 				}
 
-				Cursor c_avg_delay = mDbHelper.fetch_avg_delay(from_city, to_city, company);
+				Cursor c_avg_delay = dbHelper.fetch_avg_delay(from_city, to_city, company);
 				startManagingCursor(c_avg_delay);
 
 				String avg_delay = "<NULL>";
@@ -78,7 +76,7 @@ public class CompanyResultActivity extends Activity {
 			} while (c_to.moveToNext());
 		} while (c_from.moveToNext());
 
-		mDbHelper.close();
+//		dbHelper.close();
 	}
 
 	private void print_row(String from_city, String to_city, String avg,
