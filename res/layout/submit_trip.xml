@@ -42,12 +42,10 @@
 				android:id="@+id/sched_date_button"
 				android:layout_width="wrap_content"
 				android:layout_height="wrap_content"
-				android:text="April 19, 2012"
 				android:layout_weight="1"/>
 			<Button
 				android:id="@+id/sched_time_button"
 				android:layout_width="wrap_content"
-				android:text="8:00PM"
 				android:layout_height="wrap_content"/>
 		</LinearLayout>
 
@@ -65,12 +63,10 @@
 				android:id="@+id/depart_date_button"
 				android:layout_width="wrap_content"
 				android:layout_height="wrap_content"
-				android:text="April 19, 2012"
 				android:layout_weight="1"/>
 			<Button
 				android:id="@+id/depart_time_button"
 				android:layout_width="wrap_content"
-				android:text="8:15PM"
 				android:layout_height="wrap_content"/>
 		</LinearLayout>
 
@@ -88,12 +84,10 @@
 				android:id="@+id/arrival_date_button"
 				android:layout_width="wrap_content"
 				android:layout_height="wrap_content"
-				android:text="April 20, 2012"
 				android:layout_weight="1"/>
 			<Button
 				android:id="@+id/arrival_time_button"
 				android:layout_width="wrap_content"
-				android:text="1:15PM"
 				android:layout_height="wrap_content"/>
 		</LinearLayout>
 
