@@ -1,0 +1,218 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!--
+    Copyright (C) 2012 Sweetie Piggy Apps <sweetiepiggyapps@gmail.com>
+
+    This file is part of Raspberry Bus Malaysia.
+
+    Raspberry Bus Malaysia is free software; you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation; either version 3 of the License, or
+    (at your option) any later version.
+
+    Raspberry Bus Malaysia is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with Raspberry Bus Malaysia ; if not, write to the Free Software
+    Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA
+-->
+
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+	android:layout_width="fill_parent"
+	android:layout_height="fill_parent" >
+	<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+		android:layout_width="fill_parent"
+		android:layout_height="wrap_content"
+		android:orientation="vertical" >
+
+		<TextView
+			android:id="@+id/sched_time_label"
+			android:layout_width="fill_parent"
+			android:layout_height="wrap_content"
+			android:textStyle="bold"
+			android:text="@string/sched_time" />
+		<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+			android:orientation="horizontal"
+			android:layout_width="fill_parent"
+			android:layout_height="fill_parent">
+			<Button
+				android:id="@+id/sched_date_button"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:text="April 19, 2012"
+				android:layout_weight="1"/>
+			<Button
+				android:id="@+id/sched_time_button"
+				android:layout_width="wrap_content"
+				android:text="8:00PM"
+				android:layout_height="wrap_content"/>
+		</LinearLayout>
+
+		<TextView
+			android:id="@+id/depart_time_label"
+			android:layout_width="fill_parent"
+			android:layout_height="wrap_content"
+			android:textStyle="bold"
+			android:text="@string/depart_time" />
+		<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+			android:orientation="horizontal"
+			android:layout_width="fill_parent"
+			android:layout_height="fill_parent">
+			<Button
+				android:id="@+id/depart_date_button"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:text="April 19, 2012"
+				android:layout_weight="1"/>
+			<Button
+				android:id="@+id/depart_time_button"
+				android:layout_width="wrap_content"
+				android:text="8:15PM"
+				android:layout_height="wrap_content"/>
+		</LinearLayout>
+
+		<TextView
+			android:id="@+id/arrival_time_label"
+			android:layout_width="fill_parent"
+			android:layout_height="wrap_content"
+			android:textStyle="bold"
+			android:text="@string/arrival_time" />
+		<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+			android:orientation="horizontal"
+			android:layout_width="fill_parent"
+			android:layout_height="fill_parent">
+			<Button
+				android:id="@+id/arrival_date_button"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:text="April 20, 2012"
+				android:layout_weight="1"/>
+			<Button
+				android:id="@+id/arrival_time_button"
+				android:layout_width="wrap_content"
+				android:text="1:15PM"
+				android:layout_height="wrap_content"/>
+		</LinearLayout>
+
+		<TextView
+			android:id="@+id/company_label"
+			android:layout_width="fill_parent"
+			android:layout_height="wrap_content"
+			android:textStyle="bold"
+			android:text="@string/company" />
+		<EditText
+			android:id="@+id/company_entry"
+			android:layout_width="fill_parent"
+			android:layout_height="wrap_content"
+			android:hint="@string/company_hint"
+			android:background="@android:drawable/editbox_background"/>
+
+		<TextView
+			android:id="@+id/brand_label"
+			android:layout_width="fill_parent"
+			android:layout_height="wrap_content"
+			android:textStyle="bold"
+			android:text="@string/brand" />
+		<EditText
+			android:id="@+id/brand_entry"
+			android:layout_width="fill_parent"
+			android:layout_height="wrap_content"
+			android:hint="@string/brand_hint"
+			android:background="@android:drawable/editbox_background"/>
+
+		<TextView
+			android:id="@+id/from_city_label"
+			android:layout_width="fill_parent"
+			android:layout_height="wrap_content"
+			android:textStyle="bold"
+			android:text="@string/from_city" />
+		<EditText
+			android:id="@+id/from_city_entry"
+			android:layout_width="fill_parent"
+			android:layout_height="wrap_content"
+			android:hint="@string/from_city_hint"
+			android:background="@android:drawable/editbox_background"/>
+
+		<TextView
+			android:id="@+id/from_station_label"
+			android:layout_width="fill_parent"
+			android:layout_height="wrap_content"
+			android:textStyle="bold"
+			android:text="@string/from_station" />
+		<EditText
+			android:id="@+id/from_station_entry"
+			android:layout_width="fill_parent"
+			android:layout_height="wrap_content"
+			android:hint="@string/from_station_hint"
+			android:background="@android:drawable/editbox_background"/>
+
+		<TextView
+			android:id="@+id/to_city_label"
+			android:layout_width="fill_parent"
+			android:layout_height="wrap_content"
+			android:textStyle="bold"
+			android:text="@string/to_city" />
+		<EditText
+			android:id="@+id/to_city_entry"
+			android:layout_width="fill_parent"
+			android:layout_height="wrap_content"
+			android:hint="@string/to_city_hint"
+			android:background="@android:drawable/editbox_background"/>
+
+		<TextView
+			android:id="@+id/to_station_label"
+			android:layout_width="fill_parent"
+			android:layout_height="wrap_content"
+			android:textStyle="bold"
+			android:text="@string/to_station" />
+		<EditText
+			android:id="@+id/to_station_entry"
+			android:layout_width="fill_parent"
+			android:layout_height="wrap_content"
+			android:hint="@string/to_station_hint"
+			android:background="@android:drawable/editbox_background"/>
+
+		<TextView
+			android:id="@+id/counter_num_label"
+			android:layout_width="fill_parent"
+			android:layout_height="wrap_content"
+			android:textStyle="bold"
+			android:text="@string/counter_num" />
+		<EditText
+			android:id="@+id/counter_num_entry"
+			android:layout_width="fill_parent"
+			android:layout_height="wrap_content"
+			android:hint="@string/counter_num_hint"
+			android:background="@android:drawable/editbox_background"/>
+
+		<TextView
+			android:id="@+id/counter_name_label"
+			android:layout_width="fill_parent"
+			android:layout_height="wrap_content"
+			android:textStyle="bold"
+			android:text="@string/counter_name" />
+		<EditText
+			android:id="@+id/counter_name_entry"
+			android:layout_width="fill_parent"
+			android:layout_height="wrap_content"
+			android:hint="@string/counter_name_hint"
+			android:background="@android:drawable/editbox_background"/>
+
+		<TextView
+			android:id="@+id/counter_station_label"
+			android:layout_width="fill_parent"
+			android:layout_height="wrap_content"
+			android:textStyle="bold"
+			android:text="@string/counter_station" />
+		<EditText
+			android:id="@+id/counter_station_entry"
+			android:layout_width="fill_parent"
+			android:layout_height="wrap_content"
+			android:hint="@string/counter_station_hint"
+			android:background="@android:drawable/editbox_background"/>
+
+	</LinearLayout>
+</ScrollView>

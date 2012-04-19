@@ -32,4 +32,31 @@
 	<string name="avg_delay">Avg Delay</string>
 	<string name="num_trips">Trips</string>
 
+	<string name="sched_time">Scheduled Departure Time</string>
+	<string name="depart_time">Actual Departure Time</string>
+	<string name="arrival_time">Arrival Time</string>
+
+	<string name="company_hint">Enter company name (e.g. Konsortium Bas Ekspres)</string>
+	<string name="brand">Brand</string>
+	<string name="brand_hint">Enter bus brand (e.g. Seasons, Eagle)</string>
+
+	<string name="from_city">Departure City</string>
+	<string name="from_city_hint">Enter city of departure (e.g. Kuala Lumpur)</string>
+	<string name="from_station">Departure Station</string>
+	<string name="from_station_hint">Enter station of departure (e.g. Puduraya)</string>
+
+	<string name="to_city">Destination City</string>
+	<string name="to_city_hint">Enter city of arrival (e.g. Penang)</string>
+	<string name="to_station">Destination Station</string>
+	<string name="to_station_hint">Enter station of arrival (e.g. Sg Nibong)</string>
+
+	<string name="counter_num">Counter Number</string>
+	<string name="counter_num_hint">Enter counter number (e.g. 10)</string>
+
+	<string name="counter_name">Counter Name</string>
+	<string name="counter_name_hint">Enter counter name (e.g. Plusliner)</string>
+
+	<string name="counter_station">Counter Station</string>
+	<string name="counter_station_hint">Enter station that counter is located (e.g. Puduraya)</string>
+
 </resources>

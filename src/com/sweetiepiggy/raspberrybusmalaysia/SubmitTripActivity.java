@@ -20,38 +20,14 @@
 package com.sweetiepiggy.raspberrybusmalaysia;
 
 import android.app.Activity;
-import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
-import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemClickListener;
-import android.widget.GridView;
 
-public class RaspberryBusMalaysiaActivity extends Activity {
+public class SubmitTripActivity extends Activity {
 
-	/** Called when the activity is first created. */
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.main);
-
-		GridView gridview = (GridView) findViewById(R.id.gridview);
-		gridview.setAdapter(new ImageAdapter(this));
-
-		gridview.setOnItemClickListener(new OnItemClickListener() {
-		public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
-			if (position == 0) {
-				Intent intent = new Intent(getApplicationContext(), StatActivity.class);
-				startActivity(intent);
-			} else if (position == 1) {
-				Intent intent = new Intent(getApplicationContext(), CompanyActivity.class);
-				startActivity(intent);
-			} else if (position == 2) {
-				Intent intent = new Intent(getApplicationContext(), SubmitTripActivity.class);
-				startActivity(intent);
-			}
-		}
-		});
+		setContentView(R.layout.submit_trip);
 	}
-}
 
+}
