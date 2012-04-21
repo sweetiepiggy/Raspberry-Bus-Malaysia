@@ -49,7 +49,7 @@
 			android:layout_height="wrap_content"
 			android:layout_gravity="center"
 			android:gravity="center"
-			android:drawableTop="@drawable/submit_trip"
+			android:drawableTop="@android:drawable/ic_menu_send"
 			android:text="@string/submit_trip" />
 	</TableRow>
 </TableLayout>
