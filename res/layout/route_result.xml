@@ -52,6 +52,12 @@
 					android:textStyle="bold"
 					android:text="@string/avg_time"/>
 				<TextView
+					android:id="@+id/avg_delay"
+					android:layout_width="fill_parent"
+					android:layout_height="wrap_content"
+					android:textStyle="bold"
+					android:text="@string/avg_delay"/>
+				<TextView
 					android:id="@+id/num_trips"
 					android:layout_width="fill_parent"
 					android:layout_height="wrap_content"

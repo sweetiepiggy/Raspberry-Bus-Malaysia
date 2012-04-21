@@ -52,8 +52,9 @@ public class RouteResultActivity extends Activity
 		if (c.moveToFirst()) do {
 			String company = c.getString(0);
 			String avg = format_time(c.getInt(1));
-			String count = c.getString(2);
-			print_row(company, avg, count);
+			String delay = format_time_min(c.getInt(2));
+			String count = c.getString(3);
+			print_row(company, avg, delay, count);
 		} while (c.moveToNext());
 
 //		dbHelper.close();
@@ -73,7 +74,7 @@ public class RouteResultActivity extends Activity
 		return String.format("%s%dhr %02dmin", negative, hr, min);
 	}
 
-	private void print_row(String company, String avg, String count)
+	private void print_row(String company, String avg, String delay, String count)
 	{
 		if (company.length() > 20) {
 			company = company.substring(0, 20);
@@ -84,9 +85,11 @@ public class RouteResultActivity extends Activity
 
 		TextView company_view = new TextView(getApplicationContext());
 		TextView avg_view = new TextView(getApplicationContext());
+		TextView delay_view = new TextView(getApplicationContext());
 		TextView count_view = new TextView(getApplicationContext());
 		company_view.setText(company);
 		avg_view.setText(avg);
+		delay_view.setText(delay);
 		count_view.setText(count);
 
 		company_view.setOnClickListener(new View.OnClickListener() {
@@ -108,11 +111,24 @@ public class RouteResultActivity extends Activity
 		TableRow tr = new TableRow(getApplicationContext());
 		tr.addView(company_view);
 		tr.addView(avg_view);
+		tr.addView(delay_view);
 		tr.addView(count_view);
 
 		TableLayout results_layout = (TableLayout) findViewById(R.id.results_layout);
 		results_layout.addView(tr);
 	}
 
+	/* TODO: move format_time() and format_time_min() to their own class */
+	private String format_time_min(int time)
+	{
+		String negative = "";
+		if (time < 0) {
+			negative = "-";
+			time *= -1;
+		}
+
+		int min = time / 60;
+		return String.format("%s%dmin", negative, min);
+	}
 }
 

@@ -185,6 +185,8 @@ public class SubmitTripActivity extends Activity
 				depart_time, arrival_time, counter_num,
 				counter_name);
 
+		mDbHelper.close();
+
 		int msg_id = (row_id == -1) ? R.string.submit_trip_fail :
 			R.string.submit_trip_success;
 
