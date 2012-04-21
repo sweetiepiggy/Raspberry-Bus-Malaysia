@@ -131,10 +131,14 @@ public class SubmitTripActivity extends Activity
 		data.arrival_time.minute = c.get(Calendar.MINUTE);
 	}
 
-	private void update_date_label(int button_id, date_and_time d)
+	private void update_date_label(int button_id, date_and_time dt)
 	{
 		Button date_button = (Button)findViewById(button_id);
-		String date = DateFormat.getMediumDateFormat(getApplicationContext()).format(new Date(d.year - 1900, d.month, d.day));
+		Date d = new Date(dt.year - 1900, dt.month, dt.day);
+
+		/* TODO: translate day of week */
+		String date = DateFormat.format("EEEE", d) +
+			" " + DateFormat.getLongDateFormat(getApplicationContext()).format(d);
 		date_button.setText(date);
 	}
 
