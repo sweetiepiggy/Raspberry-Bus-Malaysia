@@ -278,6 +278,52 @@ public class DbAdapter
 				null);
 	}
 
+	public Cursor fetch_avg_by_company_sort_delay(String from_city, String to_city)
+	{
+		String avg_time = "avg(strftime('%s', " + KEY_ARRIVAL + ") - strftime('%s', " + KEY_SCHED_DEP + "))";
+		String avg_delay = "avg(strftime('%s', " + KEY_ACTUAL_DEP + ") - strftime('%s', " + KEY_SCHED_DEP + "))";
+		return mDbHelper.mDb.query(true, DATABASE_TABLE, new String[] {KEY_CTR_NAME,
+					avg_time,
+					avg_delay,
+					"count(" + KEY_CTR_NAME + ")"},
+				KEY_FROM_CITY + " = ? AND " + KEY_TO_CITY + " = ? AND " + KEY_ARRIVAL + "!= 'Cancelled'",
+				new String[] {from_city, to_city},
+				KEY_CTR_NAME, null,
+					avg_delay + " ASC",
+				null);
+	}
+
+	public Cursor fetch_avg_by_company_sort_company(String from_city, String to_city)
+	{
+		String avg_time = "avg(strftime('%s', " + KEY_ARRIVAL + ") - strftime('%s', " + KEY_SCHED_DEP + "))";
+		String avg_delay = "avg(strftime('%s', " + KEY_ACTUAL_DEP + ") - strftime('%s', " + KEY_SCHED_DEP + "))";
+		return mDbHelper.mDb.query(true, DATABASE_TABLE, new String[] {KEY_CTR_NAME,
+					avg_time,
+					avg_delay,
+					"count(" + KEY_CTR_NAME + ")"},
+				KEY_FROM_CITY + " = ? AND " + KEY_TO_CITY + " = ? AND " + KEY_ARRIVAL + "!= 'Cancelled'",
+				new String[] {from_city, to_city},
+				KEY_CTR_NAME, null,
+					KEY_CTR_NAME + " ASC",
+				null);
+	}
+
+	public Cursor fetch_avg_by_company_sort_trips(String from_city, String to_city)
+	{
+		String avg_time = "avg(strftime('%s', " + KEY_ARRIVAL + ") - strftime('%s', " + KEY_SCHED_DEP + "))";
+		String avg_delay = "avg(strftime('%s', " + KEY_ACTUAL_DEP + ") - strftime('%s', " + KEY_SCHED_DEP + "))";
+		String num_trips = "count(" + KEY_CTR_NAME + ")";
+		return mDbHelper.mDb.query(true, DATABASE_TABLE, new String[] {KEY_CTR_NAME,
+					avg_time,
+					avg_delay,
+					num_trips},
+				KEY_FROM_CITY + " = ? AND " + KEY_TO_CITY + " = ? AND " + KEY_ARRIVAL + "!= 'Cancelled'",
+				new String[] {from_city, to_city},
+				KEY_CTR_NAME, null,
+					num_trips + " DESC",
+				null);
+	}
+
 	public Cursor fetch_companies()
 	{
 		return mDbHelper.mDb.query(true, DATABASE_TABLE, new String[] {KEY_ROWID, KEY_CTR_NAME},
