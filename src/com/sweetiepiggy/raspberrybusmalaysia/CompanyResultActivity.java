@@ -28,6 +28,8 @@ import android.widget.TextView;
 
 public class CompanyResultActivity extends Activity
 {
+	/* TODO: put this in Constants.java? */
+	private static final String UNKNOWN = "<Unknown Company>";
 
 	/** Called when the activity is first created. */
 	@Override
@@ -37,7 +39,8 @@ public class CompanyResultActivity extends Activity
 		setContentView(R.layout.company_result);
 		Bundle b = getIntent().getExtras();
 		String company = (b == null) ? "<NULL>" : b.getString("company");
-		((TextView) findViewById(R.id.title)).setText(company);
+		String company_display = company.length() == 0 ? UNKNOWN : company;
+		((TextView) findViewById(R.id.title)).setText(company_display);
 
 		DbAdapter dbHelper = new DbAdapter();
 		dbHelper.open(this);

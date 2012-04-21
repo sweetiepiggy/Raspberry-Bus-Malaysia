@@ -20,14 +20,18 @@
 package com.sweetiepiggy.raspberrybusmalaysia;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
 
 public class RouteResultActivity extends Activity
 {
+	/* TODO: put this in Constants.java */
+	private static final String UNKNOWN = "<Unknown>";
 
 	/** Called when the activity is first created. */
 	@Override
@@ -74,7 +78,7 @@ public class RouteResultActivity extends Activity
 		if (company.length() > 20) {
 			company = company.substring(0, 20);
 		} else if (company.length() == 0) {
-			company = "<Unknown>";
+			company = UNKNOWN;
 //			return;
 		}
 
@@ -84,6 +88,22 @@ public class RouteResultActivity extends Activity
 		company_view.setText(company);
 		avg_view.setText(avg);
 		count_view.setText(count);
+
+		company_view.setOnClickListener(new View.OnClickListener() {
+			public void onClick(View v)
+			{
+				Intent intent = new Intent(getApplicationContext(),
+					CompanyResultActivity.class);
+				Bundle b = new Bundle();
+				String company = ((TextView)v).getText().toString();
+				if (company.equals(UNKNOWN)) {
+					company = "";
+				}
+				b.putString("company", company);
+				intent.putExtras(b);
+				startActivity(intent);
+			}
+		});
 
 		TableRow tr = new TableRow(getApplicationContext());
 		tr.addView(company_view);

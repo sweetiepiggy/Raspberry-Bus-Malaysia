@@ -81,9 +81,11 @@ public class CompanyActivity extends Activity
 		submit_button.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
 				if (m_company.length() == 0) {
-					Toast.makeText(getApplicationContext(), "Select Company", Toast.LENGTH_SHORT).show();
+					Toast.makeText(getApplicationContext(),
+						"Select Company", Toast.LENGTH_SHORT).show();
 				} else {
-					Intent intent = new Intent(getApplicationContext(), CompanyResultActivity.class);
+					Intent intent = new Intent(getApplicationContext(),
+						CompanyResultActivity.class);
 					Bundle b = new Bundle();
 					b.putString("company", m_company);
 					intent.putExtras(b);
