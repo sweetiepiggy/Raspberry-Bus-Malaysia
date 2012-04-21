@@ -26,11 +26,13 @@ import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
 
-public class StatResultActivity extends Activity {
+public class StatResultActivity extends Activity
+{
 
 	/** Called when the activity is first created. */
 	@Override
-	public void onCreate(Bundle savedInstanceState) {
+	public void onCreate(Bundle savedInstanceState)
+	{
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.stat_result);
 		Bundle b = getIntent().getExtras();
@@ -53,7 +55,8 @@ public class StatResultActivity extends Activity {
 //		dbHelper.close();
 	}
 
-	private String format_time(int time) {
+	private String format_time(int time)
+	{
 		String negative = "";
 		if (time < 0) {
 			negative = "-";
@@ -66,7 +69,8 @@ public class StatResultActivity extends Activity {
 		return String.format("%s%dhr %02dmin", negative, hr, min);
 	}
 
-	private void print_row(String company, String avg, String count) {
+	private void print_row(String company, String avg, String count)
+	{
 		if (company.length() > 20) {
 			company = company.substring(0, 20);
 		} else if (company.length() == 0) {
@@ -91,3 +95,4 @@ public class StatResultActivity extends Activity {
 	}
 
 }
+

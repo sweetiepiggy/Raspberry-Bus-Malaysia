@@ -26,11 +26,13 @@ import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
 
-public class CompanyResultActivity extends Activity {
+public class CompanyResultActivity extends Activity
+{
 
 	/** Called when the activity is first created. */
 	@Override
-	public void onCreate(Bundle savedInstanceState) {
+	public void onCreate(Bundle savedInstanceState)
+	{
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.company_result);
 		Bundle b = getIntent().getExtras();
@@ -80,7 +82,8 @@ public class CompanyResultActivity extends Activity {
 	}
 
 	private void print_row(String from_city, String to_city, String avg,
-			String avg_delay) {
+			String avg_delay)
+	{
 		TextView from_view = new TextView(getApplicationContext());
 		TextView to_view = new TextView(getApplicationContext());
 		TextView avg_view = new TextView(getApplicationContext());
@@ -101,7 +104,8 @@ public class CompanyResultActivity extends Activity {
 		results_layout.addView(tr);
 	}
 
-	private String format_time(int time) {
+	private String format_time(int time)
+	{
 		String negative = "";
 		if (time < 0) {
 			negative = "-";
@@ -114,7 +118,8 @@ public class CompanyResultActivity extends Activity {
 		return String.format("%s%dhr %02dmin", negative, hr, min);
 	}
 
-	private String format_time_min(int time) {
+	private String format_time_min(int time)
+	{
 		String negative = "";
 		if (time < 0) {
 			negative = "-";

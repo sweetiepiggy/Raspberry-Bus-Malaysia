@@ -33,7 +33,8 @@ import android.database.sqlite.SQLiteException;
 import android.database.sqlite.SQLiteOpenHelper;
 
 
-public class DbAdapter {
+public class DbAdapter
+{
 	public static final String KEY_ROWID = "_id";
 	public static final String KEY_COMP = "company";
 	public static final String KEY_BRAND = "bus_brand";
@@ -70,21 +71,25 @@ public class DbAdapter {
 //		KEY_CTR + " text, " +
 //		KEY_CTR_NAME + " text);";
 
-	private static class DatabaseHelper extends SQLiteOpenHelper {
+	private static class DatabaseHelper extends SQLiteOpenHelper
+	{
 		private final Context mCtx;
 		public SQLiteDatabase mDb;
 
-		DatabaseHelper(Context context) {
+		DatabaseHelper(Context context)
+		{
 			super(context, DATABASE_NAME, null, DATABASE_VERSION);
 			mCtx = context;
 		}
 
 		@Override
-		public void onCreate(SQLiteDatabase db) {
+		public void onCreate(SQLiteDatabase db)
+		{
 //			db.execSQL(DATABASE_CREATE);
 		}
 
-		public void create_database() throws IOException {
+		public void create_database() throws IOException
+		{
 			if (!database_exists()) {
 				this.getReadableDatabase();
 				try {
@@ -95,7 +100,8 @@ public class DbAdapter {
 			}
 		}
 
-		private boolean database_exists() {
+		private boolean database_exists()
+		{
 			SQLiteDatabase db = null;
 			try {
 				String out_filename = DATABASE_PATH + DATABASE_NAME;
@@ -109,7 +115,8 @@ public class DbAdapter {
 			return db != null;
 		}
 
-		private void copy_database() throws IOException {
+		private void copy_database() throws IOException
+		{
 			InputStream input = mCtx.getAssets().open(DATABASE_NAME);
 
 			String full_path = DATABASE_PATH + DATABASE_NAME;
@@ -127,13 +134,15 @@ public class DbAdapter {
 			input.close();
 		}
 
-		public void open_database(int perm) throws SQLException {
+		public void open_database(int perm) throws SQLException
+		{
 			String full_path = DATABASE_PATH + DATABASE_NAME;
 			mDb = SQLiteDatabase.openDatabase(full_path, null, perm);
 		}
 
 		@Override
-		public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+		public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion)
+		{
 //			Log.w(TAG, "Upgrading database from version " + oldVersion + " to "
 //					+ newVersion + ", which will destroy all old data");
 //			db.execSQL("DROP TABLE IF EXISTS " + DATABASE_TABLE);
@@ -141,7 +150,8 @@ public class DbAdapter {
 		}
 
 		@Override
-		public synchronized void close() {
+		public synchronized void close()
+		{
 			if (mDb != null) {
 				mDb.close();
 			}
@@ -149,7 +159,8 @@ public class DbAdapter {
 		}
 	}
 
-	public DbAdapter() {
+	public DbAdapter()
+	{
 	}
 
 	public DbAdapter open(Context ctx) throws SQLException
@@ -162,7 +173,8 @@ public class DbAdapter {
 		return open(ctx, SQLiteDatabase.OPEN_READWRITE);
 	}
 
-	private DbAdapter open(Context ctx, int perm) throws SQLException {
+	private DbAdapter open(Context ctx, int perm) throws SQLException
+	{
 		mDbHelper = new DatabaseHelper(ctx);
 
 		try {
@@ -176,7 +188,8 @@ public class DbAdapter {
 		return this;
 	}
 
-	public void close() {
+	public void close()
+	{
 		mDbHelper.close();
 	}
 
@@ -185,7 +198,8 @@ public class DbAdapter {
 			String from_city, String from_station, String to_city,
 			String to_station, String scheduled_departure,
 			String actual_departure, String arrival_time,
-			String counter, String counter_name) {
+			String counter, String counter_name)
+	{
 		ContentValues initial_values = new ContentValues();
 		initial_values.put(KEY_COMP, company);
 		initial_values.put(KEY_BRAND, bus_brand);
@@ -202,31 +216,36 @@ public class DbAdapter {
 		return mDbHelper.mDb.insert(DATABASE_TABLE, null, initial_values);
 	}
 
-	public Cursor fetch_from_cities() {
+	public Cursor fetch_from_cities()
+	{
 		return mDbHelper.mDb.query(true, DATABASE_TABLE, new String[] {KEY_ROWID, KEY_FROM_CITY},
 				null, null, KEY_FROM_CITY, null, KEY_FROM_CITY + " ASC", null);
 	}
 
-	public Cursor fetch_from_cities(String company) {
+	public Cursor fetch_from_cities(String company)
+	{
 		return mDbHelper.mDb.query(true, DATABASE_TABLE, new String[] {KEY_ROWID, KEY_FROM_CITY},
 				KEY_CTR_NAME + " = ?", new String[] {company},
 				KEY_FROM_CITY, null, KEY_FROM_CITY + " ASC", null);
 	}
 
-	public Cursor fetch_to_cities(String from_city) {
+	public Cursor fetch_to_cities(String from_city)
+	{
 		return mDbHelper.mDb.query(true, DATABASE_TABLE, new String[] {KEY_ROWID, KEY_TO_CITY},
 				KEY_FROM_CITY + " = ?", new String[] {from_city},
 				KEY_TO_CITY, null, KEY_TO_CITY + " ASC", null);
 	}
 
-	public Cursor fetch_to_cities(String from_city, String company) {
+	public Cursor fetch_to_cities(String from_city, String company)
+	{
 		return mDbHelper.mDb.query(true, DATABASE_TABLE, new String[] {KEY_ROWID, KEY_TO_CITY},
 				KEY_FROM_CITY + " = ? AND " + KEY_CTR_NAME + " = ?",
 				new String[] {from_city, company},
 				KEY_TO_CITY, null, KEY_TO_CITY + " ASC", null);
 	}
 
-	public Cursor fetch_avg_by_company(String from_city, String to_city) {
+	public Cursor fetch_avg_by_company(String from_city, String to_city)
+	{
 		String avg_time = "avg(strftime('%s', " + KEY_ARRIVAL + ") - strftime('%s', " + KEY_SCHED_DEP + "))";
 		return mDbHelper.mDb.query(true, DATABASE_TABLE, new String[] {KEY_CTR_NAME,
 					avg_time,
@@ -238,12 +257,14 @@ public class DbAdapter {
 				null);
 	}
 
-	public Cursor fetch_companies() {
+	public Cursor fetch_companies()
+	{
 		return mDbHelper.mDb.query(true, DATABASE_TABLE, new String[] {KEY_ROWID, KEY_CTR_NAME},
 				"length(" + KEY_CTR_NAME + ") != 0", null, KEY_CTR_NAME, null, KEY_CTR_NAME + " ASC", null);
 	}
 
-	public Cursor fetch_avg(String from_city, String to_city, String company) {
+	public Cursor fetch_avg(String from_city, String to_city, String company)
+	{
 		String avg = "avg(strftime('%s', " + KEY_ARRIVAL + ") - strftime('%s', " + KEY_SCHED_DEP + "))";
 		return mDbHelper.mDb.query(true, DATABASE_TABLE, new String[] {avg},
 				KEY_CTR_NAME + " = ? AND " + KEY_FROM_CITY + " = ? AND " + KEY_TO_CITY + " = ?",
@@ -252,7 +273,8 @@ public class DbAdapter {
 	}
 
 
-	public Cursor fetch_avg_delay(String from_city, String to_city, String company) {
+	public Cursor fetch_avg_delay(String from_city, String to_city, String company)
+	{
 		String avg_delay = "avg(strftime('%s', " + KEY_ACTUAL_DEP + ") - strftime('%s', " + KEY_SCHED_DEP + "))";
 		return mDbHelper.mDb.query(true, DATABASE_TABLE, new String[] {avg_delay},
 				KEY_CTR_NAME + " = ? AND " + KEY_FROM_CITY + " = ? AND " + KEY_TO_CITY + " = ?",
@@ -260,7 +282,8 @@ public class DbAdapter {
 				null, null, null, null);
 	}
 
-	public Cursor fetch_avg_delay(String company) {
+	public Cursor fetch_avg_delay(String company)
+	{
 		String avg_delay = "avg(strftime('%s', " + KEY_ACTUAL_DEP + ") - strftime('%s', " + KEY_SCHED_DEP + "))";
 		return mDbHelper.mDb.query(true, DATABASE_TABLE, new String[] {avg_delay},
 				KEY_CTR_NAME + " = ?", new String[] {company}, null, null, null, null);

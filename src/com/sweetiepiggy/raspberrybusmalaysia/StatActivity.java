@@ -31,7 +31,8 @@ import android.widget.SimpleCursorAdapter;
 import android.widget.Spinner;
 import android.widget.Toast;
 
-public class StatActivity extends Activity {
+public class StatActivity extends Activity
+{
 	private String m_from_city = "";
 	private String m_to_city = "";
 
@@ -39,7 +40,8 @@ public class StatActivity extends Activity {
 
 	/** Called when the activity is first created. */
 	@Override
-	public void onCreate(Bundle savedInstanceState) {
+	public void onCreate(Bundle savedInstanceState)
+	{
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.stat);
 
@@ -51,14 +53,16 @@ public class StatActivity extends Activity {
 	}
 
 //	@Override
-//	protected void onDestroy() {
+//	protected void onDestroy()
+//	{
 //		super.onDestroy();
 //		if (mDbHelper != null) {
 //			mDbHelper.close();
 //		}
 //	}
 
-	private void fill_data() {
+	private void fill_data()
+	{
 		Cursor c = mDbHelper.fetch_from_cities();
 		startManagingCursor(c);
 		SimpleCursorAdapter from_cities = new SimpleCursorAdapter(this,
@@ -72,7 +76,8 @@ public class StatActivity extends Activity {
 			@Override
 			public void onItemSelected(AdapterView<?> parent,
 					View selected_item, int pos,
-					long id) {
+					long id)
+			{
 				m_from_city = ((Cursor)parent.getItemAtPosition(pos)).getString(1);
 				Cursor c = mDbHelper.fetch_to_cities(m_from_city);
 				startManagingCursor(c);
@@ -98,7 +103,8 @@ public class StatActivity extends Activity {
 			}
 
 			@Override
-			public void onNothingSelected(AdapterView<?> parentView) {
+			public void onNothingSelected(AdapterView<?> parentView)
+			{
 			}
 
 		});
@@ -108,7 +114,8 @@ public class StatActivity extends Activity {
 	{
 		Button submit_button = (Button) findViewById(R.id.submit_button);
 		submit_button.setOnClickListener(new View.OnClickListener() {
-			public void onClick(View v) {
+			public void onClick(View v)
+			{
 				if (m_from_city.length() == 0) {
 					Toast.makeText(getApplicationContext(), "Select \"From City\"", Toast.LENGTH_SHORT).show();
 				} else if (m_to_city.length() == 0) {

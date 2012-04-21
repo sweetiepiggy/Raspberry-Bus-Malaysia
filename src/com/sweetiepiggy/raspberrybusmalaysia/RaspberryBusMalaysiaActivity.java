@@ -27,17 +27,20 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.TextView;
 
-public class RaspberryBusMalaysiaActivity extends Activity {
+public class RaspberryBusMalaysiaActivity extends Activity
+{
 
 	/** Called when the activity is first created. */
 	@Override
-	public void onCreate(Bundle savedInstanceState) {
+	public void onCreate(Bundle savedInstanceState)
+	{
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.main);
 
 		TextView stat = (TextView) findViewById(R.id.stat);
 		stat.setOnClickListener(new View.OnClickListener() {
-			public void onClick(View v) {
+			public void onClick(View v)
+			{
 				Intent intent = new Intent(getApplicationContext(), StatActivity.class);
 				startActivity(intent);
 			}
@@ -45,7 +48,8 @@ public class RaspberryBusMalaysiaActivity extends Activity {
 
 		TextView company = (TextView) findViewById(R.id.company);
 		company.setOnClickListener(new View.OnClickListener() {
-			public void onClick(View v) {
+			public void onClick(View v)
+			{
 				Intent intent = new Intent(getApplicationContext(), CompanyActivity.class);
 				startActivity(intent);
 			}
@@ -53,7 +57,8 @@ public class RaspberryBusMalaysiaActivity extends Activity {
 
 		TextView submit_trip = (TextView) findViewById(R.id.submit_trip);
 		submit_trip.setOnClickListener(new View.OnClickListener() {
-			public void onClick(View v) {
+			public void onClick(View v)
+			{
 				Intent intent = new Intent(getApplicationContext(), SubmitTripActivity.class);
 				startActivity(intent);
 			}

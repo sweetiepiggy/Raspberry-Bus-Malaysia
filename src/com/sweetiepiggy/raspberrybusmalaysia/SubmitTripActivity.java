@@ -37,7 +37,8 @@ import android.widget.Toast;
 
 import com.sweetiepiggy.raspberrybusmalaysia.DataWrapper.date_and_time;
 
-public class SubmitTripActivity extends Activity {
+public class SubmitTripActivity extends Activity
+{
 
 	private DataWrapper mData;
 

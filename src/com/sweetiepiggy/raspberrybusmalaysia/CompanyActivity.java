@@ -31,11 +31,13 @@ import android.widget.SimpleCursorAdapter;
 import android.widget.Spinner;
 import android.widget.Toast;
 
-public class CompanyActivity extends Activity {
+public class CompanyActivity extends Activity
+{
 	private String m_company = "";
 
 	@Override
-	public void onCreate(Bundle savedInstanceState) {
+	public void onCreate(Bundle savedInstanceState)
+	{
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.company);
 
@@ -47,7 +49,8 @@ public class CompanyActivity extends Activity {
 		init_submit_button();
 	}
 
-	private void fill_data(DbAdapter dbHelper) {
+	private void fill_data(DbAdapter dbHelper)
+	{
 		Cursor c = dbHelper.fetch_companies();
 		startManagingCursor(c);
 		SimpleCursorAdapter companies = new SimpleCursorAdapter(this,
