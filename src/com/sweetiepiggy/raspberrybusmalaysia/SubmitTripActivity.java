@@ -118,8 +118,17 @@ public class SubmitTripActivity extends Activity
 		data.sched_time.hour = c.get(Calendar.HOUR_OF_DAY);
 		data.sched_time.minute = c.get(Calendar.MINUTE);
 
-		data.depart_time = data.sched_time;
-		data.arrival_time = data.sched_time;
+		data.depart_time.year = c.get(Calendar.YEAR);
+		data.depart_time.month = c.get(Calendar.MONTH);
+		data.depart_time.day = c.get(Calendar.DAY_OF_MONTH);
+		data.depart_time.hour = c.get(Calendar.HOUR_OF_DAY);
+		data.depart_time.minute = c.get(Calendar.MINUTE);
+
+		data.arrival_time.year = c.get(Calendar.YEAR);
+		data.arrival_time.month = c.get(Calendar.MONTH);
+		data.arrival_time.day = c.get(Calendar.DAY_OF_MONTH);
+		data.arrival_time.hour = c.get(Calendar.HOUR_OF_DAY);
+		data.arrival_time.minute = c.get(Calendar.MINUTE);
 	}
 
 	private void update_date_label(int button_id, date_and_time d)
