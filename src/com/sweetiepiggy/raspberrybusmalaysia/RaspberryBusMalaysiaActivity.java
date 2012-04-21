@@ -25,7 +25,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
-import android.widget.GridView;
+import android.widget.TextView;
 
 public class RaspberryBusMalaysiaActivity extends Activity {
 
@@ -35,22 +35,28 @@ public class RaspberryBusMalaysiaActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.main);
 
-		GridView gridview = (GridView) findViewById(R.id.gridview);
-		gridview.setAdapter(new ImageAdapter(this));
-
-		gridview.setOnItemClickListener(new OnItemClickListener() {
-		public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
-			if (position == 0) {
+		TextView stat = (TextView) findViewById(R.id.stat);
+		stat.setOnClickListener(new View.OnClickListener() {
+			public void onClick(View v) {
 				Intent intent = new Intent(getApplicationContext(), StatActivity.class);
 				startActivity(intent);
-			} else if (position == 1) {
+			}
+		});
+
+		TextView company = (TextView) findViewById(R.id.company);
+		company.setOnClickListener(new View.OnClickListener() {
+			public void onClick(View v) {
 				Intent intent = new Intent(getApplicationContext(), CompanyActivity.class);
 				startActivity(intent);
-			} else if (position == 2) {
+			}
+		});
+
+		TextView submit_trip = (TextView) findViewById(R.id.submit_trip);
+		submit_trip.setOnClickListener(new View.OnClickListener() {
+			public void onClick(View v) {
 				Intent intent = new Intent(getApplicationContext(), SubmitTripActivity.class);
 				startActivity(intent);
 			}
-		}
 		});
 	}
 }
