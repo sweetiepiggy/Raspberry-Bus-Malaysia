@@ -31,7 +31,7 @@ import android.widget.SimpleCursorAdapter;
 import android.widget.Spinner;
 import android.widget.Toast;
 
-public class StatActivity extends Activity
+public class RouteActivity extends Activity
 {
 	private String m_from_city = "";
 	private String m_to_city = "";
@@ -43,7 +43,7 @@ public class StatActivity extends Activity
 	public void onCreate(Bundle savedInstanceState)
 	{
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.stat);
+		setContentView(R.layout.route);
 
 		mDbHelper = new DbAdapter();
 		mDbHelper.open(this);
@@ -121,7 +121,7 @@ public class StatActivity extends Activity
 				} else if (m_to_city.length() == 0) {
 					Toast.makeText(getApplicationContext(), "Select \"To City\"", Toast.LENGTH_SHORT).show();
 				} else {
-					Intent intent = new Intent(getApplicationContext(), StatResultActivity.class);
+					Intent intent = new Intent(getApplicationContext(), RouteResultActivity.class);
 					Bundle b = new Bundle();
 					b.putString("from_city", m_from_city);
 					b.putString("to_city", m_to_city);

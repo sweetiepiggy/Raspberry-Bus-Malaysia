@@ -37,11 +37,11 @@ public class RaspberryBusMalaysiaActivity extends Activity
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.main);
 
-		TextView stat = (TextView) findViewById(R.id.stat);
-		stat.setOnClickListener(new View.OnClickListener() {
+		TextView route = (TextView) findViewById(R.id.route);
+		route.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v)
 			{
-				Intent intent = new Intent(getApplicationContext(), StatActivity.class);
+				Intent intent = new Intent(getApplicationContext(), RouteActivity.class);
 				startActivity(intent);
 			}
 		});

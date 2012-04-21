@@ -27,36 +27,38 @@
 		android:layout_width="fill_parent"
 		android:layout_height="wrap_content"
 		android:orientation="vertical" >
-	
+
 		<TextView
-			android:id="@+id/from_label"
+			android:id="@+id/title"
 			android:layout_width="fill_parent"
 			android:layout_height="wrap_content"
-			android:textStyle="bold"
-			android:text="@string/from" />
-		<Spinner
-			android:id="@+id/from_spinner"
-			android:layout_width="fill_parent"
-			android:layout_height="wrap_content"
-			android:drawSelectorOnTop="true"
-			android:prompt="@string/from"/>
-		<TextView
-			android:id="@+id/to_label"
-			android:layout_width="fill_parent"
-			android:layout_height="wrap_content"
-			android:textStyle="bold"
-			android:text="@string/to" />
-		<Spinner
-			android:id="@+id/to_spinner"
-			android:layout_width="fill_parent"
-			android:layout_height="wrap_content"
-			android:drawSelectorOnTop="true"
-			android:prompt="@string/to"/>
-		<Button
-			android:id="@+id/submit_button"
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content"
-			android:text="@string/submit" />
-	
+			android:textStyle="bold" />
+		<TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+		android:id="@+id/results_layout"
+		android:layout_width="fill_parent"
+		android:layout_height="fill_parent"
+		android:stretchColumns="1" >
+			<TableRow>
+				<TextView
+					android:id="@+id/company"
+					android:layout_width="fill_parent"
+					android:layout_height="wrap_content"
+					android:textStyle="bold"
+					android:text="@string/company"/>
+				<TextView
+					android:id="@+id/avg_time"
+					android:layout_width="fill_parent"
+					android:layout_height="wrap_content"
+					android:textStyle="bold"
+					android:text="@string/avg_time"/>
+				<TextView
+					android:id="@+id/num_trips"
+					android:layout_width="fill_parent"
+					android:layout_height="wrap_content"
+					android:textStyle="bold"
+					android:text="@string/num_trips"/>
+			</TableRow>
+		</TableLayout>
+
 	</LinearLayout>
 </ScrollView>

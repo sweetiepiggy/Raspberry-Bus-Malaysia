@@ -18,8 +18,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name="StatActivity"></activity>
-        <activity android:name="StatResultActivity"></activity>
+        <activity android:name="RouteActivity"></activity>
+        <activity android:name="RouteResultActivity"></activity>
         <activity android:name="CompanyActivity"></activity>
         <activity android:name="CompanyResultActivity"></activity>
         <activity android:name="SubmitTripActivity"></activity>

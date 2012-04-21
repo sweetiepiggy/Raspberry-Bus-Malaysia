@@ -26,7 +26,7 @@ import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
 
-public class StatResultActivity extends Activity
+public class RouteResultActivity extends Activity
 {
 
 	/** Called when the activity is first created. */
@@ -34,7 +34,7 @@ public class StatResultActivity extends Activity
 	public void onCreate(Bundle savedInstanceState)
 	{
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.stat_result);
+		setContentView(R.layout.route_result);
 		Bundle b = getIntent().getExtras();
 		String from_city = (b == null) ? "<NULL>" : b.getString("from_city");
 		String to_city = (b == null) ? "<NULL>" : b.getString("to_city");
