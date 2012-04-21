@@ -142,18 +142,36 @@ public class SubmitTripActivity extends Activity
 	{
 		update_city_autocomplete(R.id.from_city_entry);
 		update_city_autocomplete(R.id.to_city_entry);
+		update_station_autocomplete(R.id.to_station_entry);
+		update_station_autocomplete(R.id.from_station_entry);
 	}
 
 	private void update_city_autocomplete(int id)
 	{
-		ArrayAdapter<String> cities = new ArrayAdapter<String>(this, R.layout.textview_layout);
+		ArrayAdapter<String> cities = new ArrayAdapter<String>(this, android.R.layout.simple_dropdown_item_1line);
 		Cursor c = mDbHelper.fetch_cities();
 		startManagingCursor(c);
 		if (c.moveToFirst()) do {
 			/* TODO: verify that column 0 exists */
 			cities.add(c.getString(0));
 		} while (c.moveToNext());
-		((AutoCompleteTextView) findViewById(id)).setAdapter(cities);
+		AutoCompleteTextView cities_entry = (AutoCompleteTextView) findViewById(id);
+		cities_entry.setThreshold(1);
+		cities_entry.setAdapter(cities);
+	}
+
+	private void update_station_autocomplete(int id)
+	{
+		ArrayAdapter<String> stations = new ArrayAdapter<String>(this, android.R.layout.simple_dropdown_item_1line);
+		Cursor c = mDbHelper.fetch_stations();
+		startManagingCursor(c);
+		if (c.moveToFirst()) do {
+			/* TODO: verify that column 0 exists */
+			stations.add(c.getString(0));
+		} while (c.moveToNext());
+		AutoCompleteTextView stations_entry = (AutoCompleteTextView) findViewById(id);
+		stations_entry.setThreshold(1);
+		stations_entry.setAdapter(stations);
 	}
 
 	private void update_date_label(int button_id, date_and_time dt)

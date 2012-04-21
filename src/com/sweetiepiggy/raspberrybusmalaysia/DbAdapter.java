@@ -225,7 +225,6 @@ public class DbAdapter
 				null);
 	}
 
-
 	public Cursor fetch_from_cities()
 	{
 		return mDbHelper.mDb.query(true, DATABASE_TABLE, new String[] {KEY_ROWID, KEY_FROM_CITY},
@@ -253,6 +252,15 @@ public class DbAdapter
 				KEY_FROM_CITY + " = ? AND " + KEY_CTR_NAME + " = ?",
 				new String[] {from_city, company},
 				KEY_TO_CITY, null, KEY_TO_CITY + " ASC", null);
+	}
+
+	public Cursor fetch_stations()
+	{
+		return mDbHelper.mDb.rawQuery("SELECT DISTINCT station FROM " +
+				"(SELECT " + KEY_FROM_STN + " as station from " + DATABASE_TABLE + " UNION " +
+				"SELECT " + KEY_TO_STN + " as station from " + DATABASE_TABLE + ")" +
+				" ORDER BY station ASC;",
+				null);
 	}
 
 	public Cursor fetch_avg_by_company(String from_city, String to_city)
