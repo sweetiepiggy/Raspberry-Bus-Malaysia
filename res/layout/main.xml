@@ -34,7 +34,7 @@
 			android:layout_gravity="center"
 			android:gravity="center"
 			android:drawableTop="@drawable/plan_trip"
-			android:text="Route\nStatistics" />
+			android:text="@string/route_stat" />
 		<TextView
 			android:id="@+id/company"
 			android:layout_width="fill_parent"
@@ -42,7 +42,7 @@
 			android:layout_gravity="center"
 			android:gravity="center"
 			android:drawableTop="@drawable/review"
-			android:text="Company\nStatistics" />
+			android:text="@string/company_stat" />
 		<TextView
 			android:id="@+id/submit_trip"
 			android:layout_width="fill_parent"
@@ -50,6 +50,6 @@
 			android:layout_gravity="center"
 			android:gravity="center"
 			android:drawableTop="@drawable/complain"
-			android:text="Submit\nTrip" />
+			android:text="@string/submit_trip" />
 	</TableRow>
 </TableLayout>

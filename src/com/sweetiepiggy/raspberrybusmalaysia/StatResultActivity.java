@@ -70,8 +70,8 @@ public class StatResultActivity extends Activity {
 		if (company.length() > 20) {
 			company = company.substring(0, 20);
 		} else if (company.length() == 0) {
-//			company = "Unknown";
-			return;
+			company = "<Unknown>";
+//			return;
 		}
 
 		TextView company_view = new TextView(getApplicationContext());

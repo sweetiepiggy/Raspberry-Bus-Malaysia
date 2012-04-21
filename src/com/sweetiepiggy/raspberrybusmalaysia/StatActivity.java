@@ -35,7 +35,7 @@ public class StatActivity extends Activity {
 	private String m_from_city = "";
 	private String m_to_city = "";
 
-	DbAdapter mDbHelper = new DbAdapter();
+	DbAdapter mDbHelper;
 
 	/** Called when the activity is first created. */
 	@Override

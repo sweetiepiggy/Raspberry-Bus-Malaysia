@@ -207,6 +207,11 @@
 			android:layout_height="wrap_content"
 			android:hint="@string/counter_station_hint"
 			android:background="@android:drawable/editbox_background"/>
+		<Button
+			android:id="@+id/submit_button"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:text="@string/submit" />
 
 	</LinearLayout>
 </ScrollView>

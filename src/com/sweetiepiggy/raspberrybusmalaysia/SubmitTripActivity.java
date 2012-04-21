@@ -31,7 +31,9 @@ import android.text.format.DateFormat;
 import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
+import android.widget.EditText;
 import android.widget.TimePicker;
+import android.widget.Toast;
 
 import com.sweetiepiggy.raspberrybusmalaysia.DataWrapper.date_and_time;
 
@@ -58,6 +60,7 @@ public class SubmitTripActivity extends Activity {
 //			init_entries();
 		}
 		init_date_time_buttons();
+		init_submit_button();
 	}
 
 	@Override
@@ -130,6 +133,68 @@ public class SubmitTripActivity extends Activity {
 		Button time_button = (Button)findViewById(button_id);
 		String time = DateFormat.getTimeFormat(getApplicationContext()).format(new Date(0, 0, 0, d.hour, d.minute, 0));
 		time_button.setText(time);
+	}
+
+	private void init_submit_button()
+	{
+		Button submit_button = (Button) findViewById(R.id.submit_button);
+		submit_button.setOnClickListener(new View.OnClickListener() {
+			public void onClick(View v) {
+				boolean results_complete = true;
+				String incomplete_msg = "";
+
+				if (((EditText) findViewById(R.id.from_city_entry)).getText().toString().length() == 0) {
+					results_complete = false;
+					incomplete_msg = getResources().getString(R.string.missing_from_city);
+				} else if (((EditText) findViewById(R.id.to_city_entry)).getText().toString().length() == 0) {
+					results_complete = false;
+					incomplete_msg = getResources().getString(R.string.missing_to_city);
+				}
+
+				if (results_complete) {
+					submit();
+				} else {
+					Toast.makeText(getApplicationContext(), incomplete_msg,
+							Toast.LENGTH_SHORT).show();
+				}
+			}
+		});
+	}
+
+	private void submit()
+	{
+		String sched_time = format_time(mData.sched_time);
+		String depart_time = format_time(mData.depart_time);
+		String arrival_time = format_time(mData.arrival_time);
+		String company = ((EditText) findViewById(R.id.company_entry)).getText().toString();
+		String brand = ((EditText) findViewById(R.id.brand_entry)).getText().toString();
+		String from_city = ((EditText) findViewById(R.id.from_city_entry)).getText().toString();
+		String from_station = ((EditText) findViewById(R.id.from_station_entry)).getText().toString();
+		String to_city = ((EditText) findViewById(R.id.to_city_entry)).getText().toString();
+		String to_station = ((EditText) findViewById(R.id.to_station_entry)).getText().toString();
+		String counter_num = ((EditText) findViewById(R.id.counter_num_entry)).getText().toString();
+		String counter_name = ((EditText) findViewById(R.id.counter_name_entry)).getText().toString();
+		String counter_station = ((EditText) findViewById(R.id.counter_station_entry)).getText().toString();
+
+		DbAdapter mDbHelper = new DbAdapter();
+		mDbHelper.open_readwrite(this);
+
+		long row_id = mDbHelper.create_trip(company, brand, from_city,
+				from_station, to_city, to_station, sched_time,
+				depart_time, arrival_time, counter_num,
+				counter_name);
+
+		int msg_id = (row_id == -1) ? R.string.submit_trip_fail :
+			R.string.submit_trip_success;
+
+		Toast.makeText(getApplicationContext(), getResources().getString(msg_id),
+				Toast.LENGTH_SHORT).show();
+	}
+
+	private String format_time(date_and_time d)
+	{
+		return String.format("%04d-%02d-%02d %02d:%02d", d.year,
+				d.month+1, d.day, d.hour, d.minute);
 	}
 
 	@Override

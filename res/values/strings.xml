@@ -59,4 +59,14 @@
 	<string name="counter_station">Counter Station</string>
 	<string name="counter_station_hint">Enter station that counter is located (e.g. Puduraya)</string>
 
+	<string name="route_stat">Route\nStatistics</string>
+	<string name="company_stat">Company\nStatistics</string>
+	<string name="submit_trip">Submit\nTrip</string>
+
+	<string name="missing_from_city">Enter \"Departure City\"</string>
+	<string name="missing_to_city">Enter \"Destination City\"</string>
+
+	<string name="submit_trip_fail">Oops, problem submitting trip</string>
+	<string name="submit_trip_success">Trip was submitted successfully</string>
+
 </resources>

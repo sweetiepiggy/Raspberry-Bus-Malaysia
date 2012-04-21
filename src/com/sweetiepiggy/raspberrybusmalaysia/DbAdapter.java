@@ -127,9 +127,9 @@ public class DbAdapter {
 			input.close();
 		}
 
-		public void open_database() throws SQLException {
+		public void open_database(int perm) throws SQLException {
 			String full_path = DATABASE_PATH + DATABASE_NAME;
-			mDb = SQLiteDatabase.openDatabase(full_path, null, SQLiteDatabase.OPEN_READONLY);
+			mDb = SQLiteDatabase.openDatabase(full_path, null, perm);
 		}
 
 		@Override
@@ -152,7 +152,17 @@ public class DbAdapter {
 	public DbAdapter() {
 	}
 
-	public DbAdapter open(Context ctx) throws SQLException {
+	public DbAdapter open(Context ctx) throws SQLException
+	{
+		return open(ctx, SQLiteDatabase.OPEN_READONLY);
+	}
+
+	public DbAdapter open_readwrite(Context ctx) throws SQLException
+	{
+		return open(ctx, SQLiteDatabase.OPEN_READWRITE);
+	}
+
+	private DbAdapter open(Context ctx, int perm) throws SQLException {
 		mDbHelper = new DatabaseHelper(ctx);
 
 		try {
@@ -161,7 +171,7 @@ public class DbAdapter {
 			throw new Error("Unable to create database");
 		}
 
-		mDbHelper.open_database();
+		mDbHelper.open_database(perm);
 
 		return this;
 	}
