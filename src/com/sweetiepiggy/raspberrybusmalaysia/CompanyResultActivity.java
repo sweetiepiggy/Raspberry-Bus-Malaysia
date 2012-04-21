@@ -22,6 +22,7 @@ package com.sweetiepiggy.raspberrybusmalaysia;
 import android.app.Activity;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.view.Gravity;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
@@ -91,6 +92,11 @@ public class CompanyResultActivity extends Activity
 		TextView to_view = new TextView(getApplicationContext());
 		TextView avg_view = new TextView(getApplicationContext());
 		TextView avg_delay_view = new TextView(getApplicationContext());
+
+		from_view.setGravity(Gravity.CENTER);
+		to_view.setGravity(Gravity.CENTER);
+		avg_view.setGravity(Gravity.CENTER);
+		avg_delay_view.setGravity(Gravity.CENTER);
 
 		from_view.setText(from_city);
 		to_view.setText(to_city);

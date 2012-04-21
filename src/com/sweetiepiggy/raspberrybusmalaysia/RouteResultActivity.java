@@ -26,8 +26,10 @@ import android.app.Activity;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
@@ -163,7 +165,7 @@ public class RouteResultActivity extends Activity
 //			return;
 		}
 
-		TextView company_view = new TextView(getApplicationContext());
+		Button company_view = new Button(getApplicationContext());
 		TextView avg_view = new TextView(getApplicationContext());
 		TextView delay_view = new TextView(getApplicationContext());
 		TextView count_view = new TextView(getApplicationContext());
@@ -171,6 +173,11 @@ public class RouteResultActivity extends Activity
 		avg_view.setText(avg);
 		delay_view.setText(delay);
 		count_view.setText(count);
+
+		company_view.setGravity(Gravity.CENTER);
+		avg_view.setGravity(Gravity.CENTER);
+		delay_view.setGravity(Gravity.CENTER);
+		count_view.setGravity(Gravity.CENTER);
 
 		company_view.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v)
