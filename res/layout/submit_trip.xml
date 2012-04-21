@@ -29,6 +29,59 @@
 		android:orientation="vertical" >
 
 		<TextView
+			android:id="@+id/from_city_label"
+			android:layout_width="fill_parent"
+			android:layout_height="wrap_content"
+			android:textStyle="bold"
+			android:text="@string/from_city" />
+		<AutoCompleteTextView
+			android:id="@+id/from_city_entry"
+			android:layout_width="fill_parent"
+			android:layout_height="wrap_content"
+			android:hint="@string/from_city_hint"
+			android:background="@android:drawable/editbox_background"/>
+
+		<TextView
+			android:id="@+id/from_station_label"
+			android:layout_width="fill_parent"
+			android:layout_height="wrap_content"
+			android:textStyle="bold"
+			android:text="@string/from_station" />
+		<AutoCompleteTextView
+			android:id="@+id/from_station_entry"
+			android:layout_width="fill_parent"
+			android:layout_height="wrap_content"
+			android:hint="@string/from_station_hint"
+			android:background="@android:drawable/editbox_background"/>
+
+		<TextView
+			android:id="@+id/to_city_label"
+			android:layout_width="fill_parent"
+			android:layout_height="wrap_content"
+			android:textStyle="bold"
+			android:text="@string/to_city" />
+		<AutoCompleteTextView
+			android:id="@+id/to_city_entry"
+			android:layout_width="fill_parent"
+			android:layout_height="wrap_content"
+			android:hint="@string/to_city_hint"
+			android:background="@android:drawable/editbox_background"/>
+
+		<TextView
+			android:id="@+id/to_station_label"
+			android:layout_width="fill_parent"
+			android:layout_height="wrap_content"
+			android:textStyle="bold"
+			android:text="@string/to_station" />
+		<AutoCompleteTextView
+			android:id="@+id/to_station_entry"
+			android:layout_width="fill_parent"
+			android:layout_height="wrap_content"
+			android:hint="@string/to_station_hint"
+			android:background="@android:drawable/editbox_background"/>
+
+
+		<TextView
 			android:id="@+id/sched_time_label"
 			android:layout_width="fill_parent"
 			android:layout_height="wrap_content"
@@ -97,7 +150,7 @@
 			android:layout_height="wrap_content"
 			android:textStyle="bold"
 			android:text="@string/company" />
-		<EditText
+		<AutoCompleteTextView
 			android:id="@+id/company_entry"
 			android:layout_width="fill_parent"
 			android:layout_height="wrap_content"
@@ -110,63 +163,11 @@
 			android:layout_height="wrap_content"
 			android:textStyle="bold"
 			android:text="@string/brand" />
-		<EditText
+		<AutoCompleteTextView
 			android:id="@+id/brand_entry"
 			android:layout_width="fill_parent"
 			android:layout_height="wrap_content"
 			android:hint="@string/brand_hint"
-			android:background="@android:drawable/editbox_background"/>
-
-		<TextView
-			android:id="@+id/from_city_label"
-			android:layout_width="fill_parent"
-			android:layout_height="wrap_content"
-			android:textStyle="bold"
-			android:text="@string/from_city" />
-		<EditText
-			android:id="@+id/from_city_entry"
-			android:layout_width="fill_parent"
-			android:layout_height="wrap_content"
-			android:hint="@string/from_city_hint"
-			android:background="@android:drawable/editbox_background"/>
-
-		<TextView
-			android:id="@+id/from_station_label"
-			android:layout_width="fill_parent"
-			android:layout_height="wrap_content"
-			android:textStyle="bold"
-			android:text="@string/from_station" />
-		<EditText
-			android:id="@+id/from_station_entry"
-			android:layout_width="fill_parent"
-			android:layout_height="wrap_content"
-			android:hint="@string/from_station_hint"
-			android:background="@android:drawable/editbox_background"/>
-
-		<TextView
-			android:id="@+id/to_city_label"
-			android:layout_width="fill_parent"
-			android:layout_height="wrap_content"
-			android:textStyle="bold"
-			android:text="@string/to_city" />
-		<EditText
-			android:id="@+id/to_city_entry"
-			android:layout_width="fill_parent"
-			android:layout_height="wrap_content"
-			android:hint="@string/to_city_hint"
-			android:background="@android:drawable/editbox_background"/>
-
-		<TextView
-			android:id="@+id/to_station_label"
-			android:layout_width="fill_parent"
-			android:layout_height="wrap_content"
-			android:textStyle="bold"
-			android:text="@string/to_station" />
-		<EditText
-			android:id="@+id/to_station_entry"
-			android:layout_width="fill_parent"
-			android:layout_height="wrap_content"
-			android:hint="@string/to_station_hint"
 			android:background="@android:drawable/editbox_background"/>
 
 		<TextView
@@ -175,7 +176,7 @@
 			android:layout_height="wrap_content"
 			android:textStyle="bold"
 			android:text="@string/counter_num" />
-		<EditText
+		<AutoCompleteTextView
 			android:id="@+id/counter_num_entry"
 			android:layout_width="fill_parent"
 			android:layout_height="wrap_content"
@@ -188,7 +189,7 @@
 			android:layout_height="wrap_content"
 			android:textStyle="bold"
 			android:text="@string/counter_name" />
-		<EditText
+		<AutoCompleteTextView
 			android:id="@+id/counter_name_entry"
 			android:layout_width="fill_parent"
 			android:layout_height="wrap_content"
@@ -201,7 +202,7 @@
 			android:layout_height="wrap_content"
 			android:textStyle="bold"
 			android:text="@string/counter_station" />
-		<EditText
+		<AutoCompleteTextView
 			android:id="@+id/counter_station_entry"
 			android:layout_width="fill_parent"
 			android:layout_height="wrap_content"

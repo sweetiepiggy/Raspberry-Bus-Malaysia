@@ -36,7 +36,7 @@ public class RouteActivity extends Activity
 	private String m_from_city = "";
 	private String m_to_city = "";
 
-	DbAdapter mDbHelper;
+	private DbAdapter mDbHelper;
 
 	/** Called when the activity is first created. */
 	@Override

@@ -216,6 +216,16 @@ public class DbAdapter
 		return mDbHelper.mDb.insert(DATABASE_TABLE, null, initial_values);
 	}
 
+	public Cursor fetch_cities()
+	{
+		return mDbHelper.mDb.rawQuery("SELECT DISTINCT city FROM " +
+				"(SELECT " + KEY_FROM_CITY + " as city from " + DATABASE_TABLE + " UNION " +
+				"SELECT " + KEY_TO_CITY + " as city from " + DATABASE_TABLE + ")" +
+				" ORDER BY city ASC;",
+				null);
+	}
+
+
 	public Cursor fetch_from_cities()
 	{
 		return mDbHelper.mDb.query(true, DATABASE_TABLE, new String[] {KEY_ROWID, KEY_FROM_CITY},
@@ -235,6 +245,7 @@ public class DbAdapter
 				KEY_FROM_CITY + " = ?", new String[] {from_city},
 				KEY_TO_CITY, null, KEY_TO_CITY + " ASC", null);
 	}
+
 
 	public Cursor fetch_to_cities(String from_city, String company)
 	{

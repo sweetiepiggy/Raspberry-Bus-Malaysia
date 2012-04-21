@@ -26,12 +26,14 @@ import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.app.TimePickerDialog;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.text.format.DateFormat;
 import android.view.View;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.DatePicker;
-import android.widget.EditText;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
@@ -41,6 +43,7 @@ public class SubmitTripActivity extends Activity
 {
 
 	private DataWrapper mData;
+	private DbAdapter mDbHelper;
 
 	static final int SCHED_DATE_DIALOG_ID = 0;
 	static final int SCHED_TIME_DIALOG_ID = 1;
@@ -54,11 +57,15 @@ public class SubmitTripActivity extends Activity
 	{
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.submit_trip);
+
+		mDbHelper = new DbAdapter();
+		mDbHelper.open(this);
+
 		mData = (DataWrapper) getLastNonConfigurationInstance();
 		if (mData == null) {
 			mData = new DataWrapper();
 			init_vars(mData);
-//			init_entries();
+			init_entries();
 		}
 		init_date_time_buttons();
 		init_submit_button();
@@ -131,6 +138,24 @@ public class SubmitTripActivity extends Activity
 		data.arrival_time.minute = c.get(Calendar.MINUTE);
 	}
 
+	private void init_entries()
+	{
+		update_city_autocomplete(R.id.from_city_entry);
+		update_city_autocomplete(R.id.to_city_entry);
+	}
+
+	private void update_city_autocomplete(int id)
+	{
+		ArrayAdapter<String> cities = new ArrayAdapter<String>(this, R.layout.textview_layout);
+		Cursor c = mDbHelper.fetch_cities();
+		startManagingCursor(c);
+		if (c.moveToFirst()) do {
+			/* TODO: verify that column 0 exists */
+			cities.add(c.getString(0));
+		} while (c.moveToNext());
+		((AutoCompleteTextView) findViewById(id)).setAdapter(cities);
+	}
+
 	private void update_date_label(int button_id, date_and_time dt)
 	{
 		Button date_button = (Button)findViewById(button_id);
@@ -157,10 +182,10 @@ public class SubmitTripActivity extends Activity
 				boolean results_complete = true;
 				String incomplete_msg = "";
 
-				if (((EditText) findViewById(R.id.from_city_entry)).getText().toString().length() == 0) {
+				if (((AutoCompleteTextView) findViewById(R.id.from_city_entry)).getText().toString().length() == 0) {
 					results_complete = false;
 					incomplete_msg = getResources().getString(R.string.missing_from_city);
-				} else if (((EditText) findViewById(R.id.to_city_entry)).getText().toString().length() == 0) {
+				} else if (((AutoCompleteTextView) findViewById(R.id.to_city_entry)).getText().toString().length() == 0) {
 					results_complete = false;
 					incomplete_msg = getResources().getString(R.string.missing_to_city);
 				}
@@ -180,25 +205,25 @@ public class SubmitTripActivity extends Activity
 		String sched_time = format_time(mData.sched_time);
 		String depart_time = format_time(mData.depart_time);
 		String arrival_time = format_time(mData.arrival_time);
-		String company = ((EditText) findViewById(R.id.company_entry)).getText().toString();
-		String brand = ((EditText) findViewById(R.id.brand_entry)).getText().toString();
-		String from_city = ((EditText) findViewById(R.id.from_city_entry)).getText().toString();
-		String from_station = ((EditText) findViewById(R.id.from_station_entry)).getText().toString();
-		String to_city = ((EditText) findViewById(R.id.to_city_entry)).getText().toString();
-		String to_station = ((EditText) findViewById(R.id.to_station_entry)).getText().toString();
-		String counter_num = ((EditText) findViewById(R.id.counter_num_entry)).getText().toString();
-		String counter_name = ((EditText) findViewById(R.id.counter_name_entry)).getText().toString();
-		String counter_station = ((EditText) findViewById(R.id.counter_station_entry)).getText().toString();
+		String company = ((AutoCompleteTextView) findViewById(R.id.company_entry)).getText().toString();
+		String brand = ((AutoCompleteTextView) findViewById(R.id.brand_entry)).getText().toString();
+		String from_city = ((AutoCompleteTextView) findViewById(R.id.from_city_entry)).getText().toString();
+		String from_station = ((AutoCompleteTextView) findViewById(R.id.from_station_entry)).getText().toString();
+		String to_city = ((AutoCompleteTextView) findViewById(R.id.to_city_entry)).getText().toString();
+		String to_station = ((AutoCompleteTextView) findViewById(R.id.to_station_entry)).getText().toString();
+		String counter_num = ((AutoCompleteTextView) findViewById(R.id.counter_num_entry)).getText().toString();
+		String counter_name = ((AutoCompleteTextView) findViewById(R.id.counter_name_entry)).getText().toString();
+		String counter_station = ((AutoCompleteTextView) findViewById(R.id.counter_station_entry)).getText().toString();
 
-		DbAdapter mDbHelper = new DbAdapter();
-		mDbHelper.open_readwrite(this);
+		DbAdapter dbHelper = new DbAdapter();
+		dbHelper.open_readwrite(this);
 
-		long row_id = mDbHelper.create_trip(company, brand, from_city,
+		long row_id = dbHelper.create_trip(company, brand, from_city,
 				from_station, to_city, to_station, sched_time,
 				depart_time, arrival_time, counter_num,
 				counter_name);
 
-		mDbHelper.close();
+		dbHelper.close();
 
 		int msg_id = (row_id == -1) ? R.string.submit_trip_fail :
 			R.string.submit_trip_success;
