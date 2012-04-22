@@ -29,6 +29,7 @@ import android.os.Bundle;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.TableLayout;
 import android.widget.TableRow;
@@ -204,6 +205,8 @@ public class RouteResultActivity extends Activity
 
 		TableLayout results_layout = (TableLayout) findViewById(R.id.results_layout);
 		results_layout.addView(tr);
+		tr.startAnimation(AnimationUtils.loadAnimation(getApplicationContext(), android.R.anim.fade_in));
+//		tr.setVisibility(View.INVISIBLE);
 	}
 
 	private void clear_rows()
@@ -211,7 +214,10 @@ public class RouteResultActivity extends Activity
 		ViewGroup results_layout = (ViewGroup) findViewById(R.id.results_layout);
 		Iterator itr = m_rows.iterator();
 		while (itr.hasNext()) {
-			results_layout.removeView((TableRow)itr.next());
+			TableRow row = (TableRow) itr.next();
+//			row.startAnimation(AnimationUtils.loadAnimation(getApplicationContext(), android.R.anim.fade_out));
+//			row.setVisibility(View.INVISIBLE);
+			results_layout.removeView(row);
 		}
 		m_rows.clear();
 	}

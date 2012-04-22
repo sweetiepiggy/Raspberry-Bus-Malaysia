@@ -180,7 +180,7 @@ public class DbAdapter
 		try {
 			mDbHelper.create_database();
 		} catch (IOException e) {
-			throw new Error("Unable to create database");
+			throw new Error(e);
 		}
 
 		mDbHelper.open_database(perm);

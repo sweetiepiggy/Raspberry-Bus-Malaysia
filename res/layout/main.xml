@@ -33,6 +33,7 @@
 			android:layout_height="wrap_content"
 			android:layout_gravity="center"
 			android:gravity="center"
+			android:paddingLeft="5dp"
 			android:drawableTop="@drawable/route"
 			android:text="@string/route_stat" />
 		<TextView
@@ -49,6 +50,7 @@
 			android:layout_height="wrap_content"
 			android:layout_gravity="center"
 			android:gravity="center"
+			android:paddingRight="5dp"
 			android:drawableTop="@android:drawable/ic_menu_send"
 			android:text="@string/submit_trip" />
 	</TableRow>
