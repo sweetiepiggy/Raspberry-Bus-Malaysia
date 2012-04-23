@@ -19,34 +19,31 @@
 
 package com.sweetiepiggy.raspberrybusmalaysia;
 
-import android.app.Activity;
+import android.app.ListActivity;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemSelectedListener;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
+import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
-import android.widget.Spinner;
-import android.widget.Toast;
+import android.widget.TextView;
 
-public class CompanyActivity extends Activity
+public class CompanyActivity extends ListActivity
 {
-	private String m_company = "";
-
 	@Override
 	public void onCreate(Bundle savedInstanceState)
 	{
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.company);
 
 		DbAdapter dbHelper = new DbAdapter();
 		dbHelper.open(this);
 		fill_data(dbHelper);
 //		dbHelper.close();
 
-		init_submit_button();
+		init_click();
 	}
 
 	private void fill_data(DbAdapter dbHelper)
@@ -54,43 +51,26 @@ public class CompanyActivity extends Activity
 		Cursor c = dbHelper.fetch_companies();
 		startManagingCursor(c);
 		SimpleCursorAdapter companies = new SimpleCursorAdapter(this,
-				android.R.layout.simple_spinner_item,
+				android.R.layout.simple_list_item_1,
 				c, new String[] {DbAdapter.KEY_CTR_NAME},
 				new int[] {android.R.id.text1});
-		Spinner company_spinner = (Spinner) findViewById(R.id.company_spinner);
-		company_spinner.setAdapter(companies);
-
-		company_spinner.setOnItemSelectedListener(new OnItemSelectedListener() {
-			@Override
-			public void onItemSelected(AdapterView<?> parent,
-					View selected_item, int pos,
-					long id) {
-				m_company = ((Cursor)parent.getItemAtPosition(pos)).getString(1);
-			}
-
-			@Override
-			public void onNothingSelected(AdapterView<?> parentView) {
-			}
-
-		});
+		setListAdapter(companies);
 	}
 
-	private void init_submit_button()
+	private void init_click()
 	{
+		ListView lv = getListView();
 		Button submit_button = (Button) findViewById(R.id.submit_button);
-		submit_button.setOnClickListener(new View.OnClickListener() {
-			public void onClick(View v) {
-				if (m_company.length() == 0) {
-					Toast.makeText(getApplicationContext(),
-						"Select Company", Toast.LENGTH_SHORT).show();
-				} else {
-					Intent intent = new Intent(getApplicationContext(),
-						CompanyResultActivity.class);
-					Bundle b = new Bundle();
-					b.putString("company", m_company);
-					intent.putExtras(b);
-					startActivity(intent);
-				}
+		lv.setOnItemClickListener(new OnItemClickListener() {
+			public void onItemClick(AdapterView<?> parent, View v,
+					int pos, long id) {
+				String company = ((TextView) v).getText().toString();
+				Intent intent = new Intent(getApplicationContext(),
+					CompanyResultActivity.class);
+				Bundle b = new Bundle();
+				b.putString("company", company);
+				intent.putExtras(b);
+				startActivity(intent);
 			}
 		});
 	}
