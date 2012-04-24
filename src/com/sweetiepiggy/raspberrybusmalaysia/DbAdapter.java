@@ -324,10 +324,11 @@ public class DbAdapter
 				null);
 	}
 
-	public Cursor fetch_companies()
+	public Cursor fetch_companies(String company_query)
 	{
 		return mDbHelper.mDb.query(true, DATABASE_TABLE, new String[] {KEY_ROWID, KEY_CTR_NAME},
-				"length(" + KEY_CTR_NAME + ") != 0", null, KEY_CTR_NAME, null, KEY_CTR_NAME + " ASC", null);
+				"length(" + KEY_CTR_NAME + ") != 0 AND " + KEY_CTR_NAME + " LIKE ?", new String[] {company_query},
+				KEY_CTR_NAME, null, KEY_CTR_NAME + " ASC", null);
 	}
 
 	public Cursor fetch_avg(String from_city, String to_city, String company)

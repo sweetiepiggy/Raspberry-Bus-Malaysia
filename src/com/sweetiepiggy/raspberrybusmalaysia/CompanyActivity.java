@@ -20,6 +20,7 @@
 package com.sweetiepiggy.raspberrybusmalaysia;
 
 import android.app.ListActivity;
+import android.app.SearchManager;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
@@ -38,17 +39,24 @@ public class CompanyActivity extends ListActivity
 	{
 		super.onCreate(savedInstanceState);
 
+		Intent intent = getIntent();
+		String query = "";
+		if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
+			query = intent.getStringExtra(SearchManager.QUERY);
+		}
+
 		DbAdapter dbHelper = new DbAdapter();
 		dbHelper.open(this);
-		fill_data(dbHelper);
+		fill_data(dbHelper, query);
+
 //		dbHelper.close();
 
 		init_click();
 	}
 
-	private void fill_data(DbAdapter dbHelper)
+	private void fill_data(DbAdapter dbHelper, String company_query)
 	{
-		Cursor c = dbHelper.fetch_companies();
+		Cursor c = dbHelper.fetch_companies('%' + company_query + '%');
 		startManagingCursor(c);
 		SimpleCursorAdapter companies = new SimpleCursorAdapter(this,
 				android.R.layout.simple_list_item_1,

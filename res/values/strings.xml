@@ -69,4 +69,6 @@
 	<string name="submit_trip_fail">Oops, problem submitting trip</string>
 	<string name="submit_trip_success">Trip was submitted successfully</string>
 
+	<string name="search_hint">Search companies</string>
+
 </resources>

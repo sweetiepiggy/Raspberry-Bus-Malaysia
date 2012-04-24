@@ -20,7 +20,13 @@
 		</activity>
 		<activity android:name="RouteActivity"></activity>
 		<activity android:name="RouteResultActivity"></activity>
-		<activity android:name="CompanyActivity"></activity>
+		<activity android:name="CompanyActivity">
+			<intent-filter>
+				<action android:name="android.intent.action.SEARCH" />
+			</intent-filter>
+			<meta-data android:name="android.app.searchable"
+				android:resource="@xml/searchable"/>
+		</activity>
 		<activity android:name="CompanyResultActivity"></activity>
 		<activity android:name="SubmitTripActivity"></activity>
 	</application>
