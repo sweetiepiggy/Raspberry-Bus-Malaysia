@@ -38,6 +38,7 @@ public class CompanyResultActivity extends Activity
 	{
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.company_result);
+
 		Bundle b = getIntent().getExtras();
 		String company = (b == null) ? "<NULL>" : b.getString("company");
 		String company_display = company.length() == 0 ? UNKNOWN : company;
@@ -49,25 +50,25 @@ public class CompanyResultActivity extends Activity
 		Cursor c_comp = dbHelper.fetch_avg_delay(company);
 		startManagingCursor(c_comp);
 		if (c_comp.moveToFirst()) do {
-			String avg_delay = format_time_min(c_comp.getInt(0));
+			String avg_delay = format_time_min(c_comp.getInt(c_comp.getColumnIndex(DbAdapter.AVG_DELAY)));
 			((TextView) findViewById(R.id.total_avg_delay)).setText(avg_delay);
 		} while (c_comp.moveToNext());
 
 		Cursor c_from = dbHelper.fetch_from_cities(company);
 		startManagingCursor(c_from);
 		if (c_from.moveToFirst()) do {
-			String from_city = c_from.getString(1);
+			String from_city = c_from.getString(c_from.getColumnIndex(DbAdapter.KEY_FROM_CITY));
 
 			Cursor c_to = dbHelper.fetch_to_cities(from_city, company);
 			startManagingCursor(c_to);
 			if (c_to.moveToFirst()) do {
-				String to_city = c_to.getString(1);
+				String to_city = c_to.getString(c_to.getColumnIndex(DbAdapter.KEY_TO_CITY));
 
 				Cursor c_avg = dbHelper.fetch_avg(from_city, to_city, company);
 				startManagingCursor(c_avg);
 				String avg = "<NULL>";
 				if (c_avg.moveToFirst()) {
-					avg = format_time(c_avg.getInt(0));
+					avg = format_time(c_avg.getInt(c_avg.getColumnIndex(DbAdapter.AVG_TIME)));
 				}
 
 				Cursor c_avg_delay = dbHelper.fetch_avg_delay(from_city, to_city, company);
@@ -75,7 +76,7 @@ public class CompanyResultActivity extends Activity
 
 				String avg_delay = "<NULL>";
 				if (c_avg_delay.moveToFirst()) {
-					avg_delay = format_time_min(c_avg_delay.getInt(0));
+					avg_delay = format_time_min(c_avg_delay.getInt(c_avg_delay.getColumnIndex(DbAdapter.AVG_DELAY)));
 				}
 
 				print_row(from_city, to_city, avg, avg_delay);

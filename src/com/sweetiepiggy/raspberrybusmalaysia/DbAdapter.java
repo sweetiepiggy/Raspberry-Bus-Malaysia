@@ -48,6 +48,10 @@ public class DbAdapter
 	public static final String KEY_CTR = "counter";
 	public static final String KEY_CTR_NAME = "counter_name";
 
+	public static final String AVG_TIME = "avg(strftime('%s', " + KEY_ARRIVAL + ") - strftime('%s', " + KEY_SCHED_DEP + "))";
+	public static final String AVG_DELAY = "avg(strftime('%s', " + KEY_ACTUAL_DEP + ") - strftime('%s', " + KEY_SCHED_DEP + "))";
+	public static final String NUM_TRIPS = "count(" + KEY_CTR_NAME + ")";
+
 //	private static final String TAG = "DbAdapter";
 	private DatabaseHelper mDbHelper;
 
@@ -265,63 +269,38 @@ public class DbAdapter
 
 	public Cursor fetch_avg_by_company(String from_city, String to_city)
 	{
-		String avg_time = "avg(strftime('%s', " + KEY_ARRIVAL + ") - strftime('%s', " + KEY_SCHED_DEP + "))";
-		String avg_delay = "avg(strftime('%s', " + KEY_ACTUAL_DEP + ") - strftime('%s', " + KEY_SCHED_DEP + "))";
-		return mDbHelper.mDb.query(true, DATABASE_TABLE, new String[] {KEY_CTR_NAME,
-					avg_time,
-					avg_delay,
-					"count(" + KEY_CTR_NAME + ")"},
+		return mDbHelper.mDb.query(true, DATABASE_TABLE,
+				new String[] {KEY_CTR_NAME, AVG_TIME, AVG_DELAY, NUM_TRIPS},
 				KEY_FROM_CITY + " = ? AND " + KEY_TO_CITY + " = ? AND " + KEY_ARRIVAL + "!= 'Cancelled'",
 				new String[] {from_city, to_city},
-				KEY_CTR_NAME, null,
-					avg_time + " ASC",
-				null);
+				KEY_CTR_NAME, null, AVG_TIME + " ASC", null);
 	}
 
 	public Cursor fetch_avg_by_company_sort_delay(String from_city, String to_city)
 	{
-		String avg_time = "avg(strftime('%s', " + KEY_ARRIVAL + ") - strftime('%s', " + KEY_SCHED_DEP + "))";
-		String avg_delay = "avg(strftime('%s', " + KEY_ACTUAL_DEP + ") - strftime('%s', " + KEY_SCHED_DEP + "))";
-		return mDbHelper.mDb.query(true, DATABASE_TABLE, new String[] {KEY_CTR_NAME,
-					avg_time,
-					avg_delay,
-					"count(" + KEY_CTR_NAME + ")"},
+		return mDbHelper.mDb.query(true, DATABASE_TABLE,
+				new String[] {KEY_CTR_NAME, AVG_TIME, AVG_DELAY, NUM_TRIPS},
 				KEY_FROM_CITY + " = ? AND " + KEY_TO_CITY + " = ? AND " + KEY_ARRIVAL + "!= 'Cancelled'",
 				new String[] {from_city, to_city},
-				KEY_CTR_NAME, null,
-					avg_delay + " ASC",
-				null);
+				KEY_CTR_NAME, null, AVG_DELAY + " ASC", null);
 	}
 
 	public Cursor fetch_avg_by_company_sort_company(String from_city, String to_city)
 	{
-		String avg_time = "avg(strftime('%s', " + KEY_ARRIVAL + ") - strftime('%s', " + KEY_SCHED_DEP + "))";
-		String avg_delay = "avg(strftime('%s', " + KEY_ACTUAL_DEP + ") - strftime('%s', " + KEY_SCHED_DEP + "))";
-		return mDbHelper.mDb.query(true, DATABASE_TABLE, new String[] {KEY_CTR_NAME,
-					avg_time,
-					avg_delay,
-					"count(" + KEY_CTR_NAME + ")"},
+		return mDbHelper.mDb.query(true, DATABASE_TABLE,
+				new String[] {KEY_CTR_NAME, AVG_TIME, AVG_DELAY, NUM_TRIPS},
 				KEY_FROM_CITY + " = ? AND " + KEY_TO_CITY + " = ? AND " + KEY_ARRIVAL + "!= 'Cancelled'",
 				new String[] {from_city, to_city},
-				KEY_CTR_NAME, null,
-					KEY_CTR_NAME + " ASC",
-				null);
+				KEY_CTR_NAME, null, KEY_CTR_NAME + " ASC", null);
 	}
 
 	public Cursor fetch_avg_by_company_sort_trips(String from_city, String to_city)
 	{
-		String avg_time = "avg(strftime('%s', " + KEY_ARRIVAL + ") - strftime('%s', " + KEY_SCHED_DEP + "))";
-		String avg_delay = "avg(strftime('%s', " + KEY_ACTUAL_DEP + ") - strftime('%s', " + KEY_SCHED_DEP + "))";
-		String num_trips = "count(" + KEY_CTR_NAME + ")";
-		return mDbHelper.mDb.query(true, DATABASE_TABLE, new String[] {KEY_CTR_NAME,
-					avg_time,
-					avg_delay,
-					num_trips},
+		return mDbHelper.mDb.query(true, DATABASE_TABLE,
+				new String[] {KEY_CTR_NAME, AVG_TIME, AVG_DELAY, NUM_TRIPS},
 				KEY_FROM_CITY + " = ? AND " + KEY_TO_CITY + " = ? AND " + KEY_ARRIVAL + "!= 'Cancelled'",
 				new String[] {from_city, to_city},
-				KEY_CTR_NAME, null,
-					num_trips + " DESC",
-				null);
+				KEY_CTR_NAME, null, NUM_TRIPS + " DESC", null);
 	}
 
 	public Cursor fetch_companies(String company_query)
@@ -343,8 +322,7 @@ public class DbAdapter
 
 	public Cursor fetch_avg_delay(String from_city, String to_city, String company)
 	{
-		String avg_delay = "avg(strftime('%s', " + KEY_ACTUAL_DEP + ") - strftime('%s', " + KEY_SCHED_DEP + "))";
-		return mDbHelper.mDb.query(true, DATABASE_TABLE, new String[] {avg_delay},
+		return mDbHelper.mDb.query(true, DATABASE_TABLE, new String[] {AVG_DELAY},
 				KEY_CTR_NAME + " = ? AND " + KEY_FROM_CITY + " = ? AND " + KEY_TO_CITY + " = ?",
 				new String[] {company, from_city, to_city},
 				null, null, null, null);
@@ -352,8 +330,7 @@ public class DbAdapter
 
 	public Cursor fetch_avg_delay(String company)
 	{
-		String avg_delay = "avg(strftime('%s', " + KEY_ACTUAL_DEP + ") - strftime('%s', " + KEY_SCHED_DEP + "))";
-		return mDbHelper.mDb.query(true, DATABASE_TABLE, new String[] {avg_delay},
+		return mDbHelper.mDb.query(true, DATABASE_TABLE, new String[] {AVG_DELAY},
 				KEY_CTR_NAME + " = ?", new String[] {company}, null, null, null, null);
 	}
 

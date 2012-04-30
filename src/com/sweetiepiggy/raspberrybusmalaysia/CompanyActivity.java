@@ -68,7 +68,6 @@ public class CompanyActivity extends ListActivity
 	private void init_click()
 	{
 		ListView lv = getListView();
-		Button submit_button = (Button) findViewById(R.id.submit_button);
 		lv.setOnItemClickListener(new OnItemClickListener() {
 			public void onItemClick(AdapterView<?> parent, View v,
 					int pos, long id) {

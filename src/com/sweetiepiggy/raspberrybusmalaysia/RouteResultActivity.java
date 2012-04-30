@@ -135,10 +135,10 @@ public class RouteResultActivity extends Activity
 	{
 		clear_rows();
 		if (c.moveToFirst()) do {
-			String company = c.getString(0);
-			String avg = format_time(c.getInt(1));
-			String delay = format_time_min(c.getInt(2));
-			String count = c.getString(3);
+			String company = c.getString(c.getColumnIndex(DbAdapter.KEY_CTR_NAME));
+			String avg = format_time(c.getInt(c.getColumnIndex(DbAdapter.AVG_TIME)));
+			String delay = format_time_min(c.getInt(c.getColumnIndex(DbAdapter.AVG_DELAY)));
+			String count = c.getString(c.getColumnIndex(DbAdapter.NUM_TRIPS));
 			print_row(company, avg, delay, count);
 		} while (c.moveToNext());
 	}
