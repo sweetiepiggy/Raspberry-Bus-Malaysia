@@ -169,7 +169,7 @@ public class RouteResultActivity extends Activity
 		Button company_view = new Button(getApplicationContext());
 		TextView avg_view = new TextView(getApplicationContext());
 		TextView delay_view = new TextView(getApplicationContext());
-		TextView count_view = new TextView(getApplicationContext());
+		Button count_view = new Button(getApplicationContext());
 		company_view.setText(company);
 		avg_view.setText(avg);
 		delay_view.setText(delay);
@@ -180,21 +180,8 @@ public class RouteResultActivity extends Activity
 		delay_view.setGravity(Gravity.CENTER);
 		count_view.setGravity(Gravity.CENTER);
 
-		company_view.setOnClickListener(new View.OnClickListener() {
-			public void onClick(View v)
-			{
-				Intent intent = new Intent(getApplicationContext(),
-					CompanyResultActivity.class);
-				Bundle b = new Bundle();
-				String company = ((TextView)v).getText().toString();
-				if (company.equals(UNKNOWN)) {
-					company = "";
-				}
-				b.putString("company", company);
-				intent.putExtras(b);
-				startActivity(intent);
-			}
-		});
+		init_company_button(company_view, company);
+		init_count_button(count_view, company);
 
 		TableRow tr = new TableRow(getApplicationContext());
 		m_rows.add(tr);
@@ -206,7 +193,42 @@ public class RouteResultActivity extends Activity
 		TableLayout results_layout = (TableLayout) findViewById(R.id.results_layout);
 		results_layout.addView(tr);
 		tr.startAnimation(AnimationUtils.loadAnimation(getApplicationContext(), android.R.anim.fade_in));
-//		tr.setVisibility(View.INVISIBLE);
+	}
+
+	private void init_company_button(Button b, final String company)
+	{
+		b.setOnClickListener(new View.OnClickListener() {
+			public void onClick(View v)
+			{
+				Intent intent = new Intent(getApplicationContext(),
+					CompanyResultActivity.class);
+				Bundle b = new Bundle();
+				String company = ((TextView)v).getText().toString();
+				b.putString("company", company.equals(UNKNOWN) ?
+					"" : company);
+				intent.putExtras(b);
+				startActivity(intent);
+			}
+		});
+
+	}
+
+	private void init_count_button(Button b, final String company)
+	{
+		b.setOnClickListener(new View.OnClickListener() {
+			public void onClick(View v)
+			{
+				Intent intent = new Intent(getApplicationContext(),
+					TripsActivity.class);
+				Bundle b = new Bundle();
+				b.putString("company", company.equals(UNKNOWN) ?
+					"" : company);
+				b.putString("from_city", m_from_city);
+				b.putString("to_city", m_to_city);
+				intent.putExtras(b);
+				startActivity(intent);
+			}
+		});
 	}
 
 	private void clear_rows()

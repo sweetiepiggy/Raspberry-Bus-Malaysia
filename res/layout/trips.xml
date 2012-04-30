@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!--
+    Copyright (C) 2012 Sweetie Piggy Apps <sweetiepiggyapps@gmail.com>
+
+    This file is part of Raspberry Bus Malaysia.
+
+    Raspberry Bus Malaysia is free software; you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation; either version 3 of the License, or
+    (at your option) any later version.
+
+    Raspberry Bus Malaysia is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with Raspberry Bus Malaysia ; if not, write to the Free Software
+    Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA
+-->
+
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+	android:layout_width="fill_parent"
+	android:layout_height="fill_parent" >
+	<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+		android:layout_width="fill_parent"
+		android:layout_height="wrap_content"
+		android:orientation="vertical" >
+	
+		<TextView
+			android:id="@+id/company"
+			android:layout_width="fill_parent"
+			android:layout_height="wrap_content"
+			android:textStyle="bold" />
+		<TextView
+			android:id="@+id/route"
+			android:layout_width="fill_parent"
+			android:layout_height="wrap_content" />
+		
+		<TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+		android:id="@+id/results_layout"
+		android:layout_width="fill_parent"
+		android:layout_height="fill_parent"
+		android:stretchColumns="1" >
+			<TableRow>
+				<!-- <TextView
+					android:id="@+id/from"
+					android:layout_width="fill_parent"
+					android:layout_height="wrap_content"
+					android:textStyle="bold"
+					android:text="@string/from"/>
+				<TextView
+					android:id="@+id/to"
+					android:layout_width="fill_parent"
+					android:layout_height="wrap_content"
+					android:textStyle="bold"
+					android:text="@string/to"/>
+				<TextView
+					android:id="@+id/avg_time"
+					android:layout_width="fill_parent"
+					android:layout_height="wrap_content"
+					android:textStyle="bold"
+					android:text="@string/avg_time"/>
+				<TextView
+					android:id="@+id/avg_delay"
+					android:layout_width="fill_parent"
+					android:layout_height="wrap_content"
+					android:textStyle="bold"
+					android:text="@string/avg_delay"/>
+				 <TextView
+					android:id="@+id/num_trips"
+					android:layout_width="fill_parent"
+					android:layout_height="wrap_content"
+					android:textStyle="bold"
+					android:text="@string/num_trips"/>-->
+			</TableRow>
+		</TableLayout>
+	
+	</LinearLayout>
+</ScrollView>
