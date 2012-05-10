@@ -20,6 +20,7 @@
 package com.sweetiepiggy.raspberrybusmalaysia;
 
 import android.app.Activity;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.widget.TextView;
 
@@ -41,6 +42,29 @@ public class TripsActivity extends Activity {
 
 		((TextView) findViewById(R.id.company)).setText(company_display);
 		((TextView) findViewById(R.id.route)).setText(from_city + " to " + to_city);
+
+		DbAdapter dbHelper = new DbAdapter();
+		dbHelper.open(this);
+
+		Cursor c_comp = dbHelper.fetch_avg_delay(company);
+		startManagingCursor(c_comp);
+		if (c_comp.moveToFirst()) do {
+			String avg_delay = format_time_min(c_comp.getInt(c_comp.getColumnIndex(DbAdapter.AVG_DELAY)));
+			((TextView) findViewById(R.id.total_avg_delay)).setText(avg_delay);
+		} while (c_comp.moveToNext());
 	}
 
+	/* TODO: move format_time() and format_time_min() to their own class */
+	private String format_time_min(int time)
+	{
+		String negative = "";
+		if (time < 0) {
+			negative = "-";
+			time *= -1;
+		}
+
+		int min = time / 60;
+		return String.format("%s%dmin", negative, min);
+	}
 }
+

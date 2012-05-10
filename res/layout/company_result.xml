@@ -35,9 +35,9 @@
 			android:textStyle="bold" />
 		
 		<TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
-		android:layout_width="fill_parent"
-		android:layout_height="fill_parent"
-		android:stretchColumns="1" >
+			android:layout_width="fill_parent"
+			android:layout_height="fill_parent"
+			android:stretchColumns="1" >
 			<TableRow>
 				<TextView
 					android:id="@+id/avg_delay_label"

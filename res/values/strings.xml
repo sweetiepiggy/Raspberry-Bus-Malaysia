@@ -71,4 +71,6 @@
 
 	<string name="search_hint">Search companies</string>
 
+	<string name="delay">Delay</string>
+	<string name="trip_time">Trip Time</string>
 </resources>
