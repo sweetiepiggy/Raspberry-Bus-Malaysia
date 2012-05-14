@@ -34,6 +34,8 @@ import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.DatePicker;
+import android.widget.EditText;
+import android.widget.RatingBar;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
@@ -230,8 +232,9 @@ public class SubmitTripActivity extends Activity
 		String to_city = ((AutoCompleteTextView) findViewById(R.id.to_city_entry)).getText().toString();
 		String to_station = ((AutoCompleteTextView) findViewById(R.id.to_station_entry)).getText().toString();
 		String counter_num = ((AutoCompleteTextView) findViewById(R.id.counter_num_entry)).getText().toString();
-		String counter_name = ((AutoCompleteTextView) findViewById(R.id.counter_name_entry)).getText().toString();
-		String counter_station = ((AutoCompleteTextView) findViewById(R.id.counter_station_entry)).getText().toString();
+		int safety = (int) ((RatingBar) findViewById(R.id.safety_bar)).getRating();
+		int comfort = (int) ((RatingBar) findViewById(R.id.comfort_bar)).getRating();
+		String comment = ((EditText) findViewById(R.id.comment_entry)).getText().toString();
 
 		DbAdapter dbHelper = new DbAdapter();
 		dbHelper.open_readwrite(this);
@@ -239,7 +242,7 @@ public class SubmitTripActivity extends Activity
 		long row_id = dbHelper.create_trip(company, brand, from_city,
 				from_station, to_city, to_station, sched_time,
 				depart_time, arrival_time, counter_num,
-				counter_name);
+				Integer.toString(safety), Integer.toString(comfort), comment);
 
 		dbHelper.close();
 

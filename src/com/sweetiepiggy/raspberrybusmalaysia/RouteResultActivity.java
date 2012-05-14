@@ -38,8 +38,6 @@ import android.widget.TextView;
 public class RouteResultActivity extends Activity
 {
 	private DbAdapter mDbHelper;
-	private String m_from_city;
-	private String m_to_city;
 	private ArrayList<TableRow> m_rows;
 
 	/* TODO: put this in Constants.java */
@@ -52,28 +50,28 @@ public class RouteResultActivity extends Activity
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.route_result);
 		Bundle b = getIntent().getExtras();
-		m_from_city = (b == null) ? "<NULL>" : b.getString("from_city");
-		m_to_city = (b == null) ? "<NULL>" : b.getString("to_city");
-		((TextView) findViewById(R.id.title)).setText(m_from_city + " to " + m_to_city);
+		String from_city = (b == null) ? "<NULL>" : b.getString("from_city");
+		String to_city = (b == null) ? "<NULL>" : b.getString("to_city");
+		((TextView) findViewById(R.id.title)).setText(from_city + " to " + to_city);
 
 		m_rows = new ArrayList<TableRow>();
 
-		init_labels();
+		init_labels(from_city, to_city);
 
 		mDbHelper = new DbAdapter();
 		mDbHelper.open(this);
 
-		sort_by_avg_time();
+		sort_by_avg_time(from_city, to_city);
 
 	}
 
-	private void init_labels()
+	private void init_labels(final String from_city, final String to_city)
 	{
 		TextView company = (TextView) findViewById(R.id.company);
 		company.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v)
 			{
-				sort_by_company();
+				sort_by_company(from_city, to_city);
 			}
 		});
 
@@ -81,7 +79,7 @@ public class RouteResultActivity extends Activity
 		avg_time.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v)
 			{
-				sort_by_avg_time();
+				sort_by_avg_time(from_city, to_city);
 			}
 		});
 
@@ -89,7 +87,7 @@ public class RouteResultActivity extends Activity
 		avg_delay.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v)
 			{
-				sort_by_delay();
+				sort_by_delay(from_city, to_city);
 			}
 		});
 
@@ -97,49 +95,50 @@ public class RouteResultActivity extends Activity
 		num_trips.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v)
 			{
-				sort_by_num_trips();
+				sort_by_num_trips(from_city, to_city);
 			}
 		});
 	}
 
-	private void sort_by_company()
+	private void sort_by_company(String from_city, String to_city)
 	{
-		Cursor c = mDbHelper.fetch_avg_by_company_sort_company(m_from_city, m_to_city);
+		Cursor c = mDbHelper.fetch_avg_by_company_sort_company(from_city, to_city);
 		startManagingCursor(c);
-		print_rows(c);
+		print_rows(c, from_city, to_city);
 	}
 
-	private void sort_by_avg_time()
+	private void sort_by_avg_time(String from_city, String to_city)
 	{
-		Cursor c = mDbHelper.fetch_avg_by_company(m_from_city, m_to_city);
+		Cursor c = mDbHelper.fetch_avg_by_company(from_city, to_city);
 		startManagingCursor(c);
-		print_rows(c);
+		print_rows(c, from_city, to_city);
 
 	}
 
-	private void sort_by_delay()
+	private void sort_by_delay(String from_city, String to_city)
 	{
-		Cursor c = mDbHelper.fetch_avg_by_company_sort_delay(m_from_city, m_to_city);
+		Cursor c = mDbHelper.fetch_avg_by_company_sort_delay(from_city, to_city);
 		startManagingCursor(c);
-		print_rows(c);
+		print_rows(c, from_city, to_city);
 	}
 
-	private void sort_by_num_trips()
+	private void sort_by_num_trips(String from_city, String to_city)
 	{
-		Cursor c = mDbHelper.fetch_avg_by_company_sort_trips(m_from_city, m_to_city);
+		Cursor c = mDbHelper.fetch_avg_by_company_sort_trips(from_city, to_city);
 		startManagingCursor(c);
-		print_rows(c);
+		print_rows(c, from_city, to_city);
 	}
 
-	private void print_rows(Cursor c)
+	private void print_rows(Cursor c, String from_city, String to_city)
 	{
 		clear_rows();
 		if (c.moveToFirst()) do {
-			String company = c.getString(c.getColumnIndex(DbAdapter.KEY_CTR_NAME));
+			String company = c.getString(c.getColumnIndex(DbAdapter.KEY_COMP));
 			String avg = format_time(c.getInt(c.getColumnIndex(DbAdapter.AVG_TIME)));
 			String delay = format_time_min(c.getInt(c.getColumnIndex(DbAdapter.AVG_DELAY)));
 			String count = c.getString(c.getColumnIndex(DbAdapter.NUM_TRIPS));
-			print_row(company, avg, delay, count);
+			print_row(company, avg, delay, count, from_city,
+					to_city);
 		} while (c.moveToNext());
 	}
 
@@ -157,12 +156,15 @@ public class RouteResultActivity extends Activity
 		return String.format("%s%dhr %02dmin", negative, hr, min);
 	}
 
-	private void print_row(String company, String avg, String delay, String count)
+	private void print_row(String company, String avg, String delay,
+			String count, String from_city, String to_city)
 	{
-		if (company.length() > 20) {
-			company = company.substring(0, 20);
+		String display_company = company;
+		if (company.length() > 15) {
+//			company = company.substring(0, 15);
+			display_company = company.replace(' ', '\n');
 		} else if (company.length() == 0) {
-			company = UNKNOWN;
+			display_company = UNKNOWN;
 //			return;
 		}
 
@@ -170,7 +172,7 @@ public class RouteResultActivity extends Activity
 		TextView avg_view = new TextView(getApplicationContext());
 		TextView delay_view = new TextView(getApplicationContext());
 		Button count_view = new Button(getApplicationContext());
-		company_view.setText(company);
+		company_view.setText(display_company);
 		avg_view.setText(avg);
 		delay_view.setText(delay);
 		count_view.setText(count);
@@ -181,7 +183,7 @@ public class RouteResultActivity extends Activity
 		count_view.setGravity(Gravity.CENTER);
 
 		init_company_button(company_view, company);
-		init_count_button(count_view, company);
+		init_count_button(count_view, company, from_city, to_city);
 
 		TableRow tr = new TableRow(getApplicationContext());
 		m_rows.add(tr);
@@ -203,9 +205,7 @@ public class RouteResultActivity extends Activity
 				Intent intent = new Intent(getApplicationContext(),
 					CompanyResultActivity.class);
 				Bundle b = new Bundle();
-				String company = ((TextView)v).getText().toString();
-				b.putString("company", company.equals(UNKNOWN) ?
-					"" : company);
+				b.putString("company", company);
 				intent.putExtras(b);
 				startActivity(intent);
 			}
@@ -213,7 +213,8 @@ public class RouteResultActivity extends Activity
 
 	}
 
-	private void init_count_button(Button b, final String company)
+	private void init_count_button(Button b, final String company,
+			final String from_city, final String to_city)
 	{
 		b.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v)
@@ -221,10 +222,9 @@ public class RouteResultActivity extends Activity
 				Intent intent = new Intent(getApplicationContext(),
 					TripsActivity.class);
 				Bundle b = new Bundle();
-				b.putString("company", company.equals(UNKNOWN) ?
-					"" : company);
-				b.putString("from_city", m_from_city);
-				b.putString("to_city", m_to_city);
+				b.putString("company", company);
+				b.putString("from_city", from_city);
+				b.putString("to_city", to_city);
 				intent.putExtras(b);
 				startActivity(intent);
 			}

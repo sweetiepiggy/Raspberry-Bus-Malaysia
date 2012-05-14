@@ -67,19 +67,22 @@
 					android:layout_width="fill_parent"
 					android:layout_height="wrap_content"
 					android:textStyle="bold"
+					android:gravity="center"
 					android:text="@string/sched_time"/>
-				<TextView
-					android:id="@+id/delay"
-					android:layout_width="fill_parent"
-					android:layout_height="wrap_content"
-					android:textStyle="bold"
-					android:text="@string/delay"/>
 				<TextView
 					android:id="@+id/trip_time"
 					android:layout_width="fill_parent"
 					android:layout_height="wrap_content"
 					android:textStyle="bold"
+					android:gravity="center"
 					android:text="@string/trip_time"/>
+				<TextView
+					android:id="@+id/delay"
+					android:layout_width="fill_parent"
+					android:layout_height="wrap_content"
+					android:textStyle="bold"
+					android:gravity="center"
+					android:text="@string/delay"/>
 			</TableRow>
 		</TableLayout>
 	</LinearLayout>
