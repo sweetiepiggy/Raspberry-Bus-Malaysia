@@ -273,6 +273,27 @@ public class DbAdapter
 				null);
 	}
 
+	public Cursor fetch_companies()
+	{
+		return mDbHelper.mDb.query(true, DATABASE_TABLE, new String[] {KEY_ROWID, KEY_COMP},
+				"length(" + KEY_COMP + ") != 0", null,
+				KEY_COMP, null, KEY_COMP + " ASC", null);
+	}
+
+	public Cursor fetch_brands()
+	{
+		return mDbHelper.mDb.query(true, DATABASE_TABLE, new String[] {KEY_ROWID, KEY_BRAND},
+				"length(" + KEY_BRAND + ") != 0", null,
+				KEY_BRAND, null, KEY_BRAND + " ASC", null);
+	}
+
+	public Cursor fetch_counter_nums()
+	{
+		return mDbHelper.mDb.query(true, DATABASE_TABLE, new String[] {KEY_ROWID, KEY_CTR},
+				"length(" + KEY_CTR + ") != 0", null,
+				KEY_CTR, null, KEY_CTR + " ASC", null);
+	}
+
 	public Cursor fetch_avg_by_company(String from_city, String to_city)
 	{
 		return mDbHelper.mDb.query(true, DATABASE_TABLE,

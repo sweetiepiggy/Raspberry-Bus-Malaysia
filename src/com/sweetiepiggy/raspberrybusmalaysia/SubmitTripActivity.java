@@ -146,6 +146,9 @@ public class SubmitTripActivity extends Activity
 		update_city_autocomplete(R.id.to_city_entry);
 		update_station_autocomplete(R.id.to_station_entry);
 		update_station_autocomplete(R.id.from_station_entry);
+		update_company_autocomplete(R.id.company_entry);
+		update_brand_autocomplete(R.id.brand_entry);
+		update_counter_num_autocomplete(R.id.counter_num_entry);
 	}
 
 	private void update_city_autocomplete(int id)
@@ -174,6 +177,45 @@ public class SubmitTripActivity extends Activity
 		AutoCompleteTextView stations_entry = (AutoCompleteTextView) findViewById(id);
 		stations_entry.setThreshold(1);
 		stations_entry.setAdapter(stations);
+	}
+
+	private void update_company_autocomplete(int id)
+	{
+		ArrayAdapter<String> companies = new ArrayAdapter<String>(this, android.R.layout.simple_dropdown_item_1line);
+		Cursor c = mDbHelper.fetch_companies();
+		startManagingCursor(c);
+		if (c.moveToFirst()) do {
+			companies.add(c.getString(c.getColumnIndex(DbAdapter.KEY_COMP)));
+		} while (c.moveToNext());
+		AutoCompleteTextView companies_entry = (AutoCompleteTextView) findViewById(id);
+		companies_entry.setThreshold(1);
+		companies_entry.setAdapter(companies);
+	}
+
+	private void update_brand_autocomplete(int id)
+	{
+		ArrayAdapter<String> brands = new ArrayAdapter<String>(this, android.R.layout.simple_dropdown_item_1line);
+		Cursor c = mDbHelper.fetch_brands();
+		startManagingCursor(c);
+		if (c.moveToFirst()) do {
+			brands.add(c.getString(c.getColumnIndex(DbAdapter.KEY_BRAND)));
+		} while (c.moveToNext());
+		AutoCompleteTextView brands_entry = (AutoCompleteTextView) findViewById(id);
+		brands_entry.setThreshold(1);
+		brands_entry.setAdapter(brands);
+	}
+
+	private void update_counter_num_autocomplete(int id)
+	{
+		ArrayAdapter<String> counter_nums = new ArrayAdapter<String>(this, android.R.layout.simple_dropdown_item_1line);
+		Cursor c = mDbHelper.fetch_counter_nums();
+		startManagingCursor(c);
+		if (c.moveToFirst()) do {
+			counter_nums.add(c.getString(c.getColumnIndex(DbAdapter.KEY_CTR)));
+		} while (c.moveToNext());
+		AutoCompleteTextView counter_nums_entry = (AutoCompleteTextView) findViewById(id);
+		counter_nums_entry.setThreshold(1);
+		counter_nums_entry.setAdapter(counter_nums);
 	}
 
 	private void update_date_label(int button_id, date_and_time dt)
