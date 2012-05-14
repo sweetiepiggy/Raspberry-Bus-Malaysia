@@ -133,7 +133,7 @@ public class RouteResultActivity extends Activity
 	{
 		clear_rows();
 		if (c.moveToFirst()) do {
-			String company = c.getString(c.getColumnIndex(DbAdapter.KEY_CTR_NAME));
+			String company = c.getString(c.getColumnIndex(DbAdapter.KEY_COMP));
 			String avg = format_time(c.getInt(c.getColumnIndex(DbAdapter.AVG_TIME)));
 			String delay = format_time_min(c.getInt(c.getColumnIndex(DbAdapter.AVG_DELAY)));
 			String count = c.getString(c.getColumnIndex(DbAdapter.NUM_TRIPS));
@@ -159,10 +159,12 @@ public class RouteResultActivity extends Activity
 	private void print_row(String company, String avg, String delay,
 			String count, String from_city, String to_city)
 	{
-		if (company.length() > 20) {
-			company = company.substring(0, 20);
+		String display_company = company;
+		if (company.length() > 15) {
+//			company = company.substring(0, 15);
+			display_company = company.replace(' ', '\n');
 		} else if (company.length() == 0) {
-			company = UNKNOWN;
+			display_company = UNKNOWN;
 //			return;
 		}
 
@@ -170,7 +172,7 @@ public class RouteResultActivity extends Activity
 		TextView avg_view = new TextView(getApplicationContext());
 		TextView delay_view = new TextView(getApplicationContext());
 		Button count_view = new Button(getApplicationContext());
-		company_view.setText(company);
+		company_view.setText(display_company);
 		avg_view.setText(avg);
 		delay_view.setText(delay);
 		count_view.setText(count);
@@ -203,9 +205,7 @@ public class RouteResultActivity extends Activity
 				Intent intent = new Intent(getApplicationContext(),
 					CompanyResultActivity.class);
 				Bundle b = new Bundle();
-				String company = ((TextView)v).getText().toString();
-				b.putString("company", company.equals(UNKNOWN) ?
-					"" : company);
+				b.putString("company", company);
 				intent.putExtras(b);
 				startActivity(intent);
 			}
@@ -222,8 +222,7 @@ public class RouteResultActivity extends Activity
 				Intent intent = new Intent(getApplicationContext(),
 					TripsActivity.class);
 				Bundle b = new Bundle();
-				b.putString("company", company.equals(UNKNOWN) ?
-					"" : company);
+				b.putString("company", company);
 				b.putString("from_city", from_city);
 				b.putString("to_city", to_city);
 				intent.putExtras(b);

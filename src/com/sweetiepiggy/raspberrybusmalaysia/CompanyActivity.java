@@ -60,7 +60,7 @@ public class CompanyActivity extends ListActivity
 		startManagingCursor(c);
 		SimpleCursorAdapter companies = new SimpleCursorAdapter(this,
 				android.R.layout.simple_list_item_1,
-				c, new String[] {DbAdapter.KEY_CTR_NAME},
+				c, new String[] {DbAdapter.KEY_COMP},
 				new int[] {android.R.id.text1});
 		setListAdapter(companies);
 	}

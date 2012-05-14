@@ -103,8 +103,8 @@ public class TripsActivity extends Activity {
 		TableRow tr = new TableRow(getApplicationContext());
 		rows.add(tr);
 		tr.addView(sched_dep_view);
-		tr.addView(trip_delay_view);
 		tr.addView(trip_time_view);
+		tr.addView(trip_delay_view);
 		TableLayout results_layout = (TableLayout) findViewById(R.id.results_layout);
 		results_layout.addView(tr);
 	}
