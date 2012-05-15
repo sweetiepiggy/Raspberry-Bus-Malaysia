@@ -42,14 +42,10 @@
 	<string name="brand">Brand</string>
 	<string name="brand_hint">Enter bus brand (e.g. Seasons, Eagle)</string>
 
-	<string name="from_city">Departure City</string>
 	<string name="from_city_hint">Enter city of departure (e.g. Kuala Lumpur)</string>
-	<string name="from_station">Departure Station</string>
 	<string name="from_station_hint">Enter station of departure (e.g. Puduraya)</string>
 
-	<string name="to_city">Destination City</string>
 	<string name="to_city_hint">Enter city of arrival (e.g. Penang)</string>
-	<string name="to_station">Destination Station</string>
 	<string name="to_station_hint">Enter station of arrival (e.g. Sg Nibong)</string>
 
 	<string name="counter_num">Counter Number</string>
@@ -65,11 +61,11 @@
 	<string name="company_stat">Company\nDetails</string>
 	<string name="submit_trip">Trip\nSubmission</string>
 
-	<string name="missing_from_city">Enter \"Departure City\"</string>
-	<string name="missing_to_city">Enter \"Destination City\"</string>
+	<string name="missing_from_city">Enter departure city</string>
+	<string name="missing_to_city">Enter destination city</string>
 
-	<string name="submit_trip_fail">Oops, problem submitting trip</string>
-	<string name="submit_trip_success">Trip was submitted successfully</string>
+	<string name="submit_trip_fail">Oops, problem updating database</string>
+	<string name="submit_trip_success">Successfully updated database</string>
 
 	<string name="search_hint">Search companies</string>
 
@@ -87,8 +83,7 @@ Raspberry Bus Malaysia is distributed in the hope that it will be useful,
     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
     GNU General Public License for more details.\n\n
 You should have received a copy of the GNU General Public License
-    along with Raspberry Bus Malaysia; if not, see http://www.gnu.org/licenses/.
-\n
+    along with Raspberry Bus Malaysia; if not, see http://www.gnu.org/licenses/.\n\n
 Raspberry Bus Malaysia contains information from the
     Raspberry Bus Malaysia Database, which is made available here under
     the Open Database License (ODbL) v1.0, see

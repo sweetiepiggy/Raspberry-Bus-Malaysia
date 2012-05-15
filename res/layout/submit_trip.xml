@@ -29,24 +29,17 @@
 		android:orientation="vertical" >
 
 		<TextView
-			android:id="@+id/from_city_label"
+			android:id="@+id/from_label"
 			android:layout_width="fill_parent"
 			android:layout_height="wrap_content"
 			android:textStyle="bold"
-			android:text="@string/from_city" />
+			android:text="@string/from" />
 		<AutoCompleteTextView
 			android:id="@+id/from_city_entry"
 			android:layout_width="fill_parent"
 			android:layout_height="wrap_content"
 			android:hint="@string/from_city_hint"
 			android:background="@android:drawable/editbox_background"/>
-
-		<TextView
-			android:id="@+id/from_station_label"
-			android:layout_width="fill_parent"
-			android:layout_height="wrap_content"
-			android:textStyle="bold"
-			android:text="@string/from_station" />
 		<AutoCompleteTextView
 			android:id="@+id/from_station_entry"
 			android:layout_width="fill_parent"
@@ -55,24 +48,17 @@
 			android:background="@android:drawable/editbox_background"/>
 
 		<TextView
-			android:id="@+id/to_city_label"
+			android:id="@+id/to_label"
 			android:layout_width="fill_parent"
 			android:layout_height="wrap_content"
 			android:textStyle="bold"
-			android:text="@string/to_city" />
+			android:text="@string/to" />
 		<AutoCompleteTextView
 			android:id="@+id/to_city_entry"
 			android:layout_width="fill_parent"
 			android:layout_height="wrap_content"
 			android:hint="@string/to_city_hint"
 			android:background="@android:drawable/editbox_background"/>
-
-		<TextView
-			android:id="@+id/to_station_label"
-			android:layout_width="fill_parent"
-			android:layout_height="wrap_content"
-			android:textStyle="bold"
-			android:text="@string/to_station" />
 		<AutoCompleteTextView
 			android:id="@+id/to_station_entry"
 			android:layout_width="fill_parent"
@@ -80,6 +66,44 @@
 			android:hint="@string/to_station_hint"
 			android:background="@android:drawable/editbox_background"/>
 
+		<TextView
+			android:id="@+id/company_label"
+			android:layout_width="fill_parent"
+			android:layout_height="wrap_content"
+			android:textStyle="bold"
+			android:text="@string/company" />
+		<AutoCompleteTextView
+			android:id="@+id/company_entry"
+			android:layout_width="fill_parent"
+			android:layout_height="wrap_content"
+			android:hint="@string/company_hint"
+			android:background="@android:drawable/editbox_background"/>
+
+		<TextView
+			android:id="@+id/counter_num_label"
+			android:layout_width="fill_parent"
+			android:layout_height="wrap_content"
+			android:textStyle="bold"
+			android:text="@string/counter_num" />
+		<AutoCompleteTextView
+			android:id="@+id/counter_num_entry"
+			android:layout_width="fill_parent"
+			android:layout_height="wrap_content"
+			android:hint="@string/counter_num_hint"
+			android:background="@android:drawable/editbox_background"/>
+
+		<TextView
+			android:id="@+id/brand_label"
+			android:layout_width="fill_parent"
+			android:layout_height="wrap_content"
+			android:textStyle="bold"
+			android:text="@string/brand" />
+		<AutoCompleteTextView
+			android:id="@+id/brand_entry"
+			android:layout_width="fill_parent"
+			android:layout_height="wrap_content"
+			android:hint="@string/brand_hint"
+			android:background="@android:drawable/editbox_background"/>
 
 		<TextView
 			android:id="@+id/sched_time_label"
@@ -143,45 +167,6 @@
 				android:layout_width="wrap_content"
 				android:layout_height="wrap_content"/>
 		</LinearLayout>
-
-		<TextView
-			android:id="@+id/company_label"
-			android:layout_width="fill_parent"
-			android:layout_height="wrap_content"
-			android:textStyle="bold"
-			android:text="@string/company" />
-		<AutoCompleteTextView
-			android:id="@+id/company_entry"
-			android:layout_width="fill_parent"
-			android:layout_height="wrap_content"
-			android:hint="@string/company_hint"
-			android:background="@android:drawable/editbox_background"/>
-
-		<TextView
-			android:id="@+id/brand_label"
-			android:layout_width="fill_parent"
-			android:layout_height="wrap_content"
-			android:textStyle="bold"
-			android:text="@string/brand" />
-		<AutoCompleteTextView
-			android:id="@+id/brand_entry"
-			android:layout_width="fill_parent"
-			android:layout_height="wrap_content"
-			android:hint="@string/brand_hint"
-			android:background="@android:drawable/editbox_background"/>
-
-		<TextView
-			android:id="@+id/counter_num_label"
-			android:layout_width="fill_parent"
-			android:layout_height="wrap_content"
-			android:textStyle="bold"
-			android:text="@string/counter_num" />
-		<AutoCompleteTextView
-			android:id="@+id/counter_num_entry"
-			android:layout_width="fill_parent"
-			android:layout_height="wrap_content"
-			android:hint="@string/counter_num_hint"
-			android:background="@android:drawable/editbox_background"/>
 
 		<TextView
 			android:id="@+id/safety_label"
