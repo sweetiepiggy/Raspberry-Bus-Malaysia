@@ -30,6 +30,7 @@
 		<activity android:name="CompanyResultActivity"></activity>
 		<activity android:name="SubmitTripActivity"></activity>
 		<activity android:name="TripsActivity"></activity>
+		<activity android:name="AboutActivity"></activity>
 	</application>
 </manifest>
 
