@@ -208,9 +208,16 @@
 			android:layout_height="wrap_content"
 			android:hint="@string/comment_hint"
 			android:background="@android:drawable/editbox_background"/>
+
+		<CheckBox
+			android:id="@+id/upload_checkbox"
+			android:layout_width="fill_parent"
+			android:layout_height="wrap_content"
+			android:text="@string/upload" />
+
 		<Button
 			android:id="@+id/submit_button"
-			android:layout_width="wrap_content"
+			android:layout_width="fill_parent"
 			android:layout_height="wrap_content"
 			android:text="@string/submit" />
 

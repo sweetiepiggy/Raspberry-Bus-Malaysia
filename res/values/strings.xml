@@ -57,6 +57,8 @@
 	<string name="safety">Safety</string>
 	<string name="comfort">Comfort</string>
 
+	<string name="upload">Share info with other Raspberry Bus Malaysia users</string>
+
 	<string name="route_stat">Route\nSummary</string>
 	<string name="company_stat">Company\nDetails</string>
 	<string name="submit_trip">Trip\nSubmission</string>
@@ -71,6 +73,8 @@
 
 	<string name="delay">Delay</string>
 	<string name="trip_time">Trip Time</string>
+
+	<string name="send_email">Send email</string>
 
 	<string name="license">
 Copyright (C) 2012 Sweetie Piggy Apps sweetiepiggyapps@gmail.com\n\n

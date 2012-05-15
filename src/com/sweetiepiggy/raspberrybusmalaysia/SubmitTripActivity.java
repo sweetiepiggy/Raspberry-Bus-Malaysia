@@ -26,6 +26,7 @@ import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.app.TimePickerDialog;
+import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.text.format.DateFormat;
@@ -33,6 +34,7 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.RatingBar;
@@ -53,6 +55,10 @@ public class SubmitTripActivity extends Activity
 	static final int DEPART_TIME_DIALOG_ID = 3;
 	static final int ARRIVAL_DATE_DIALOG_ID = 4;
 	static final int ARRIVAL_TIME_DIALOG_ID = 5;
+
+	/* TODO: move this to Constants.java */
+	static final String EMAIL_ADDRESS = "sweetiepiggyapps@gmail.com";
+	static final String EMAIL_SUBJECT = "Raspberry Bus Malaysia Trip Submission";
 
 	@Override
 	public void onCreate(Bundle savedInstanceState)
@@ -149,6 +155,7 @@ public class SubmitTripActivity extends Activity
 		update_company_autocomplete(R.id.company_entry);
 		update_brand_autocomplete(R.id.brand_entry);
 		update_counter_num_autocomplete(R.id.counter_num_entry);
+		((CheckBox) findViewById(R.id.upload_checkbox)).setChecked(true);
 	}
 
 	private void update_city_autocomplete(int id)
@@ -274,8 +281,8 @@ public class SubmitTripActivity extends Activity
 		String to_city = ((AutoCompleteTextView) findViewById(R.id.to_city_entry)).getText().toString();
 		String to_station = ((AutoCompleteTextView) findViewById(R.id.to_station_entry)).getText().toString();
 		String counter_num = ((AutoCompleteTextView) findViewById(R.id.counter_num_entry)).getText().toString();
-		int safety = (int) ((RatingBar) findViewById(R.id.safety_bar)).getRating();
-		int comfort = (int) ((RatingBar) findViewById(R.id.comfort_bar)).getRating();
+		String safety = Integer.toString((int) ((RatingBar) findViewById(R.id.safety_bar)).getRating());
+		String comfort = Integer.toString((int) ((RatingBar) findViewById(R.id.comfort_bar)).getRating());
 		String comment = ((EditText) findViewById(R.id.comment_entry)).getText().toString();
 
 		DbAdapter dbHelper = new DbAdapter();
@@ -284,7 +291,7 @@ public class SubmitTripActivity extends Activity
 		long row_id = dbHelper.create_trip(company, brand, from_city,
 				from_station, to_city, to_station, sched_time,
 				depart_time, arrival_time, counter_num,
-				Integer.toString(safety), Integer.toString(comfort), comment);
+				safety, comfort, comment);
 
 		dbHelper.close();
 
@@ -293,6 +300,34 @@ public class SubmitTripActivity extends Activity
 
 		Toast.makeText(getApplicationContext(), getResources().getString(msg_id),
 				Toast.LENGTH_SHORT).show();
+
+		if (((CheckBox) findViewById(R.id.upload_checkbox)).isChecked()) {
+			send_email(company, brand, from_city,
+				from_station, to_city, to_station, sched_time,
+				depart_time, arrival_time, counter_num,
+				safety, comfort, comment);
+
+		}
+	}
+
+	private void send_email(String company, String bus_brand,
+			String from_city, String from_station, String to_city,
+			String to_station, String scheduled_departure,
+			String actual_departure, String arrival_time,
+			String counter, String safety, String comfort, String comment)
+	{
+		String msg  = company + ',' + bus_brand + ',' + from_city +
+			',' + from_station + ',' + to_city + ',' + to_station +
+			',' + scheduled_departure + ',' + actual_departure +
+			',' + arrival_time + ',' + counter + ',' + safety +
+			',' + comfort + ',' + comment + "\n";
+
+		Intent intent = new Intent(Intent.ACTION_SEND);
+		intent.putExtra(Intent.EXTRA_EMAIL, new String[] {EMAIL_ADDRESS} );
+		intent.putExtra(Intent.EXTRA_SUBJECT, EMAIL_SUBJECT);
+		intent.putExtra(Intent.EXTRA_TEXT, msg);
+		intent.setType("text/plain");
+		startActivity(Intent.createChooser(intent, getResources().getString(R.string.send_email)));
 	}
 
 	private String format_time(date_and_time d)
