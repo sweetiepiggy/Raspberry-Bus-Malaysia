@@ -60,7 +60,7 @@ public class TripsActivity extends Activity {
 	private void print_averages(String from_city, String to_city,
 			String company)
 	{
-		Cursor c = mDbHelper.fetch_avg_delay(from_city, to_city, company);
+		Cursor c = mDbHelper.fetch_avg(from_city, to_city, company);
 		startManagingCursor(c);
 
 		if (c.moveToFirst()) do {

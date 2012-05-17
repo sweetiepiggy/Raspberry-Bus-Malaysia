@@ -65,6 +65,6 @@
 					android:text="@string/num_trips"/>
 			</TableRow>
 		</TableLayout>
-
 	</LinearLayout>
 </ScrollView>
+

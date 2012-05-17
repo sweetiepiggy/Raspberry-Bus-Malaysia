@@ -27,13 +27,13 @@
 		android:layout_width="fill_parent"
 		android:layout_height="wrap_content"
 		android:orientation="vertical" >
-	
+
 		<TextView
 			android:id="@+id/title"
 			android:layout_width="fill_parent"
 			android:layout_height="wrap_content"
 			android:textStyle="bold" />
-		
+
 		<TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
 			android:layout_width="fill_parent"
 			android:layout_height="fill_parent"
@@ -62,33 +62,38 @@
 					android:layout_width="fill_parent"
 					android:layout_height="wrap_content"
 					android:textStyle="bold"
+					android:gravity="center"
 					android:text="@string/from"/>
 				<TextView
 					android:id="@+id/to"
 					android:layout_width="fill_parent"
 					android:layout_height="wrap_content"
 					android:textStyle="bold"
+					android:gravity="center"
 					android:text="@string/to"/>
 				<TextView
 					android:id="@+id/avg_time"
 					android:layout_width="fill_parent"
 					android:layout_height="wrap_content"
 					android:textStyle="bold"
+					android:gravity="center"
 					android:text="@string/avg_time"/>
 				<TextView
 					android:id="@+id/avg_delay"
 					android:layout_width="fill_parent"
 					android:layout_height="wrap_content"
 					android:textStyle="bold"
+					android:gravity="center"
 					android:text="@string/avg_delay"/>
-				<!-- <TextView
+				<TextView
 					android:id="@+id/num_trips"
 					android:layout_width="fill_parent"
 					android:layout_height="wrap_content"
 					android:textStyle="bold"
-					android:text="@string/num_trips"/>-->
+					android:gravity="center"
+					android:text="@string/num_trips"/>
 			</TableRow>
 		</TableLayout>
-	
 	</LinearLayout>
 </ScrollView>
+

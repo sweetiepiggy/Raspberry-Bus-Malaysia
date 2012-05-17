@@ -339,15 +339,7 @@ public class DbAdapter
 
 	public Cursor fetch_avg(String from_city, String to_city, String company)
 	{
-		return mDbHelper.mDb.query(true, DATABASE_TABLE, new String[] {AVG_TIME},
-				KEY_COMP + " = ? AND " + KEY_FROM_CITY + " = ? AND " + KEY_TO_CITY + " = ?",
-				new String[] {company, from_city, to_city},
-				null, null, null, null);
-	}
-
-	public Cursor fetch_avg_delay(String from_city, String to_city, String company)
-	{
-		return mDbHelper.mDb.query(true, DATABASE_TABLE, new String[] {AVG_DELAY},
+		return mDbHelper.mDb.query(true, DATABASE_TABLE, new String[] {AVG_TIME, AVG_DELAY, NUM_TRIPS},
 				KEY_COMP + " = ? AND " + KEY_FROM_CITY + " = ? AND " + KEY_TO_CITY + " = ?",
 				new String[] {company, from_city, to_city},
 				null, null, null, null);
