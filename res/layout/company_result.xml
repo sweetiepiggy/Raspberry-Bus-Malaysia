@@ -34,23 +34,17 @@
 			android:layout_height="wrap_content"
 			android:textStyle="bold" />
 
-		<TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+		<TextView
+			android:id="@+id/avg_delay_label"
 			android:layout_width="fill_parent"
-			android:layout_height="fill_parent"
-			android:stretchColumns="1" >
-			<TableRow>
-				<TextView
-					android:id="@+id/avg_delay_label"
-					android:layout_width="fill_parent"
-					android:layout_height="wrap_content"
-					android:textStyle="bold"
-					android:text="@string/avg_delay"/>
-				<TextView
-					android:id="@+id/total_avg_delay"
-					android:layout_width="fill_parent"
-					android:layout_height="wrap_content"/>
-			</TableRow>
-		</TableLayout>
+			android:layout_height="wrap_content"
+			android:textStyle="bold"
+			android:text="@string/avg_delay"/>
+		<TextView
+			android:id="@+id/total_avg_delay"
+			android:layout_width="fill_parent"
+			android:layout_height="wrap_content"/>
+
 		<TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
 		android:id="@+id/results_layout"
 		android:layout_width="fill_parent"
@@ -58,19 +52,12 @@
 		android:stretchColumns="1" >
 			<TableRow>
 				<TextView
-					android:id="@+id/from"
+					android:id="@+id/route"
 					android:layout_width="fill_parent"
 					android:layout_height="wrap_content"
 					android:textStyle="bold"
 					android:gravity="center"
-					android:text="@string/from"/>
-				<TextView
-					android:id="@+id/to"
-					android:layout_width="fill_parent"
-					android:layout_height="wrap_content"
-					android:textStyle="bold"
-					android:gravity="center"
-					android:text="@string/to"/>
+					android:text="@string/route"/>
 				<TextView
 					android:id="@+id/avg_time"
 					android:layout_width="fill_parent"

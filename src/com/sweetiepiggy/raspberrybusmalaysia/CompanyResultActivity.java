@@ -87,20 +87,17 @@ public class CompanyResultActivity extends Activity
 			String to_city, String avg, String avg_delay,
 			String count)
 	{
-		TextView from_view = new TextView(getApplicationContext());
-		TextView to_view = new TextView(getApplicationContext());
+		TextView route_view = new TextView(getApplicationContext());
 		TextView avg_view = new TextView(getApplicationContext());
 		TextView avg_delay_view = new TextView(getApplicationContext());
 		Button count_view = new Button(getApplicationContext());
 
-		from_view.setGravity(Gravity.CENTER);
-		to_view.setGravity(Gravity.CENTER);
+		route_view.setGravity(Gravity.CENTER);
 		avg_view.setGravity(Gravity.CENTER);
 		avg_delay_view.setGravity(Gravity.CENTER);
 		count_view.setGravity(Gravity.CENTER);
 
-		from_view.setText(from_city);
-		to_view.setText(to_city);
+		route_view.setText(from_city + "\n-> " + to_city);
 		avg_view.setText(avg);
 		avg_delay_view.setText(avg_delay);
 		count_view.setText(count);
@@ -108,8 +105,7 @@ public class CompanyResultActivity extends Activity
 		init_count_button(count_view, company, from_city, to_city);
 
 		TableRow tr = new TableRow(getApplicationContext());
-		tr.addView(from_view);
-		tr.addView(to_view);
+		tr.addView(route_view);
 		tr.addView(avg_view);
 		tr.addView(avg_delay_view);
 		tr.addView(count_view);

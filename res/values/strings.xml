@@ -28,6 +28,7 @@
 
 	<string name="from">From</string>
 	<string name="to">To</string>
+	<string name="route">Route</string>
 	<string name="submit">submit</string>
 	<string name="company">Company</string>
 	<string name="avg_time">Average\nTime</string>
