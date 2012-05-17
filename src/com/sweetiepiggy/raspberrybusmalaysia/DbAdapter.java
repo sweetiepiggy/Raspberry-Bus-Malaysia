@@ -60,7 +60,7 @@ public class DbAdapter
 	private DatabaseHelper mDbHelper;
 
 	private static final String DATABASE_PATH = "/data/data/com.sweetiepiggy.raspberrybusmalaysia/databases/";
-	private static final String DATABASE_NAME = "bus.db";
+	private static final String DATABASE_NAME = "rbm.db";
 	private static final String DATABASE_TABLE = "trips";
 	private static final int DATABASE_VERSION = 5;
 
