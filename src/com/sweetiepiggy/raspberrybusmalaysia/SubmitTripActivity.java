@@ -67,16 +67,75 @@ public class SubmitTripActivity extends Activity
 		setContentView(R.layout.submit_trip);
 
 		mDbHelper = new DbAdapter();
+		/* TODO: close() */
 		mDbHelper.open(this);
 
-		mData = (DataWrapper) getLastNonConfigurationInstance();
-		if (mData == null) {
+		if (savedInstanceState == null) {
+			mData = (DataWrapper) getLastNonConfigurationInstance();
+			if (mData == null) {
+				mData = new DataWrapper();
+				init_vars(mData);
+				init_entries();
+			}
+		} else {
 			mData = new DataWrapper();
-			init_vars(mData);
-			init_entries();
+			restore_saved_state(savedInstanceState);
 		}
+
 		init_date_time_buttons();
 		init_submit_button();
+	}
+
+	@Override
+	public void onSaveInstanceState(Bundle savedInstanceState)
+	{
+		savedInstanceState.putInt("sched_year", mData.sched_time.year);
+		savedInstanceState.putInt("sched_month", mData.sched_time.month);
+		savedInstanceState.putInt("sched_day", mData.sched_time.day);
+		savedInstanceState.putInt("sched_hour", mData.sched_time.hour);
+		savedInstanceState.putInt("sched_minute", mData.sched_time.minute);
+
+		savedInstanceState.putInt("depart_year", mData.depart_time.year);
+		savedInstanceState.putInt("depart_month", mData.depart_time.month);
+		savedInstanceState.putInt("depart_day", mData.depart_time.day);
+		savedInstanceState.putInt("depart_hour", mData.depart_time.hour);
+		savedInstanceState.putInt("depart_minute", mData.depart_time.minute);
+
+		savedInstanceState.putInt("arrival_year", mData.arrival_time.year);
+		savedInstanceState.putInt("arrival_month", mData.arrival_time.month);
+		savedInstanceState.putInt("arrival_day", mData.arrival_time.day);
+		savedInstanceState.putInt("arrival_hour", mData.arrival_time.hour);
+		savedInstanceState.putInt("arrival_minute", mData.arrival_time.minute);
+
+		super.onSaveInstanceState(savedInstanceState);
+	}
+
+	@Override
+	public void onRestoreInstanceState(Bundle savedInstanceState)
+	{
+		super.onRestoreInstanceState(savedInstanceState);
+		restore_saved_state(savedInstanceState);
+	}
+
+	private void restore_saved_state(Bundle savedInstanceState)
+	{
+		mData.sched_time.year = savedInstanceState.getInt("sched_year");
+		mData.sched_time.month = savedInstanceState.getInt("sched_month");
+		mData.sched_time.day = savedInstanceState.getInt("sched_day");
+		mData.sched_time.hour = savedInstanceState.getInt("sched_hour");
+		mData.sched_time.minute = savedInstanceState.getInt("sched_minute");
+
+		mData.depart_time.year = savedInstanceState.getInt("depart_year");
+		mData.depart_time.month = savedInstanceState.getInt("depart_month");
+		mData.depart_time.day = savedInstanceState.getInt("depart_day");
+		mData.depart_time.hour = savedInstanceState.getInt("depart_hour");
+		mData.depart_time.minute = savedInstanceState.getInt("depart_minute");
+
+		mData.arrival_time.year = savedInstanceState.getInt("arrival_year");
+		mData.arrival_time.month = savedInstanceState.getInt("arrival_month");
+		mData.arrival_time.day = savedInstanceState.getInt("arrival_day");
+		mData.arrival_time.hour = savedInstanceState.getInt("arrival_hour");
+		mData.arrival_time.minute = savedInstanceState.getInt("arrival_minute");
 	}
 
 	@Override
@@ -164,6 +223,7 @@ public class SubmitTripActivity extends Activity
 		Cursor c = mDbHelper.fetch_cities();
 		startManagingCursor(c);
 		if (c.moveToFirst()) do {
+			/* TODO: use getColumnIndex() */
 			/* TODO: verify that column 0 exists */
 			cities.add(c.getString(0));
 		} while (c.moveToNext());
