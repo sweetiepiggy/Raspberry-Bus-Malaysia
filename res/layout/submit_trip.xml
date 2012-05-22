@@ -214,11 +214,24 @@
 			android:layout_height="wrap_content"
 			android:text="@string/upload" />
 
-		<Button
-			android:id="@+id/submit_button"
+		<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+			android:orientation="horizontal"
 			android:layout_width="fill_parent"
-			android:layout_height="wrap_content"
-			android:text="@string/submit" />
+			android:layout_height="fill_parent">
+			<Button
+				android:id="@+id/submit_button"
+				android:layout_width="fill_parent"
+				android:layout_height="wrap_content"
+				android:layout_weight="1"
+				android:drawableLeft="@android:drawable/ic_menu_send"
+				android:text="@string/submit" />
+			<Button
+				android:id="@+id/cancel_button"
+				android:layout_width="wrap_content"
+				android:layout_height="fill_parent"
+				android:drawableLeft="@android:drawable/ic_menu_close_clear_cancel"
+				android:text="@string/clear" />
+		</LinearLayout>
 
 	</LinearLayout>
 </ScrollView>

@@ -83,6 +83,7 @@ public class SubmitTripActivity extends Activity
 		}
 
 		init_date_time_buttons();
+		init_cancel_button();
 		init_submit_button();
 	}
 
@@ -214,6 +215,18 @@ public class SubmitTripActivity extends Activity
 		update_company_autocomplete(R.id.company_entry);
 		update_brand_autocomplete(R.id.brand_entry);
 		update_counter_num_autocomplete(R.id.counter_num_entry);
+
+		((AutoCompleteTextView) findViewById(R.id.from_city_entry)).setText("");
+		((AutoCompleteTextView) findViewById(R.id.to_city_entry)).setText("");
+		((AutoCompleteTextView) findViewById(R.id.to_station_entry)).setText("");
+		((AutoCompleteTextView) findViewById(R.id.from_station_entry)).setText("");
+		((AutoCompleteTextView) findViewById(R.id.company_entry)).setText("");
+		((AutoCompleteTextView) findViewById(R.id.brand_entry)).setText("");
+		((AutoCompleteTextView) findViewById(R.id.counter_num_entry)).setText("");
+
+		((RatingBar) findViewById(R.id.safety_bar)).setRating(3);
+		((RatingBar) findViewById(R.id.comfort_bar)).setRating(3);
+		((EditText) findViewById(R.id.comment_entry)).setText("");
 		((CheckBox) findViewById(R.id.upload_checkbox)).setChecked(true);
 	}
 
@@ -325,6 +338,18 @@ public class SubmitTripActivity extends Activity
 					Toast.makeText(getApplicationContext(), incomplete_msg,
 							Toast.LENGTH_SHORT).show();
 				}
+			}
+		});
+	}
+
+	private void init_cancel_button()
+	{
+		Button cancel_button = (Button)findViewById(R.id.cancel_button);
+		cancel_button.setOnClickListener(new View.OnClickListener() {
+			public void onClick(View v) {
+				init_vars(mData);
+				init_entries();
+				init_date_time_buttons();
 			}
 		});
 	}
