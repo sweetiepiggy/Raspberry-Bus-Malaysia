@@ -112,8 +112,9 @@ public class DbAdapter
 		{
 			SQLiteDatabase db = null;
 			try {
-				String out_filename = DATABASE_PATH + DATABASE_NAME;
-				db = SQLiteDatabase.openDatabase(out_filename, null, SQLiteDatabase.OPEN_READONLY);
+				String full_path = DATABASE_PATH + DATABASE_NAME;
+				db = SQLiteDatabase.openDatabase(full_path,
+						null, SQLiteDatabase.OPEN_READONLY);
 			} catch (SQLiteException e) {
 				/* database does not exist yet */
 			}
@@ -133,7 +134,7 @@ public class DbAdapter
 
 			byte[] buffer = new byte[1024];
 			int length;
-			while ((length = input.read(buffer))>0){
+			while ((length = input.read(buffer)) > 0){
 				output.write(buffer, 0, length);
 			}
 
