@@ -58,7 +58,7 @@
 	<string name="safety">Safety</string>
 	<string name="comfort">Comfort</string>
 
-	<string name="upload">Share info with other Raspberry Bus Malaysia users</string>
+	<string name="upload">Share data with other Raspberry Bus Malaysia users</string>
 
 	<string name="route_stat">Route\nSummary</string>
 	<string name="company_stat">Company\nDetails</string>
@@ -76,6 +76,18 @@
 	<string name="trip_time">Trip Time</string>
 
 	<string name="send_email">Send email</string>
+	<string name="minute_abbr">min</string>
+	<string name="hour_abbr">hr</string>
+
+	<string name="unknown">(Unknown)</string>
+
+	<string name="monday">Monday</string>
+	<string name="tuesday">Tuesday</string>
+	<string name="wednesday">Wednesday</string>
+	<string name="thursday">Thursday</string>
+	<string name="friday">Friday</string>
+	<string name="saturday">Saturday</string>
+	<string name="sunday">Sunday</string>
 
 	<string name="license">
 Copyright (C) 2012 Sweetie Piggy Apps sweetiepiggyapps@gmail.com\n\n

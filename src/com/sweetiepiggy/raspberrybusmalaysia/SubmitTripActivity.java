@@ -303,10 +303,31 @@ public class SubmitTripActivity extends Activity
 		Button date_button = (Button)findViewById(button_id);
 		Date d = new Date(dt.year - 1900, dt.month, dt.day);
 
-		/* TODO: translate day of week */
-		String date = DateFormat.format("EEEE", d) +
+		String date = translate_day_of_week(DateFormat.format("EEEE", d).toString()) +
 			" " + DateFormat.getLongDateFormat(getApplicationContext()).format(d);
 		date_button.setText(date);
+	}
+
+	/* TODO: there should be a better way to get the translated day of week */
+	private String translate_day_of_week(String day)
+	{
+		String ret = day;
+		if (day.equals("Monday")) {
+			ret = getResources().getString(R.string.monday);
+		} else if (day.equals("Tuesday")) {
+			ret = getResources().getString(R.string.tuesday);
+		} else if (day.equals("Wednesday")) {
+			ret = getResources().getString(R.string.wednesday);
+		} else if (day.equals("Thursday")) {
+			ret = getResources().getString(R.string.thursday);
+		} else if (day.equals("Friday")) {
+			ret = getResources().getString(R.string.friday);
+		} else if (day.equals("Saturday")) {
+			ret = getResources().getString(R.string.saturday);
+		} else if (day.equals("Sunday")) {
+			ret = getResources().getString(R.string.sunday);
+		}
+		return ret;
 	}
 
 	private void update_time_label(int button_id, date_and_time d)

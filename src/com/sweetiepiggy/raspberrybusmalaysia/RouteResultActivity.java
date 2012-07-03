@@ -40,9 +40,6 @@ public class RouteResultActivity extends Activity
 	private DbAdapter mDbHelper;
 	private ArrayList<TableRow> m_rows;
 
-	/* TODO: put this in Constants.java */
-	private static final String UNKNOWN = "<Unknown>";
-
 	/** Called when the activity is first created. */
 	@Override
 	public void onCreate(Bundle savedInstanceState)
@@ -52,7 +49,7 @@ public class RouteResultActivity extends Activity
 		Bundle b = getIntent().getExtras();
 		String from_city = (b == null) ? "<NULL>" : b.getString("from_city");
 		String to_city = (b == null) ? "<NULL>" : b.getString("to_city");
-		((TextView) findViewById(R.id.title)).setText(from_city + " to " + to_city);
+		((TextView) findViewById(R.id.title)).setText(from_city + " -> " + to_city);
 
 		m_rows = new ArrayList<TableRow>();
 
@@ -153,7 +150,8 @@ public class RouteResultActivity extends Activity
 		int hr = time / 3600;
 		time -= hr * 3600;
 		int min = time / 60;
-		return String.format("%s%dhr %02dmin", negative, hr, min);
+		return String.format("%s%d%s %02d%s", negative, hr, getResources().getString(R.string.hour_abbr),
+				min, getResources().getString(R.string.minute_abbr));
 	}
 
 	private void print_row(String company, String avg, String delay,
@@ -164,7 +162,7 @@ public class RouteResultActivity extends Activity
 //			company = company.substring(0, 15);
 			display_company = company.replace(' ', '\n');
 		} else if (company.length() == 0) {
-			display_company = UNKNOWN;
+			display_company = getResources().getString(R.string.unknown);
 //			return;
 		}
 
@@ -254,7 +252,7 @@ public class RouteResultActivity extends Activity
 		}
 
 		int min = time / 60;
-		return String.format("%s%dmin", negative, min);
+		return String.format("%s%d%s", negative, min, getResources().getString(R.string.minute_abbr));
 	}
 }
 

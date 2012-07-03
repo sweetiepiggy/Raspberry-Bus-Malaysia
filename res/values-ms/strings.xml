@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!--
+    Copyright (C) 2012 Sweetie Piggy Apps <sweetiepiggyapps@gmail.com>
+
+    This file is part of Raspberry Bus Malaysia.
+
+    Raspberry Bus Malaysia is free software; you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation; either version 3 of the License, or
+    (at your option) any later version.
+
+    Raspberry Bus Malaysia is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with Raspberry Bus Malaysia ; if not, see <http://www.gnu.org/licenses/>.
+-->
+
+<resources>
+
+	<string name="app_name">Raspberi Bas Ekspres</string>
+
+	<string name="about">Maklumat</string>
+
+	<string name="from">Dari</string>
+	<string name="to">Ke</string>
+	<string name="route">Perjalanan</string>
+	<string name="submit">Hantar</string>
+	<string name="clear">Batal</string>
+	<string name="company">Syarikat</string>
+	<string name="avg_time">Purata\nMasa</string>
+	<string name="avg_delay">Purata\nLewat</string>
+	<string name="num_trips">Jumlah\nPerjalanan</string>
+
+	<string name="sched_time">Masa Ditetapkan</string>
+	<string name="depart_time">Masa Bertolak</string>
+	<string name="arrival_time">Masa Ketibaan</string>
+
+	<string name="company_hint">Masukkan nama syarikat (contoh: Konsortium Bas Ekspres)</string>
+	<string name="brand">Jenis</string>
+	<string name="brand_hint">Masukkan jenis bas (contoh: Seasons, Eagle)</string>
+
+	<string name="from_city_hint">Masukkan tempat bertolak (contoh: Kuala Lumpur)</string>
+	<string name="from_station_hint">Masukkan nama hentian bas bertolak (contoh: Puduraya)</string>
+
+	<string name="to_city_hint">Masukkan tempat ketibaan (contoh: Penang)</string>
+	<string name="to_station_hint">Masukkan nama hentian bas ketibaan (contoh: Sg Nibong)</string>
+
+	<string name="counter_num">Nombor Kaunter</string>
+	<string name="counter_num_hint">Masukkan nombor kaunter (contoh: 10)</string>
+
+	<string name="comment">Komen</string>
+	<string name="comment_hint">Masukkan komen tentang perjalanan anda</string>
+
+	<string name="safety">Keselamatan</string>
+	<string name="comfort">Keselesaan</string>
+
+	<string name="upload">Kongsi data dengan pengguna lain Raspberi Bas Ekspres</string>
+
+	<string name="route_stat">Kesimpulan\nPerjalanan</string>
+	<string name="company_stat">Maklumat\nSyarikat</string>
+	<string name="submit_trip">Hantar\nPerjalanan</string>
+
+	<string name="missing_from_city">Masukkan tempat bertolak</string>
+	<string name="missing_to_city">Masukkan tempat ketibaan</string>
+
+	<string name="submit_trip_fail">Oops, masalah kemas kini</string>
+	<string name="submit_trip_success">Kemaskini berjaya dihantar</string>
+
+	<string name="search_hint">Cari syarikat</string>
+
+	<string name="delay">Kelewatan</string>
+	<string name="trip_time">Masa Perjalanan</string>
+
+	<string name="send_email">Hantarkan emel</string>
+
+	<string name="minute_abbr">min</string>
+	<string name="hour_abbr">jam</string>
+
+	<string name="unknown">(Tidak Diketahui)</string>
+
+	<string name="monday">Isnin</string>
+	<string name="tuesday">Selasa</string>
+	<string name="wednesday">Rabu</string>
+	<string name="thursday">Khamis</string>
+	<string name="friday">Jumaat</string>
+	<string name="saturday">Sabtu</string>
+	<string name="sunday">Ahad</string>
+
+	<string name="license">
+Copyright (C) 2012 Sweetie Piggy Apps sweetiepiggyapps@gmail.com\n\n
+Raspberi Bas Ekspres adalah perisian bebas; anda boleh memaparkan dan / atau mengubah suai
+	di bawah terma GNU Lesen Awam Am yang diterbitkan oleh Perisian Yayasan Percuma;
+	samada 3 versi Lesen, atau (atas pilihan anda) mana-mana versi selepas ini.\n\n
+Tujuan Raspberi Bas Ekspres diterbit adalah untuk manfaat pengguna. Walaubagaimanapun, ia
+	adalah produk yang tanpa sebarang waranti, tanpa jaminan terhadap sebarang
+	perdaganagan atau kegunaaan untuk tujuan tertentu. Sila merujuk GNU Lesen Awam
+	Am untuk maklumat lanjut.\n\n
+Anda akan menerima satu salinan GNU Lesen Awam Am bersama dengan Raspberi Bas Ekspres;
+	jika tidak, sila lihat http://www.gnu.org/licenses/.\n\n
+Raspberi Bas Ekspres mengandungi maklumat dari Raspberi Bas Ekspres Database yang bawah
+	Lesen Open Database (ODbL) v1.0, rujuk http://opendatacommons.org/licenses/odbl/1.0/.
+	</string>
+</resources>

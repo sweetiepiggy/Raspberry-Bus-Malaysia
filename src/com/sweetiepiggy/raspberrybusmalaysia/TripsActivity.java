@@ -32,9 +32,6 @@ import android.widget.TextView;
 public class TripsActivity extends Activity {
 	private DbAdapter mDbHelper;
 
-	/* TODO: put this in Constants.java? */
-	private static final String UNKNOWN = "<Unknown Company>";
-
 	/** Called when the activity is first created. */
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -45,10 +42,10 @@ public class TripsActivity extends Activity {
 		String from_city = (b == null) ? "<NULL>" : b.getString("from_city");
 		String to_city = (b == null) ? "<NULL>" : b.getString("to_city");
 		String company = (b == null) ? "<NULL>" : b.getString("company");
-		String company_display = company.length() == 0 ? UNKNOWN : company;
+		String company_display = company.length() == 0 ? getResources().getString(R.string.unknown) : company;
 
 		((TextView) findViewById(R.id.company)).setText(company_display);
-		((TextView) findViewById(R.id.route)).setText(from_city + " to " + to_city);
+		((TextView) findViewById(R.id.route)).setText(from_city + " -> " + to_city);
 
 		mDbHelper = new DbAdapter();
 		mDbHelper.open(this);
@@ -119,7 +116,7 @@ public class TripsActivity extends Activity {
 		}
 
 		int min = time / 60;
-		return String.format("%s%dmin", negative, min);
+		return String.format("%s%d%s", negative, min, getResources().getString(R.string.minute_abbr));
 	}
 
 	private String format_time(int time)
@@ -133,7 +130,8 @@ public class TripsActivity extends Activity {
 		int hr = time / 3600;
 		time -= hr * 3600;
 		int min = time / 60;
-		return String.format("%s%dhr %02dmin", negative, hr, min);
+		return String.format("%s%d%s %02d%s", negative, hr, getResources().getString(R.string.hour_abbr),
+				min, getResources().getString(R.string.minute_abbr));
 	}
 }
 
