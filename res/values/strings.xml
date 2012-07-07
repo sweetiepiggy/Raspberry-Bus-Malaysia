@@ -39,18 +39,18 @@
 	<string name="depart_time">Actual Departure Time</string>
 	<string name="arrival_time">Arrival Time</string>
 
-	<string name="company_hint">Enter company name (e.g. Konsortium Bas Ekspres)</string>
+	<string name="company_hint">Enter company name, e.g. Konsortium Bas Ekspres</string>
 	<string name="brand">Brand</string>
-	<string name="brand_hint">Enter bus brand (e.g. Seasons, Eagle)</string>
+	<string name="brand_hint">Enter bus brand, e.g. Seasons, Eagle</string>
 
-	<string name="from_city_hint">Enter city of departure (e.g. Kuala Lumpur)</string>
-	<string name="from_station_hint">Enter station of departure (e.g. Puduraya)</string>
+	<string name="from_city_hint">Enter city of departure, e.g. Kuala Lumpur</string>
+	<string name="from_station_hint">Enter station of departure, e.g. Puduraya</string>
 
-	<string name="to_city_hint">Enter city of arrival (e.g. Penang)</string>
-	<string name="to_station_hint">Enter station of arrival (e.g. Sg Nibong)</string>
+	<string name="to_city_hint">Enter city of arrival, e.g. Penang</string>
+	<string name="to_station_hint">Enter station of arrival, e.g. Sg Nibong</string>
 
 	<string name="counter_num">Counter Number</string>
-	<string name="counter_num_hint">Enter counter number (e.g. 10)</string>
+	<string name="counter_num_hint">Enter counter number, e.g. 10</string>
 
 	<string name="comment">Comment</string>
 	<string name="comment_hint">Enter comments about your trip</string>

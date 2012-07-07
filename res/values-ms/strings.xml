@@ -39,18 +39,18 @@
 	<string name="depart_time">Masa Bertolak</string>
 	<string name="arrival_time">Masa Ketibaan</string>
 
-	<string name="company_hint">Masukkan nama syarikat (contoh: Konsortium Bas Ekspres)</string>
+	<string name="company_hint">Masukkan nama syarikat, contoh: Konsortium Bas Ekspres</string>
 	<string name="brand">Jenis</string>
-	<string name="brand_hint">Masukkan jenis bas (contoh: Seasons, Eagle)</string>
+	<string name="brand_hint">Masukkan jenis bas, contoh: Seasons, Eagle</string>
 
-	<string name="from_city_hint">Masukkan tempat bertolak (contoh: Kuala Lumpur)</string>
-	<string name="from_station_hint">Masukkan nama hentian bas bertolak (contoh: Puduraya)</string>
+	<string name="from_city_hint">Masukkan tempat bertolak, contoh: Kuala Lumpur</string>
+	<string name="from_station_hint">Masukkan nama hentian bas bertolak, contoh: Puduraya</string>
 
-	<string name="to_city_hint">Masukkan tempat ketibaan (contoh: Penang)</string>
-	<string name="to_station_hint">Masukkan nama hentian bas ketibaan (contoh: Sg Nibong)</string>
+	<string name="to_city_hint">Masukkan tempat ketibaan, contoh: Penang</string>
+	<string name="to_station_hint">Masukkan nama hentian bas ketibaan, contoh: Sg Nibong</string>
 
 	<string name="counter_num">Nombor Kaunter</string>
-	<string name="counter_num_hint">Masukkan nombor kaunter (contoh: 10)</string>
+	<string name="counter_num_hint">Masukkan nombor kaunter, contoh: 10</string>
 
 	<string name="comment">Komen</string>
 	<string name="comment_hint">Masukkan komen tentang perjalanan anda</string>
