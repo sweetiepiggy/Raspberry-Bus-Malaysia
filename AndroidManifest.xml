@@ -2,7 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
 	package="com.sweetiepiggy.raspberrybusmalaysia"
 	android:versionCode="4"
-	android:versionName="0.0.4-dev" >
+	android:versionName="0.0.4" >
 
 	<uses-sdk android:minSdkVersion="4" />
 
