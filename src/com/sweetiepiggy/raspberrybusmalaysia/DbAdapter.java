@@ -19,19 +19,12 @@
 
 package com.sweetiepiggy.raspberrybusmalaysia;
 
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
-import android.database.sqlite.SQLiteException;
 import android.database.sqlite.SQLiteOpenHelper;
-
 
 public class DbAdapter
 {
@@ -59,25 +52,26 @@ public class DbAdapter
 //	private static final String TAG = "DbAdapter";
 	private DatabaseHelper mDbHelper;
 
-	private static final String DATABASE_PATH = "/data/data/com.sweetiepiggy.raspberrybusmalaysia/databases/";
 	private static final String DATABASE_NAME = "rbm.db";
 	private static final String DATABASE_TABLE = "trips";
-	private static final int DATABASE_VERSION = 5;
+	private static final int DATABASE_VERSION = 2;
 
-//	private static final String DATABASE_CREATE =
-//		"create table " + DATABASE_TABLE + " (" +
-//		KEY_ROWID + " integer primary key autoincrement, " +
-//		KEY_COMP + " text, " +
-//		KEY_BRAND + " text, " +
-//		KEY_FROM_CITY + " text not null, " +
-//		KEY_FROM_STN + " text, " +
-//		KEY_TO_CITY + " text not null, " +
-//		KEY_TO_STN + " text, " +
-//		KEY_SCHED_DEP + " text not null, " +
-//		KEY_ACTUAL_DEP + " text not null, " +
-//		KEY_ARRIVAL + " text not null, " +
-//		KEY_CTR + " text, " +
-//		KEY_CTR_NAME + " text);";
+	private static final String DATABASE_CREATE =
+		"CREATE TABLE " + DATABASE_TABLE + " (" +
+		KEY_ROWID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+		KEY_COMP + " TEXT, " +
+		KEY_BRAND + " TEXT, " +
+		KEY_FROM_CITY + " TEXT NOT NULL, " +
+		KEY_FROM_STN + " TEXT, " +
+		KEY_TO_CITY + " TEXT NOT NULL, " +
+		KEY_TO_STN + " TEXT, " +
+		KEY_SCHED_DEP + " TEXT NOT NULL, " +
+		KEY_ACTUAL_DEP + " TEXT NOT NULL, " +
+		KEY_ARRIVAL + " TEXT NOT NULL, " +
+		KEY_CTR + " TEXT, " +
+		KEY_SAFETY + " INTEGER, " +
+		KEY_COMFORT + " INTEGER, " +
+		KEY_COMMENT + " TEXT);";
 
 	private static class DatabaseHelper extends SQLiteOpenHelper
 	{
@@ -93,69 +87,29 @@ public class DbAdapter
 		@Override
 		public void onCreate(SQLiteDatabase db)
 		{
-//			db.execSQL(DATABASE_CREATE);
-		}
-
-		public void create_database() throws IOException
-		{
-			if (!database_exists()) {
-				this.getReadableDatabase();
-				try {
-					copy_database();
-				} catch (IOException e) {
-					throw new Error(e);
-				}
-			}
-		}
-
-		private boolean database_exists()
-		{
-			SQLiteDatabase db = null;
-			try {
-				String full_path = DATABASE_PATH + DATABASE_NAME;
-				db = SQLiteDatabase.openDatabase(full_path,
-						null, SQLiteDatabase.OPEN_READONLY);
-			} catch (SQLiteException e) {
-				/* database does not exist yet */
-			}
-			if (db != null) {
-				db.close();
-			}
-			return db != null;
-		}
-
-		private void copy_database() throws IOException
-		{
-			InputStream input = mCtx.getAssets().open(DATABASE_NAME);
-
-			String full_path = DATABASE_PATH + DATABASE_NAME;
-
-			OutputStream output = new FileOutputStream(full_path);
-
-			byte[] buffer = new byte[1024];
-			int length;
-			while ((length = input.read(buffer)) > 0){
-				output.write(buffer, 0, length);
-			}
-
-			output.flush();
-			output.close();
-			input.close();
-		}
-
-		public void open_database(int perm) throws SQLException
-		{
-			String full_path = DATABASE_PATH + DATABASE_NAME;
-			mDb = SQLiteDatabase.openDatabase(full_path, null, perm);
+			db.execSQL("DROP TABLE IF EXISTS " + DATABASE_TABLE);
+			db.execSQL(DATABASE_CREATE);
 		}
 
 		@Override
 		public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion)
 		{
-//			Log.w(TAG, "Upgrading database from version " + oldVersion + " to "
-//					+ newVersion + ", which will destroy all old data");
-//			db.execSQL("DROP TABLE IF EXISTS " + DATABASE_TABLE);
-//			onCreate(db);
+			//Log.i(TAG, "upgrading database from " + old_ver +
+					//" to " + new_ver);
+//			if (old_ver <= 1) {
+//				//Log.i(TAG, "adding read column");
+//				db.execSQL("ALTER TABLE " + DATABASE_TABLE +
+//						" ADD COLUMN " + KEY_READ +
+//						" INTEGER DEFAULT 0");
+//			} else {
+				onCreate(db);
+//			}
+		}
+
+		public void open_database(int perm) throws SQLException
+		{
+			mDb = (perm == SQLiteDatabase.OPEN_READWRITE) ?
+				getWritableDatabase() : getReadableDatabase();
 		}
 
 		@Override
@@ -184,14 +138,9 @@ public class DbAdapter
 
 	private DbAdapter open(Context ctx, int perm) throws SQLException
 	{
+		//Log.i(TAG, "new DatabaseHelper(ctx)");
 		mDbHelper = new DatabaseHelper(ctx);
-
-		try {
-			mDbHelper.create_database();
-		} catch (IOException e) {
-			throw new Error(e);
-		}
-
+		//Log.i(TAG, "opening database with permission " + perm);
 		mDbHelper.open_database(perm);
 
 		return this;
@@ -255,7 +204,6 @@ public class DbAdapter
 				KEY_FROM_CITY + " = ?", new String[] {from_city},
 				KEY_TO_CITY, null, KEY_TO_CITY + " ASC", null);
 	}
-
 
 	public Cursor fetch_to_cities(String from_city, String company)
 	{
