@@ -63,6 +63,7 @@
 	<string name="route_stat">Route\nSummary</string>
 	<string name="company_stat">Company\nDetails</string>
 	<string name="submit_trip">Submit\nTrip</string>
+	<string name="sync">Sync</string>
 
 	<string name="missing_from_city">Enter departure city</string>
 	<string name="missing_to_city">Enter destination city</string>

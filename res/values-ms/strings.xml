@@ -63,6 +63,7 @@
 	<string name="route_stat">Kesimpulan\nPerjalanan</string>
 	<string name="company_stat">Maklumat\nSyarikat</string>
 	<string name="submit_trip">Hantar\nPerjalanan</string>
+	<string name="sync">Penyegerakan</string>
 
 	<string name="missing_from_city">Masukkan tempat bertolak</string>
 	<string name="missing_to_city">Masukkan tempat ketibaan</string>
