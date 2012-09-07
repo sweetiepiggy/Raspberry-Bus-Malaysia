@@ -27,6 +27,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class RaspberryBusMalaysiaActivity extends Activity
 {
@@ -79,6 +80,12 @@ public class RaspberryBusMalaysiaActivity extends Activity
 		case R.id.about:
 			Intent intent = new Intent(getApplicationContext(), AboutActivity.class);
 			startActivity(intent);
+			return true;
+		case R.id.sync:
+			SyncTask sync = new SyncTask(getApplicationContext());
+			sync.execute();
+			Toast.makeText(getApplicationContext(), R.string.syncing,
+					Toast.LENGTH_SHORT).show();
 			return true;
 		default:
 			return super.onOptionsItemSelected(item);
