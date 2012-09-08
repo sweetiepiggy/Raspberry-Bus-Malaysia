@@ -152,6 +152,12 @@ public class DbAdapter
 	}
 
 	/** @return row_id or -1 if failed */
+	public long create_trip(ContentValues trip)
+	{
+		return mDbHelper.mDb.insert(DATABASE_TABLE, null, trip);
+	}
+
+	/** @return row_id or -1 if failed */
 	public long create_trip(String company, String bus_brand,
 			String from_city, String from_station, String to_city,
 			String to_station, String scheduled_departure,

@@ -23,9 +23,10 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.URL;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.os.AsyncTask;
-import android.util.Log;
+//import android.util.Log;
 import android.widget.Toast;
 
 public class SyncTask extends AsyncTask<Void, Void, Void>
@@ -52,15 +53,19 @@ public class SyncTask extends AsyncTask<Void, Void, Void>
 					new InputStreamReader(url.openStream()));
 
 			String line = in.readLine();
-			int field_limit = 0;
 
 			if (line != null) {
-				field_limit = parse_first_line(line);
-				Log.i(TAG, "field_limit:[" + field_limit + "]");
-			}
+				String[] field_names = line.split(",");
 
-			while ((line = in.readLine()) != null) {
-				parse_line(line, 14);
+				DbAdapter dbHelper = new DbAdapter();
+				dbHelper.open(mCtx);
+				while ((line = in.readLine()) != null) {
+					ContentValues trip = parse_line(line, field_names);
+					if (dbHelper.create_trip(trip) != -1) {
+						++new_trip_cnt;
+					}
+				}
+				dbHelper.close();
 			}
 
 			in.close();
@@ -85,22 +90,21 @@ public class SyncTask extends AsyncTask<Void, Void, Void>
 	{
 	}
 
-	/** @return number of fields per line */
-	private int parse_first_line(String line)
+	private ContentValues parse_line(String line, String[] field_names)
 	{
-		Log.i(TAG, "first_line:[" + line + "]");
-		return line.split(",").length;
-	}
+//		Log.i(TAG, "line:[" + line + "]");
 
-	private void parse_line(String line, int field_limit)
-	{
-		Log.i(TAG, "line:[" + line + "]");
-		String[] fields = line.split(",", field_limit);
+		ContentValues ret = new ContentValues();
+
+		String[] fields = line.split(",", field_names.length);
 		for (int i = 0; i < fields.length; ++i) {
 			fields[i] = fields[i].replaceAll("^\"", "");
 			fields[i] = fields[i].replaceAll("\"$", "");
-			Log.i(TAG, "field:[" + fields[i] + "]");
+//			Log.i(TAG, field_names[i] + ":[" + fields[i] + "]");
+			ret.put(field_names[i], fields[i]);
 		}
+
+		return ret;
 	}
 }
 
