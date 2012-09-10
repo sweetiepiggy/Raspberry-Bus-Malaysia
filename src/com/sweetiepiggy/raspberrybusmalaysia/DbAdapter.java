@@ -154,7 +154,11 @@ public class DbAdapter
 	/** @return row_id or -1 if failed */
 	public long create_trip(ContentValues trip)
 	{
-		return mDbHelper.mDb.insert(DATABASE_TABLE, null, trip);
+		if (!trip_exists(trip)) {
+			return mDbHelper.mDb.insert(DATABASE_TABLE, null, trip);
+		} else {
+			return -1;
+		}
 	}
 
 	/** @return row_id or -1 if failed */
@@ -178,8 +182,12 @@ public class DbAdapter
 		initial_values.put(KEY_SAFETY, safety);
 		initial_values.put(KEY_COMFORT, comfort);
 		initial_values.put(KEY_COMMENT, comment);
+		return create_trip(initial_values);
+	}
 
-		return mDbHelper.mDb.insert(DATABASE_TABLE, null, initial_values);
+	private boolean trip_exists(ContentValues trip)
+	{
+		return false;
 	}
 
 	public Cursor fetch_cities()
