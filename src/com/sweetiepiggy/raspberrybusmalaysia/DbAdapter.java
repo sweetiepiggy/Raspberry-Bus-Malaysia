@@ -55,7 +55,7 @@ public class DbAdapter
 
 	private static final String DATABASE_NAME = "rbm.db";
 	private static final String DATABASE_TABLE = "trips";
-	private static final int DATABASE_VERSION = 2;
+	private static final int DATABASE_VERSION = 5;
 
 	private static final String DATABASE_CREATE =
 		"CREATE TABLE " + DATABASE_TABLE + " (" +
