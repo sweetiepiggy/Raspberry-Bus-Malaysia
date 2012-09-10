@@ -187,7 +187,43 @@ public class DbAdapter
 
 	private boolean trip_exists(ContentValues trip)
 	{
-		return false;
+		String company = trip.getAsString(KEY_COMP);
+		String bus_brand = trip.getAsString(KEY_BRAND);
+		String from_city = trip.getAsString(KEY_FROM_CITY);
+		String from_station = trip.getAsString(KEY_FROM_STN);
+		String to_city = trip.getAsString(KEY_TO_CITY);
+		String to_station = trip.getAsString(KEY_TO_STN);
+		String scheduled_departure = trip.getAsString(KEY_SCHED_DEP);
+		String actual_departure = trip.getAsString(KEY_ACTUAL_DEP);
+		String arrival_time = trip.getAsString(KEY_ARRIVAL);
+		String counter = trip.getAsString(KEY_CTR);
+		String safety = trip.getAsString(KEY_SAFETY);
+		String comfort = trip.getAsString(KEY_COMFORT);
+		String comment = trip.getAsString(KEY_COMMENT);
+
+		Cursor c =  mDbHelper.mDb.query(DATABASE_TABLE, new String[] {KEY_ROWID},
+				KEY_COMP + " = ? AND " +
+				KEY_BRAND + " = ? AND " +
+				KEY_FROM_CITY + " = ? AND " +
+				KEY_FROM_STN + " = ? AND " +
+				KEY_TO_CITY + " = ? AND " +
+				KEY_TO_STN + " = ? AND " +
+				KEY_SCHED_DEP + " = ? AND " +
+				KEY_ACTUAL_DEP + " = ? AND " +
+				KEY_ARRIVAL + " = ? AND " +
+				KEY_CTR + " = ? AND " +
+				KEY_SAFETY + " = ? AND " +
+				KEY_COMFORT + " = ? AND " +
+				KEY_COMMENT + " = ?",
+				new String[] {company, bus_brand, from_city,
+					from_station, to_city, to_station,
+					scheduled_departure, actual_departure,
+					arrival_time, counter, safety, comfort,
+					comment},
+				null, null, null, "1");
+		boolean ret = c.moveToFirst();
+		c.close();
+		return ret;
 	}
 
 	public Cursor fetch_cities()
