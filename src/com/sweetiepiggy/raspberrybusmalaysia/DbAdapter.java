@@ -370,5 +370,32 @@ public class DbAdapter
 				new String[] {company, from_city, to_city},
 				null, null, "strftime('%s', " + KEY_SCHED_DEP + ") DESC", null);
 	}
+
+	public String get_most_freq_from_city()
+	{
+		String ret = null;
+		Cursor c =  mDbHelper.mDb.query(DATABASE_TABLE, new String[] {KEY_FROM_CITY},
+				null, null,
+				KEY_FROM_CITY, null, "count(" + KEY_FROM_CITY + ") DESC", "1");
+		if (c.moveToFirst()) {
+			ret = c.getString(0);
+		}
+		c.close();
+		return ret;
+	}
+
+	public String get_most_freq_to_city(String from_city)
+	{
+		String ret = null;
+		Cursor c =  mDbHelper.mDb.query(DATABASE_TABLE, new String[] {KEY_TO_CITY},
+				KEY_FROM_CITY + " = ?", new String[] {from_city},
+				KEY_TO_CITY, null, "count(" + KEY_TO_CITY + ") DESC", "1");
+		if (c.moveToFirst()) {
+			ret = c.getString(0);
+		}
+		c.close();
+		return ret;
+	}
+
 }
 
