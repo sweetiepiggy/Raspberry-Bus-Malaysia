@@ -52,14 +52,13 @@ public class RouteActivity extends Activity
 		init_submit_button();
 	}
 
-//	@Override
-//	protected void onDestroy()
-//	{
-//		super.onDestroy();
-//		if (mDbHelper != null) {
-//			mDbHelper.close();
-//		}
-//	}
+	@Override
+	protected void onDestroy() {
+		if (mDbHelper != null) {
+			mDbHelper.close();
+		}
+		super.onDestroy();
+	}
 
 	private void fill_data()
 	{
@@ -71,6 +70,7 @@ public class RouteActivity extends Activity
 				new int[] {android.R.id.text1});
 		Spinner from_spinner = (Spinner) findViewById(R.id.from_spinner);
 		from_spinner.setAdapter(from_cities);
+		spinner_set_selection(from_spinner, mDbHelper.get_most_freq_from_city());
 
 		from_spinner.setOnItemSelectedListener(new OnItemSelectedListener() {
 			@Override
@@ -87,6 +87,7 @@ public class RouteActivity extends Activity
 						new int[] {android.R.id.text1});
 				Spinner to_spinner = (Spinner) findViewById(R.id.to_spinner);
 				to_spinner.setAdapter(to_cities);
+				spinner_set_selection(to_spinner, mDbHelper.get_most_freq_to_city(m_from_city));
 
 				to_spinner.setOnItemSelectedListener(new OnItemSelectedListener() {
 					@Override
@@ -108,6 +109,15 @@ public class RouteActivity extends Activity
 			}
 
 		});
+	}
+
+	private void spinner_set_selection(Spinner spinner, String value)
+	{
+		for (int i = 0; i < spinner.getCount(); ++i) {
+			if (((Cursor)spinner.getItemAtPosition(i)).getString(1).equals(value)) {
+				spinner.setSelection(i);
+			}
+		}
 	}
 
 	private void init_submit_button()

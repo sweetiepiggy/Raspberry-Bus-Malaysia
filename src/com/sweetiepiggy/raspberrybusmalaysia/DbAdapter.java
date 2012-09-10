@@ -19,19 +19,13 @@
 
 package com.sweetiepiggy.raspberrybusmalaysia;
 
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
-import android.database.sqlite.SQLiteException;
 import android.database.sqlite.SQLiteOpenHelper;
-
+import android.widget.Toast;
 
 public class DbAdapter
 {
@@ -59,103 +53,71 @@ public class DbAdapter
 //	private static final String TAG = "DbAdapter";
 	private DatabaseHelper mDbHelper;
 
-	private static final String DATABASE_PATH = "/data/data/com.sweetiepiggy.raspberrybusmalaysia/databases/";
 	private static final String DATABASE_NAME = "rbm.db";
 	private static final String DATABASE_TABLE = "trips";
 	private static final int DATABASE_VERSION = 5;
 
-//	private static final String DATABASE_CREATE =
-//		"create table " + DATABASE_TABLE + " (" +
-//		KEY_ROWID + " integer primary key autoincrement, " +
-//		KEY_COMP + " text, " +
-//		KEY_BRAND + " text, " +
-//		KEY_FROM_CITY + " text not null, " +
-//		KEY_FROM_STN + " text, " +
-//		KEY_TO_CITY + " text not null, " +
-//		KEY_TO_STN + " text, " +
-//		KEY_SCHED_DEP + " text not null, " +
-//		KEY_ACTUAL_DEP + " text not null, " +
-//		KEY_ARRIVAL + " text not null, " +
-//		KEY_CTR + " text, " +
-//		KEY_CTR_NAME + " text);";
+	private static final String DATABASE_CREATE =
+		"CREATE TABLE " + DATABASE_TABLE + " (" +
+		KEY_ROWID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+		KEY_COMP + " TEXT, " +
+		KEY_BRAND + " TEXT, " +
+		KEY_FROM_CITY + " TEXT NOT NULL, " +
+		KEY_FROM_STN + " TEXT, " +
+		KEY_TO_CITY + " TEXT NOT NULL, " +
+		KEY_TO_STN + " TEXT, " +
+		KEY_SCHED_DEP + " TEXT NOT NULL, " +
+		KEY_ACTUAL_DEP + " TEXT NOT NULL, " +
+		KEY_ARRIVAL + " TEXT NOT NULL, " +
+		KEY_CTR + " TEXT, " +
+		KEY_SAFETY + " INTEGER, " +
+		KEY_COMFORT + " INTEGER, " +
+		KEY_COMMENT + " TEXT);";
 
 	private static class DatabaseHelper extends SQLiteOpenHelper
 	{
 		private final Context mCtx;
+		private boolean mAllowSync;
 		public SQLiteDatabase mDb;
 
-		DatabaseHelper(Context context)
+		DatabaseHelper(Context context, boolean allow_sync)
 		{
 			super(context, DATABASE_NAME, null, DATABASE_VERSION);
 			mCtx = context;
+			mAllowSync = allow_sync;
 		}
 
 		@Override
 		public void onCreate(SQLiteDatabase db)
 		{
-//			db.execSQL(DATABASE_CREATE);
-		}
-
-		public void create_database() throws IOException
-		{
-			if (!database_exists()) {
-				this.getReadableDatabase();
-				try {
-					copy_database();
-				} catch (IOException e) {
-					throw new Error(e);
-				}
+			db.execSQL("DROP TABLE IF EXISTS " + DATABASE_TABLE);
+			db.execSQL(DATABASE_CREATE);
+			if (mAllowSync) {
+				SyncTask sync = new SyncTask(mCtx);
+				sync.execute();
+				Toast.makeText(mCtx, R.string.syncing, Toast.LENGTH_SHORT).show();
 			}
-		}
-
-		private boolean database_exists()
-		{
-			SQLiteDatabase db = null;
-			try {
-				String full_path = DATABASE_PATH + DATABASE_NAME;
-				db = SQLiteDatabase.openDatabase(full_path,
-						null, SQLiteDatabase.OPEN_READONLY);
-			} catch (SQLiteException e) {
-				/* database does not exist yet */
-			}
-			if (db != null) {
-				db.close();
-			}
-			return db != null;
-		}
-
-		private void copy_database() throws IOException
-		{
-			InputStream input = mCtx.getAssets().open(DATABASE_NAME);
-
-			String full_path = DATABASE_PATH + DATABASE_NAME;
-
-			OutputStream output = new FileOutputStream(full_path);
-
-			byte[] buffer = new byte[1024];
-			int length;
-			while ((length = input.read(buffer)) > 0){
-				output.write(buffer, 0, length);
-			}
-
-			output.flush();
-			output.close();
-			input.close();
-		}
-
-		public void open_database(int perm) throws SQLException
-		{
-			String full_path = DATABASE_PATH + DATABASE_NAME;
-			mDb = SQLiteDatabase.openDatabase(full_path, null, perm);
 		}
 
 		@Override
 		public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion)
 		{
-//			Log.w(TAG, "Upgrading database from version " + oldVersion + " to "
-//					+ newVersion + ", which will destroy all old data");
-//			db.execSQL("DROP TABLE IF EXISTS " + DATABASE_TABLE);
-//			onCreate(db);
+			//Log.i(TAG, "upgrading database from " + old_ver +
+					//" to " + new_ver);
+//			if (old_ver <= 1) {
+//				//Log.i(TAG, "adding read column");
+//				db.execSQL("ALTER TABLE " + DATABASE_TABLE +
+//						" ADD COLUMN " + KEY_READ +
+//						" INTEGER DEFAULT 0");
+//			} else {
+				onCreate(db);
+//			}
+		}
+
+		public void open_database(int perm) throws SQLException
+		{
+			mDb = (perm == SQLiteDatabase.OPEN_READWRITE) ?
+				getWritableDatabase() : getReadableDatabase();
 		}
 
 		@Override
@@ -174,24 +136,24 @@ public class DbAdapter
 
 	public DbAdapter open(Context ctx) throws SQLException
 	{
-		return open(ctx, SQLiteDatabase.OPEN_READONLY);
+		return open(ctx, SQLiteDatabase.OPEN_READONLY, true);
+	}
+
+	public DbAdapter open_no_sync(Context ctx) throws SQLException
+	{
+		return open(ctx, SQLiteDatabase.OPEN_READONLY, false);
 	}
 
 	public DbAdapter open_readwrite(Context ctx) throws SQLException
 	{
-		return open(ctx, SQLiteDatabase.OPEN_READWRITE);
+		return open(ctx, SQLiteDatabase.OPEN_READWRITE, true);
 	}
 
-	private DbAdapter open(Context ctx, int perm) throws SQLException
+	private DbAdapter open(Context ctx, int perm, boolean allow_sync) throws SQLException
 	{
-		mDbHelper = new DatabaseHelper(ctx);
-
-		try {
-			mDbHelper.create_database();
-		} catch (IOException e) {
-			throw new Error(e);
-		}
-
+		//Log.i(TAG, "new DatabaseHelper(ctx)");
+		mDbHelper = new DatabaseHelper(ctx, allow_sync);
+		//Log.i(TAG, "opening database with permission " + perm);
 		mDbHelper.open_database(perm);
 
 		return this;
@@ -200,6 +162,16 @@ public class DbAdapter
 	public void close()
 	{
 		mDbHelper.close();
+	}
+
+	/** @return row_id or -1 if failed */
+	public long create_trip(ContentValues trip)
+	{
+		if (!trip_exists(trip)) {
+			return mDbHelper.mDb.insert(DATABASE_TABLE, null, trip);
+		} else {
+			return -1;
+		}
 	}
 
 	/** @return row_id or -1 if failed */
@@ -223,8 +195,48 @@ public class DbAdapter
 		initial_values.put(KEY_SAFETY, safety);
 		initial_values.put(KEY_COMFORT, comfort);
 		initial_values.put(KEY_COMMENT, comment);
+		return create_trip(initial_values);
+	}
 
-		return mDbHelper.mDb.insert(DATABASE_TABLE, null, initial_values);
+	private boolean trip_exists(ContentValues trip)
+	{
+		String company = trip.getAsString(KEY_COMP);
+		String bus_brand = trip.getAsString(KEY_BRAND);
+		String from_city = trip.getAsString(KEY_FROM_CITY);
+		String from_station = trip.getAsString(KEY_FROM_STN);
+		String to_city = trip.getAsString(KEY_TO_CITY);
+		String to_station = trip.getAsString(KEY_TO_STN);
+		String scheduled_departure = trip.getAsString(KEY_SCHED_DEP);
+		String actual_departure = trip.getAsString(KEY_ACTUAL_DEP);
+		String arrival_time = trip.getAsString(KEY_ARRIVAL);
+		String counter = trip.getAsString(KEY_CTR);
+		String safety = trip.getAsString(KEY_SAFETY);
+		String comfort = trip.getAsString(KEY_COMFORT);
+		String comment = trip.getAsString(KEY_COMMENT);
+
+		Cursor c =  mDbHelper.mDb.query(DATABASE_TABLE, new String[] {KEY_ROWID},
+				KEY_COMP + " = ? AND " +
+				KEY_BRAND + " = ? AND " +
+				KEY_FROM_CITY + " = ? AND " +
+				KEY_FROM_STN + " = ? AND " +
+				KEY_TO_CITY + " = ? AND " +
+				KEY_TO_STN + " = ? AND " +
+				KEY_SCHED_DEP + " = ? AND " +
+				KEY_ACTUAL_DEP + " = ? AND " +
+				KEY_ARRIVAL + " = ? AND " +
+				KEY_CTR + " = ? AND " +
+				KEY_SAFETY + " = ? AND " +
+				KEY_COMFORT + " = ? AND " +
+				KEY_COMMENT + " = ?",
+				new String[] {company, bus_brand, from_city,
+					from_station, to_city, to_station,
+					scheduled_departure, actual_departure,
+					arrival_time, counter, safety, comfort,
+					comment},
+				null, null, null, "1");
+		boolean ret = c.moveToFirst();
+		c.close();
+		return ret;
 	}
 
 	public Cursor fetch_cities()
@@ -255,7 +267,6 @@ public class DbAdapter
 				KEY_FROM_CITY + " = ?", new String[] {from_city},
 				KEY_TO_CITY, null, KEY_TO_CITY + " ASC", null);
 	}
-
 
 	public Cursor fetch_to_cities(String from_city, String company)
 	{
@@ -359,5 +370,32 @@ public class DbAdapter
 				new String[] {company, from_city, to_city},
 				null, null, "strftime('%s', " + KEY_SCHED_DEP + ") DESC", null);
 	}
+
+	public String get_most_freq_from_city()
+	{
+		String ret = null;
+		Cursor c =  mDbHelper.mDb.query(DATABASE_TABLE, new String[] {KEY_FROM_CITY},
+				null, null,
+				KEY_FROM_CITY, null, "count(" + KEY_FROM_CITY + ") DESC", "1");
+		if (c.moveToFirst()) {
+			ret = c.getString(0);
+		}
+		c.close();
+		return ret;
+	}
+
+	public String get_most_freq_to_city(String from_city)
+	{
+		String ret = null;
+		Cursor c =  mDbHelper.mDb.query(DATABASE_TABLE, new String[] {KEY_TO_CITY},
+				KEY_FROM_CITY + " = ?", new String[] {from_city},
+				KEY_TO_CITY, null, "count(" + KEY_TO_CITY + ") DESC", "1");
+		if (c.moveToFirst()) {
+			ret = c.getString(0);
+		}
+		c.close();
+		return ret;
+	}
+
 }
 

@@ -2,9 +2,10 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
 	package="com.sweetiepiggy.raspberrybusmalaysia"
 	android:versionCode="5"
-	android:versionName="0.0.5-dev" >
+	android:versionName="0.1.0-dev" >
 
 	<uses-sdk android:minSdkVersion="4" />
+	<uses-permission android:name="android.permission.INTERNET" />
 
 	<application
 		android:icon="@drawable/ic_launcher"
