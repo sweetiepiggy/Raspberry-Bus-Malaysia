@@ -58,7 +58,7 @@ public class SyncTask extends AsyncTask<Void, Void, Void>
 				String[] field_names = line.split(",");
 
 				DbAdapter dbHelper = new DbAdapter();
-				dbHelper.open(mCtx);
+				dbHelper.open_no_sync(mCtx);
 				while ((line = in.readLine()) != null) {
 					ContentValues trip = parse_line(line, field_names);
 					if (dbHelper.create_trip(trip) != -1) {
