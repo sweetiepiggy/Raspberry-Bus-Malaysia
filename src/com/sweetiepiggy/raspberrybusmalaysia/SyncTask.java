@@ -20,13 +20,13 @@
 package com.sweetiepiggy.raspberrybusmalaysia;
 
 import java.io.BufferedReader;
+import java.io.FileNotFoundException;
 import java.io.InputStreamReader;
 import java.net.URL;
 
 import android.content.ContentValues;
 import android.content.Context;
 import android.os.AsyncTask;
-//import android.util.Log;
 import android.widget.Toast;
 
 public class SyncTask extends AsyncTask<Void, Void, Void>
@@ -69,6 +69,7 @@ public class SyncTask extends AsyncTask<Void, Void, Void>
 			}
 
 			in.close();
+		} catch (FileNotFoundException e) {
 		} catch (Exception e) {
 			throw new Error(e);
 		}
