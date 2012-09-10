@@ -33,6 +33,8 @@ import android.widget.TextView;
 
 public class CompanyActivity extends ListActivity
 {
+	private DbAdapter mDbHelper;
+
 	@Override
 	public void onCreate(Bundle savedInstanceState)
 	{
@@ -44,13 +46,19 @@ public class CompanyActivity extends ListActivity
 			query = intent.getStringExtra(SearchManager.QUERY);
 		}
 
-		DbAdapter dbHelper = new DbAdapter();
-		dbHelper.open(this);
-		fill_data(dbHelper, query);
-
-//		dbHelper.close();
+		mDbHelper = new DbAdapter();
+		mDbHelper.open(this);
+		fill_data(mDbHelper, query);
 
 		init_click();
+	}
+
+	@Override
+	protected void onDestroy() {
+		if (mDbHelper != null) {
+			mDbHelper.close();
+		}
+		super.onDestroy();
 	}
 
 	private void fill_data(DbAdapter dbHelper, String company_query)

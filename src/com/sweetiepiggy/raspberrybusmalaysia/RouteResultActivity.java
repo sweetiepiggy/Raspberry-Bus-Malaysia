@@ -62,6 +62,14 @@ public class RouteResultActivity extends Activity
 
 	}
 
+	@Override
+	protected void onDestroy() {
+		if (mDbHelper != null) {
+			mDbHelper.close();
+		}
+		super.onDestroy();
+	}
+
 	private void init_labels(final String from_city, final String to_city)
 	{
 		TextView company = (TextView) findViewById(R.id.company);

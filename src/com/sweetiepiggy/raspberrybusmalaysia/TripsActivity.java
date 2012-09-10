@@ -54,6 +54,14 @@ public class TripsActivity extends Activity {
 		print_rows(from_city, to_city, company);
 	}
 
+	@Override
+	protected void onDestroy() {
+		if (mDbHelper != null) {
+			mDbHelper.close();
+		}
+		super.onDestroy();
+	}
+
 	private void print_averages(String from_city, String to_city,
 			String company)
 	{

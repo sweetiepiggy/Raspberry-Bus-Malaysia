@@ -88,6 +88,14 @@ public class SubmitTripActivity extends Activity
 	}
 
 	@Override
+	protected void onDestroy() {
+		if (mDbHelper != null) {
+			mDbHelper.close();
+		}
+		super.onDestroy();
+	}
+
+	@Override
 	public void onSaveInstanceState(Bundle savedInstanceState)
 	{
 		savedInstanceState.putInt("sched_year", mData.sched_time.year);

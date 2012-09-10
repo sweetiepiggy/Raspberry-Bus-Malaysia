@@ -52,14 +52,13 @@ public class RouteActivity extends Activity
 		init_submit_button();
 	}
 
-//	@Override
-//	protected void onDestroy()
-//	{
-//		super.onDestroy();
-//		if (mDbHelper != null) {
-//			mDbHelper.close();
-//		}
-//	}
+	@Override
+	protected void onDestroy() {
+		if (mDbHelper != null) {
+			mDbHelper.close();
+		}
+		super.onDestroy();
+	}
 
 	private void fill_data()
 	{
