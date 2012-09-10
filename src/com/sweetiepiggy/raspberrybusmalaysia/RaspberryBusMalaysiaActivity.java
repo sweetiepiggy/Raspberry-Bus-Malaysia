@@ -65,6 +65,11 @@ public class RaspberryBusMalaysiaActivity extends Activity
 				startActivity(intent);
 			}
 		});
+
+		/* open database only to sync if it has not been created yet */
+		DbAdapter dbHelper = new DbAdapter();
+		dbHelper.open(getApplicationContext());
+		dbHelper.close();
 	}
 
 	@Override
