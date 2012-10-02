@@ -29,6 +29,39 @@ public class DataWrapper
 		public int hour;
 		public int minute;
 
+		public int cmp(date_and_time b) {
+			if (year < b.year) {
+				return -1;
+			} else if (year > b.year) {
+				return 1;
+			}
+
+			if (month < b.month) {
+				return -1;
+			} else if (month > b.month) {
+				return 1;
+			}
+
+			if (day < b.day) {
+				return -1;
+			} else if (day > b.day) {
+				return 1;
+			}
+
+			if (hour < b.hour) {
+				return -1;
+			} else if (hour > b.hour) {
+				return 1;
+			}
+
+			if (minute < b.minute) {
+				return -1;
+			} else if (minute > b.minute) {
+				return 1;
+			}
+
+			return 0;
+		}
 	}
 
 	public date_and_time sched_time;

@@ -359,6 +359,9 @@ public class SubmitTripActivity extends Activity
 				} else if (((AutoCompleteTextView) findViewById(R.id.to_city_entry)).getText().toString().length() == 0) {
 					results_complete = false;
 					incomplete_msg = getResources().getString(R.string.missing_to_city);
+				} else if (mData.depart_time.cmp(mData.arrival_time) <= 0) {
+					results_complete = false;
+					incomplete_msg = getResources().getString(R.string.depart_before_arrival);
 				}
 
 				if (results_complete) {
