@@ -27,6 +27,8 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.widget.Toast;
 
+import com.sweetiepiggy.raspberrybusmalaysia.DataWrapper.date_and_time;
+
 public class DbAdapter
 {
 	public static final String KEY_ROWID = "_id";
@@ -414,5 +416,49 @@ public class DbAdapter
 		return ret;
 	}
 
+	public Cursor fetch_submit_sched_time()
+	{
+		return mDbHelper.mDb.query(DATABASE_SUBMIT_TABLE,
+				new String[] {KEY_ROWID,
+					"strftime(\"%Y\", " + KEY_SCHED_DEP + ")",
+					"strftime(\"%m\", " + KEY_SCHED_DEP + ")",
+					"strftime(\"%d\", " + KEY_SCHED_DEP + ")",
+				},
+				null, null, null, null, null, "1");
+	}
+
+	public Cursor fetch_submit_depart_time()
+	{
+		return mDbHelper.mDb.query(DATABASE_SUBMIT_TABLE,
+				new String[] {KEY_ROWID,
+					"strftime(\"%Y\", " + KEY_ACTUAL_DEP + ")",
+					"strftime(\"%m\", " + KEY_ACTUAL_DEP + ")",
+					"strftime(\"%d\", " + KEY_ACTUAL_DEP + ")",
+				},
+				null, null, null, null, null, "1");
+	}
+
+	public Cursor fetch_submit_arrival_time()
+	{
+		return mDbHelper.mDb.query(DATABASE_SUBMIT_TABLE,
+				new String[] {KEY_ROWID,
+					"strftime(\"%Y\", " + KEY_ARRIVAL + ")",
+					"strftime(\"%m\", " + KEY_ARRIVAL + ")",
+					"strftime(\"%d\", " + KEY_ARRIVAL + ")",
+				},
+				null, null, null, null, null, "1");
+	}
+
+	public void set_submit_sched(date_and_time dt)
+	{
+	}
+
+	public void set_submit_depart(date_and_time dt)
+	{
+	}
+
+	public void set_submit_arrival(date_and_time dt)
+	{
+	}
 }
 
