@@ -55,10 +55,28 @@ public class DbAdapter
 
 	private static final String DATABASE_NAME = "rbm.db";
 	private static final String DATABASE_TABLE = "trips";
-	private static final int DATABASE_VERSION = 5;
+	private static final String DATABASE_SUBMIT_TABLE = "submit";
+	private static final int DATABASE_VERSION = 6;
 
 	private static final String DATABASE_CREATE =
 		"CREATE TABLE " + DATABASE_TABLE + " (" +
+		KEY_ROWID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+		KEY_COMP + " TEXT, " +
+		KEY_BRAND + " TEXT, " +
+		KEY_FROM_CITY + " TEXT NOT NULL, " +
+		KEY_FROM_STN + " TEXT, " +
+		KEY_TO_CITY + " TEXT NOT NULL, " +
+		KEY_TO_STN + " TEXT, " +
+		KEY_SCHED_DEP + " TEXT NOT NULL, " +
+		KEY_ACTUAL_DEP + " TEXT NOT NULL, " +
+		KEY_ARRIVAL + " TEXT NOT NULL, " +
+		KEY_CTR + " TEXT, " +
+		KEY_SAFETY + " INTEGER, " +
+		KEY_COMFORT + " INTEGER, " +
+		KEY_COMMENT + " TEXT);";
+
+	private static final String DATABASE_CREATE_SUBMIT =
+		"CREATE TABLE " + DATABASE_SUBMIT_TABLE + " (" +
 		KEY_ROWID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
 		KEY_COMP + " TEXT, " +
 		KEY_BRAND + " TEXT, " +
@@ -91,7 +109,9 @@ public class DbAdapter
 		public void onCreate(SQLiteDatabase db)
 		{
 			db.execSQL("DROP TABLE IF EXISTS " + DATABASE_TABLE);
+			db.execSQL("DROP TABLE IF EXISTS " + DATABASE_SUBMIT_TABLE);
 			db.execSQL(DATABASE_CREATE);
+			db.execSQL(DATABASE_CREATE_SUBMIT);
 			if (mAllowSync) {
 				SyncTask sync = new SyncTask(mCtx);
 				sync.execute();
@@ -100,18 +120,15 @@ public class DbAdapter
 		}
 
 		@Override
-		public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion)
+		public void onUpgrade(SQLiteDatabase db, int old_ver, int new_ver)
 		{
 			//Log.i(TAG, "upgrading database from " + old_ver +
 					//" to " + new_ver);
-//			if (old_ver <= 1) {
-//				//Log.i(TAG, "adding read column");
-//				db.execSQL("ALTER TABLE " + DATABASE_TABLE +
-//						" ADD COLUMN " + KEY_READ +
-//						" INTEGER DEFAULT 0");
-//			} else {
+			if (old_ver == 5) {
+				db.execSQL(DATABASE_CREATE_SUBMIT);
+			} else {
 				onCreate(db);
-//			}
+			}
 		}
 
 		public void open_database(int perm) throws SQLException
