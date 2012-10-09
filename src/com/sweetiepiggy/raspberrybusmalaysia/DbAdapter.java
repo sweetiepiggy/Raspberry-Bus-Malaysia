@@ -55,7 +55,8 @@ public class DbAdapter
 
 	private static final String DATABASE_NAME = "rbm.db";
 	private static final String DATABASE_TABLE = "trips";
-	private static final int DATABASE_VERSION = 5;
+	private static final String DATABASE_SUBMIT_TABLE = "submit";
+	private static final int DATABASE_VERSION = 6;
 
 	private static final String DATABASE_CREATE =
 		"CREATE TABLE " + DATABASE_TABLE + " (" +
@@ -69,6 +70,23 @@ public class DbAdapter
 		KEY_SCHED_DEP + " TEXT NOT NULL, " +
 		KEY_ACTUAL_DEP + " TEXT NOT NULL, " +
 		KEY_ARRIVAL + " TEXT NOT NULL, " +
+		KEY_CTR + " TEXT, " +
+		KEY_SAFETY + " INTEGER, " +
+		KEY_COMFORT + " INTEGER, " +
+		KEY_COMMENT + " TEXT);";
+
+	private static final String DATABASE_CREATE_SUBMIT =
+		"CREATE TABLE " + DATABASE_SUBMIT_TABLE + " (" +
+		KEY_ROWID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+		KEY_COMP + " TEXT, " +
+		KEY_BRAND + " TEXT, " +
+		KEY_FROM_CITY + " TEXT, " +
+		KEY_FROM_STN + " TEXT, " +
+		KEY_TO_CITY + " TEXT, " +
+		KEY_TO_STN + " TEXT, " +
+		KEY_SCHED_DEP + " TEXT, " +
+		KEY_ACTUAL_DEP + " TEXT, " +
+		KEY_ARRIVAL + " TEXT, " +
 		KEY_CTR + " TEXT, " +
 		KEY_SAFETY + " INTEGER, " +
 		KEY_COMFORT + " INTEGER, " +
@@ -91,7 +109,9 @@ public class DbAdapter
 		public void onCreate(SQLiteDatabase db)
 		{
 			db.execSQL("DROP TABLE IF EXISTS " + DATABASE_TABLE);
+			db.execSQL("DROP TABLE IF EXISTS " + DATABASE_SUBMIT_TABLE);
 			db.execSQL(DATABASE_CREATE);
+			db.execSQL(DATABASE_CREATE_SUBMIT);
 			if (mAllowSync) {
 				SyncTask sync = new SyncTask(mCtx);
 				sync.execute();
@@ -100,18 +120,15 @@ public class DbAdapter
 		}
 
 		@Override
-		public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion)
+		public void onUpgrade(SQLiteDatabase db, int old_ver, int new_ver)
 		{
 			//Log.i(TAG, "upgrading database from " + old_ver +
 					//" to " + new_ver);
-//			if (old_ver <= 1) {
-//				//Log.i(TAG, "adding read column");
-//				db.execSQL("ALTER TABLE " + DATABASE_TABLE +
-//						" ADD COLUMN " + KEY_READ +
-//						" INTEGER DEFAULT 0");
-//			} else {
+			if (old_ver == 5) {
+				db.execSQL(DATABASE_CREATE_SUBMIT);
+			} else {
 				onCreate(db);
-//			}
+			}
 		}
 
 		public void open_database(int perm) throws SQLException
@@ -244,7 +261,7 @@ public class DbAdapter
 		return mDbHelper.mDb.rawQuery("SELECT DISTINCT city FROM " +
 				"(SELECT " + KEY_FROM_CITY + " as city from " + DATABASE_TABLE + " UNION " +
 				"SELECT " + KEY_TO_CITY + " as city from " + DATABASE_TABLE + ")" +
-				" ORDER BY city ASC;",
+				" ORDER BY city ASC",
 				null);
 	}
 
@@ -281,7 +298,7 @@ public class DbAdapter
 		return mDbHelper.mDb.rawQuery("SELECT DISTINCT station FROM " +
 				"(SELECT " + KEY_FROM_STN + " as station from " + DATABASE_TABLE + " UNION " +
 				"SELECT " + KEY_TO_STN + " as station from " + DATABASE_TABLE + ")" +
-				" ORDER BY station ASC;",
+				" ORDER BY station ASC",
 				null);
 	}
 
@@ -397,5 +414,107 @@ public class DbAdapter
 		return ret;
 	}
 
+	public Cursor fetch_submit_sched_time()
+	{
+		return mDbHelper.mDb.query(DATABASE_SUBMIT_TABLE,
+				new String[] {KEY_ROWID,
+					"strftime(\"%Y\", " + KEY_SCHED_DEP + ")",
+					"strftime(\"%m\", " + KEY_SCHED_DEP + ")",
+					"strftime(\"%d\", " + KEY_SCHED_DEP + ")",
+					"strftime(\"%H\", " + KEY_SCHED_DEP + ")",
+					"strftime(\"%M\", " + KEY_SCHED_DEP + ")",
+				},
+				KEY_SCHED_DEP + " IS NOT NULL", null, null, null, null, "1");
+	}
+
+	public Cursor fetch_submit_depart_time()
+	{
+		return mDbHelper.mDb.query(DATABASE_SUBMIT_TABLE,
+				new String[] {KEY_ROWID,
+					"strftime(\"%Y\", " + KEY_ACTUAL_DEP + ")",
+					"strftime(\"%m\", " + KEY_ACTUAL_DEP + ")",
+					"strftime(\"%d\", " + KEY_ACTUAL_DEP + ")",
+					"strftime(\"%H\", " + KEY_ACTUAL_DEP + ")",
+					"strftime(\"%M\", " + KEY_ACTUAL_DEP + ")",
+				},
+				KEY_ACTUAL_DEP + " IS NOT NULL", null, null, null, null, "1");
+	}
+
+	public Cursor fetch_submit_arrival_time()
+	{
+		return mDbHelper.mDb.query(DATABASE_SUBMIT_TABLE,
+				new String[] {KEY_ROWID,
+					"strftime(\"%Y\", " + KEY_ARRIVAL + ")",
+					"strftime(\"%m\", " + KEY_ARRIVAL + ")",
+					"strftime(\"%d\", " + KEY_ARRIVAL + ")",
+					"strftime(\"%H\", " + KEY_ARRIVAL + ")",
+					"strftime(\"%M\", " + KEY_ARRIVAL + ")",
+				},
+				KEY_ARRIVAL + " IS NOT NULL", null, null, null, null, "1");
+	}
+
+	public String fetch_submit(String key)
+	{
+		Cursor c = mDbHelper.mDb.query(DATABASE_SUBMIT_TABLE,
+				new String[] {KEY_ROWID, key},
+				key + " IS NOT NULL", null, null, null, null, "1");
+		return c.moveToFirst() ? c.getString(1) : "";
+	}
+
+	public int fetch_safety()
+	{
+		Cursor c = mDbHelper.mDb.query(DATABASE_SUBMIT_TABLE,
+				new String[] {KEY_ROWID, KEY_SAFETY},
+				KEY_SAFETY + " IS NOT NULL", null, null, null, null, "1");
+		return c.moveToFirst() ? c.getInt(1) : 3;
+	}
+
+	public int fetch_comfort()
+	{
+		Cursor c = mDbHelper.mDb.query(DATABASE_SUBMIT_TABLE,
+				new String[] {KEY_ROWID, KEY_COMFORT},
+				KEY_COMFORT + " IS NOT NULL", null, null, null, null, "1");
+		return c.moveToFirst() ? c.getInt(1) : 3;
+	}
+
+	public void save_submit(String company, String bus_brand,
+			String from_city, String from_station, String to_city,
+			String to_station, String scheduled_departure,
+			String actual_departure, String arrival_time,
+			String counter, int safety, int comfort, String comment)
+	{
+		ContentValues cv = new ContentValues();
+		cv.put(KEY_COMP, company);
+		cv.put(KEY_BRAND, bus_brand);
+		cv.put(KEY_FROM_CITY, from_city);
+		cv.put(KEY_FROM_STN, from_station);
+		cv.put(KEY_TO_CITY, to_city);
+		cv.put(KEY_TO_STN, to_station);
+		cv.put(KEY_SCHED_DEP, scheduled_departure);
+		cv.put(KEY_ACTUAL_DEP, actual_departure);
+		cv.put(KEY_ARRIVAL, arrival_time);
+		cv.put(KEY_CTR, counter);
+		cv.put(KEY_SAFETY, safety);
+		cv.put(KEY_COMFORT, comfort);
+		cv.put(KEY_COMMENT, comment);
+
+		Cursor c =  mDbHelper.mDb.query(DATABASE_SUBMIT_TABLE, new String[] {KEY_ROWID},
+				null, null, null, null, null, "1");
+		if (c.moveToFirst()) {
+			long row_id = c.getInt(0);
+			if (row_id != -1) {
+				mDbHelper.mDb.update(DATABASE_SUBMIT_TABLE, cv,
+						KEY_ROWID + " = ?", new String[] {Long.toString(row_id)});
+			}
+		} else {
+			mDbHelper.mDb.insert(DATABASE_SUBMIT_TABLE, null, cv);
+		}
+		c.close();
+	}
+
+	public void clear_submit_table()
+	{
+		mDbHelper.mDb.delete(DATABASE_SUBMIT_TABLE, null, null);
+	}
 }
 

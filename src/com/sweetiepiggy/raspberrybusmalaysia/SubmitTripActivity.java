@@ -67,7 +67,6 @@ public class SubmitTripActivity extends Activity
 		setContentView(R.layout.submit_trip);
 
 		mDbHelper = new DbAdapter();
-		/* TODO: close() */
 		mDbHelper.open(this);
 
 		if (savedInstanceState == null) {
@@ -89,6 +88,24 @@ public class SubmitTripActivity extends Activity
 
 	@Override
 	protected void onDestroy() {
+		String sched_time = format_time(mData.sched_time);
+		String depart_time = format_time(mData.depart_time);
+		String arrival_time = format_time(mData.arrival_time);
+		String company = ((AutoCompleteTextView) findViewById(R.id.company_entry)).getText().toString();
+		String brand = ((AutoCompleteTextView) findViewById(R.id.brand_entry)).getText().toString();
+		String from_city = ((AutoCompleteTextView) findViewById(R.id.from_city_entry)).getText().toString();
+		String from_station = ((AutoCompleteTextView) findViewById(R.id.from_station_entry)).getText().toString();
+		String to_city = ((AutoCompleteTextView) findViewById(R.id.to_city_entry)).getText().toString();
+		String to_station = ((AutoCompleteTextView) findViewById(R.id.to_station_entry)).getText().toString();
+		String counter_num = ((AutoCompleteTextView) findViewById(R.id.counter_num_entry)).getText().toString();
+		int safety = (int) ((RatingBar) findViewById(R.id.safety_bar)).getRating();
+		int comfort = (int) ((RatingBar) findViewById(R.id.comfort_bar)).getRating();
+		String comment = ((EditText) findViewById(R.id.comment_entry)).getText().toString();
+		mDbHelper.save_submit(company, brand, from_city,
+				from_station, to_city, to_station, sched_time,
+				depart_time, arrival_time, counter_num,
+				safety, comfort, comment);
+
 		if (mDbHelper != null) {
 			mDbHelper.close();
 		}
@@ -193,25 +210,32 @@ public class SubmitTripActivity extends Activity
 
 	private void init_vars(DataWrapper data)
 	{
-		final Calendar c = Calendar.getInstance();
+		Cursor c_sched_time = mDbHelper.fetch_submit_sched_time();
+		init_time(c_sched_time, data.sched_time);
 
-		data.sched_time.year = c.get(Calendar.YEAR);
-		data.sched_time.month = c.get(Calendar.MONTH);
-		data.sched_time.day = c.get(Calendar.DAY_OF_MONTH);
-		data.sched_time.hour = c.get(Calendar.HOUR_OF_DAY);
-		data.sched_time.minute = c.get(Calendar.MINUTE);
+		Cursor c_depart_time = mDbHelper.fetch_submit_depart_time();
+		init_time(c_depart_time, data.depart_time);
 
-		data.depart_time.year = c.get(Calendar.YEAR);
-		data.depart_time.month = c.get(Calendar.MONTH);
-		data.depart_time.day = c.get(Calendar.DAY_OF_MONTH);
-		data.depart_time.hour = c.get(Calendar.HOUR_OF_DAY);
-		data.depart_time.minute = c.get(Calendar.MINUTE);
+		Cursor c_arrival_time = mDbHelper.fetch_submit_arrival_time();
+		init_time(c_arrival_time, data.arrival_time);
+	}
 
-		data.arrival_time.year = c.get(Calendar.YEAR);
-		data.arrival_time.month = c.get(Calendar.MONTH);
-		data.arrival_time.day = c.get(Calendar.DAY_OF_MONTH);
-		data.arrival_time.hour = c.get(Calendar.HOUR_OF_DAY);
-		data.arrival_time.minute = c.get(Calendar.MINUTE);
+	private void init_time(Cursor c, date_and_time dt)
+	{
+		if (c.moveToFirst()) {
+			dt.year = Integer.parseInt(c.getString(1));
+			dt.month = Integer.parseInt(c.getString(2)) - 1;
+			dt.day = Integer.parseInt(c.getString(3));
+			dt.hour = Integer.parseInt(c.getString(4));
+			dt.minute = Integer.parseInt(c.getString(5));
+		} else {
+			final Calendar cal = Calendar.getInstance();
+			dt.year = cal.get(Calendar.YEAR);
+			dt.month = cal.get(Calendar.MONTH);
+			dt.day = cal.get(Calendar.DAY_OF_MONTH);
+			dt.hour = cal.get(Calendar.HOUR_OF_DAY);
+			dt.minute = cal.get(Calendar.MINUTE);
+		}
 	}
 
 	private void init_entries()
@@ -224,17 +248,28 @@ public class SubmitTripActivity extends Activity
 		update_brand_autocomplete(R.id.brand_entry);
 		update_counter_num_autocomplete(R.id.counter_num_entry);
 
-		((AutoCompleteTextView) findViewById(R.id.from_city_entry)).setText("");
-		((AutoCompleteTextView) findViewById(R.id.to_city_entry)).setText("");
-		((AutoCompleteTextView) findViewById(R.id.to_station_entry)).setText("");
-		((AutoCompleteTextView) findViewById(R.id.from_station_entry)).setText("");
-		((AutoCompleteTextView) findViewById(R.id.company_entry)).setText("");
-		((AutoCompleteTextView) findViewById(R.id.brand_entry)).setText("");
-		((AutoCompleteTextView) findViewById(R.id.counter_num_entry)).setText("");
+		String from_city = mDbHelper.fetch_submit(DbAdapter.KEY_FROM_CITY);
+		String from_station = mDbHelper.fetch_submit(DbAdapter.KEY_FROM_STN);
+		String to_city = mDbHelper.fetch_submit(DbAdapter.KEY_TO_CITY);
+		String to_station = mDbHelper.fetch_submit(DbAdapter.KEY_TO_STN);
+		String company = mDbHelper.fetch_submit(DbAdapter.KEY_COMP);
+		String brand = mDbHelper.fetch_submit(DbAdapter.KEY_BRAND);
+		String counter_num = mDbHelper.fetch_submit(DbAdapter.KEY_CTR);
+		String comment = mDbHelper.fetch_submit(DbAdapter.KEY_COMMENT);
+		int safety = mDbHelper.fetch_safety();
+		int comfort = mDbHelper.fetch_comfort();
 
-		((RatingBar) findViewById(R.id.safety_bar)).setRating(3);
-		((RatingBar) findViewById(R.id.comfort_bar)).setRating(3);
-		((EditText) findViewById(R.id.comment_entry)).setText("");
+		((AutoCompleteTextView) findViewById(R.id.from_city_entry)).setText(from_city);
+		((AutoCompleteTextView) findViewById(R.id.from_station_entry)).setText(from_station);
+		((AutoCompleteTextView) findViewById(R.id.to_city_entry)).setText(to_city);
+		((AutoCompleteTextView) findViewById(R.id.to_station_entry)).setText(to_station);
+		((AutoCompleteTextView) findViewById(R.id.company_entry)).setText(company);
+		((AutoCompleteTextView) findViewById(R.id.brand_entry)).setText(brand);
+		((AutoCompleteTextView) findViewById(R.id.counter_num_entry)).setText(counter_num);
+
+		((RatingBar) findViewById(R.id.safety_bar)).setRating(safety);
+		((RatingBar) findViewById(R.id.comfort_bar)).setRating(comfort);
+		((EditText) findViewById(R.id.comment_entry)).setText(comment);
 		((CheckBox) findViewById(R.id.upload_checkbox)).setChecked(true);
 	}
 
@@ -379,6 +414,7 @@ public class SubmitTripActivity extends Activity
 		Button cancel_button = (Button)findViewById(R.id.cancel_button);
 		cancel_button.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
+				mDbHelper.clear_submit_table();
 				init_vars(mData);
 				init_entries();
 				init_date_time_buttons();
