@@ -405,6 +405,7 @@ public class SubmitTripActivity extends Activity
 		Button cancel_button = (Button)findViewById(R.id.cancel_button);
 		cancel_button.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
+				mDbHelper.clear_submit_table();
 				init_vars(mData);
 				init_entries();
 				init_date_time_buttons();

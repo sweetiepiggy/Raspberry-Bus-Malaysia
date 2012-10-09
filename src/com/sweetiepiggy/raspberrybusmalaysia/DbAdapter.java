@@ -469,6 +469,11 @@ public class DbAdapter
 		set_submit_time(KEY_ARRIVAL, time);
 	}
 
+	public void clear_submit_table()
+	{
+		mDbHelper.mDb.delete(DATABASE_SUBMIT_TABLE, null, null);
+	}
+
 	private void set_submit_time(String key, String time)
 	{
 		Log.i(TAG, "set_submit_time(" + key + ", " + time + ")");
