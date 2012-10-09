@@ -88,6 +88,24 @@ public class SubmitTripActivity extends Activity
 
 	@Override
 	protected void onDestroy() {
+		String sched_time = format_time(mData.sched_time);
+		String depart_time = format_time(mData.depart_time);
+		String arrival_time = format_time(mData.arrival_time);
+		String company = ((AutoCompleteTextView) findViewById(R.id.company_entry)).getText().toString();
+		String brand = ((AutoCompleteTextView) findViewById(R.id.brand_entry)).getText().toString();
+		String from_city = ((AutoCompleteTextView) findViewById(R.id.from_city_entry)).getText().toString();
+		String from_station = ((AutoCompleteTextView) findViewById(R.id.from_station_entry)).getText().toString();
+		String to_city = ((AutoCompleteTextView) findViewById(R.id.to_city_entry)).getText().toString();
+		String to_station = ((AutoCompleteTextView) findViewById(R.id.to_station_entry)).getText().toString();
+		String counter_num = ((AutoCompleteTextView) findViewById(R.id.counter_num_entry)).getText().toString();
+		int safety = (int) ((RatingBar) findViewById(R.id.safety_bar)).getRating();
+		int comfort = (int) ((RatingBar) findViewById(R.id.comfort_bar)).getRating();
+		String comment = ((EditText) findViewById(R.id.comment_entry)).getText().toString();
+		mDbHelper.save_submit(company, brand, from_city,
+				from_station, to_city, to_station, sched_time,
+				depart_time, arrival_time, counter_num,
+				safety, comfort, comment);
+
 		if (mDbHelper != null) {
 			mDbHelper.close();
 		}
@@ -192,51 +210,31 @@ public class SubmitTripActivity extends Activity
 
 	private void init_vars(DataWrapper data)
 	{
-		final Calendar cal = Calendar.getInstance();
-
 		Cursor c_sched_time = mDbHelper.fetch_submit_sched_time();
-		if (c_sched_time.moveToFirst()) {
-			data.sched_time.year = Integer.parseInt(c_sched_time.getString(1));
-			data.sched_time.month = Integer.parseInt(c_sched_time.getString(2)) - 1;
-			data.sched_time.day = Integer.parseInt(c_sched_time.getString(3));
-			data.sched_time.hour = Integer.parseInt(c_sched_time.getString(4));
-			data.sched_time.minute = Integer.parseInt(c_sched_time.getString(5));
-		} else {
-			data.sched_time.year = cal.get(Calendar.YEAR);
-			data.sched_time.month = cal.get(Calendar.MONTH);
-			data.sched_time.day = cal.get(Calendar.DAY_OF_MONTH);
-			data.sched_time.hour = cal.get(Calendar.HOUR_OF_DAY);
-			data.sched_time.minute = cal.get(Calendar.MINUTE);
-		}
+		init_time(c_sched_time, data.sched_time);
 
 		Cursor c_depart_time = mDbHelper.fetch_submit_depart_time();
-		if (c_depart_time.moveToFirst()) {
-			data.depart_time.year = Integer.parseInt(c_depart_time.getString(1));
-			data.depart_time.month = Integer.parseInt(c_depart_time.getString(2)) - 1;
-			data.depart_time.day = Integer.parseInt(c_depart_time.getString(3));
-			data.depart_time.hour = Integer.parseInt(c_depart_time.getString(4));
-			data.depart_time.minute = Integer.parseInt(c_depart_time.getString(5));
-		} else {
-			data.depart_time.year = cal.get(Calendar.YEAR);
-			data.depart_time.month = cal.get(Calendar.MONTH);
-			data.depart_time.day = cal.get(Calendar.DAY_OF_MONTH);
-			data.depart_time.hour = cal.get(Calendar.HOUR_OF_DAY);
-			data.depart_time.minute = cal.get(Calendar.MINUTE);
-		}
+		init_time(c_depart_time, data.depart_time);
 
 		Cursor c_arrival_time = mDbHelper.fetch_submit_arrival_time();
-		if (c_arrival_time.moveToFirst()) {
-			data.arrival_time.year = Integer.parseInt(c_arrival_time.getString(1));
-			data.arrival_time.month = Integer.parseInt(c_arrival_time.getString(2)) - 1;
-			data.arrival_time.day = Integer.parseInt(c_arrival_time.getString(3));
-			data.arrival_time.hour = Integer.parseInt(c_arrival_time.getString(4));
-			data.arrival_time.minute = Integer.parseInt(c_arrival_time.getString(5));
+		init_time(c_arrival_time, data.arrival_time);
+	}
+
+	private void init_time(Cursor c, date_and_time dt)
+	{
+		if (c.moveToFirst()) {
+			dt.year = Integer.parseInt(c.getString(1));
+			dt.month = Integer.parseInt(c.getString(2)) - 1;
+			dt.day = Integer.parseInt(c.getString(3));
+			dt.hour = Integer.parseInt(c.getString(4));
+			dt.minute = Integer.parseInt(c.getString(5));
 		} else {
-			data.arrival_time.year = cal.get(Calendar.YEAR);
-			data.arrival_time.month = cal.get(Calendar.MONTH);
-			data.arrival_time.day = cal.get(Calendar.DAY_OF_MONTH);
-			data.arrival_time.hour = cal.get(Calendar.HOUR_OF_DAY);
-			data.arrival_time.minute = cal.get(Calendar.MINUTE);
+			final Calendar cal = Calendar.getInstance();
+			dt.year = cal.get(Calendar.YEAR);
+			dt.month = cal.get(Calendar.MONTH);
+			dt.day = cal.get(Calendar.DAY_OF_MONTH);
+			dt.hour = cal.get(Calendar.HOUR_OF_DAY);
+			dt.minute = cal.get(Calendar.MINUTE);
 		}
 	}
 
@@ -250,17 +248,28 @@ public class SubmitTripActivity extends Activity
 		update_brand_autocomplete(R.id.brand_entry);
 		update_counter_num_autocomplete(R.id.counter_num_entry);
 
-		((AutoCompleteTextView) findViewById(R.id.from_city_entry)).setText("");
-		((AutoCompleteTextView) findViewById(R.id.to_city_entry)).setText("");
-		((AutoCompleteTextView) findViewById(R.id.to_station_entry)).setText("");
-		((AutoCompleteTextView) findViewById(R.id.from_station_entry)).setText("");
-		((AutoCompleteTextView) findViewById(R.id.company_entry)).setText("");
-		((AutoCompleteTextView) findViewById(R.id.brand_entry)).setText("");
-		((AutoCompleteTextView) findViewById(R.id.counter_num_entry)).setText("");
+		String from_city = mDbHelper.fetch_submit(DbAdapter.KEY_FROM_CITY);
+		String from_station = mDbHelper.fetch_submit(DbAdapter.KEY_FROM_STN);
+		String to_city = mDbHelper.fetch_submit(DbAdapter.KEY_TO_CITY);
+		String to_station = mDbHelper.fetch_submit(DbAdapter.KEY_TO_STN);
+		String company = mDbHelper.fetch_submit(DbAdapter.KEY_COMP);
+		String brand = mDbHelper.fetch_submit(DbAdapter.KEY_BRAND);
+		String counter_num = mDbHelper.fetch_submit(DbAdapter.KEY_CTR);
+		String comment = mDbHelper.fetch_submit(DbAdapter.KEY_COMMENT);
+		int safety = mDbHelper.fetch_safety();
+		int comfort = mDbHelper.fetch_comfort();
 
-		((RatingBar) findViewById(R.id.safety_bar)).setRating(3);
-		((RatingBar) findViewById(R.id.comfort_bar)).setRating(3);
-		((EditText) findViewById(R.id.comment_entry)).setText("");
+		((AutoCompleteTextView) findViewById(R.id.from_city_entry)).setText(from_city);
+		((AutoCompleteTextView) findViewById(R.id.from_station_entry)).setText(from_station);
+		((AutoCompleteTextView) findViewById(R.id.to_city_entry)).setText(to_city);
+		((AutoCompleteTextView) findViewById(R.id.to_station_entry)).setText(to_station);
+		((AutoCompleteTextView) findViewById(R.id.company_entry)).setText(company);
+		((AutoCompleteTextView) findViewById(R.id.brand_entry)).setText(brand);
+		((AutoCompleteTextView) findViewById(R.id.counter_num_entry)).setText(counter_num);
+
+		((RatingBar) findViewById(R.id.safety_bar)).setRating(safety);
+		((RatingBar) findViewById(R.id.comfort_bar)).setRating(comfort);
+		((EditText) findViewById(R.id.comment_entry)).setText(comment);
 		((CheckBox) findViewById(R.id.upload_checkbox)).setChecked(true);
 	}
 
@@ -490,7 +499,6 @@ public class SubmitTripActivity extends Activity
 					mData.sched_time.year = year;
 					mData.sched_time.month = monthOfYear;
 					mData.sched_time.day = dayOfMonth;
-					mDbHelper.set_submit_sched(format_time(mData.sched_time));
 					update_date_label(R.id.sched_date_button,
 							mData.sched_time);
 				}
@@ -502,7 +510,6 @@ public class SubmitTripActivity extends Activity
 						int hourOfDay, int minute) {
 					mData.sched_time.hour = hourOfDay;
 					mData.sched_time.minute = minute;
-					mDbHelper.set_submit_sched(format_time(mData.sched_time));
 					update_time_label(R.id.sched_time_button,
 							mData.sched_time);
 				}
@@ -515,7 +522,6 @@ public class SubmitTripActivity extends Activity
 					mData.depart_time.year = year;
 					mData.depart_time.month = monthOfYear;
 					mData.depart_time.day = dayOfMonth;
-					mDbHelper.set_submit_depart(format_time(mData.depart_time));
 					update_date_label(R.id.depart_date_button,
 							mData.depart_time);
 				}
@@ -527,7 +533,6 @@ public class SubmitTripActivity extends Activity
 						int hourOfDay, int minute) {
 					mData.depart_time.hour = hourOfDay;
 					mData.depart_time.minute = minute;
-					mDbHelper.set_submit_depart(format_time(mData.depart_time));
 					update_time_label(R.id.depart_time_button,
 							mData.depart_time);
 				}
@@ -539,7 +544,6 @@ public class SubmitTripActivity extends Activity
 					mData.arrival_time.year = year;
 					mData.arrival_time.month = monthOfYear;
 					mData.arrival_time.day = dayOfMonth;
-					mDbHelper.set_submit_arrival(format_time(mData.arrival_time));
 					update_date_label(R.id.arrival_date_button,
 							mData.arrival_time);
 				}
@@ -551,7 +555,6 @@ public class SubmitTripActivity extends Activity
 						int hourOfDay, int minute) {
 					mData.arrival_time.hour = hourOfDay;
 					mData.arrival_time.minute = minute;
-					mDbHelper.set_submit_arrival(format_time(mData.arrival_time));
 					update_time_label(R.id.arrival_time_button,
 							mData.arrival_time);
 				}

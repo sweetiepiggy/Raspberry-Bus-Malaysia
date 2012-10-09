@@ -25,7 +25,6 @@ import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.util.Log;
 import android.widget.Toast;
 
 public class DbAdapter
@@ -51,7 +50,7 @@ public class DbAdapter
 	public static final String AVG_DELAY = "avg(" + TRIP_DELAY + ")";
 	public static final String NUM_TRIPS = "count(" + KEY_COMP + ")";
 
-	private static final String TAG = "DbAdapter";
+//	private static final String TAG = "DbAdapter";
 	private DatabaseHelper mDbHelper;
 
 	private static final String DATABASE_NAME = "rbm.db";
@@ -454,33 +453,53 @@ public class DbAdapter
 				KEY_ARRIVAL + " IS NOT NULL", null, null, null, null, "1");
 	}
 
-	public void set_submit_sched(String time)
+	public String fetch_submit(String key)
 	{
-		set_submit_time(KEY_SCHED_DEP, time);
+		Cursor c = mDbHelper.mDb.query(DATABASE_SUBMIT_TABLE,
+				new String[] {KEY_ROWID, key},
+				key + " IS NOT NULL", null, null, null, null, "1");
+		return c.moveToFirst() ? c.getString(1) : "";
 	}
 
-	public void set_submit_depart(String time)
+	public int fetch_safety()
 	{
-		set_submit_time(KEY_ACTUAL_DEP, time);
+		Cursor c = mDbHelper.mDb.query(DATABASE_SUBMIT_TABLE,
+				new String[] {KEY_ROWID, KEY_SAFETY},
+				KEY_SAFETY + " IS NOT NULL", null, null, null, null, "1");
+		return c.moveToFirst() ? c.getInt(1) : 3;
 	}
 
-	public void set_submit_arrival(String time)
+	public int fetch_comfort()
 	{
-		set_submit_time(KEY_ARRIVAL, time);
+		Cursor c = mDbHelper.mDb.query(DATABASE_SUBMIT_TABLE,
+				new String[] {KEY_ROWID, KEY_COMFORT},
+				KEY_COMFORT + " IS NOT NULL", null, null, null, null, "1");
+		return c.moveToFirst() ? c.getInt(1) : 3;
 	}
 
-	public void clear_submit_table()
+	public void save_submit(String company, String bus_brand,
+			String from_city, String from_station, String to_city,
+			String to_station, String scheduled_departure,
+			String actual_departure, String arrival_time,
+			String counter, int safety, int comfort, String comment)
 	{
-		mDbHelper.mDb.delete(DATABASE_SUBMIT_TABLE, null, null);
-	}
+		ContentValues cv = new ContentValues();
+		cv.put(KEY_COMP, company);
+		cv.put(KEY_BRAND, bus_brand);
+		cv.put(KEY_FROM_CITY, from_city);
+		cv.put(KEY_FROM_STN, from_station);
+		cv.put(KEY_TO_CITY, to_city);
+		cv.put(KEY_TO_STN, to_station);
+		cv.put(KEY_SCHED_DEP, scheduled_departure);
+		cv.put(KEY_ACTUAL_DEP, actual_departure);
+		cv.put(KEY_ARRIVAL, arrival_time);
+		cv.put(KEY_CTR, counter);
+		cv.put(KEY_SAFETY, safety);
+		cv.put(KEY_COMFORT, comfort);
+		cv.put(KEY_COMMENT, comment);
 
-	private void set_submit_time(String key, String time)
-	{
-		Log.i(TAG, "set_submit_time(" + key + ", " + time + ")");
 		Cursor c =  mDbHelper.mDb.query(DATABASE_SUBMIT_TABLE, new String[] {KEY_ROWID},
 				null, null, null, null, null, "1");
-		ContentValues cv = new ContentValues();
-		cv.put(key, time);
 		if (c.moveToFirst()) {
 			long row_id = c.getInt(0);
 			if (row_id != -1) {
@@ -491,6 +510,11 @@ public class DbAdapter
 			mDbHelper.mDb.insert(DATABASE_SUBMIT_TABLE, null, cv);
 		}
 		c.close();
+	}
+
+	public void clear_submit_table()
+	{
+		mDbHelper.mDb.delete(DATABASE_SUBMIT_TABLE, null, null);
 	}
 }
 
