@@ -196,11 +196,11 @@ public class SubmitTripActivity extends Activity
 
 		Cursor c_sched_time = mDbHelper.fetch_submit_sched_time();
 		if (c_sched_time.moveToFirst()) {
-			data.sched_time.year = c_sched_time.getInt(1);
-			data.sched_time.month = c_sched_time.getInt(2);
-			data.sched_time.day = c_sched_time.getInt(3);
-			data.sched_time.hour = c_sched_time.getInt(4);
-			data.sched_time.minute = c_sched_time.getInt(5);
+			data.sched_time.year = Integer.parseInt(c_sched_time.getString(1));
+			data.sched_time.month = Integer.parseInt(c_sched_time.getString(2)) - 1;
+			data.sched_time.day = Integer.parseInt(c_sched_time.getString(3));
+			data.sched_time.hour = Integer.parseInt(c_sched_time.getString(4));
+			data.sched_time.minute = Integer.parseInt(c_sched_time.getString(5));
 		} else {
 			data.sched_time.year = cal.get(Calendar.YEAR);
 			data.sched_time.month = cal.get(Calendar.MONTH);
@@ -211,11 +211,11 @@ public class SubmitTripActivity extends Activity
 
 		Cursor c_depart_time = mDbHelper.fetch_submit_depart_time();
 		if (c_depart_time.moveToFirst()) {
-			data.depart_time.year = c_depart_time.getInt(1);
-			data.depart_time.month = c_depart_time.getInt(2);
-			data.depart_time.day = c_depart_time.getInt(3);
-			data.depart_time.hour = c_depart_time.getInt(4);
-			data.depart_time.minute = c_depart_time.getInt(5);
+			data.depart_time.year = Integer.parseInt(c_depart_time.getString(1));
+			data.depart_time.month = Integer.parseInt(c_depart_time.getString(2)) - 1;
+			data.depart_time.day = Integer.parseInt(c_depart_time.getString(3));
+			data.depart_time.hour = Integer.parseInt(c_depart_time.getString(4));
+			data.depart_time.minute = Integer.parseInt(c_depart_time.getString(5));
 		} else {
 			data.depart_time.year = cal.get(Calendar.YEAR);
 			data.depart_time.month = cal.get(Calendar.MONTH);
@@ -226,11 +226,11 @@ public class SubmitTripActivity extends Activity
 
 		Cursor c_arrival_time = mDbHelper.fetch_submit_arrival_time();
 		if (c_arrival_time.moveToFirst()) {
-			data.arrival_time.year = c_arrival_time.getInt(1);
-			data.arrival_time.month = c_arrival_time.getInt(2);
-			data.arrival_time.day = c_arrival_time.getInt(3);
-			data.arrival_time.hour = c_arrival_time.getInt(4);
-			data.arrival_time.minute = c_arrival_time.getInt(5);
+			data.arrival_time.year = Integer.parseInt(c_arrival_time.getString(1));
+			data.arrival_time.month = Integer.parseInt(c_arrival_time.getString(2)) - 1;
+			data.arrival_time.day = Integer.parseInt(c_arrival_time.getString(3));
+			data.arrival_time.hour = Integer.parseInt(c_arrival_time.getString(4));
+			data.arrival_time.minute = Integer.parseInt(c_arrival_time.getString(5));
 		} else {
 			data.arrival_time.year = cal.get(Calendar.YEAR);
 			data.arrival_time.month = cal.get(Calendar.MONTH);
@@ -489,7 +489,7 @@ public class SubmitTripActivity extends Activity
 					mData.sched_time.year = year;
 					mData.sched_time.month = monthOfYear;
 					mData.sched_time.day = dayOfMonth;
-					mDbHelper.set_submit_sched(mData.sched_time);
+					mDbHelper.set_submit_sched(format_time(mData.sched_time));
 					update_date_label(R.id.sched_date_button,
 							mData.sched_time);
 				}
@@ -501,7 +501,7 @@ public class SubmitTripActivity extends Activity
 						int hourOfDay, int minute) {
 					mData.sched_time.hour = hourOfDay;
 					mData.sched_time.minute = minute;
-					mDbHelper.set_submit_sched(mData.sched_time);
+					mDbHelper.set_submit_sched(format_time(mData.sched_time));
 					update_time_label(R.id.sched_time_button,
 							mData.sched_time);
 				}
@@ -514,7 +514,7 @@ public class SubmitTripActivity extends Activity
 					mData.depart_time.year = year;
 					mData.depart_time.month = monthOfYear;
 					mData.depart_time.day = dayOfMonth;
-					mDbHelper.set_submit_depart(mData.depart_time);
+					mDbHelper.set_submit_depart(format_time(mData.depart_time));
 					update_date_label(R.id.depart_date_button,
 							mData.depart_time);
 				}
@@ -526,7 +526,7 @@ public class SubmitTripActivity extends Activity
 						int hourOfDay, int minute) {
 					mData.depart_time.hour = hourOfDay;
 					mData.depart_time.minute = minute;
-					mDbHelper.set_submit_depart(mData.depart_time);
+					mDbHelper.set_submit_depart(format_time(mData.depart_time));
 					update_time_label(R.id.depart_time_button,
 							mData.depart_time);
 				}
@@ -538,7 +538,7 @@ public class SubmitTripActivity extends Activity
 					mData.arrival_time.year = year;
 					mData.arrival_time.month = monthOfYear;
 					mData.arrival_time.day = dayOfMonth;
-					mDbHelper.set_submit_arrival(mData.arrival_time);
+					mDbHelper.set_submit_arrival(format_time(mData.arrival_time));
 					update_date_label(R.id.arrival_date_button,
 							mData.arrival_time);
 				}
@@ -550,7 +550,7 @@ public class SubmitTripActivity extends Activity
 						int hourOfDay, int minute) {
 					mData.arrival_time.hour = hourOfDay;
 					mData.arrival_time.minute = minute;
-					mDbHelper.set_submit_arrival(mData.arrival_time);
+					mDbHelper.set_submit_arrival(format_time(mData.arrival_time));
 					update_time_label(R.id.arrival_time_button,
 							mData.arrival_time);
 				}

@@ -25,9 +25,8 @@ import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 import android.widget.Toast;
-
-import com.sweetiepiggy.raspberrybusmalaysia.DataWrapper.date_and_time;
 
 public class DbAdapter
 {
@@ -52,7 +51,7 @@ public class DbAdapter
 	public static final String AVG_DELAY = "avg(" + TRIP_DELAY + ")";
 	public static final String NUM_TRIPS = "count(" + KEY_COMP + ")";
 
-//	private static final String TAG = "DbAdapter";
+	private static final String TAG = "DbAdapter";
 	private DatabaseHelper mDbHelper;
 
 	private static final String DATABASE_NAME = "rbm.db";
@@ -82,13 +81,13 @@ public class DbAdapter
 		KEY_ROWID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
 		KEY_COMP + " TEXT, " +
 		KEY_BRAND + " TEXT, " +
-		KEY_FROM_CITY + " TEXT NOT NULL, " +
+		KEY_FROM_CITY + " TEXT, " +
 		KEY_FROM_STN + " TEXT, " +
-		KEY_TO_CITY + " TEXT NOT NULL, " +
+		KEY_TO_CITY + " TEXT, " +
 		KEY_TO_STN + " TEXT, " +
-		KEY_SCHED_DEP + " TEXT NOT NULL, " +
-		KEY_ACTUAL_DEP + " TEXT NOT NULL, " +
-		KEY_ARRIVAL + " TEXT NOT NULL, " +
+		KEY_SCHED_DEP + " TEXT, " +
+		KEY_ACTUAL_DEP + " TEXT, " +
+		KEY_ARRIVAL + " TEXT, " +
 		KEY_CTR + " TEXT, " +
 		KEY_SAFETY + " INTEGER, " +
 		KEY_COMFORT + " INTEGER, " +
@@ -263,7 +262,7 @@ public class DbAdapter
 		return mDbHelper.mDb.rawQuery("SELECT DISTINCT city FROM " +
 				"(SELECT " + KEY_FROM_CITY + " as city from " + DATABASE_TABLE + " UNION " +
 				"SELECT " + KEY_TO_CITY + " as city from " + DATABASE_TABLE + ")" +
-				" ORDER BY city ASC;",
+				" ORDER BY city ASC",
 				null);
 	}
 
@@ -300,7 +299,7 @@ public class DbAdapter
 		return mDbHelper.mDb.rawQuery("SELECT DISTINCT station FROM " +
 				"(SELECT " + KEY_FROM_STN + " as station from " + DATABASE_TABLE + " UNION " +
 				"SELECT " + KEY_TO_STN + " as station from " + DATABASE_TABLE + ")" +
-				" ORDER BY station ASC;",
+				" ORDER BY station ASC",
 				null);
 	}
 
@@ -423,8 +422,10 @@ public class DbAdapter
 					"strftime(\"%Y\", " + KEY_SCHED_DEP + ")",
 					"strftime(\"%m\", " + KEY_SCHED_DEP + ")",
 					"strftime(\"%d\", " + KEY_SCHED_DEP + ")",
+					"strftime(\"%H\", " + KEY_SCHED_DEP + ")",
+					"strftime(\"%M\", " + KEY_SCHED_DEP + ")",
 				},
-				null, null, null, null, null, "1");
+				KEY_SCHED_DEP + " IS NOT NULL", null, null, null, null, "1");
 	}
 
 	public Cursor fetch_submit_depart_time()
@@ -434,8 +435,10 @@ public class DbAdapter
 					"strftime(\"%Y\", " + KEY_ACTUAL_DEP + ")",
 					"strftime(\"%m\", " + KEY_ACTUAL_DEP + ")",
 					"strftime(\"%d\", " + KEY_ACTUAL_DEP + ")",
+					"strftime(\"%H\", " + KEY_ACTUAL_DEP + ")",
+					"strftime(\"%M\", " + KEY_ACTUAL_DEP + ")",
 				},
-				null, null, null, null, null, "1");
+				KEY_ACTUAL_DEP + " IS NOT NULL", null, null, null, null, "1");
 	}
 
 	public Cursor fetch_submit_arrival_time()
@@ -445,20 +448,44 @@ public class DbAdapter
 					"strftime(\"%Y\", " + KEY_ARRIVAL + ")",
 					"strftime(\"%m\", " + KEY_ARRIVAL + ")",
 					"strftime(\"%d\", " + KEY_ARRIVAL + ")",
+					"strftime(\"%H\", " + KEY_ARRIVAL + ")",
+					"strftime(\"%M\", " + KEY_ARRIVAL + ")",
 				},
+				KEY_ARRIVAL + " IS NOT NULL", null, null, null, null, "1");
+	}
+
+	public void set_submit_sched(String time)
+	{
+		set_submit_time(KEY_SCHED_DEP, time);
+	}
+
+	public void set_submit_depart(String time)
+	{
+		set_submit_time(KEY_ACTUAL_DEP, time);
+	}
+
+	public void set_submit_arrival(String time)
+	{
+		set_submit_time(KEY_ARRIVAL, time);
+	}
+
+	private void set_submit_time(String key, String time)
+	{
+		Log.i(TAG, "set_submit_time(" + key + ", " + time + ")");
+		Cursor c =  mDbHelper.mDb.query(DATABASE_SUBMIT_TABLE, new String[] {KEY_ROWID},
 				null, null, null, null, null, "1");
-	}
-
-	public void set_submit_sched(date_and_time dt)
-	{
-	}
-
-	public void set_submit_depart(date_and_time dt)
-	{
-	}
-
-	public void set_submit_arrival(date_and_time dt)
-	{
+		ContentValues cv = new ContentValues();
+		cv.put(key, time);
+		if (c.moveToFirst()) {
+			long row_id = c.getInt(0);
+			if (row_id != -1) {
+				mDbHelper.mDb.update(DATABASE_SUBMIT_TABLE, cv,
+						KEY_ROWID + " = ?", new String[] {Long.toString(row_id)});
+			}
+		} else {
+			mDbHelper.mDb.insert(DATABASE_SUBMIT_TABLE, null, cv);
+		}
+		c.close();
 	}
 }
 
