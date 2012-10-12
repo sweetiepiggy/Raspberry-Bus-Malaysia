@@ -55,8 +55,10 @@ public class DbAdapter
 
 	private static final String DATABASE_NAME = "rbm.db";
 	private static final String DATABASE_TABLE = "trips";
-	private static final String DATABASE_SUBMIT_TABLE = "submit";
-	private static final int DATABASE_VERSION = 6;
+	/** "tmp" table was originally named "submit" in db-v7 / rbm-v0.1.1 */
+	private static final String DATABASE_TMP_TABLE_OLD = "submit";
+	private static final String DATABASE_TMP_TABLE = "tmp";
+	private static final int DATABASE_VERSION = 7;
 
 	private static final String DATABASE_CREATE =
 		"CREATE TABLE " + DATABASE_TABLE + " (" +
@@ -75,8 +77,8 @@ public class DbAdapter
 		KEY_COMFORT + " INTEGER, " +
 		KEY_COMMENT + " TEXT);";
 
-	private static final String DATABASE_CREATE_SUBMIT =
-		"CREATE TABLE " + DATABASE_SUBMIT_TABLE + " (" +
+	private static final String DATABASE_CREATE_TMP =
+		"CREATE TABLE " + DATABASE_TMP_TABLE + " (" +
 		KEY_ROWID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
 		KEY_COMP + " TEXT, " +
 		KEY_BRAND + " TEXT, " +
@@ -109,9 +111,9 @@ public class DbAdapter
 		public void onCreate(SQLiteDatabase db)
 		{
 			db.execSQL("DROP TABLE IF EXISTS " + DATABASE_TABLE);
-			db.execSQL("DROP TABLE IF EXISTS " + DATABASE_SUBMIT_TABLE);
+			db.execSQL("DROP TABLE IF EXISTS " + DATABASE_TMP_TABLE);
 			db.execSQL(DATABASE_CREATE);
-			db.execSQL(DATABASE_CREATE_SUBMIT);
+			db.execSQL(DATABASE_CREATE_TMP);
 			if (mAllowSync) {
 				SyncTask sync = new SyncTask(mCtx);
 				sync.execute();
@@ -124,10 +126,15 @@ public class DbAdapter
 		{
 			//Log.i(TAG, "upgrading database from " + old_ver +
 					//" to " + new_ver);
-			if (old_ver == 5) {
-				db.execSQL(DATABASE_CREATE_SUBMIT);
-			} else {
+			switch (old_ver) {
+			case 5:
+			case 6:
+				db.execSQL("DROP TABLE IF EXISTS " + DATABASE_TMP_TABLE_OLD);
+				db.execSQL(DATABASE_CREATE_TMP);
+				break;
+			default:
 				onCreate(db);
+				break;
 			}
 		}
 
@@ -414,9 +421,9 @@ public class DbAdapter
 		return ret;
 	}
 
-	public Cursor fetch_submit_sched_time()
+	public Cursor fetch_tmp_sched_time()
 	{
-		return mDbHelper.mDb.query(DATABASE_SUBMIT_TABLE,
+		return mDbHelper.mDb.query(DATABASE_TMP_TABLE,
 				new String[] {KEY_ROWID,
 					"strftime(\"%Y\", " + KEY_SCHED_DEP + ")",
 					"strftime(\"%m\", " + KEY_SCHED_DEP + ")",
@@ -427,9 +434,9 @@ public class DbAdapter
 				KEY_SCHED_DEP + " IS NOT NULL", null, null, null, null, "1");
 	}
 
-	public Cursor fetch_submit_depart_time()
+	public Cursor fetch_tmp_depart_time()
 	{
-		return mDbHelper.mDb.query(DATABASE_SUBMIT_TABLE,
+		return mDbHelper.mDb.query(DATABASE_TMP_TABLE,
 				new String[] {KEY_ROWID,
 					"strftime(\"%Y\", " + KEY_ACTUAL_DEP + ")",
 					"strftime(\"%m\", " + KEY_ACTUAL_DEP + ")",
@@ -440,9 +447,9 @@ public class DbAdapter
 				KEY_ACTUAL_DEP + " IS NOT NULL", null, null, null, null, "1");
 	}
 
-	public Cursor fetch_submit_arrival_time()
+	public Cursor fetch_tmp_arrival_time()
 	{
-		return mDbHelper.mDb.query(DATABASE_SUBMIT_TABLE,
+		return mDbHelper.mDb.query(DATABASE_TMP_TABLE,
 				new String[] {KEY_ROWID,
 					"strftime(\"%Y\", " + KEY_ARRIVAL + ")",
 					"strftime(\"%m\", " + KEY_ARRIVAL + ")",
@@ -453,9 +460,9 @@ public class DbAdapter
 				KEY_ARRIVAL + " IS NOT NULL", null, null, null, null, "1");
 	}
 
-	public String fetch_submit(String key)
+	public String fetch_tmp(String key)
 	{
-		Cursor c = mDbHelper.mDb.query(DATABASE_SUBMIT_TABLE,
+		Cursor c = mDbHelper.mDb.query(DATABASE_TMP_TABLE,
 				new String[] {KEY_ROWID, key},
 				key + " IS NOT NULL", null, null, null, null, "1");
 		return c.moveToFirst() ? c.getString(1) : "";
@@ -463,7 +470,7 @@ public class DbAdapter
 
 	public int fetch_safety()
 	{
-		Cursor c = mDbHelper.mDb.query(DATABASE_SUBMIT_TABLE,
+		Cursor c = mDbHelper.mDb.query(DATABASE_TMP_TABLE,
 				new String[] {KEY_ROWID, KEY_SAFETY},
 				KEY_SAFETY + " IS NOT NULL", null, null, null, null, "1");
 		return c.moveToFirst() ? c.getInt(1) : 3;
@@ -471,13 +478,13 @@ public class DbAdapter
 
 	public int fetch_comfort()
 	{
-		Cursor c = mDbHelper.mDb.query(DATABASE_SUBMIT_TABLE,
+		Cursor c = mDbHelper.mDb.query(DATABASE_TMP_TABLE,
 				new String[] {KEY_ROWID, KEY_COMFORT},
 				KEY_COMFORT + " IS NOT NULL", null, null, null, null, "1");
 		return c.moveToFirst() ? c.getInt(1) : 3;
 	}
 
-	public void save_submit(String company, String bus_brand,
+	public void save_tmp(String company, String bus_brand,
 			String from_city, String from_station, String to_city,
 			String to_station, String scheduled_departure,
 			String actual_departure, String arrival_time,
@@ -498,23 +505,23 @@ public class DbAdapter
 		cv.put(KEY_COMFORT, comfort);
 		cv.put(KEY_COMMENT, comment);
 
-		Cursor c =  mDbHelper.mDb.query(DATABASE_SUBMIT_TABLE, new String[] {KEY_ROWID},
+		Cursor c =  mDbHelper.mDb.query(DATABASE_TMP_TABLE, new String[] {KEY_ROWID},
 				null, null, null, null, null, "1");
 		if (c.moveToFirst()) {
 			long row_id = c.getInt(0);
 			if (row_id != -1) {
-				mDbHelper.mDb.update(DATABASE_SUBMIT_TABLE, cv,
+				mDbHelper.mDb.update(DATABASE_TMP_TABLE, cv,
 						KEY_ROWID + " = ?", new String[] {Long.toString(row_id)});
 			}
 		} else {
-			mDbHelper.mDb.insert(DATABASE_SUBMIT_TABLE, null, cv);
+			mDbHelper.mDb.insert(DATABASE_TMP_TABLE, null, cv);
 		}
 		c.close();
 	}
 
-	public void clear_submit_table()
+	public void clear_tmp_table()
 	{
-		mDbHelper.mDb.delete(DATABASE_SUBMIT_TABLE, null, null);
+		mDbHelper.mDb.delete(DATABASE_TMP_TABLE, null, null);
 	}
 }
 

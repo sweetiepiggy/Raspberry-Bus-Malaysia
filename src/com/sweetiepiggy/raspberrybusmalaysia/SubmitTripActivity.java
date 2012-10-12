@@ -101,7 +101,7 @@ public class SubmitTripActivity extends Activity
 		int safety = (int) ((RatingBar) findViewById(R.id.safety_bar)).getRating();
 		int comfort = (int) ((RatingBar) findViewById(R.id.comfort_bar)).getRating();
 		String comment = ((EditText) findViewById(R.id.comment_entry)).getText().toString();
-		mDbHelper.save_submit(company, brand, from_city,
+		mDbHelper.save_tmp(company, brand, from_city,
 				from_station, to_city, to_station, sched_time,
 				depart_time, arrival_time, counter_num,
 				safety, comfort, comment);
@@ -210,13 +210,13 @@ public class SubmitTripActivity extends Activity
 
 	private void init_vars(DataWrapper data)
 	{
-		Cursor c_sched_time = mDbHelper.fetch_submit_sched_time();
+		Cursor c_sched_time = mDbHelper.fetch_tmp_sched_time();
 		init_time(c_sched_time, data.sched_time);
 
-		Cursor c_depart_time = mDbHelper.fetch_submit_depart_time();
+		Cursor c_depart_time = mDbHelper.fetch_tmp_depart_time();
 		init_time(c_depart_time, data.depart_time);
 
-		Cursor c_arrival_time = mDbHelper.fetch_submit_arrival_time();
+		Cursor c_arrival_time = mDbHelper.fetch_tmp_arrival_time();
 		init_time(c_arrival_time, data.arrival_time);
 	}
 
@@ -248,14 +248,14 @@ public class SubmitTripActivity extends Activity
 		update_brand_autocomplete(R.id.brand_entry);
 		update_counter_num_autocomplete(R.id.counter_num_entry);
 
-		String from_city = mDbHelper.fetch_submit(DbAdapter.KEY_FROM_CITY);
-		String from_station = mDbHelper.fetch_submit(DbAdapter.KEY_FROM_STN);
-		String to_city = mDbHelper.fetch_submit(DbAdapter.KEY_TO_CITY);
-		String to_station = mDbHelper.fetch_submit(DbAdapter.KEY_TO_STN);
-		String company = mDbHelper.fetch_submit(DbAdapter.KEY_COMP);
-		String brand = mDbHelper.fetch_submit(DbAdapter.KEY_BRAND);
-		String counter_num = mDbHelper.fetch_submit(DbAdapter.KEY_CTR);
-		String comment = mDbHelper.fetch_submit(DbAdapter.KEY_COMMENT);
+		String from_city = mDbHelper.fetch_tmp(DbAdapter.KEY_FROM_CITY);
+		String from_station = mDbHelper.fetch_tmp(DbAdapter.KEY_FROM_STN);
+		String to_city = mDbHelper.fetch_tmp(DbAdapter.KEY_TO_CITY);
+		String to_station = mDbHelper.fetch_tmp(DbAdapter.KEY_TO_STN);
+		String company = mDbHelper.fetch_tmp(DbAdapter.KEY_COMP);
+		String brand = mDbHelper.fetch_tmp(DbAdapter.KEY_BRAND);
+		String counter_num = mDbHelper.fetch_tmp(DbAdapter.KEY_CTR);
+		String comment = mDbHelper.fetch_tmp(DbAdapter.KEY_COMMENT);
 		int safety = mDbHelper.fetch_safety();
 		int comfort = mDbHelper.fetch_comfort();
 
@@ -414,7 +414,7 @@ public class SubmitTripActivity extends Activity
 		Button cancel_button = (Button)findViewById(R.id.cancel_button);
 		cancel_button.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
-				mDbHelper.clear_submit_table();
+				mDbHelper.clear_tmp_table();
 				init_vars(mData);
 				init_entries();
 				init_date_time_buttons();
