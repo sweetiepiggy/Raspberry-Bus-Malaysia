@@ -149,7 +149,9 @@ public class RouteActivity extends Activity
 		company.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v)
 			{
-				print_rows(from_city, to_city, DbAdapter.KEY_COMP);
+				String company_key = ((RadioButton) findViewById(R.id.bus_brand_radio)).isChecked() ?
+					DbAdapter.KEY_BRAND : DbAdapter.KEY_COMP;
+				print_rows(from_city, to_city, company_key);
 			}
 		});
 
