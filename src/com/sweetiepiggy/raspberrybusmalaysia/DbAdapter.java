@@ -330,40 +330,13 @@ public class DbAdapter
 				KEY_CTR, null, KEY_CTR + " ASC", null);
 	}
 
-	public Cursor fetch_avg_by_company(String from_city, String to_city)
+	public Cursor fetch_avg(String from_city, String to_city, String group_by, String sort_by)
 	{
 		return mDbHelper.mDb.query(true, DATABASE_TABLE,
-				new String[] {KEY_COMP, AVG_TIME, AVG_DELAY, NUM_TRIPS},
+				new String[] {KEY_COMP, KEY_BRAND, AVG_TIME, AVG_DELAY, NUM_TRIPS},
 				KEY_FROM_CITY + " = ? AND " + KEY_TO_CITY + " = ? AND " + KEY_ARRIVAL + "!= 'Cancelled'",
 				new String[] {from_city, to_city},
-				KEY_COMP, null, AVG_TIME + " ASC", null);
-	}
-
-	public Cursor fetch_avg_by_company_sort_delay(String from_city, String to_city)
-	{
-		return mDbHelper.mDb.query(true, DATABASE_TABLE,
-				new String[] {KEY_COMP, AVG_TIME, AVG_DELAY, NUM_TRIPS},
-				KEY_FROM_CITY + " = ? AND " + KEY_TO_CITY + " = ? AND " + KEY_ARRIVAL + "!= 'Cancelled'",
-				new String[] {from_city, to_city},
-				KEY_COMP, null, AVG_DELAY + " ASC", null);
-	}
-
-	public Cursor fetch_avg_by_company_sort_company(String from_city, String to_city)
-	{
-		return mDbHelper.mDb.query(true, DATABASE_TABLE,
-				new String[] {KEY_COMP, AVG_TIME, AVG_DELAY, NUM_TRIPS},
-				KEY_FROM_CITY + " = ? AND " + KEY_TO_CITY + " = ? AND " + KEY_ARRIVAL + "!= 'Cancelled'",
-				new String[] {from_city, to_city},
-				KEY_COMP, null, KEY_COMP + " ASC", null);
-	}
-
-	public Cursor fetch_avg_by_company_sort_trips(String from_city, String to_city)
-	{
-		return mDbHelper.mDb.query(true, DATABASE_TABLE,
-				new String[] {KEY_COMP, AVG_TIME, AVG_DELAY, NUM_TRIPS},
-				KEY_FROM_CITY + " = ? AND " + KEY_TO_CITY + " = ? AND " + KEY_ARRIVAL + "!= 'Cancelled'",
-				new String[] {from_city, to_city},
-				KEY_COMP, null, NUM_TRIPS + " DESC", null);
+				group_by, null, sort_by + " ASC", null);
 	}
 
 	public Cursor fetch_companies(String company_query)

@@ -52,6 +52,24 @@
 			android:drawSelectorOnTop="true"
 			android:prompt="@string/to"/>
 
+		<RadioGroup xmlns:android="http://schemas.android.com/apk/res/android"
+			android:layout_width="fill_parent"
+			android:layout_height="wrap_content"
+			android:orientation="horizontal">
+		<RadioButton android:id="@+id/company_radio"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_weight="1"
+			android:text="@string/company"
+			android:onClick="on_radio_button_clicked"/>
+		<RadioButton android:id="@+id/bus_brand_radio"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_weight="1"
+			android:text="@string/brand"
+			android:onClick="on_radio_button_clicked"/>
+		</RadioGroup>
+
 		<TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
 		android:id="@+id/results_layout"
 		android:layout_width="fill_parent"
