@@ -282,6 +282,7 @@ public class RouteActivity extends Activity
 				b.putString("company", company);
 				b.putString("from_city", from_city);
 				b.putString("to_city", to_city);
+				b.putBoolean("is_brand", ((RadioButton) findViewById(R.id.bus_brand_radio)).isChecked());
 				intent.putExtras(b);
 				startActivity(intent);
 			}

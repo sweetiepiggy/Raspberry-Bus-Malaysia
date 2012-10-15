@@ -354,6 +354,14 @@ public class DbAdapter
 				null, null, null, null);
 	}
 
+	public Cursor fetch_avg_brand(String from_city, String to_city, String brand)
+	{
+		return mDbHelper.mDb.query(true, DATABASE_TABLE, new String[] {AVG_TIME, AVG_DELAY, NUM_TRIPS},
+				KEY_BRAND + " = ? AND " + KEY_FROM_CITY + " = ? AND " + KEY_TO_CITY + " = ?",
+				new String[] {brand, from_city, to_city},
+				null, null, null, null);
+	}
+
 	public Cursor fetch_avg_delay(String company)
 	{
 		return mDbHelper.mDb.query(true, DATABASE_TABLE, new String[] {AVG_DELAY},
@@ -365,6 +373,14 @@ public class DbAdapter
 		return mDbHelper.mDb.query(DATABASE_TABLE, new String[] {KEY_SCHED_DEP, TRIP_DELAY, TRIP_TIME},
 				KEY_COMP + " = ? AND " + KEY_FROM_CITY + " = ? AND " + KEY_TO_CITY + " = ?",
 				new String[] {company, from_city, to_city},
+				null, null, "strftime('%s', " + KEY_SCHED_DEP + ") DESC", null);
+	}
+
+	public Cursor fetch_trips_brand(String from_city, String to_city, String brand)
+	{
+		return mDbHelper.mDb.query(DATABASE_TABLE, new String[] {KEY_SCHED_DEP, TRIP_DELAY, TRIP_TIME},
+				KEY_BRAND + " = ? AND " + KEY_FROM_CITY + " = ? AND " + KEY_TO_CITY + " = ?",
+				new String[] {brand, from_city, to_city},
 				null, null, "strftime('%s', " + KEY_SCHED_DEP + ") DESC", null);
 	}
 

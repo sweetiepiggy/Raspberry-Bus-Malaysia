@@ -31,6 +31,7 @@ import android.widget.TextView;
 
 public class TripsActivity extends Activity {
 	private DbAdapter mDbHelper;
+	private boolean m_is_brand = false;
 
 	/** Called when the activity is first created. */
 	@Override
@@ -42,6 +43,7 @@ public class TripsActivity extends Activity {
 		String from_city = (b == null) ? "<NULL>" : b.getString("from_city");
 		String to_city = (b == null) ? "<NULL>" : b.getString("to_city");
 		String company = (b == null) ? "<NULL>" : b.getString("company");
+		m_is_brand = (b == null) ? false : b.getBoolean("is_brand");
 		String company_display = company.length() == 0 ? getResources().getString(R.string.unknown) : company;
 
 		((TextView) findViewById(R.id.company)).setText(company_display);
@@ -65,7 +67,9 @@ public class TripsActivity extends Activity {
 	private void print_averages(String from_city, String to_city,
 			String company)
 	{
-		Cursor c = mDbHelper.fetch_avg(from_city, to_city, company);
+		Cursor c = m_is_brand ?
+			mDbHelper.fetch_avg_brand(from_city, to_city, company) :
+			mDbHelper.fetch_avg(from_city, to_city, company);
 		startManagingCursor(c);
 
 		if (c.moveToFirst()) do {
@@ -77,8 +81,9 @@ public class TripsActivity extends Activity {
 	private void print_rows(String from_city, String to_city,
 			String company)
 	{
-		Cursor c = mDbHelper.fetch_trips(from_city, to_city,
-				company);
+		Cursor c = m_is_brand ?
+			mDbHelper.fetch_trips_brand(from_city, to_city, company) :
+			mDbHelper.fetch_trips(from_city, to_city, company);
 		startManagingCursor(c);
 		if (c.moveToFirst()) do {
 			String sched_dep = c.getString(c.getColumnIndex(DbAdapter.KEY_SCHED_DEP));

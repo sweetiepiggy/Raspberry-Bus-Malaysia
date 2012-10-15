@@ -132,6 +132,7 @@ public class CompanyResultActivity extends Activity
 				b.putString("company", company);
 				b.putString("from_city", from_city);
 				b.putString("to_city", to_city);
+				b.putBoolean("is_brand", false);
 				intent.putExtras(b);
 				startActivity(intent);
 			}
