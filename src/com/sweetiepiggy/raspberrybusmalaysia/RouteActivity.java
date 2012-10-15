@@ -143,6 +143,9 @@ public class RouteActivity extends Activity
 	private void init_labels(final String from_city, final String to_city)
 	{
 		TextView company = (TextView) findViewById(R.id.company);
+		int company_text_id = ((RadioButton) findViewById(R.id.bus_brand_radio)).isChecked() ?
+			R.string.brand : R.string.company;
+		company.setText(company_text_id);
 		company.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v)
 			{
@@ -177,6 +180,8 @@ public class RouteActivity extends Activity
 
 	private void print_rows(String from_city, String to_city, String sort_by)
 	{
+		init_labels(from_city, to_city);
+
 		String group_by = ((RadioButton) findViewById(R.id.bus_brand_radio)).isChecked() ?
 			DbAdapter.KEY_BRAND : DbAdapter.KEY_COMP;
 		Cursor c = mDbHelper.fetch_avg(from_city, to_city, group_by, sort_by);
