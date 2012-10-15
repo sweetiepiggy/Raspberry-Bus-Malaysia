@@ -51,11 +51,39 @@
 			android:layout_height="wrap_content"
 			android:drawSelectorOnTop="true"
 			android:prompt="@string/to"/>
-		<Button
-			android:id="@+id/submit_button"
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content"
-			android:text="@string/submit" />
+
+		<TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+		android:id="@+id/results_layout"
+		android:layout_width="fill_parent"
+		android:layout_height="fill_parent"
+		android:stretchColumns="1" >
+			<TableRow>
+				<Button
+					android:id="@+id/company"
+					android:layout_width="fill_parent"
+					android:layout_height="fill_parent"
+					android:textStyle="bold"
+					android:text="@string/company"/>
+				<Button
+					android:id="@+id/avg_time"
+					android:layout_width="fill_parent"
+					android:layout_height="fill_parent"
+					android:textStyle="bold"
+					android:text="@string/avg_time"/>
+				<Button
+					android:id="@+id/avg_delay"
+					android:layout_width="fill_parent"
+					android:layout_height="fill_parent"
+					android:textStyle="bold"
+					android:text="@string/avg_delay"/>
+				<Button
+					android:id="@+id/num_trips"
+					android:layout_width="fill_parent"
+					android:layout_height="fill_parent"
+					android:textStyle="bold"
+					android:text="@string/num_trips"/>
+			</TableRow>
+		</TableLayout>
 
 	</LinearLayout>
 </ScrollView>

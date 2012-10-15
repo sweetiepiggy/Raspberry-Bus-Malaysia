@@ -20,7 +20,6 @@
 			</intent-filter>
 		</activity>
 		<activity android:name="RouteActivity"></activity>
-		<activity android:name="RouteResultActivity"></activity>
 		<activity android:name="CompanyActivity">
 			<intent-filter>
 				<action android:name="android.intent.action.SEARCH" />
