@@ -23,9 +23,12 @@ import java.util.Calendar;
 import java.util.Date;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.app.TimePickerDialog;
+import android.content.DialogInterface;
+import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
@@ -34,7 +37,6 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
-import android.widget.CheckBox;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.RatingBar;
@@ -270,7 +272,6 @@ public class SubmitTripActivity extends Activity
 		((RatingBar) findViewById(R.id.safety_bar)).setRating(safety);
 		((RatingBar) findViewById(R.id.comfort_bar)).setRating(comfort);
 		((EditText) findViewById(R.id.comment_entry)).setText(comment);
-		((CheckBox) findViewById(R.id.upload_checkbox)).setChecked(true);
 	}
 
 	private void update_city_autocomplete(int id)
@@ -454,13 +455,10 @@ public class SubmitTripActivity extends Activity
 		Toast.makeText(getApplicationContext(), getResources().getString(msg_id),
 				Toast.LENGTH_SHORT).show();
 
-		if (((CheckBox) findViewById(R.id.upload_checkbox)).isChecked()) {
-			send_email(company, brand, from_city,
-				from_station, to_city, to_station, sched_time,
-				depart_time, arrival_time, counter_num,
-				safety, comfort, comment);
-
-		}
+		send_email(company, brand, from_city,
+			from_station, to_city, to_station, sched_time,
+			depart_time, arrival_time, counter_num,
+			safety, comfort, comment);
 	}
 
 	private void send_email(String company, String bus_brand,
@@ -469,18 +467,35 @@ public class SubmitTripActivity extends Activity
 			String actual_departure, String arrival_time,
 			String counter, String safety, String comfort, String comment)
 	{
-		String msg  = company + ',' + bus_brand + ',' + from_city +
+		final String msg  = company + ',' + bus_brand + ',' + from_city +
 			',' + from_station + ',' + to_city + ',' + to_station +
 			',' + scheduled_departure + ',' + actual_departure +
 			',' + arrival_time + ',' + counter + ',' + safety +
 			',' + comfort + ',' + comment + "\n";
 
-		Intent intent = new Intent(Intent.ACTION_SEND);
-		intent.putExtra(Intent.EXTRA_EMAIL, new String[] {EMAIL_ADDRESS} );
-		intent.putExtra(Intent.EXTRA_SUBJECT, EMAIL_SUBJECT);
-		intent.putExtra(Intent.EXTRA_TEXT, msg);
-		intent.setType("text/plain");
-		startActivity(Intent.createChooser(intent, getResources().getString(R.string.send_email)));
+		AlertDialog.Builder alert = new AlertDialog.Builder(this);
+		alert.setTitle(getResources().getString(android.R.string.dialog_alert_title));
+		alert.setMessage(getResources().getString(R.string.share));
+		alert.setPositiveButton(android.R.string.ok, new OnClickListener() {
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+
+				Intent intent = new Intent(Intent.ACTION_SEND);
+				intent.putExtra(Intent.EXTRA_EMAIL, new String[] {EMAIL_ADDRESS} );
+				intent.putExtra(Intent.EXTRA_SUBJECT, EMAIL_SUBJECT);
+				intent.putExtra(Intent.EXTRA_TEXT, msg);
+				intent.setType("text/plain");
+				startActivity(Intent.createChooser(intent, getResources().getString(R.string.send_email)));
+			}
+		});
+
+		alert.setNegativeButton(android.R.string.cancel, new OnClickListener() {
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+			}
+		});
+
+		alert.show();
 	}
 
 	private String format_time(date_and_time d)

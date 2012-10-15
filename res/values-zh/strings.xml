@@ -24,6 +24,9 @@
 	<string name="app_name">覆盆子巴士马来西亚</string>
 
 	<string name="about">关于</string>
+	<string name="view_source">代码来源</string>
+
+	<string name="open_browser">浏览网络</string>
 
 	<string name="from">从</string>
 	<string name="to">至</string>
@@ -58,8 +61,6 @@
 	<string name="safety">安全</string>
 	<string name="comfort">舒适</string>
 
-	<string name="upload">与其他覆盆子巴士马来西亚用户共享数据</string>
-
 	<string name="route_stat">路线概要</string>
 	<string name="company_stat">公司详情</string>
 	<string name="submit_trip">提交车程</string>
@@ -93,6 +94,8 @@
 	<string name="friday">星期五</string>
 	<string name="saturday">星期六</string>
 	<string name="sunday">星期日</string>
+
+	<string name="share">请电邮此信息给原创者，以便其他用户可共享</string>
 
 	<string name="license">
 版權所有(C) 2012 Sweetie Piggy Apps sweetiepiggyapps@gmail.com\n\n

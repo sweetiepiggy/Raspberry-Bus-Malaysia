@@ -24,6 +24,9 @@
 	<string name="app_name">Raspberry Bus M\'sia</string>
 
 	<string name="about">About</string>
+	<string name="view_source">View Source</string>
+
+	<string name="open_browser">Open Web Browser</string>
 
 	<string name="from">From</string>
 	<string name="to">To</string>
@@ -58,8 +61,6 @@
 	<string name="safety">Safety</string>
 	<string name="comfort">Comfort</string>
 
-	<string name="upload">Share data with other Raspberry Bus Malaysia users</string>
-
 	<string name="route_stat">Route\nSummary</string>
 	<string name="company_stat">Company\nDetails</string>
 	<string name="submit_trip">Submit\nTrip</string>
@@ -93,6 +94,8 @@
 	<string name="friday">Friday</string>
 	<string name="saturday">Saturday</string>
 	<string name="sunday">Sunday</string>
+
+	<string name="share">Please email the developer to share this info with other users</string>
 
 	<string name="license">
 Copyright (C) 2012 Sweetie Piggy Apps sweetiepiggyapps@gmail.com\n\n

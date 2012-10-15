@@ -23,6 +23,9 @@
 	<item android:id="@+id/sync"
 		android:icon="@android:drawable/stat_notify_sync"
 		android:title="@string/sync" />
+	<item android:id="@+id/source"
+		android:icon="@android:drawable/ic_menu_view"
+		android:title="@string/view_source" />
 	<item android:id="@+id/about"
 		android:icon="@android:drawable/ic_dialog_info"
 		android:title="@string/about" />

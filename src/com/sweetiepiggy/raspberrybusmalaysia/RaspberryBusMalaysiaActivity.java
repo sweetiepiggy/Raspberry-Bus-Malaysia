@@ -21,6 +21,7 @@ package com.sweetiepiggy.raspberrybusmalaysia;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -31,6 +32,7 @@ import android.widget.Toast;
 
 public class RaspberryBusMalaysiaActivity extends Activity
 {
+	private static final String SOURCE_URL = "https://github.com/sweetiepiggy/Raspberry-Bus-Malaysia";
 
 	/** Called when the activity is first created. */
 	@Override
@@ -81,9 +83,10 @@ public class RaspberryBusMalaysiaActivity extends Activity
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
+		Intent intent;
 		switch (item.getItemId()) {
 		case R.id.about:
-			Intent intent = new Intent(getApplicationContext(), AboutActivity.class);
+			intent = new Intent(getApplicationContext(), AboutActivity.class);
 			startActivity(intent);
 			return true;
 		case R.id.sync:
@@ -91,6 +94,11 @@ public class RaspberryBusMalaysiaActivity extends Activity
 			sync.execute();
 			Toast.makeText(getApplicationContext(), R.string.syncing,
 					Toast.LENGTH_SHORT).show();
+			return true;
+		case R.id.source:
+			intent = new Intent(Intent.ACTION_VIEW);
+			intent.setDataAndType(Uri.parse(SOURCE_URL), "text/html");
+			startActivity(Intent.createChooser(intent, getResources().getString(R.string.open_browser)));
 			return true;
 		default:
 			return super.onOptionsItemSelected(item);

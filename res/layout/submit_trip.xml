@@ -208,12 +208,6 @@
 			android:hint="@string/comment_hint"
 			android:background="@android:drawable/editbox_background"/>
 
-		<CheckBox
-			android:id="@+id/upload_checkbox"
-			android:layout_width="fill_parent"
-			android:layout_height="wrap_content"
-			android:text="@string/upload" />
-
 		<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
 			android:orientation="horizontal"
 			android:layout_width="fill_parent"

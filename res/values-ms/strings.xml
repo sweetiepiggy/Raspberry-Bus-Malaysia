@@ -24,6 +24,9 @@
 	<string name="app_name">Raspberi Bas Ekspres</string>
 
 	<string name="about">Maklumat</string>
+	<string name="view_source">Sumber</string>
+
+	<string name="open_browser">Melayari Web</string>
 
 	<string name="from">Dari</string>
 	<string name="to">Ke</string>
@@ -57,8 +60,6 @@
 
 	<string name="safety">Keselamatan</string>
 	<string name="comfort">Keselesaan</string>
-
-	<string name="upload">Kongsi data dengan pengguna lain Raspberi Bas Ekspres</string>
 
 	<string name="route_stat">Kesimpulan\nPerjalanan</string>
 	<string name="company_stat">Maklumat\nSyarikat</string>
@@ -94,6 +95,8 @@
 	<string name="friday">Jumaat</string>
 	<string name="saturday">Sabtu</string>
 	<string name="sunday">Ahad</string>
+
+	<string name="share">Sila emel pemaju untuk berkongsi maklumat ini dengan pengguna lain</string>
 
 	<string name="license">
 Copyright (C) 2012 Sweetie Piggy Apps sweetiepiggyapps@gmail.com\n\n
