@@ -129,6 +129,19 @@ public class DbAdapter
 				SyncTask sync = new SyncTask(mCtx);
 				sync.execute();
 				Toast.makeText(mCtx, R.string.syncing, Toast.LENGTH_SHORT).show();
+
+				Cursor c = db.rawQuery("SELECT strftime(\"%Y-%m-%d %H:%M:%S\", 'now')", null);
+				if (!c.moveToFirst()) {
+					return;
+				}
+				String last_update = c.getString(0);
+				c.close();
+
+				ContentValues cv = new ContentValues();
+				cv.put(KEY_LAST_UPDATE, last_update);
+
+				db.delete(DATABASE_LAST_UPDATE_TABLE, null, null);
+				db.insert(DATABASE_LAST_UPDATE_TABLE, null, cv);
 			}
 		}
 
@@ -544,8 +557,6 @@ public class DbAdapter
 				null, null, null, null, null, "1");
 		int ret = c.moveToFirst() ? c.getInt(0) : Integer.MAX_VALUE;
 		c.close();
-
-		Log.i(TAG, "seconds since last_update:[" + Integer.toString(ret) + "]");
 
 		return ret;
 	}
