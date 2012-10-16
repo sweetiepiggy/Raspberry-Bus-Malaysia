@@ -43,6 +43,7 @@ public class DbAdapter
 	public static final String KEY_SAFETY = "safety";
 	public static final String KEY_COMFORT = "comfort";
 	public static final String KEY_COMMENT = "comment";
+	public static final String KEY_LAST_UPDATE = "comment";
 
 	public static final String TRIP_TIME = "(strftime('%s', " + KEY_ARRIVAL + ") - strftime('%s', " + KEY_SCHED_DEP + "))";
 	public static final String TRIP_DELAY = "(strftime('%s', " + KEY_ACTUAL_DEP + ") - strftime('%s', " + KEY_SCHED_DEP + "))";
@@ -58,7 +59,8 @@ public class DbAdapter
 	/** "tmp" table was originally named "submit" in db-v7 / rbm-v0.1.1 */
 	private static final String DATABASE_TMP_TABLE_OLD = "submit";
 	private static final String DATABASE_TMP_TABLE = "tmp";
-	private static final int DATABASE_VERSION = 7;
+	private static final String DATABASE_LAST_UPDATE_TABLE = "last_update";
+	private static final int DATABASE_VERSION = 8;
 
 	private static final String DATABASE_CREATE =
 		"CREATE TABLE " + DATABASE_TABLE + " (" +
@@ -94,6 +96,11 @@ public class DbAdapter
 		KEY_COMFORT + " INTEGER, " +
 		KEY_COMMENT + " TEXT);";
 
+	private static final String DATABASE_CREATE_LAST_UPDATE =
+		"CREATE TABLE " + DATABASE_LAST_UPDATE_TABLE + " (" +
+		KEY_ROWID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+		KEY_LAST_UPDATE + " TEXT);";
+
 	private static class DatabaseHelper extends SQLiteOpenHelper
 	{
 		private final Context mCtx;
@@ -112,8 +119,10 @@ public class DbAdapter
 		{
 			db.execSQL("DROP TABLE IF EXISTS " + DATABASE_TABLE);
 			db.execSQL("DROP TABLE IF EXISTS " + DATABASE_TMP_TABLE);
+			db.execSQL("DROP TABLE IF EXISTS " + DATABASE_LAST_UPDATE_TABLE);
 			db.execSQL(DATABASE_CREATE);
 			db.execSQL(DATABASE_CREATE_TMP);
+			db.execSQL(DATABASE_CREATE_LAST_UPDATE);
 			if (mAllowSync) {
 				SyncTask sync = new SyncTask(mCtx);
 				sync.execute();
@@ -131,6 +140,8 @@ public class DbAdapter
 			case 6:
 				db.execSQL("DROP TABLE IF EXISTS " + DATABASE_TMP_TABLE_OLD);
 				db.execSQL(DATABASE_CREATE_TMP);
+			case 7:
+				db.execSQL(DATABASE_CREATE_LAST_UPDATE);
 				break;
 			default:
 				onCreate(db);
