@@ -51,6 +51,8 @@ public class DbAdapter
 	public static final String AVG_DELAY = "avg(" + TRIP_DELAY + ")";
 	public static final String NUM_TRIPS = "count(" + KEY_COMP + ")";
 
+	private static final int SEC_BETWEEN_UPDATES = 60 * 60 * 24 * 7;
+
 //	private static final String TAG = "DbAdapter";
 	private DatabaseHelper mDbHelper;
 
@@ -193,6 +195,17 @@ public class DbAdapter
 
 		return this;
 	}
+
+	public void check_last_update_and_sync()
+	{
+		if (sec_since_last_update() > SEC_BETWEEN_UPDATES) {
+			SyncTask sync = new SyncTask(mDbHelper.mCtx);
+			sync.execute();
+			Toast.makeText(mDbHelper.mCtx, R.string.syncing, Toast.LENGTH_SHORT).show();
+			set_last_update();
+		}
+	}
+
 
 	public void close()
 	{
@@ -509,10 +522,8 @@ public class DbAdapter
 				null, null, null, null, null, "1");
 		if (c.moveToFirst()) {
 			long row_id = c.getInt(0);
-			if (row_id != -1) {
-				mDbHelper.mDb.update(DATABASE_TMP_TABLE, cv,
-						KEY_ROWID + " = ?", new String[] {Long.toString(row_id)});
-			}
+			mDbHelper.mDb.update(DATABASE_TMP_TABLE, cv,
+					KEY_ROWID + " = ?", new String[] {Long.toString(row_id)});
 		} else {
 			mDbHelper.mDb.insert(DATABASE_TMP_TABLE, null, cv);
 		}
@@ -522,6 +533,37 @@ public class DbAdapter
 	public void clear_tmp_table()
 	{
 		mDbHelper.mDb.delete(DATABASE_TMP_TABLE, null, null);
+	}
+
+	private int sec_since_last_update()
+	{
+		Cursor c = mDbHelper.mDb.query(DATABASE_LAST_UPDATE_TABLE,
+				new String[] {
+					"strftime(\"%s\", 'now') - strftime(\"%s\", " + KEY_LAST_UPDATE + ")"
+				},
+				null, null, null, null, null, "1");
+		int ret = c.moveToFirst() ? c.getInt(0) : Integer.MAX_VALUE;
+		c.close();
+
+		Log.i(TAG, "seconds since last_update:[" + Integer.toString(ret) + "]");
+
+		return ret;
+	}
+
+	private void set_last_update()
+	{
+		Cursor c = mDbHelper.mDb.rawQuery("SELECT strftime(\"%Y-%m-%d %H:%M:%S\", 'now')", null);
+		if (!c.moveToFirst()) {
+			return;
+		}
+		String last_update = c.getString(0);
+		c.close();
+
+		ContentValues cv = new ContentValues();
+		cv.put(KEY_LAST_UPDATE, last_update);
+
+		mDbHelper.mDb.delete(DATABASE_LAST_UPDATE_TABLE, null, null);
+		mDbHelper.mDb.insert(DATABASE_LAST_UPDATE_TABLE, null, cv);
 	}
 }
 
