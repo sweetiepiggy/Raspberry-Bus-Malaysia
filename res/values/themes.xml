@@ -22,6 +22,8 @@
 <resources>
 	<style name="RBM_Theme" parent="@android:style/Theme">
 		<item name="android:windowBackground">@color/blue</item>
+		<item name="android:colorBackground">@color/blue</item>
+		<item name="android:textColorLink">@color/yellow</item>
 	</style>
 </resources>
 
