@@ -84,6 +84,7 @@ public class SubmitTripActivity extends Activity
 		}
 
 		init_date_time_buttons();
+		init_map_buttons();
 		init_cancel_button();
 		init_submit_button();
 	}
@@ -406,6 +407,25 @@ public class SubmitTripActivity extends Activity
 					Toast.makeText(getApplicationContext(), incomplete_msg,
 							Toast.LENGTH_SHORT).show();
 				}
+			}
+		});
+	}
+
+	private void init_map_buttons()
+	{
+		Button from_map_button = (Button) findViewById(R.id.from_map_button);
+		from_map_button.setOnClickListener(new View.OnClickListener() {
+			public void onClick(View v) {
+				Intent intent = new Intent(getApplicationContext(), RbmMapActivity.class);
+				startActivity(intent);
+			}
+		});
+
+		Button to_map_button = (Button) findViewById(R.id.to_map_button);
+		to_map_button.setOnClickListener(new View.OnClickListener() {
+			public void onClick(View v) {
+				Intent intent = new Intent(getApplicationContext(), RbmMapActivity.class);
+				startActivity(intent);
 			}
 		});
 	}

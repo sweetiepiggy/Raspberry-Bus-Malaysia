@@ -11,6 +11,7 @@
 		android:theme="@style/RBM_Theme"
 		android:icon="@drawable/ic_launcher"
 		android:label="@string/app_name" >
+		<uses-library android:name="com.google.android.maps" />
 		<activity
 		android:name=".RaspberryBusMalaysiaActivity"
 		android:label="@string/app_name" >
@@ -32,6 +33,8 @@
 		<activity android:name="SubmitTripActivity"></activity>
 		<activity android:name="TripsActivity"></activity>
 		<activity android:name="AboutActivity"></activity>
+		<activity android:name="RbmMapActivity"
+			android:theme="@android:style/Theme.NoTitleBar"></activity>
 	</application>
 </manifest>
 
