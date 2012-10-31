@@ -73,9 +73,6 @@
 	<string name="missing_to_city">Enter destination city</string>
 	<string name="depart_before_arrival">Arrival Time must be later than Departure Time</string>
 
-	<string name="submit_trip_fail">Oops, problem updating database</string>
-	<string name="submit_trip_success">Successfully updated database</string>
-
 	<string name="search_hint">Search companies</string>
 
 	<string name="delay">Delay</string>
@@ -94,8 +91,6 @@
 	<string name="friday">Friday</string>
 	<string name="saturday">Saturday</string>
 	<string name="sunday">Sunday</string>
-
-	<string name="share">Please email the developer to share this info with other users</string>
 
 	<string name="map">map</string>
 

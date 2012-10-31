@@ -73,9 +73,6 @@
 	<string name="missing_to_city">输入到达城市</string>
 	<string name="depart_before_arrival">到达时间不能早过出发时间</string>
 
-	<string name="submit_trip_fail">哎呀，更新数据库问题</string>
-	<string name="submit_trip_success">成功更新数据库</string>
-
 	<string name="search_hint">搜索公司</string>
 
 	<string name="delay">延迟</string>
@@ -94,8 +91,6 @@
 	<string name="friday">星期五</string>
 	<string name="saturday">星期六</string>
 	<string name="sunday">星期日</string>
-
-	<string name="share">请电邮此信息给原创者，以便其他用户可共享</string>
 
 	<string name="license">
 版權所有(C) 2012 Sweetie Piggy Apps sweetiepiggyapps@gmail.com\n\n

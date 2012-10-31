@@ -235,30 +235,6 @@ public class DbAdapter
 		}
 	}
 
-	/** @return row_id or -1 if failed */
-	public long create_trip(String company, String bus_brand,
-			String from_city, String from_station, String to_city,
-			String to_station, String scheduled_departure,
-			String actual_departure, String arrival_time,
-			String counter, String safety, String comfort, String comment)
-	{
-		ContentValues initial_values = new ContentValues();
-		initial_values.put(KEY_COMP, company);
-		initial_values.put(KEY_BRAND, bus_brand);
-		initial_values.put(KEY_FROM_CITY, from_city);
-		initial_values.put(KEY_FROM_STN, from_station);
-		initial_values.put(KEY_TO_CITY, to_city);
-		initial_values.put(KEY_TO_STN, to_station);
-		initial_values.put(KEY_SCHED_DEP, scheduled_departure);
-		initial_values.put(KEY_ACTUAL_DEP, actual_departure);
-		initial_values.put(KEY_ARRIVAL, arrival_time);
-		initial_values.put(KEY_CTR, counter);
-		initial_values.put(KEY_SAFETY, safety);
-		initial_values.put(KEY_COMFORT, comfort);
-		initial_values.put(KEY_COMMENT, comment);
-		return create_trip(initial_values);
-	}
-
 	private boolean trip_exists(ContentValues trip)
 	{
 		String company = trip.getAsString(KEY_COMP);
