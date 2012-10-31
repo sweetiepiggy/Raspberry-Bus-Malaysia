@@ -57,15 +57,15 @@ public class DbAdapter
 	private DatabaseHelper mDbHelper;
 
 	private static final String DATABASE_NAME = "rbm.db";
-	private static final String DATABASE_TABLE = "trips";
+	private static final String TABLE_TRIPS = "trips";
 	/** "tmp" table was originally named "submit" in db-v7 / rbm-v0.1.1 */
-	private static final String DATABASE_TMP_TABLE_OLD = "submit";
-	private static final String DATABASE_TMP_TABLE = "tmp";
-	private static final String DATABASE_LAST_UPDATE_TABLE = "last_update";
+	private static final String TABLE_TMP_OLD = "submit";
+	private static final String TABLE_TMP = "tmp";
+	private static final String TABLE_LAST_UPDATE = "last_update";
 	private static final int DATABASE_VERSION = 8;
 
-	private static final String DATABASE_CREATE =
-		"CREATE TABLE " + DATABASE_TABLE + " (" +
+	private static final String DATABASE_CREATE_TRIPS =
+		"CREATE TABLE " + TABLE_TRIPS + " (" +
 		KEY_ROWID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
 		KEY_COMP + " TEXT, " +
 		KEY_BRAND + " TEXT, " +
@@ -82,7 +82,7 @@ public class DbAdapter
 		KEY_COMMENT + " TEXT);";
 
 	private static final String DATABASE_CREATE_TMP =
-		"CREATE TABLE " + DATABASE_TMP_TABLE + " (" +
+		"CREATE TABLE " + TABLE_TMP + " (" +
 		KEY_ROWID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
 		KEY_COMP + " TEXT, " +
 		KEY_BRAND + " TEXT, " +
@@ -99,7 +99,7 @@ public class DbAdapter
 		KEY_COMMENT + " TEXT);";
 
 	private static final String DATABASE_CREATE_LAST_UPDATE =
-		"CREATE TABLE " + DATABASE_LAST_UPDATE_TABLE + " (" +
+		"CREATE TABLE " + TABLE_LAST_UPDATE + " (" +
 		KEY_ROWID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
 		KEY_LAST_UPDATE + " TEXT);";
 
@@ -119,10 +119,10 @@ public class DbAdapter
 		@Override
 		public void onCreate(SQLiteDatabase db)
 		{
-			db.execSQL("DROP TABLE IF EXISTS " + DATABASE_TABLE);
-			db.execSQL("DROP TABLE IF EXISTS " + DATABASE_TMP_TABLE);
-			db.execSQL("DROP TABLE IF EXISTS " + DATABASE_LAST_UPDATE_TABLE);
-			db.execSQL(DATABASE_CREATE);
+			db.execSQL("DROP TABLE IF EXISTS " + TABLE_TRIPS);
+			db.execSQL("DROP TABLE IF EXISTS " + TABLE_TMP);
+			db.execSQL("DROP TABLE IF EXISTS " + TABLE_LAST_UPDATE);
+			db.execSQL(DATABASE_CREATE_TRIPS);
 			db.execSQL(DATABASE_CREATE_TMP);
 			db.execSQL(DATABASE_CREATE_LAST_UPDATE);
 			if (mAllowSync) {
@@ -140,8 +140,8 @@ public class DbAdapter
 				ContentValues cv = new ContentValues();
 				cv.put(KEY_LAST_UPDATE, last_update);
 
-				db.delete(DATABASE_LAST_UPDATE_TABLE, null, null);
-				db.insert(DATABASE_LAST_UPDATE_TABLE, null, cv);
+				db.delete(TABLE_LAST_UPDATE, null, null);
+				db.insert(TABLE_LAST_UPDATE, null, cv);
 			}
 		}
 
@@ -153,7 +153,7 @@ public class DbAdapter
 			switch (old_ver) {
 			case 5:
 			case 6:
-				db.execSQL("DROP TABLE IF EXISTS " + DATABASE_TMP_TABLE_OLD);
+				db.execSQL("DROP TABLE IF EXISTS " + TABLE_TMP_OLD);
 				db.execSQL(DATABASE_CREATE_TMP);
 			case 7:
 				db.execSQL(DATABASE_CREATE_LAST_UPDATE);
@@ -228,41 +228,41 @@ public class DbAdapter
 	/** @return row_id or -1 if failed */
 	public long create_trip(ContentValues trip)
 	{
-		return mDbHelper.mDb.insert(DATABASE_TABLE, null, trip);
+		return mDbHelper.mDb.insert(TABLE_TRIPS, null, trip);
 	}
 
 	public Cursor fetch_cities()
 	{
 		return mDbHelper.mDb.rawQuery("SELECT DISTINCT city FROM " +
-				"(SELECT " + KEY_FROM_CITY + " as city from " + DATABASE_TABLE + " UNION " +
-				"SELECT " + KEY_TO_CITY + " as city from " + DATABASE_TABLE + ")" +
+				"(SELECT " + KEY_FROM_CITY + " as city from " + TABLE_TRIPS + " UNION " +
+				"SELECT " + KEY_TO_CITY + " as city from " + TABLE_TRIPS + ")" +
 				" ORDER BY city ASC",
 				null);
 	}
 
 	public Cursor fetch_from_cities()
 	{
-		return mDbHelper.mDb.query(true, DATABASE_TABLE, new String[] {KEY_ROWID, KEY_FROM_CITY},
+		return mDbHelper.mDb.query(true, TABLE_TRIPS, new String[] {KEY_ROWID, KEY_FROM_CITY},
 				null, null, KEY_FROM_CITY, null, KEY_FROM_CITY + " ASC", null);
 	}
 
 	public Cursor fetch_from_cities(String company)
 	{
-		return mDbHelper.mDb.query(true, DATABASE_TABLE, new String[] {KEY_ROWID, KEY_FROM_CITY},
+		return mDbHelper.mDb.query(true, TABLE_TRIPS, new String[] {KEY_ROWID, KEY_FROM_CITY},
 				KEY_COMP + " = ?", new String[] {company},
 				KEY_FROM_CITY, null, KEY_FROM_CITY + " ASC", null);
 	}
 
 	public Cursor fetch_to_cities(String from_city)
 	{
-		return mDbHelper.mDb.query(true, DATABASE_TABLE, new String[] {KEY_ROWID, KEY_TO_CITY},
+		return mDbHelper.mDb.query(true, TABLE_TRIPS, new String[] {KEY_ROWID, KEY_TO_CITY},
 				KEY_FROM_CITY + " = ?", new String[] {from_city},
 				KEY_TO_CITY, null, KEY_TO_CITY + " ASC", null);
 	}
 
 	public Cursor fetch_to_cities(String from_city, String company)
 	{
-		return mDbHelper.mDb.query(true, DATABASE_TABLE, new String[] {KEY_ROWID, KEY_TO_CITY},
+		return mDbHelper.mDb.query(true, TABLE_TRIPS, new String[] {KEY_ROWID, KEY_TO_CITY},
 				KEY_FROM_CITY + " = ? AND " + KEY_COMP + " = ?",
 				new String[] {from_city, company},
 				KEY_TO_CITY, null, KEY_TO_CITY + " ASC", null);
@@ -271,36 +271,36 @@ public class DbAdapter
 	public Cursor fetch_stations()
 	{
 		return mDbHelper.mDb.rawQuery("SELECT DISTINCT station FROM " +
-				"(SELECT " + KEY_FROM_STN + " as station from " + DATABASE_TABLE + " UNION " +
-				"SELECT " + KEY_TO_STN + " as station from " + DATABASE_TABLE + ")" +
+				"(SELECT " + KEY_FROM_STN + " as station from " + TABLE_TRIPS + " UNION " +
+				"SELECT " + KEY_TO_STN + " as station from " + TABLE_TRIPS + ")" +
 				" ORDER BY station ASC",
 				null);
 	}
 
 	public Cursor fetch_companies()
 	{
-		return mDbHelper.mDb.query(true, DATABASE_TABLE, new String[] {KEY_ROWID, KEY_COMP},
+		return mDbHelper.mDb.query(true, TABLE_TRIPS, new String[] {KEY_ROWID, KEY_COMP},
 				"length(" + KEY_COMP + ") != 0", null,
 				KEY_COMP, null, KEY_COMP + " ASC", null);
 	}
 
 	public Cursor fetch_brands()
 	{
-		return mDbHelper.mDb.query(true, DATABASE_TABLE, new String[] {KEY_ROWID, KEY_BRAND},
+		return mDbHelper.mDb.query(true, TABLE_TRIPS, new String[] {KEY_ROWID, KEY_BRAND},
 				"length(" + KEY_BRAND + ") != 0", null,
 				KEY_BRAND, null, KEY_BRAND + " ASC", null);
 	}
 
 	public Cursor fetch_counter_nums()
 	{
-		return mDbHelper.mDb.query(true, DATABASE_TABLE, new String[] {KEY_ROWID, KEY_CTR},
+		return mDbHelper.mDb.query(true, TABLE_TRIPS, new String[] {KEY_ROWID, KEY_CTR},
 				"length(" + KEY_CTR + ") != 0", null,
 				KEY_CTR, null, KEY_CTR + " ASC", null);
 	}
 
 	public Cursor fetch_avg(String from_city, String to_city, String group_by, String sort_by)
 	{
-		return mDbHelper.mDb.query(true, DATABASE_TABLE,
+		return mDbHelper.mDb.query(true, TABLE_TRIPS,
 				new String[] {KEY_COMP, KEY_BRAND, AVG_TIME, AVG_DELAY, NUM_TRIPS},
 				KEY_FROM_CITY + " = ? AND " + KEY_TO_CITY + " = ? AND " + KEY_ARRIVAL + "!= 'Cancelled'",
 				new String[] {from_city, to_city},
@@ -309,14 +309,14 @@ public class DbAdapter
 
 	public Cursor fetch_companies(String company_query)
 	{
-		return mDbHelper.mDb.query(true, DATABASE_TABLE, new String[] {KEY_ROWID, KEY_COMP},
+		return mDbHelper.mDb.query(true, TABLE_TRIPS, new String[] {KEY_ROWID, KEY_COMP},
 				"length(" + KEY_COMP + ") != 0 AND " + KEY_COMP + " LIKE ?", new String[] {company_query},
 				KEY_COMP, null, KEY_COMP + " ASC", null);
 	}
 
 	public Cursor fetch_avg(String from_city, String to_city, String company)
 	{
-		return mDbHelper.mDb.query(true, DATABASE_TABLE, new String[] {AVG_TIME, AVG_DELAY, NUM_TRIPS},
+		return mDbHelper.mDb.query(true, TABLE_TRIPS, new String[] {AVG_TIME, AVG_DELAY, NUM_TRIPS},
 				KEY_COMP + " = ? AND " + KEY_FROM_CITY + " = ? AND " + KEY_TO_CITY + " = ?",
 				new String[] {company, from_city, to_city},
 				null, null, null, null);
@@ -324,7 +324,7 @@ public class DbAdapter
 
 	public Cursor fetch_avg_brand(String from_city, String to_city, String brand)
 	{
-		return mDbHelper.mDb.query(true, DATABASE_TABLE, new String[] {AVG_TIME, AVG_DELAY, NUM_TRIPS},
+		return mDbHelper.mDb.query(true, TABLE_TRIPS, new String[] {AVG_TIME, AVG_DELAY, NUM_TRIPS},
 				KEY_BRAND + " = ? AND " + KEY_FROM_CITY + " = ? AND " + KEY_TO_CITY + " = ?",
 				new String[] {brand, from_city, to_city},
 				null, null, null, null);
@@ -332,13 +332,13 @@ public class DbAdapter
 
 	public Cursor fetch_avg_delay(String company)
 	{
-		return mDbHelper.mDb.query(true, DATABASE_TABLE, new String[] {AVG_DELAY},
+		return mDbHelper.mDb.query(true, TABLE_TRIPS, new String[] {AVG_DELAY},
 				KEY_COMP + " = ?", new String[] {company}, null, null, null, null);
 	}
 
 	public Cursor fetch_trips(String from_city, String to_city, String company)
 	{
-		return mDbHelper.mDb.query(DATABASE_TABLE, new String[] {KEY_SCHED_DEP, TRIP_DELAY, TRIP_TIME},
+		return mDbHelper.mDb.query(TABLE_TRIPS, new String[] {KEY_SCHED_DEP, TRIP_DELAY, TRIP_TIME},
 				KEY_COMP + " = ? AND " + KEY_FROM_CITY + " = ? AND " + KEY_TO_CITY + " = ?",
 				new String[] {company, from_city, to_city},
 				null, null, "strftime('%s', " + KEY_SCHED_DEP + ") DESC", null);
@@ -346,7 +346,7 @@ public class DbAdapter
 
 	public Cursor fetch_trips_brand(String from_city, String to_city, String brand)
 	{
-		return mDbHelper.mDb.query(DATABASE_TABLE, new String[] {KEY_SCHED_DEP, TRIP_DELAY, TRIP_TIME},
+		return mDbHelper.mDb.query(TABLE_TRIPS, new String[] {KEY_SCHED_DEP, TRIP_DELAY, TRIP_TIME},
 				KEY_BRAND + " = ? AND " + KEY_FROM_CITY + " = ? AND " + KEY_TO_CITY + " = ?",
 				new String[] {brand, from_city, to_city},
 				null, null, "strftime('%s', " + KEY_SCHED_DEP + ") DESC", null);
@@ -355,7 +355,7 @@ public class DbAdapter
 	public String get_most_freq_from_city()
 	{
 		String ret = null;
-		Cursor c =  mDbHelper.mDb.query(DATABASE_TABLE, new String[] {KEY_FROM_CITY},
+		Cursor c =  mDbHelper.mDb.query(TABLE_TRIPS, new String[] {KEY_FROM_CITY},
 				null, null,
 				KEY_FROM_CITY, null, "count(" + KEY_FROM_CITY + ") DESC", "1");
 		if (c.moveToFirst()) {
@@ -368,7 +368,7 @@ public class DbAdapter
 	public String get_most_freq_to_city(String from_city)
 	{
 		String ret = null;
-		Cursor c =  mDbHelper.mDb.query(DATABASE_TABLE, new String[] {KEY_TO_CITY},
+		Cursor c =  mDbHelper.mDb.query(TABLE_TRIPS, new String[] {KEY_TO_CITY},
 				KEY_FROM_CITY + " = ?", new String[] {from_city},
 				KEY_TO_CITY, null, "count(" + KEY_TO_CITY + ") DESC", "1");
 		if (c.moveToFirst()) {
@@ -380,7 +380,7 @@ public class DbAdapter
 
 	public Cursor fetch_tmp_sched_time()
 	{
-		return mDbHelper.mDb.query(DATABASE_TMP_TABLE,
+		return mDbHelper.mDb.query(TABLE_TMP,
 				new String[] {KEY_ROWID,
 					"strftime(\"%Y\", " + KEY_SCHED_DEP + ")",
 					"strftime(\"%m\", " + KEY_SCHED_DEP + ")",
@@ -393,7 +393,7 @@ public class DbAdapter
 
 	public Cursor fetch_tmp_depart_time()
 	{
-		return mDbHelper.mDb.query(DATABASE_TMP_TABLE,
+		return mDbHelper.mDb.query(TABLE_TMP,
 				new String[] {KEY_ROWID,
 					"strftime(\"%Y\", " + KEY_ACTUAL_DEP + ")",
 					"strftime(\"%m\", " + KEY_ACTUAL_DEP + ")",
@@ -406,7 +406,7 @@ public class DbAdapter
 
 	public Cursor fetch_tmp_arrival_time()
 	{
-		return mDbHelper.mDb.query(DATABASE_TMP_TABLE,
+		return mDbHelper.mDb.query(TABLE_TMP,
 				new String[] {KEY_ROWID,
 					"strftime(\"%Y\", " + KEY_ARRIVAL + ")",
 					"strftime(\"%m\", " + KEY_ARRIVAL + ")",
@@ -419,7 +419,7 @@ public class DbAdapter
 
 	public String fetch_tmp(String key)
 	{
-		Cursor c = mDbHelper.mDb.query(DATABASE_TMP_TABLE,
+		Cursor c = mDbHelper.mDb.query(TABLE_TMP,
 				new String[] {KEY_ROWID, key},
 				key + " IS NOT NULL", null, null, null, null, "1");
 		return c.moveToFirst() ? c.getString(1) : "";
@@ -427,7 +427,7 @@ public class DbAdapter
 
 	public int fetch_safety()
 	{
-		Cursor c = mDbHelper.mDb.query(DATABASE_TMP_TABLE,
+		Cursor c = mDbHelper.mDb.query(TABLE_TMP,
 				new String[] {KEY_ROWID, KEY_SAFETY},
 				KEY_SAFETY + " IS NOT NULL", null, null, null, null, "1");
 		return c.moveToFirst() ? c.getInt(1) : 3;
@@ -435,7 +435,7 @@ public class DbAdapter
 
 	public int fetch_comfort()
 	{
-		Cursor c = mDbHelper.mDb.query(DATABASE_TMP_TABLE,
+		Cursor c = mDbHelper.mDb.query(TABLE_TMP,
 				new String[] {KEY_ROWID, KEY_COMFORT},
 				KEY_COMFORT + " IS NOT NULL", null, null, null, null, "1");
 		return c.moveToFirst() ? c.getInt(1) : 3;
@@ -443,7 +443,7 @@ public class DbAdapter
 
 	public long fetch_max_id()
 	{
-		Cursor c = mDbHelper.mDb.query(DATABASE_TABLE,
+		Cursor c = mDbHelper.mDb.query(TABLE_TRIPS,
 				new String[] {KEY_ROWID},
 				null, null, null, null, KEY_ROWID + " DESC", "1");
 		return c.moveToFirst() ? c.getInt(0) : 0;
@@ -470,26 +470,26 @@ public class DbAdapter
 		cv.put(KEY_COMFORT, comfort);
 		cv.put(KEY_COMMENT, comment);
 
-		Cursor c =  mDbHelper.mDb.query(DATABASE_TMP_TABLE, new String[] {KEY_ROWID},
+		Cursor c =  mDbHelper.mDb.query(TABLE_TMP, new String[] {KEY_ROWID},
 				null, null, null, null, null, "1");
 		if (c.moveToFirst()) {
 			long row_id = c.getInt(0);
-			mDbHelper.mDb.update(DATABASE_TMP_TABLE, cv,
+			mDbHelper.mDb.update(TABLE_TMP, cv,
 					KEY_ROWID + " = ?", new String[] {Long.toString(row_id)});
 		} else {
-			mDbHelper.mDb.insert(DATABASE_TMP_TABLE, null, cv);
+			mDbHelper.mDb.insert(TABLE_TMP, null, cv);
 		}
 		c.close();
 	}
 
 	public void clear_tmp_table()
 	{
-		mDbHelper.mDb.delete(DATABASE_TMP_TABLE, null, null);
+		mDbHelper.mDb.delete(TABLE_TMP, null, null);
 	}
 
 	private int sec_since_last_update()
 	{
-		Cursor c = mDbHelper.mDb.query(DATABASE_LAST_UPDATE_TABLE,
+		Cursor c = mDbHelper.mDb.query(TABLE_LAST_UPDATE,
 				new String[] {
 					"strftime(\"%s\", 'now') - strftime(\"%s\", " + KEY_LAST_UPDATE + ")"
 				},
@@ -512,8 +512,8 @@ public class DbAdapter
 		ContentValues cv = new ContentValues();
 		cv.put(KEY_LAST_UPDATE, last_update);
 
-		mDbHelper.mDb.delete(DATABASE_LAST_UPDATE_TABLE, null, null);
-		mDbHelper.mDb.insert(DATABASE_LAST_UPDATE_TABLE, null, cv);
+		mDbHelper.mDb.delete(TABLE_LAST_UPDATE, null, null);
+		mDbHelper.mDb.insert(TABLE_LAST_UPDATE, null, cv);
 	}
 }
 
