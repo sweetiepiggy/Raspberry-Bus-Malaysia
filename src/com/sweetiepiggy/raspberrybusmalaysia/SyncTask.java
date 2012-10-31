@@ -35,6 +35,8 @@ public class SyncTask extends AsyncTask<Void, Void, Void>
 
 	/* TODO: move to Constants.java */
 	private final String TRIPS_URL = "https://raw.github.com/sweetiepiggy/Raspberry-Bus-Malaysia/trips/rbm.csv";
+	private final String CITIES_URL = "https://raw.github.com/sweetiepiggy/Raspberry-Bus-Malaysia/trips/cities.csv";
+	private final String STATIONS_URL = "https://raw.github.com/sweetiepiggy/Raspberry-Bus-Malaysia/trips/stations.csv";
 
 	private Context mCtx;
 	private int new_trip_cnt = 0;
@@ -46,6 +48,105 @@ public class SyncTask extends AsyncTask<Void, Void, Void>
 
 	@Override
 	protected Void doInBackground(Void... params)
+	{
+		sync_cities();
+		sync_stations();
+		sync_trips();
+
+		return null;
+	}
+
+	@Override
+	protected void onPostExecute(Void result)
+	{
+		Toast.makeText(mCtx,
+				Integer.toString(new_trip_cnt) + " " +
+				mCtx.getResources().getString(R.string.updates_found),
+				Toast.LENGTH_SHORT).show();
+	}
+
+	@Override
+	protected void onProgressUpdate(Void... values)
+	{
+	}
+
+	private void sync_cities()
+	{
+		try {
+			URL url = new URL(CITIES_URL);
+			BufferedReader in = new BufferedReader(
+					new InputStreamReader(url.openStream()));
+
+			String line = in.readLine();
+
+			if (line != null) {
+				String[] field_names = line.split(",");
+
+				DbAdapter dbHelper = new DbAdapter();
+				dbHelper.open_no_sync(mCtx);
+
+				long max_id = dbHelper.fetch_cities_max_id();
+
+				boolean done = false;
+				while ((line = in.readLine()) != null && !done) {
+					ContentValues city = parse_line(line, field_names);
+					long id = city.containsKey(DbAdapter.KEY_ROWID) ?
+						city.getAsLong(DbAdapter.KEY_ROWID) : Long.MAX_VALUE;
+					if (id <= max_id) {
+						done = true;
+					} else {
+						dbHelper.create_city(city);
+					}
+				}
+				dbHelper.close();
+			}
+
+			in.close();
+		} catch (FileNotFoundException e) {
+		} catch (Exception e) {
+			throw new Error(e);
+		}
+	}
+
+	private void sync_stations()
+	{
+		try {
+			URL url = new URL(STATIONS_URL);
+			BufferedReader in = new BufferedReader(
+					new InputStreamReader(url.openStream()));
+
+			String line = in.readLine();
+
+			if (line != null) {
+				String[] field_names = line.split(",");
+
+				DbAdapter dbHelper = new DbAdapter();
+				dbHelper.open_no_sync(mCtx);
+
+				long max_id = dbHelper.fetch_stations_max_id();
+
+				boolean done = false;
+				while ((line = in.readLine()) != null && !done) {
+					ContentValues station = parse_line(line, field_names);
+					long id = station.containsKey(DbAdapter.KEY_ROWID) ?
+						station.getAsLong(DbAdapter.KEY_ROWID) : Long.MAX_VALUE;
+					if (id <= max_id) {
+						done = true;
+					} else {
+						dbHelper.create_station(station);
+					}
+				}
+				dbHelper.close();
+			}
+
+			in.close();
+		} catch (FileNotFoundException e) {
+		} catch (Exception e) {
+			throw new Error(e);
+		}
+	}
+
+	private void sync_trips()
 	{
 		try {
 			URL url = new URL(TRIPS_URL);
@@ -60,7 +161,7 @@ public class SyncTask extends AsyncTask<Void, Void, Void>
 				DbAdapter dbHelper = new DbAdapter();
 				dbHelper.open_no_sync(mCtx);
 
-				long max_id = dbHelper.fetch_max_id();
+				long max_id = dbHelper.fetch_trips_max_id();
 
 				boolean done = false;
 				while ((line = in.readLine()) != null && !done) {
@@ -81,22 +182,6 @@ public class SyncTask extends AsyncTask<Void, Void, Void>
 		} catch (Exception e) {
 			throw new Error(e);
 		}
-
-		return null;
-	}
-
-	@Override
-	protected void onPostExecute(Void result)
-	{
-		Toast.makeText(mCtx,
-				Integer.toString(new_trip_cnt) + " " +
-				mCtx.getResources().getString(R.string.updates_found),
-				Toast.LENGTH_SHORT).show();
-	}
-
-	@Override
-	protected void onProgressUpdate(Void... values)
-	{
 	}
 
 	private ContentValues parse_line(String line, String[] field_names)
