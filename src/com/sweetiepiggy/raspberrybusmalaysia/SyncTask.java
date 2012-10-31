@@ -59,9 +59,17 @@ public class SyncTask extends AsyncTask<Void, Void, Void>
 
 				DbAdapter dbHelper = new DbAdapter();
 				dbHelper.open_no_sync(mCtx);
-				while ((line = in.readLine()) != null) {
+
+				long max_id = dbHelper.fetch_max_id();
+
+				boolean done = false;
+				while ((line = in.readLine()) != null && !done) {
 					ContentValues trip = parse_line(line, field_names);
-					if (dbHelper.create_trip(trip) != -1) {
+					long id = trip.containsKey(DbAdapter.KEY_ROWID) ?
+						trip.getAsLong(DbAdapter.KEY_ROWID) : Long.MAX_VALUE;
+					if (id <= max_id) {
+						done = true;
+					} else if (dbHelper.create_trip(trip) != -1) {
 						++new_trip_cnt;
 					}
 				}
