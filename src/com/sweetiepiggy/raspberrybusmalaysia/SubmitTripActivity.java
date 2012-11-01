@@ -278,7 +278,6 @@ public class SubmitTripActivity extends Activity
 		Cursor c = mDbHelper.fetch_cities();
 		startManagingCursor(c);
 		if (c.moveToFirst()) do {
-			/* TODO: use getColumnIndex() */
 			/* TODO: verify that column 0 exists */
 			cities.add(c.getString(0));
 		} while (c.moveToNext());
