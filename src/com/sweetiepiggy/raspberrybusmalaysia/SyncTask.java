@@ -34,7 +34,7 @@ public class SyncTask extends AsyncTask<Void, Void, Void>
 	private final String TAG = "SyncTask";
 
 	/* TODO: move to Constants.java */
-	private final String TRIPS_URL = "https://raw.github.com/sweetiepiggy/Raspberry-Bus-Malaysia/trips/rbm.csv";
+	private final String TRIPS_URL = "https://raw.github.com/sweetiepiggy/Raspberry-Bus-Malaysia/trips/trips.csv";
 	private final String CITIES_URL = "https://raw.github.com/sweetiepiggy/Raspberry-Bus-Malaysia/trips/cities.csv";
 	private final String STATIONS_URL = "https://raw.github.com/sweetiepiggy/Raspberry-Bus-Malaysia/trips/stations.csv";
 

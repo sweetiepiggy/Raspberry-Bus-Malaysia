@@ -32,10 +32,14 @@ public class DbAdapter
 	public static final String KEY_ROWID = "_id";
 	public static final String KEY_COMP = "company";
 	public static final String KEY_BRAND = "bus_brand";
-	public static final String KEY_FROM_CITY = "from_city_id";
-	public static final String KEY_FROM_STN = "from_station_id";
-	public static final String KEY_TO_CITY = "to_city_id";
-	public static final String KEY_TO_STN = "to_station_id";
+	public static final String KEY_FROM_CITY = "from_city";
+	public static final String KEY_FROM_STN = "from_station";
+	public static final String KEY_TO_CITY = "to_city";
+	public static final String KEY_TO_STN = "to_station";
+	public static final String KEY_FROM_CITY_ID = "from_city_id";
+	public static final String KEY_FROM_STN_ID = "from_station_id";
+	public static final String KEY_TO_CITY_ID = "to_city_id";
+	public static final String KEY_TO_STN_ID = "to_station_id";
 	public static final String KEY_SCHED_DEP = "scheduled_departure";
 	public static final String KEY_ACTUAL_DEP = "actual_departure";
 	public static final String KEY_ARRIVAL = "arrival_time";
@@ -44,12 +48,14 @@ public class DbAdapter
 	public static final String KEY_COMFORT = "comfort";
 	public static final String KEY_COMMENT = "comment";
 	public static final String KEY_LAST_UPDATE = "comment";
-	public static final String KEY_CITY = "city_id";
+	public static final String KEY_CITY = "city";
+	public static final String KEY_CITY_ID = "city_id";
 	public static final String KEY_CITY_EN = "city_en";
 	public static final String KEY_CITY_MS = "city_ms";
 	public static final String KEY_CITY_ZH = "city_zh";
 	public static final String KEY_LATITUDE = "latitude";
 	public static final String KEY_LONGITUDE = "longitude";
+	public static final String KEY_STN = "station";
 	public static final String KEY_STN_EN = "station_en";
 	public static final String KEY_STN_MS = "station_ms";
 	public static final String KEY_STN_ZH = "station_zh";
@@ -79,10 +85,10 @@ public class DbAdapter
 		KEY_ROWID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
 		KEY_COMP + " TEXT, " +
 		KEY_BRAND + " TEXT, " +
-		KEY_FROM_CITY + " INTEGER NOT NULL, " +
-		KEY_FROM_STN + " INTEGER, " +
-		KEY_TO_CITY + " INTEGER NOT NULL, " +
-		KEY_TO_STN + " INTEGER, " +
+		KEY_FROM_CITY_ID + " INTEGER NOT NULL, " +
+		KEY_FROM_STN_ID + " INTEGER, " +
+		KEY_TO_CITY_ID + " INTEGER NOT NULL, " +
+		KEY_TO_STN_ID + " INTEGER, " +
 		KEY_SCHED_DEP + " TEXT NOT NULL, " +
 		KEY_ACTUAL_DEP + " TEXT NOT NULL, " +
 		KEY_ARRIVAL + " TEXT NOT NULL, " +
@@ -90,10 +96,10 @@ public class DbAdapter
 		KEY_SAFETY + " INTEGER, " +
 		KEY_COMFORT + " INTEGER, " +
 		KEY_COMMENT + " TEXT, " +
-		"FOREIGN KEY(" + KEY_FROM_CITY + ") REFERENCES " + TABLE_CITIES + "(" + KEY_ROWID + "), " +
-		"FOREIGN KEY(" + KEY_FROM_STN + ") REFERENCES " + TABLE_STATIONS + "(" + KEY_ROWID + "), " +
-		"FOREIGN KEY(" + KEY_TO_CITY + ") REFERENCES " + TABLE_CITIES + "(" + KEY_ROWID + "), " +
-		"FOREIGN KEY(" + KEY_TO_STN + ") REFERENCES " + TABLE_STATIONS + "(" + KEY_ROWID + "));";
+		"FOREIGN KEY(" + KEY_FROM_CITY_ID + ") REFERENCES " + TABLE_CITIES + "(" + KEY_ROWID + "), " +
+		"FOREIGN KEY(" + KEY_FROM_STN_ID + ") REFERENCES " + TABLE_STATIONS + "(" + KEY_ROWID + "), " +
+		"FOREIGN KEY(" + KEY_TO_CITY_ID + ") REFERENCES " + TABLE_CITIES + "(" + KEY_ROWID + "), " +
+		"FOREIGN KEY(" + KEY_TO_STN_ID + ") REFERENCES " + TABLE_STATIONS + "(" + KEY_ROWID + "));";
 
 	private static final String DATABASE_CREATE_TMP =
 		"CREATE TABLE " + TABLE_TMP + " (" +
@@ -127,13 +133,13 @@ public class DbAdapter
 	private static final String DATABASE_CREATE_STATIONS =
 		"CREATE TABLE " + TABLE_STATIONS + " (" +
 		KEY_ROWID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
-		KEY_CITY + " INTEGER, " +
+		KEY_CITY_ID + " INTEGER, " +
 		KEY_STN_EN + " TEXT, " +
 		KEY_STN_MS + " TEXT, " +
 		KEY_STN_ZH + " TEXT, " +
 		KEY_LATITUDE + " INTEGER, " +
 		KEY_LONGITUDE + " INTEGER, " +
-		"FOREIGN KEY(" + KEY_CITY + ") REFERENCES " + TABLE_CITIES + "(" + KEY_ROWID + "));";
+		"FOREIGN KEY(" + KEY_CITY_ID + ") REFERENCES " + TABLE_CITIES + "(" + KEY_ROWID + "));";
 
 	private static class DatabaseHelper extends SQLiteOpenHelper
 	{
@@ -272,50 +278,78 @@ public class DbAdapter
 		return mDbHelper.mDb.insert(TABLE_TRIPS, null, trip);
 	}
 
-	public Cursor fetch_cities()
-	{
-		return mDbHelper.mDb.rawQuery("SELECT DISTINCT city FROM " +
-				"(SELECT " + KEY_FROM_CITY + " as city from " + TABLE_TRIPS + " UNION " +
-				"SELECT " + KEY_TO_CITY + " as city from " + TABLE_TRIPS + ")" +
-				" ORDER BY city ASC",
-				null);
-	}
-
 	public Cursor fetch_from_cities()
 	{
-		return mDbHelper.mDb.query(true, TABLE_TRIPS, new String[] {KEY_ROWID, KEY_FROM_CITY},
-				null, null, KEY_FROM_CITY, null, KEY_FROM_CITY + " ASC", null);
+		String key_city = KEY_CITY + "_" + mDbHelper.mCtx.getResources().getString(R.string.lang_code);
+		return mDbHelper.mDb.rawQuery("SELECT DISTINCT " + TABLE_TRIPS +
+				"." + KEY_ROWID + "," + key_city +
+				" FROM " + TABLE_TRIPS + " JOIN " + TABLE_CITIES +
+				" on " + TABLE_TRIPS + "." + KEY_FROM_CITY_ID + " == " +
+				TABLE_CITIES + "." + KEY_ROWID +
+				" GROUP BY " + key_city +
+				" ORDER BY " + key_city + " ASC",
+			null);
 	}
 
 	public Cursor fetch_from_cities(String company)
 	{
-		return mDbHelper.mDb.query(true, TABLE_TRIPS, new String[] {KEY_ROWID, KEY_FROM_CITY},
-				KEY_COMP + " = ?", new String[] {company},
-				KEY_FROM_CITY, null, KEY_FROM_CITY + " ASC", null);
+		String key_city = KEY_CITY + "_" + mDbHelper.mCtx.getResources().getString(R.string.lang_code);
+		return mDbHelper.mDb.rawQuery("SELECT DISTINCT " + TABLE_TRIPS +
+				"." + KEY_ROWID + ", " + key_city + " AS " + KEY_FROM_CITY +
+				" FROM " + TABLE_TRIPS + " JOIN " + TABLE_CITIES +
+				" on " + TABLE_TRIPS + "." + KEY_FROM_CITY_ID + " == " +
+				TABLE_CITIES + "." + KEY_ROWID +
+				" WHERE " + KEY_COMP + " == ? " +
+				" GROUP BY " + key_city +
+				" ORDER BY " + key_city + " ASC",
+			new String[] {company});
 	}
 
 	public Cursor fetch_to_cities(String from_city)
 	{
-		return mDbHelper.mDb.query(true, TABLE_TRIPS, new String[] {KEY_ROWID, KEY_TO_CITY},
-				KEY_FROM_CITY + " = ?", new String[] {from_city},
-				KEY_TO_CITY, null, KEY_TO_CITY + " ASC", null);
+		String key_city = KEY_CITY + "_" + mDbHelper.mCtx.getResources().getString(R.string.lang_code);
+		String from_city_id = fetch_city_id(from_city);
+
+		return mDbHelper.mDb.rawQuery("SELECT DISTINCT " + TABLE_TRIPS +
+				"." + KEY_ROWID + "," + key_city +
+				" FROM " + TABLE_TRIPS + " JOIN " + TABLE_CITIES +
+				" on " + TABLE_TRIPS + "." + KEY_TO_CITY_ID + " == " +
+				TABLE_CITIES + "." + KEY_ROWID +
+				" WHERE " + KEY_FROM_CITY_ID + " == ? " +
+				" GROUP BY " + key_city +
+				" ORDER BY " + key_city + " ASC",
+			new String[] {from_city_id});
 	}
 
 	public Cursor fetch_to_cities(String from_city, String company)
 	{
-		return mDbHelper.mDb.query(true, TABLE_TRIPS, new String[] {KEY_ROWID, KEY_TO_CITY},
-				KEY_FROM_CITY + " = ? AND " + KEY_COMP + " = ?",
-				new String[] {from_city, company},
-				KEY_TO_CITY, null, KEY_TO_CITY + " ASC", null);
+		String key_city = KEY_CITY + "_" + mDbHelper.mCtx.getResources().getString(R.string.lang_code);
+		String from_city_id = fetch_city_id(from_city);
+
+		return mDbHelper.mDb.rawQuery("SELECT DISTINCT " + TABLE_TRIPS +
+				"." + KEY_ROWID + ", " + key_city + " AS " + KEY_TO_CITY +
+				" FROM " + TABLE_TRIPS + " JOIN " + TABLE_CITIES +
+				" on " + TABLE_TRIPS + "." + KEY_TO_CITY_ID + " == " +
+				TABLE_CITIES + "." + KEY_ROWID +
+				" WHERE " + KEY_FROM_CITY_ID + " == ? " + " AND " +
+				" WHERE " + KEY_COMP + " == ? " +
+				" GROUP BY " + key_city +
+				" ORDER BY " + key_city + " ASC",
+			new String[] {from_city_id, company});
 	}
 
 	public Cursor fetch_stations()
 	{
-		return mDbHelper.mDb.rawQuery("SELECT DISTINCT station FROM " +
-				"(SELECT " + KEY_FROM_STN + " as station from " + TABLE_TRIPS + " UNION " +
-				"SELECT " + KEY_TO_STN + " as station from " + TABLE_TRIPS + ")" +
-				" ORDER BY station ASC",
-				null);
+		String key_station = KEY_STN + "_" + mDbHelper.mCtx.getResources().getString(R.string.lang_code);
+		return mDbHelper.mDb.query(true, TABLE_STATIONS, new String[] {KEY_ROWID, key_station},
+				null, null, null, null, key_station + " ASC", null);
+	}
+
+	public Cursor fetch_cities()
+	{
+		String key_city = KEY_CITY + "_" + mDbHelper.mCtx.getResources().getString(R.string.lang_code);
+		return mDbHelper.mDb.query(true, TABLE_CITIES, new String[] {KEY_ROWID, key_city},
+				null, null, null, null, key_city + " ASC", null);
 	}
 
 	public Cursor fetch_companies()
@@ -570,6 +604,15 @@ public class DbAdapter
 
 		mDbHelper.mDb.delete(TABLE_LAST_UPDATE, null, null);
 		mDbHelper.mDb.insert(TABLE_LAST_UPDATE, null, cv);
+	}
+
+	private String fetch_city_id(String city)
+	{
+		String key_city = KEY_CITY + "_" + mDbHelper.mCtx.getResources().getString(R.string.lang_code);
+		Cursor c = mDbHelper.mDb.query(TABLE_CITIES, new String[] {KEY_ROWID},
+				key_city + " = ?", new String[] {city},
+				null, null, null, "1");
+		return c.moveToFirst() ? Integer.toString(c.getInt(0)) : "0";
 	}
 }
 
