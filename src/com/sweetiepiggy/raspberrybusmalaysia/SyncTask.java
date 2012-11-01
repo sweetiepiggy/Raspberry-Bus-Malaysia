@@ -75,7 +75,7 @@ public class SyncTask extends AsyncTask<Void, Void, Void>
 		try {
 			URL url = new URL(CITIES_URL);
 			BufferedReader in = new BufferedReader(
-					new InputStreamReader(url.openStream()));
+					new InputStreamReader(url.openStream(), "utf-8"));
 
 			String line = in.readLine();
 
@@ -113,7 +113,7 @@ public class SyncTask extends AsyncTask<Void, Void, Void>
 		try {
 			URL url = new URL(STATIONS_URL);
 			BufferedReader in = new BufferedReader(
-					new InputStreamReader(url.openStream()));
+					new InputStreamReader(url.openStream(), "utf-8"));
 
 			String line = in.readLine();
 
@@ -151,7 +151,7 @@ public class SyncTask extends AsyncTask<Void, Void, Void>
 		try {
 			URL url = new URL(TRIPS_URL);
 			BufferedReader in = new BufferedReader(
-					new InputStreamReader(url.openStream()));
+					new InputStreamReader(url.openStream(), "utf-8"));
 
 			String line = in.readLine();
 
