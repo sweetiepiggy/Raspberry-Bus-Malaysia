@@ -32,10 +32,10 @@ public class DbAdapter
 	public static final String KEY_ROWID = "_id";
 	public static final String KEY_COMP = "company";
 	public static final String KEY_BRAND = "bus_brand";
-	public static final String KEY_FROM_CITY = "from_city_fk";
-	public static final String KEY_FROM_STN = "from_station_fk";
-	public static final String KEY_TO_CITY = "to_city_fk";
-	public static final String KEY_TO_STN = "to_station_fk";
+	public static final String KEY_FROM_CITY = "from_city_id";
+	public static final String KEY_FROM_STN = "from_station_id";
+	public static final String KEY_TO_CITY = "to_city_id";
+	public static final String KEY_TO_STN = "to_station_id";
 	public static final String KEY_SCHED_DEP = "scheduled_departure";
 	public static final String KEY_ACTUAL_DEP = "actual_departure";
 	public static final String KEY_ARRIVAL = "arrival_time";
@@ -44,7 +44,7 @@ public class DbAdapter
 	public static final String KEY_COMFORT = "comfort";
 	public static final String KEY_COMMENT = "comment";
 	public static final String KEY_LAST_UPDATE = "comment";
-	public static final String KEY_CITY = "city_fk";
+	public static final String KEY_CITY = "city_id";
 	public static final String KEY_CITY_EN = "city_en";
 	public static final String KEY_CITY_MS = "city_ms";
 	public static final String KEY_CITY_ZH = "city_zh";
@@ -72,7 +72,7 @@ public class DbAdapter
 	private static final String TABLE_LAST_UPDATE = "last_update";
 	private static final String TABLE_CITIES = "cities";
 	private static final String TABLE_STATIONS = "stations";
-	private static final int DATABASE_VERSION = 9;
+	private static final int DATABASE_VERSION = 10;
 
 	private static final String DATABASE_CREATE_TRIPS =
 		"CREATE TABLE " + TABLE_TRIPS + " (" +
