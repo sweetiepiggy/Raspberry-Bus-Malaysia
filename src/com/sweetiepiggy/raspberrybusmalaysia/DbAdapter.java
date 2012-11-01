@@ -68,7 +68,6 @@ public class DbAdapter
 	private static final String DATABASE_NAME = "rbm.db";
 	private static final String TABLE_TRIPS = "trips";
 	/** "tmp" table was originally named "submit" in db-v7 / rbm-v0.1.1 */
-	private static final String TABLE_TMP_OLD = "submit";
 	private static final String TABLE_TMP = "tmp";
 	private static final String TABLE_LAST_UPDATE = "last_update";
 	private static final String TABLE_CITIES = "cities";
