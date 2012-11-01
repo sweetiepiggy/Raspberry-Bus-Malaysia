@@ -1,4 +1,4 @@
-_id,city_fk,station_en,station_ms,station_zh,latitude,longitude
+_id,city_id,station_en,station_ms,station_zh,latitude,longitude
 1,2,"Corus Hotel","Corus Hotel",CORUS酒店,3160163,101714997
 2,2,"Hentian Duta","Hentian Duta",督大车站,3171572,101674013
 3,2,KTM,KTM,火车总站,3140021,101693133
