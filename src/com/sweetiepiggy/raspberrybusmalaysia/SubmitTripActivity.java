@@ -48,16 +48,19 @@ public class SubmitTripActivity extends Activity
 	private DataWrapper mData;
 	private DbAdapter mDbHelper;
 
-	static final int SCHED_DATE_DIALOG_ID = 0;
-	static final int SCHED_TIME_DIALOG_ID = 1;
-	static final int DEPART_DATE_DIALOG_ID = 2;
-	static final int DEPART_TIME_DIALOG_ID = 3;
-	static final int ARRIVAL_DATE_DIALOG_ID = 4;
-	static final int ARRIVAL_TIME_DIALOG_ID = 5;
+	private static final int SCHED_DATE_DIALOG_ID = 0;
+	private static final int SCHED_TIME_DIALOG_ID = 1;
+	private static final int DEPART_DATE_DIALOG_ID = 2;
+	private static final int DEPART_TIME_DIALOG_ID = 3;
+	private static final int ARRIVAL_DATE_DIALOG_ID = 4;
+	private static final int ARRIVAL_TIME_DIALOG_ID = 5;
+
+	private static final int ACTIVITY_FROM = 0;
+	private static final int ACTIVITY_TO = 1;
 
 	/* TODO: move this to Constants.java */
-	static final String EMAIL_ADDRESS = "sweetiepiggyapps@gmail.com";
-	static final String EMAIL_SUBJECT = "Raspberry Bus Malaysia Trip Submission";
+	private static final String EMAIL_ADDRESS = "sweetiepiggyapps@gmail.com";
+	private static final String EMAIL_SUBJECT = "Raspberry Bus Malaysia Trip Submission";
 
 	@Override
 	public void onCreate(Bundle savedInstanceState)
@@ -413,7 +416,7 @@ public class SubmitTripActivity extends Activity
 		from_map_button.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
 				Intent intent = new Intent(getApplicationContext(), RbmMapActivity.class);
-				startActivity(intent);
+				startActivityForResult(intent, ACTIVITY_FROM);
 			}
 		});
 
@@ -421,7 +424,7 @@ public class SubmitTripActivity extends Activity
 		to_map_button.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
 				Intent intent = new Intent(getApplicationContext(), RbmMapActivity.class);
-				startActivity(intent);
+				startActivityForResult(intent, ACTIVITY_TO);
 			}
 		});
 	}
@@ -582,5 +585,35 @@ public class SubmitTripActivity extends Activity
 		return null;
 	}
 
+	@Override
+	protected void onActivityResult(int request_code, int result_code, Intent data)
+	{
+		super.onActivityResult(request_code, result_code, data);
+
+		switch (request_code) {
+		case ACTIVITY_FROM:
+			if (result_code == RESULT_OK) {
+				Bundle b = data.getExtras();
+				if (b != null) {
+					String station = b.getString("station");
+					String city = b.getString("city");
+					((AutoCompleteTextView) findViewById(R.id.from_city_entry)).setText(city);
+					((AutoCompleteTextView) findViewById(R.id.from_station_entry)).setText(station);
+				}
+			}
+			break;
+		case ACTIVITY_TO:
+			if (result_code == RESULT_OK) {
+				Bundle b = data.getExtras();
+				if (b != null) {
+					String station = b.getString("station");
+					String city = b.getString("city");
+					((AutoCompleteTextView) findViewById(R.id.to_city_entry)).setText(city);
+					((AutoCompleteTextView) findViewById(R.id.to_station_entry)).setText(station);
+				}
+			}
+			break;
+		}
+	}
 }
 

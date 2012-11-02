@@ -34,7 +34,7 @@ import com.google.android.maps.OverlayItem;
 
 public class RbmMapActivity extends MapActivity {
 	/* center map on Puduraya */
-	final static GeoPoint CENTER_GEOPOINT = new GeoPoint(3145792,101701098);
+	private static final GeoPoint CENTER_GEOPOINT = new GeoPoint(3145792,101701098);
 
 	/** Called when the activity is first created. */
 	@Override
@@ -54,10 +54,11 @@ public class RbmMapActivity extends MapActivity {
 		if (c.moveToFirst()) do {
 			int latitude = c.getInt(c.getColumnIndex(DbAdapter.KEY_LATITUDE));
 			int longitude = c.getInt(c.getColumnIndex(DbAdapter.KEY_LONGITUDE));
-			String station_name = c.getString(c.getColumnIndex(DbAdapter.KEY_STN));
+			String station = c.getString(c.getColumnIndex(DbAdapter.KEY_STN));
+			String city = c.getString(c.getColumnIndex(DbAdapter.KEY_CITY));
 
 			GeoPoint gp = new GeoPoint(latitude, longitude);
-			OverlayItem oi = new OverlayItem(gp, station_name, null);
+			OverlayItem oi = new OverlayItem(gp, station, city);
 			itemizedoverlay.addOverlay(oi);
 		} while (c.moveToNext());
 		c.close();

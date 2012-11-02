@@ -340,10 +340,17 @@ public class DbAdapter
 
 	public Cursor fetch_stations()
 	{
+		String key_city = KEY_CITY + "_" + mDbHelper.mCtx.getResources().getString(R.string.lang_code);
 		String key_station = KEY_STN + "_" + mDbHelper.mCtx.getResources().getString(R.string.lang_code);
-		return mDbHelper.mDb.query(TABLE_STATIONS,
-				new String[] {KEY_ROWID, key_station + " AS " + KEY_STN, KEY_LATITUDE, KEY_LONGITUDE},
-				null, null, null, null, null, null);
+		return mDbHelper.mDb.rawQuery("SELECT " + TABLE_STATIONS +
+				"." + KEY_ROWID + " AS " + KEY_ROWID + ", " +
+				key_station + " AS " + KEY_STN + ", " +
+				key_city + " AS " + KEY_CITY + ", " +
+				KEY_LATITUDE + ", " + KEY_LONGITUDE +
+				" FROM " + TABLE_STATIONS + " JOIN " + TABLE_CITIES +
+				" on " + TABLE_STATIONS + "." + KEY_CITY_ID + " == " +
+				TABLE_CITIES + "." + KEY_ROWID,
+			null);
 	}
 
 	public Cursor fetch_cities()
