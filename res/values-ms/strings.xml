@@ -49,7 +49,7 @@
 	<string name="from_city_hint">Masukkan tempat bertolak, contoh: Kuala Lumpur</string>
 	<string name="from_station_hint">Masukkan nama hentian bas bertolak, contoh: Puduraya</string>
 
-	<string name="to_city_hint">Masukkan tempat ketibaan, contoh: Penang</string>
+	<string name="to_city_hint">Masukkan tempat ketibaan, contoh: Pulau Pinang</string>
 	<string name="to_station_hint">Masukkan nama hentian bas ketibaan, contoh: Sg Nibong</string>
 
 	<string name="counter_num">Nombor Kaunter</string>
