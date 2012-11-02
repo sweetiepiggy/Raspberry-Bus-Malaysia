@@ -47,7 +47,7 @@
 			android:background="@android:drawable/editbox_background"/>
 		<Button
 			android:id="@+id/from_map_button"
-			android:layout_width="wrap_content"
+			android:layout_width="fill_parent"
 			android:layout_height="wrap_content"
 			android:drawableLeft="@android:drawable/ic_dialog_map"
 			android:text="@string/map" />
@@ -72,7 +72,7 @@
 			android:background="@android:drawable/editbox_background"/>
 		<Button
 			android:id="@+id/to_map_button"
-			android:layout_width="wrap_content"
+			android:layout_width="fill_parent"
 			android:layout_height="wrap_content"
 			android:drawableLeft="@android:drawable/ic_dialog_map"
 			android:text="@string/map" />
