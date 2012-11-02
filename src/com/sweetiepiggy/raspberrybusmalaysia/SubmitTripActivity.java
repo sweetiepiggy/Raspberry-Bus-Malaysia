@@ -23,12 +23,9 @@ import java.util.Calendar;
 import java.util.Date;
 
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.app.TimePickerDialog;
-import android.content.DialogInterface;
-import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
@@ -51,16 +48,19 @@ public class SubmitTripActivity extends Activity
 	private DataWrapper mData;
 	private DbAdapter mDbHelper;
 
-	static final int SCHED_DATE_DIALOG_ID = 0;
-	static final int SCHED_TIME_DIALOG_ID = 1;
-	static final int DEPART_DATE_DIALOG_ID = 2;
-	static final int DEPART_TIME_DIALOG_ID = 3;
-	static final int ARRIVAL_DATE_DIALOG_ID = 4;
-	static final int ARRIVAL_TIME_DIALOG_ID = 5;
+	private static final int SCHED_DATE_DIALOG_ID = 0;
+	private static final int SCHED_TIME_DIALOG_ID = 1;
+	private static final int DEPART_DATE_DIALOG_ID = 2;
+	private static final int DEPART_TIME_DIALOG_ID = 3;
+	private static final int ARRIVAL_DATE_DIALOG_ID = 4;
+	private static final int ARRIVAL_TIME_DIALOG_ID = 5;
+
+	private static final int ACTIVITY_FROM = 0;
+	private static final int ACTIVITY_TO = 1;
 
 	/* TODO: move this to Constants.java */
-	static final String EMAIL_ADDRESS = "sweetiepiggyapps@gmail.com";
-	static final String EMAIL_SUBJECT = "Raspberry Bus Malaysia Trip Submission";
+	private static final String EMAIL_ADDRESS = "sweetiepiggyapps@gmail.com";
+	private static final String EMAIL_SUBJECT = "Raspberry Bus Malaysia Trip Submission";
 
 	@Override
 	public void onCreate(Bundle savedInstanceState)
@@ -84,6 +84,7 @@ public class SubmitTripActivity extends Activity
 		}
 
 		init_date_time_buttons();
+		init_map_buttons();
 		init_cancel_button();
 		init_submit_button();
 	}
@@ -280,9 +281,7 @@ public class SubmitTripActivity extends Activity
 		Cursor c = mDbHelper.fetch_cities();
 		startManagingCursor(c);
 		if (c.moveToFirst()) do {
-			/* TODO: use getColumnIndex() */
-			/* TODO: verify that column 0 exists */
-			cities.add(c.getString(0));
+			cities.add(c.getString(c.getColumnIndex(DbAdapter.KEY_CITY)));
 		} while (c.moveToNext());
 		AutoCompleteTextView cities_entry = (AutoCompleteTextView) findViewById(id);
 		cities_entry.setThreshold(1);
@@ -295,8 +294,7 @@ public class SubmitTripActivity extends Activity
 		Cursor c = mDbHelper.fetch_stations();
 		startManagingCursor(c);
 		if (c.moveToFirst()) do {
-			/* TODO: verify that column 0 exists */
-			stations.add(c.getString(0));
+			stations.add(c.getString(c.getColumnIndex(DbAdapter.KEY_STN)));
 		} while (c.moveToNext());
 		AutoCompleteTextView stations_entry = (AutoCompleteTextView) findViewById(id);
 		stations_entry.setThreshold(1);
@@ -410,6 +408,25 @@ public class SubmitTripActivity extends Activity
 		});
 	}
 
+	private void init_map_buttons()
+	{
+		Button from_map_button = (Button) findViewById(R.id.from_map_button);
+		from_map_button.setOnClickListener(new View.OnClickListener() {
+			public void onClick(View v) {
+				Intent intent = new Intent(getApplicationContext(), RbmMapActivity.class);
+				startActivityForResult(intent, ACTIVITY_FROM);
+			}
+		});
+
+		Button to_map_button = (Button) findViewById(R.id.to_map_button);
+		to_map_button.setOnClickListener(new View.OnClickListener() {
+			public void onClick(View v) {
+				Intent intent = new Intent(getApplicationContext(), RbmMapActivity.class);
+				startActivityForResult(intent, ACTIVITY_TO);
+			}
+		});
+	}
+
 	private void init_cancel_button()
 	{
 		Button cancel_button = (Button)findViewById(R.id.cancel_button);
@@ -439,22 +456,6 @@ public class SubmitTripActivity extends Activity
 		String comfort = Integer.toString((int) ((RatingBar) findViewById(R.id.comfort_bar)).getRating());
 		String comment = ((EditText) findViewById(R.id.comment_entry)).getText().toString();
 
-		DbAdapter dbHelper = new DbAdapter();
-		dbHelper.open_readwrite(this);
-
-		long row_id = dbHelper.create_trip(company, brand, from_city,
-				from_station, to_city, to_station, sched_time,
-				depart_time, arrival_time, counter_num,
-				safety, comfort, comment);
-
-		dbHelper.close();
-
-		int msg_id = (row_id == -1) ? R.string.submit_trip_fail :
-			R.string.submit_trip_success;
-
-		Toast.makeText(getApplicationContext(), getResources().getString(msg_id),
-				Toast.LENGTH_SHORT).show();
-
 		send_email(company, brand, from_city,
 			from_station, to_city, to_station, sched_time,
 			depart_time, arrival_time, counter_num,
@@ -473,29 +474,12 @@ public class SubmitTripActivity extends Activity
 			',' + arrival_time + ',' + counter + ',' + safety +
 			',' + comfort + ',' + comment + "\n";
 
-		AlertDialog.Builder alert = new AlertDialog.Builder(this);
-		alert.setTitle(getResources().getString(android.R.string.dialog_alert_title));
-		alert.setMessage(getResources().getString(R.string.share));
-		alert.setPositiveButton(android.R.string.ok, new OnClickListener() {
-			@Override
-			public void onClick(DialogInterface dialog, int which) {
-
-				Intent intent = new Intent(Intent.ACTION_SEND);
-				intent.putExtra(Intent.EXTRA_EMAIL, new String[] {EMAIL_ADDRESS} );
-				intent.putExtra(Intent.EXTRA_SUBJECT, EMAIL_SUBJECT);
-				intent.putExtra(Intent.EXTRA_TEXT, msg);
-				intent.setType("text/plain");
-				startActivity(Intent.createChooser(intent, getResources().getString(R.string.send_email)));
-			}
-		});
-
-		alert.setNegativeButton(android.R.string.cancel, new OnClickListener() {
-			@Override
-			public void onClick(DialogInterface dialog, int which) {
-			}
-		});
-
-		alert.show();
+		Intent intent = new Intent(Intent.ACTION_SEND);
+		intent.putExtra(Intent.EXTRA_EMAIL, new String[] {EMAIL_ADDRESS} );
+		intent.putExtra(Intent.EXTRA_SUBJECT, EMAIL_SUBJECT);
+		intent.putExtra(Intent.EXTRA_TEXT, msg);
+		intent.setType("text/plain");
+		startActivity(Intent.createChooser(intent, getResources().getString(R.string.send_email)));
 	}
 
 	private String format_time(date_and_time d)
@@ -599,5 +583,35 @@ public class SubmitTripActivity extends Activity
 		return null;
 	}
 
+	@Override
+	protected void onActivityResult(int request_code, int result_code, Intent data)
+	{
+		super.onActivityResult(request_code, result_code, data);
+
+		switch (request_code) {
+		case ACTIVITY_FROM:
+			if (result_code == RESULT_OK) {
+				Bundle b = data.getExtras();
+				if (b != null) {
+					String station = b.getString("station");
+					String city = b.getString("city");
+					((AutoCompleteTextView) findViewById(R.id.from_city_entry)).setText(city);
+					((AutoCompleteTextView) findViewById(R.id.from_station_entry)).setText(station);
+				}
+			}
+			break;
+		case ACTIVITY_TO:
+			if (result_code == RESULT_OK) {
+				Bundle b = data.getExtras();
+				if (b != null) {
+					String station = b.getString("station");
+					String city = b.getString("city");
+					((AutoCompleteTextView) findViewById(R.id.to_city_entry)).setText(city);
+					((AutoCompleteTextView) findViewById(R.id.to_station_entry)).setText(station);
+				}
+			}
+			break;
+		}
+	}
 }
 

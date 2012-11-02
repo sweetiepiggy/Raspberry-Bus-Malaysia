@@ -45,6 +45,12 @@
 			android:layout_height="wrap_content"
 			android:hint="@string/from_station_hint"
 			android:background="@android:drawable/editbox_background"/>
+		<Button
+			android:id="@+id/from_map_button"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:drawableLeft="@android:drawable/ic_dialog_map"
+			android:text="@string/map" />
 
 		<TextView
 			android:id="@+id/to_label"
@@ -64,6 +70,12 @@
 			android:layout_height="wrap_content"
 			android:hint="@string/to_station_hint"
 			android:background="@android:drawable/editbox_background"/>
+		<Button
+			android:id="@+id/to_map_button"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:drawableLeft="@android:drawable/ic_dialog_map"
+			android:text="@string/map" />
 
 		<TextView
 			android:id="@+id/company_label"

@@ -42,18 +42,18 @@
 	<string name="depart_time">实际出发时间</string>
 	<string name="arrival_time">到达时间</string>
 
-	<string name="company_hint">输入公司名称， 例如Konsortium Bas Ekspres</string>
+	<string name="company_hint">输入公司名称，例如Konsortium Bas Ekspres</string>
 	<string name="brand">品牌</string>
-	<string name="brand_hint">输入巴士品牌， 例如Seasons, Eagle</string>
+	<string name="brand_hint">输入巴士品牌，例如Seasons, Eagle</string>
 
-	<string name="from_city_hint">输入出发城市， 例如Kuala Lumpur</string>
-	<string name="from_station_hint">输入车站， 例如Puduraya</string>
+	<string name="from_city_hint">输入出发城市，例如吉隆坡</string>
+	<string name="from_station_hint">输入车站，例如富都车站</string>
 
-	<string name="to_city_hint">输入到达城市， 例如Penang</string>
-	<string name="to_station_hint">输入到达车站， 例如Sg Nibong</string>
+	<string name="to_city_hint">输入到达城市，例如槟城</string>
+	<string name="to_station_hint">输入到达车站，例如泥帮河车站</string>
 
 	<string name="counter_num">柜台号码</string>
-	<string name="counter_num_hint">输入柜台号码， 例如10</string>
+	<string name="counter_num_hint">输入柜台号码，例如10</string>
 
 	<string name="comment">意见</string>
 	<string name="comment_hint">输入您对这车程的意见</string>
@@ -72,9 +72,6 @@
 	<string name="missing_from_city">输入出发城市</string>
 	<string name="missing_to_city">输入到达城市</string>
 	<string name="depart_before_arrival">到达时间不能早过出发时间</string>
-
-	<string name="submit_trip_fail">哎呀，更新数据库问题</string>
-	<string name="submit_trip_success">成功更新数据库</string>
 
 	<string name="search_hint">搜索公司</string>
 
@@ -95,7 +92,7 @@
 	<string name="saturday">星期六</string>
 	<string name="sunday">星期日</string>
 
-	<string name="share">请电邮此信息给原创者，以便其他用户可共享</string>
+	<string name="lang_code">zh</string>
 
 	<string name="license">
 版權所有(C) 2012 Sweetie Piggy Apps sweetiepiggyapps@gmail.com\n\n
