@@ -65,7 +65,7 @@
 			android:layout_gravity="center"
 			android:gravity="center"
 			android:paddingTop="30dp"
-			android:drawableTop="@android:drawable/ic_menu_mapmode"
+			android:drawableTop="@drawable/map"
 			style="@android:style/TextAppearance.Large"
 			android:text="@string/map" />
 		<TextView/>
