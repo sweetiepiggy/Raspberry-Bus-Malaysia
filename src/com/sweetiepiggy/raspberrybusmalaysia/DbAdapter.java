@@ -291,6 +291,20 @@ public class DbAdapter
 			null);
 	}
 
+	public Cursor fetch_from_stations()
+	{
+		String key_station = KEY_STN + "_" + mDbHelper.mCtx.getResources().getString(R.string.lang_code);
+		return mDbHelper.mDb.rawQuery("SELECT DISTINCT " + TABLE_TRIPS +
+				"." + KEY_ROWID + " AS " + KEY_ROWID + ", " + key_station + " AS " + KEY_STN +
+				", " + KEY_LATITUDE + ", " + KEY_LONGITUDE +
+				" FROM " + TABLE_TRIPS + " JOIN " + TABLE_STATIONS +
+				" on " + TABLE_TRIPS + "." + KEY_FROM_STN_ID + " == " +
+				TABLE_STATIONS + "." + KEY_ROWID +
+				" GROUP BY " + key_station +
+				" ORDER BY " + key_station + " ASC",
+			null);
+	}
+
 	public Cursor fetch_from_cities(String company)
 	{
 		String key_city = KEY_CITY + "_" + mDbHelper.mCtx.getResources().getString(R.string.lang_code);
@@ -319,6 +333,23 @@ public class DbAdapter
 				" GROUP BY " + key_city +
 				" ORDER BY " + key_city + " ASC",
 			new String[] {from_city_id});
+	}
+
+	public Cursor fetch_to_stations(String from_station)
+	{
+		String key_station = KEY_STN + "_" + mDbHelper.mCtx.getResources().getString(R.string.lang_code);
+		String from_station_id = fetch_station_id(from_station);
+
+		return mDbHelper.mDb.rawQuery("SELECT DISTINCT " + TABLE_TRIPS +
+				"." + KEY_ROWID + " AS " + KEY_ROWID + ", " + key_station + " AS " + KEY_TO_STN +
+				", " + KEY_LATITUDE + ", " + KEY_LONGITUDE +
+				" FROM " + TABLE_TRIPS + " JOIN " + TABLE_STATIONS +
+				" on " + TABLE_TRIPS + "." + KEY_TO_STN_ID + " == " +
+				TABLE_STATIONS + "." + KEY_ROWID +
+				" WHERE " + KEY_FROM_STN_ID + " == ? " +
+				" GROUP BY " + key_station +
+				" ORDER BY " + key_station + " ASC",
+			new String[] {from_station_id});
 	}
 
 	public Cursor fetch_to_cities(String from_city, String company)
@@ -643,6 +674,15 @@ public class DbAdapter
 		String key_city = KEY_CITY + "_" + mDbHelper.mCtx.getResources().getString(R.string.lang_code);
 		Cursor c = mDbHelper.mDb.query(TABLE_CITIES, new String[] {KEY_ROWID},
 				key_city + " = ?", new String[] {city},
+				null, null, null, "1");
+		return c.moveToFirst() ? Integer.toString(c.getInt(0)) : "0";
+	}
+
+	private String fetch_station_id(String station)
+	{
+		String key_station = KEY_STN + "_" + mDbHelper.mCtx.getResources().getString(R.string.lang_code);
+		Cursor c = mDbHelper.mDb.query(TABLE_STATIONS, new String[] {KEY_ROWID},
+				key_station + " = ?", new String[] {station},
 				null, null, null, "1");
 		return c.moveToFirst() ? Integer.toString(c.getInt(0)) : "0";
 	}

@@ -66,6 +66,8 @@ public class RbmMapActivity extends MapActivity {
 
 		mapOverlays.add(itemizedoverlay);
 
+		mapOverlays.add(new RouteOverlay(this, mv.getProjection()));
+
 		MapController mc = mv.getController();
 		mc.setCenter(CENTER_GEOPOINT);
 		mc.setZoom(8);
