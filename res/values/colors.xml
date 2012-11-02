@@ -20,7 +20,8 @@
 -->
 
 <resources>
-	<color name="blue">#3926ef</color>
-	<color name="yellow">#f0ff00</color>
+	<color name="red">#740F0F</color>
+	<color name="blue">#005050</color>
+	<color name="green">#96D615</color>
 </resources>
 
