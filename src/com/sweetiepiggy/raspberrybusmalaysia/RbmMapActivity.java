@@ -26,21 +26,24 @@ import android.os.Bundle;
 
 import com.google.android.maps.GeoPoint;
 import com.google.android.maps.MapActivity;
+import com.google.android.maps.MapController;
 import com.google.android.maps.MapView;
 import com.google.android.maps.Overlay;
 import com.google.android.maps.OverlayItem;
 
 public class RbmMapActivity extends MapActivity {
+	/* center map on Puduraya */
+	final static GeoPoint CENTER_GEOPOINT = new GeoPoint(3145792,101701098);
 
 	/** Called when the activity is first created. */
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.map);
-		MapView mapView = (MapView) findViewById(R.id.mapview);
-		mapView.setBuiltInZoomControls(true);
+		MapView mv = (MapView) findViewById(R.id.mapview);
+		mv.setBuiltInZoomControls(true);
 
-		List<Overlay> mapOverlays = mapView.getOverlays();
+		List<Overlay> mapOverlays = mv.getOverlays();
 		Drawable drawable = getResources().getDrawable(R.drawable.ic_launcher);
 		RbmItemizedOverlay itemizedoverlay = new RbmItemizedOverlay(drawable, this);
 
@@ -81,7 +84,12 @@ public class RbmMapActivity extends MapActivity {
 		itemizedoverlay.addOverlay(puchong_overlay);
 
 		mapOverlays.add(itemizedoverlay);
+
+		MapController mc = mv.getController();
+		mc.setCenter(CENTER_GEOPOINT);
+		mc.setZoom(8);
 	}
+
 
 	@Override
 	protected boolean isRouteDisplayed() {
