@@ -78,7 +78,7 @@ public class DbAdapter
 	private static final String TABLE_LAST_UPDATE = "last_update";
 	private static final String TABLE_CITIES = "cities";
 	private static final String TABLE_STATIONS = "stations";
-	private static final int DATABASE_VERSION = 10;
+	private static final int DATABASE_VERSION = 11;
 
 	private static final String DATABASE_CREATE_TRIPS =
 		"CREATE TABLE " + TABLE_TRIPS + " (" +
@@ -126,9 +126,9 @@ public class DbAdapter
 	private static final String DATABASE_CREATE_CITIES =
 		"CREATE TABLE " + TABLE_CITIES + " (" +
 		KEY_ROWID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
-		KEY_CITY_EN + " TEXT, " +
-		KEY_CITY_MS + " TEXT, " +
-		KEY_CITY_ZH + " TEXT);";
+		KEY_CITY_EN + " TEXT UNIQUE, " +
+		KEY_CITY_MS + " TEXT UNIQUE, " +
+		KEY_CITY_ZH + " TEXT UNIQUE);";
 
 	private static final String DATABASE_CREATE_STATIONS =
 		"CREATE TABLE " + TABLE_STATIONS + " (" +
