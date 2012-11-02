@@ -282,7 +282,7 @@ public class DbAdapter
 	{
 		String key_city = KEY_CITY + "_" + mDbHelper.mCtx.getResources().getString(R.string.lang_code);
 		return mDbHelper.mDb.rawQuery("SELECT DISTINCT " + TABLE_TRIPS +
-				"." + KEY_ROWID + ", " + key_city + " AS " + KEY_FROM_CITY +
+				"." + KEY_ROWID + " AS " + KEY_ROWID + ", " + key_city + " AS " + KEY_FROM_CITY +
 				" FROM " + TABLE_TRIPS + " JOIN " + TABLE_CITIES +
 				" on " + TABLE_TRIPS + "." + KEY_FROM_CITY_ID + " == " +
 				TABLE_CITIES + "." + KEY_ROWID +
@@ -295,7 +295,7 @@ public class DbAdapter
 	{
 		String key_city = KEY_CITY + "_" + mDbHelper.mCtx.getResources().getString(R.string.lang_code);
 		return mDbHelper.mDb.rawQuery("SELECT DISTINCT " + TABLE_TRIPS +
-				"." + KEY_ROWID + ", " + key_city + " AS " + KEY_FROM_CITY +
+				"." + KEY_ROWID + " AS " + KEY_ROWID + ", " + key_city + " AS " + KEY_FROM_CITY +
 				" FROM " + TABLE_TRIPS + " JOIN " + TABLE_CITIES +
 				" on " + TABLE_TRIPS + "." + KEY_FROM_CITY_ID + " == " +
 				TABLE_CITIES + "." + KEY_ROWID +
@@ -311,7 +311,7 @@ public class DbAdapter
 		String from_city_id = fetch_city_id(from_city);
 
 		return mDbHelper.mDb.rawQuery("SELECT DISTINCT " + TABLE_TRIPS +
-				"." + KEY_ROWID + ", " + key_city + " AS " + KEY_TO_CITY +
+				"." + KEY_ROWID + " AS " + KEY_ROWID + ", " + key_city + " AS " + KEY_TO_CITY +
 				" FROM " + TABLE_TRIPS + " JOIN " + TABLE_CITIES +
 				" on " + TABLE_TRIPS + "." + KEY_TO_CITY_ID + " == " +
 				TABLE_CITIES + "." + KEY_ROWID +
@@ -327,7 +327,7 @@ public class DbAdapter
 		String from_city_id = fetch_city_id(from_city);
 
 		return mDbHelper.mDb.rawQuery("SELECT DISTINCT " + TABLE_TRIPS +
-				"." + KEY_ROWID + ", " + key_city + " AS " + KEY_TO_CITY +
+				"." + KEY_ROWID + " AS " + KEY_ROWID + ", " + key_city + " AS " + KEY_TO_CITY +
 				" FROM " + TABLE_TRIPS + " JOIN " + TABLE_CITIES +
 				" on " + TABLE_TRIPS + "." + KEY_TO_CITY_ID + " == " +
 				TABLE_CITIES + "." + KEY_ROWID +
