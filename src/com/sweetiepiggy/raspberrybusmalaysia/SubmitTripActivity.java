@@ -281,8 +281,7 @@ public class SubmitTripActivity extends Activity
 		Cursor c = mDbHelper.fetch_cities();
 		startManagingCursor(c);
 		if (c.moveToFirst()) do {
-			/* TODO: verify that column 0 exists */
-			cities.add(c.getString(0));
+			cities.add(c.getString(c.getColumnIndex(DbAdapter.KEY_CITY)));
 		} while (c.moveToNext());
 		AutoCompleteTextView cities_entry = (AutoCompleteTextView) findViewById(id);
 		cities_entry.setThreshold(1);
@@ -295,8 +294,7 @@ public class SubmitTripActivity extends Activity
 		Cursor c = mDbHelper.fetch_stations();
 		startManagingCursor(c);
 		if (c.moveToFirst()) do {
-			/* TODO: verify that column 0 exists */
-			stations.add(c.getString(0));
+			stations.add(c.getString(c.getColumnIndex(DbAdapter.KEY_STN)));
 		} while (c.moveToNext());
 		AutoCompleteTextView stations_entry = (AutoCompleteTextView) findViewById(id);
 		stations_entry.setThreshold(1);

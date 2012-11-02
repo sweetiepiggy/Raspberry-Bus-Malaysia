@@ -356,7 +356,7 @@ public class DbAdapter
 	public Cursor fetch_cities()
 	{
 		String key_city = KEY_CITY + "_" + mDbHelper.mCtx.getResources().getString(R.string.lang_code);
-		return mDbHelper.mDb.query(true, TABLE_CITIES, new String[] {KEY_ROWID, key_city},
+		return mDbHelper.mDb.query(true, TABLE_CITIES, new String[] {KEY_ROWID, key_city + " AS " + KEY_CITY},
 				null, null, null, null, key_city + " ASC", null);
 	}
 
