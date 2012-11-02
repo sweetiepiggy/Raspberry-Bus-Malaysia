@@ -250,6 +250,12 @@ public class RouteActivity extends Activity
 		init_count_button(count_view, company, from_city, to_city);
 
 		TableRow tr = new TableRow(getApplicationContext());
+
+		TableRow.LayoutParams lp = new TableRow.LayoutParams(TableRow.LayoutParams.WRAP_CONTENT,
+				TableRow.LayoutParams.FILL_PARENT, 1.0f);
+		tr.setGravity(Gravity.CENTER);
+		tr.setLayoutParams(lp);
+
 		m_rows.add(tr);
 		tr.addView(company_view);
 		tr.addView(avg_view);
