@@ -341,8 +341,9 @@ public class DbAdapter
 	public Cursor fetch_stations()
 	{
 		String key_station = KEY_STN + "_" + mDbHelper.mCtx.getResources().getString(R.string.lang_code);
-		return mDbHelper.mDb.query(true, TABLE_STATIONS, new String[] {KEY_ROWID, key_station},
-				null, null, null, null, key_station + " ASC", null);
+		return mDbHelper.mDb.query(TABLE_STATIONS,
+				new String[] {KEY_ROWID, key_station + " AS " + KEY_STN, KEY_LATITUDE, KEY_LONGITUDE},
+				null, null, null, null, null, null);
 	}
 
 	public Cursor fetch_cities()
