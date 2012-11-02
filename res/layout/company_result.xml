@@ -31,7 +31,7 @@
 			android:id="@+id/title"
 			android:layout_width="fill_parent"
 			android:layout_height="wrap_content"
-			android:textStyle="bold" />
+			style="@android:style/TextAppearance.Large" />
 
 		<TextView
 			android:id="@+id/avg_delay_label"

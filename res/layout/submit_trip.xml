@@ -31,7 +31,7 @@
 			android:id="@+id/from_label"
 			android:layout_width="fill_parent"
 			android:layout_height="wrap_content"
-			android:textStyle="bold"
+			style="@android:style/TextAppearance.Large"
 			android:text="@string/from" />
 		<AutoCompleteTextView
 			android:id="@+id/from_city_entry"
@@ -56,7 +56,7 @@
 			android:id="@+id/to_label"
 			android:layout_width="fill_parent"
 			android:layout_height="wrap_content"
-			android:textStyle="bold"
+			style="@android:style/TextAppearance.Large"
 			android:text="@string/to" />
 		<AutoCompleteTextView
 			android:id="@+id/to_city_entry"
@@ -81,7 +81,7 @@
 			android:id="@+id/company_label"
 			android:layout_width="fill_parent"
 			android:layout_height="wrap_content"
-			android:textStyle="bold"
+			style="@android:style/TextAppearance.Large"
 			android:text="@string/company" />
 		<AutoCompleteTextView
 			android:id="@+id/company_entry"
@@ -94,7 +94,7 @@
 			android:id="@+id/counter_num_label"
 			android:layout_width="fill_parent"
 			android:layout_height="wrap_content"
-			android:textStyle="bold"
+			style="@android:style/TextAppearance.Large"
 			android:text="@string/counter_num" />
 		<AutoCompleteTextView
 			android:id="@+id/counter_num_entry"
@@ -107,7 +107,7 @@
 			android:id="@+id/brand_label"
 			android:layout_width="fill_parent"
 			android:layout_height="wrap_content"
-			android:textStyle="bold"
+			style="@android:style/TextAppearance.Large"
 			android:text="@string/brand" />
 		<AutoCompleteTextView
 			android:id="@+id/brand_entry"
@@ -120,7 +120,7 @@
 			android:id="@+id/sched_time_label"
 			android:layout_width="fill_parent"
 			android:layout_height="wrap_content"
-			android:textStyle="bold"
+			style="@android:style/TextAppearance.Large"
 			android:text="@string/sched_time" />
 		<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
 			android:orientation="horizontal"
@@ -141,7 +141,7 @@
 			android:id="@+id/depart_time_label"
 			android:layout_width="fill_parent"
 			android:layout_height="wrap_content"
-			android:textStyle="bold"
+			style="@android:style/TextAppearance.Large"
 			android:text="@string/depart_time" />
 		<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
 			android:orientation="horizontal"
@@ -162,7 +162,7 @@
 			android:id="@+id/arrival_time_label"
 			android:layout_width="fill_parent"
 			android:layout_height="wrap_content"
-			android:textStyle="bold"
+			style="@android:style/TextAppearance.Large"
 			android:text="@string/arrival_time" />
 		<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
 			android:orientation="horizontal"
@@ -183,7 +183,7 @@
 			android:id="@+id/safety_label"
 			android:layout_width="fill_parent"
 			android:layout_height="wrap_content"
-			android:textStyle="bold"
+			style="@android:style/TextAppearance.Large"
 			android:text="@string/safety" />
 		<RatingBar
 			android:id="@+id/safety_bar"
@@ -197,7 +197,7 @@
 			android:id="@+id/comfort_label"
 			android:layout_width="fill_parent"
 			android:layout_height="wrap_content"
-			android:textStyle="bold"
+			style="@android:style/TextAppearance.Large"
 			android:text="@string/comfort" />
 		<RatingBar
 			android:id="@+id/comfort_bar"
@@ -211,7 +211,7 @@
 			android:id="@+id/comment_label"
 			android:layout_width="fill_parent"
 			android:layout_height="wrap_content"
-			android:textStyle="bold"
+			style="@android:style/TextAppearance.Large"
 			android:text="@string/comment" />
 		<EditText
 			android:id="@+id/comment_entry"
