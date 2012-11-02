@@ -56,5 +56,19 @@
 			style="@android:style/TextAppearance.Large"
 			android:text="@string/submit_trip" />
 	</TableRow>
+	<TableRow>
+		<TextView/>
+		<TextView
+			android:id="@+id/map"
+			android:layout_width="fill_parent"
+			android:layout_height="wrap_content"
+			android:layout_gravity="center"
+			android:gravity="center"
+			android:paddingTop="30dp"
+			android:drawableTop="@android:drawable/ic_menu_mapmode"
+			style="@android:style/TextAppearance.Large"
+			android:text="@string/map" />
+		<TextView/>
+	</TableRow>
 </TableLayout>
 

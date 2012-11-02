@@ -68,6 +68,18 @@ public class RaspberryBusMalaysiaActivity extends Activity
 			}
 		});
 
+		TextView map = (TextView) findViewById(R.id.map);
+		map.setOnClickListener(new View.OnClickListener() {
+			public void onClick(View v)
+			{
+				Intent intent = new Intent(getApplicationContext(), RbmMapActivity.class);
+				Bundle b = new Bundle();
+				b.putBoolean("draw_routes", true);
+				intent.putExtras(b);
+				startActivity(intent);
+			}
+		});
+
 		/* open database only to sync if it has not been created yet */
 		DbAdapter dbHelper = new DbAdapter();
 		dbHelper.open_readwrite(getApplicationContext());

@@ -41,12 +41,17 @@ public class RbmMapActivity extends MapActivity {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.map);
+
+		Bundle b = getIntent().getExtras();
+		boolean draw_routes = (b == null) ? false : b.getBoolean("draw_routes");
+		boolean set_result = (b == null) ? false : b.getBoolean("set_result");
+
 		MapView mv = (MapView) findViewById(R.id.mapview);
 		mv.setBuiltInZoomControls(true);
 
 		List<Overlay> mapOverlays = mv.getOverlays();
 		Drawable drawable = getResources().getDrawable(R.drawable.ic_launcher);
-		RbmItemizedOverlay itemizedoverlay = new RbmItemizedOverlay(drawable, this);
+		RbmItemizedOverlay itemizedoverlay = new RbmItemizedOverlay(drawable, this, set_result);
 
 		DbAdapter dbHelper = new DbAdapter();
 		dbHelper.open(this);
@@ -66,7 +71,9 @@ public class RbmMapActivity extends MapActivity {
 
 		mapOverlays.add(itemizedoverlay);
 
-		mapOverlays.add(new RouteOverlay(this, mv.getProjection()));
+		if (draw_routes) {
+			mapOverlays.add(new RouteOverlay(this, mv.getProjection()));
+		}
 
 		MapController mc = mv.getController();
 		mc.setCenter(CENTER_GEOPOINT);

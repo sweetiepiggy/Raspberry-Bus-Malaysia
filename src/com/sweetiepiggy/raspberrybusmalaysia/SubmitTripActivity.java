@@ -414,6 +414,9 @@ public class SubmitTripActivity extends Activity
 		from_map_button.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
 				Intent intent = new Intent(getApplicationContext(), RbmMapActivity.class);
+				Bundle b = new Bundle();
+				b.putBoolean("set_result", true);
+				intent.putExtras(b);
 				startActivityForResult(intent, ACTIVITY_FROM);
 			}
 		});
@@ -422,6 +425,9 @@ public class SubmitTripActivity extends Activity
 		to_map_button.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
 				Intent intent = new Intent(getApplicationContext(), RbmMapActivity.class);
+				Bundle b = new Bundle();
+				b.putBoolean("set_result", true);
+				intent.putExtras(b);
 				startActivityForResult(intent, ACTIVITY_TO);
 			}
 		});

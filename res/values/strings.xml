@@ -61,9 +61,9 @@
 	<string name="safety">Safety</string>
 	<string name="comfort">Comfort</string>
 
-	<string name="route_stat">Route\nSummary</string>
-	<string name="company_stat">Company\nDetails</string>
-	<string name="submit_trip">Submit\nTrip</string>
+	<string name="route_stat">route\nsummary</string>
+	<string name="company_stat">company\ndetails</string>
+	<string name="submit_trip">submit\ntrip</string>
 
 	<string name="sync">Sync</string>
 	<string name="syncing">Syncing...</string>

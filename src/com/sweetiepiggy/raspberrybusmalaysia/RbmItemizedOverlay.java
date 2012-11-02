@@ -38,10 +38,12 @@ public class RbmItemizedOverlay extends ItemizedOverlay
 {
 	private ArrayList<OverlayItem> mOverlays = new ArrayList<OverlayItem>();
 	private Context mContext;
+	private boolean mSetResult;
 
-	public RbmItemizedOverlay(Drawable defaultMarker, Context context) {
+	public RbmItemizedOverlay(Drawable defaultMarker, Context context, boolean set_result) {
 		super(boundCenterBottom(defaultMarker));
 		mContext = context;
+		mSetResult = set_result;
 	}
 
 	public void addOverlay(OverlayItem overlay) {
@@ -65,27 +67,29 @@ public class RbmItemizedOverlay extends ItemizedOverlay
 		String station = item.getTitle();
 		String city = item.getSnippet();
 
-		prompt_confirm(station, city);
+		prompt_confirm(station, city, mSetResult);
 		return true;
 	}
 
-	private void prompt_confirm(final String station, final String city)
+	private void prompt_confirm(final String station, final String city, final boolean set_result)
 	{
 		AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
 		builder.setTitle(station + ", " + city);
 		builder.setPositiveButton(android.R.string.ok, new OnClickListener() {
 			@Override
 			public void onClick(DialogInterface dialog, int which) {
-				Bundle b = new Bundle();
-				b.putString("station", station);
-				b.putString("city", city);
+				if (set_result) {
+					Bundle b = new Bundle();
+					b.putString("station", station);
+					b.putString("city", city);
 
-				Intent i = new Intent();
-				i.putExtras(b);
+					Intent i = new Intent();
+					i.putExtras(b);
 
-				MapActivity ma = (MapActivity) mContext;
-				ma.setResult(Activity.RESULT_OK, i);
-				ma.finish();
+					MapActivity ma = (MapActivity) mContext;
+					ma.setResult(Activity.RESULT_OK, i);
+					ma.finish();
+				}
 			}
 		});
 		builder.setNegativeButton(android.R.string.cancel, new OnClickListener() {
