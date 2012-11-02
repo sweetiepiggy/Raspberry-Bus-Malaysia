@@ -22,7 +22,10 @@ package com.sweetiepiggy.raspberrybusmalaysia;
 import java.util.ArrayList;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
@@ -62,21 +65,36 @@ public class RbmItemizedOverlay extends ItemizedOverlay
 		String station = item.getTitle();
 		String city = item.getSnippet();
 
-//		AlertDialog.Builder dialog = new AlertDialog.Builder(mContext);
-//		dialog.setTitle(item.getTitle() + ", " + item.getSnippet());
-//		dialog.show();
-
-		Bundle b = new Bundle();
-		b.putString("station", station);
-		b.putString("city", city);
-
-		Intent i = new Intent();
-		i.putExtras(b);
-
-		MapActivity ma = (MapActivity) mContext;
-		ma.setResult(Activity.RESULT_OK, i);
-		ma.finish();
+		prompt_confirm(station, city);
 		return true;
+	}
+
+	private void prompt_confirm(final String station, final String city)
+	{
+		AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
+		builder.setTitle(station + ", " + city);
+		builder.setPositiveButton(android.R.string.ok, new OnClickListener() {
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				Bundle b = new Bundle();
+				b.putString("station", station);
+				b.putString("city", city);
+
+				Intent i = new Intent();
+				i.putExtras(b);
+
+				MapActivity ma = (MapActivity) mContext;
+				ma.setResult(Activity.RESULT_OK, i);
+				ma.finish();
+			}
+		});
+		builder.setNegativeButton(android.R.string.cancel, new OnClickListener() {
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+			}
+		});
+		AlertDialog alert = builder.create();
+		alert.show();
 	}
 }
 
