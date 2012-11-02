@@ -34,6 +34,7 @@
 			android:gravity="center"
 			android:paddingLeft="5dp"
 			android:drawableTop="@drawable/route"
+			style="@android:style/TextAppearance.Large"
 			android:text="@string/route_stat" />
 		<TextView
 			android:id="@+id/company"
@@ -42,6 +43,7 @@
 			android:layout_gravity="center"
 			android:gravity="center"
 			android:drawableTop="@drawable/company"
+			style="@android:style/TextAppearance.Large"
 			android:text="@string/company_stat" />
 		<TextView
 			android:id="@+id/submit_trip"
@@ -51,6 +53,7 @@
 			android:gravity="center"
 			android:paddingRight="5dp"
 			android:drawableTop="@drawable/submit"
+			style="@android:style/TextAppearance.Large"
 			android:text="@string/submit_trip" />
 	</TableRow>
 </TableLayout>
