@@ -85,18 +85,9 @@ public class SyncTask extends AsyncTask<Void, Void, Void>
 				DbAdapter dbHelper = new DbAdapter();
 				dbHelper.open_no_sync(mCtx);
 
-				long max_id = dbHelper.fetch_cities_max_id();
-
-				boolean done = false;
-				while ((line = in.readLine()) != null && !done) {
+				while ((line = in.readLine()) != null) {
 					ContentValues city = parse_line(line, field_names);
-					long id = city.containsKey(DbAdapter.KEY_ROWID) ?
-						city.getAsLong(DbAdapter.KEY_ROWID) : Long.MAX_VALUE;
-					if (id <= max_id) {
-						done = true;
-					} else {
-						dbHelper.create_city(city);
-					}
+					dbHelper.create_city(city);
 				}
 				dbHelper.close();
 			}
@@ -123,18 +114,9 @@ public class SyncTask extends AsyncTask<Void, Void, Void>
 				DbAdapter dbHelper = new DbAdapter();
 				dbHelper.open_no_sync(mCtx);
 
-				long max_id = dbHelper.fetch_stations_max_id();
-
-				boolean done = false;
-				while ((line = in.readLine()) != null && !done) {
+				while ((line = in.readLine()) != null) {
 					ContentValues station = parse_line(line, field_names);
-					long id = station.containsKey(DbAdapter.KEY_ROWID) ?
-						station.getAsLong(DbAdapter.KEY_ROWID) : Long.MAX_VALUE;
-					if (id <= max_id) {
-						done = true;
-					} else {
-						dbHelper.create_station(station);
-					}
+					dbHelper.create_station(station);
 				}
 				dbHelper.close();
 			}

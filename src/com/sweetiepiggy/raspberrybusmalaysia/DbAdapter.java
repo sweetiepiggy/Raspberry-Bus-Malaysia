@@ -263,13 +263,13 @@ public class DbAdapter
 	/** @return row_id or -1 if failed */
 	public long create_city(ContentValues city)
 	{
-		return mDbHelper.mDb.insert(TABLE_CITIES, null, city);
+		return mDbHelper.mDb.replace(TABLE_CITIES, null, city);
 	}
 
 	/** @return row_id or -1 if failed */
 	public long create_station(ContentValues station)
 	{
-		return mDbHelper.mDb.insert(TABLE_STATIONS, null, station);
+		return mDbHelper.mDb.replace(TABLE_STATIONS, null, station);
 	}
 
 	/** @return row_id or -1 if failed */
