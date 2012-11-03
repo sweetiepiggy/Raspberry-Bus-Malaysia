@@ -1,84 +1,84 @@
 _id,city_id,station_en,station_ms,station_zh,latitude,longitude
-90,76,"Putrajaya Sentral","Putrajaya Sentral","PUTRAJAYA SENTRAL",2931394,101671090
-89,75,Tumpat,Tumpat,TUMPAT,6196302,102170738
-88,74,"Gua Musang","Gua Musang","GUA MUSANG",4861304,101959271
-87,73,Bachok,Bachok,BACHOK,6060181,102401708
-86,72,"Kuala Krai","Kuala Krai","KUALA KRAI",5530668,102201861
-85,71,"Rantau Panjang","Rantau Panjang","RANTAU PANJANG",6019286,101978552
-84,10,"Kota Bharu","Kota Bharu","KOTA BHARU",6128245,102238317
-83,70,Kemaman,Kemaman,KEMAMAN,4206629,103434915
-82,69,"Kuala Besut","Kuala Besut","KUALA BESUT",5817517,102569549
-81,68,Jerteh,Jerteh,JERTEH,5736958,102495273
-80,67,Dungun,Dungun,DUNGUN,4756125,103411624
-79,66,Triang,Teriang,TERIANG,3245078,102414635
-78,65,"Kuala Rompin","Kuala Rompin","KUALA ROMPIN",2800441,103486092
-77,64,"Kuala Lipis","Kuala Lipis","KUALA LIPIS",4188675,102052397
-76,63,Jerantut,Jerantut,JERANTUT,3937930,102360863
-75,62,Bentong,Bentong,BENTONG,3521924,101910230
+90,76,"Putrajaya Sentral","Putrajaya Sentral","Putrajaya Sentral",2931394,101671090
+89,75,Tumpat,Tumpat,Tumpat,6196302,102170738
+88,74,"Gua Musang","Gua Musang","Gua Musang",4861304,101959271
+87,73,Bachok,Bachok,Bachok,6060181,102401708
+86,72,"Kuala Krai","Kuala Krai","Kuala Krai",5530668,102201861
+85,71,"Rantau Panjang","Rantau Panjang","Rantau Panjang",6019286,101978552
+84,10,"Kota Bharu","Kota Bharu","Kota Bharu",6128245,102238317
+83,70,Kemaman,Kemaman,Kemaman,4206629,103434915
+82,69,"Kuala Besut","Kuala Besut","Kuala Besut",5817517,102569549
+81,68,Jerteh,Jerteh,Jerteh,5736958,102495273
+80,67,Dungun,Dungun,Dungun,4756125,103411624
+79,66,Triang,Teriang,Teriang,3245078,102414635
+78,65,"Kuala Rompin","Kuala Rompin","Kuala Rompin",2800441,103486092
+77,64,"Kuala Lipis","Kuala Lipis","Kuala Lipis",4188675,102052397
+76,63,Jerantut,Jerantut,Jerantut,3937930,102360863
+75,62,Bentong,Bentong,Bentong,3521924,101910230
 74,61,Raub,Raub,RAUB,3792211,101855995
-73,60,"Alor Gajah Sentral","Alor Gajah Sentral","ALOR GAJAH SENTRAL",2382145,102211517
-72,59,Tangkak,Tangkak,TANGKAK,2268352,102541038
-71,58,Labis,Labis,LABIS,2385104,103021426
-70,57,"Yong Peng","Yong Peng","YONG PENG",2013195,103064064
-69,56,Kluang,Kluang,KLUANG,2036098,103322558
+73,60,"Alor Gajah Sentral","Alor Gajah Sentral","Alor Gajah Sentral",2382145,102211517
+72,59,Tangkak,Tangkak,Tangkak,2268352,102541038
+71,58,Labis,Labis,Labis,2385104,103021426
+70,57,"Yong Peng","Yong Peng","Yong Peng",2013195,103064064
+69,56,Kluang,Kluang,Kluang,2036098,103322558
 68,55,"Bandar Penawar","Bandar Penawar","Bandar Penawar",1554986,104228463
 67,54,"Simpang Renggam","Simpang Renggam","Simpang Renggam",1825750,103310064
 66,53,"Sg Rengit","Sg Rengit","Sg Rengit",1350040,104222048
-65,52,Kulai,Kulai,KULAI,1662511,103598691
+65,52,Kulai,Kulai,Kulai,1662511,103598691
 64,51,"Pasir Gudang","Pasir Gudang","Pasir Gudang",1466171,103901169
-63,50,Pontian,Pontian,PONTIAN,1485509,103388298
-62,49,"Hentian Bentayan","Hentian Bentayan","HENTIAN BENTAYAN",2050508,102569815
-61,48,"Batu Pahat","Batu Pahat","BATU PAHAT",1851046,102926134
-60,47,"Kota Tinggi","Kota Tinggi","KOTA TINGGI",1719896,103894577
-59,46,Mersing,Mersing,MERSING,2430822,103832590
-58,45,Nilai,Nilai,NILAI,2802150,101798441
-57,44,Gemas,Gemas,GEMAS,2580785,102612712
-56,43,Gemencheh,Gemencheh,GEMENCHEH,2535812,102404466
-55,42,"Kuala Pilah","Kuala Pilah","KUALA PILAH",2740858,102247769
-54,41,Tampin,Tampin,TAMPIN,2466436,102229987
-53,40,Grik,Gerik,GERIK,5445807,101135459
-52,39,"Kuala Kangsar","Kuala Kangsar","KUALA KANGSAR",4771308,100939366
-51,5,Kamunting,Kamunting,KAMUNTING,4894267,100724522
-50,38,"Sri Manjung","Sri Manjung","SRI MANJUNG",4197385,100667541
-49,37,Lumut,Lumut,LUMUT,4234949,100633883
-48,36,"Teluk Intan","Teluk Intan","TELUK INTAN",4024817,101020798
-47,35,Kampar,Kampar,KAMPAR,4312396,101151975
-46,34,"Hentian Raya","Hentian Raya","HENTIAN RAYA",5118216,100487276
-45,33,Gurun,Gurun,GURUN,5817112,100478125
-44,32,Sik,Sik,SIK,5817862,100745763
-43,31,Kulim,Kulim,KULIM,5370586,100558086
-42,30,Jitra,Jitra,JITRA,6259418,100418065
-41,29,Segamat,Segamat,SEGAMAT,2508464,102813250
-40,28,Chaah,Chaah,CHAAH,2249019,103040453
-39,27,"Bukit Kayu Hitam","Bukit Kayu Hitam","BUKIT KAYU HITAM",6510935,100420193
-38,26,Changloon,Changlun,CHANGLUN,6431243,100428578
-37,25,"Muadzam Shah","Muadzam Shah","MUADZAM SHAH",3057361,103085207
+63,50,Pontian,Pontian,Pontian,1485509,103388298
+62,49,"Hentian Bentayan","Hentian Bentayan","Hentian Bentayan",2050508,102569815
+61,48,"Batu Pahat","Batu Pahat","Batu Pahat",1851046,102926134
+60,47,"Kota Tinggi","Kota Tinggi","Kota Tinggi",1719896,103894577
+59,46,Mersing,Mersing,Mersing,2430822,103832590
+58,45,Nilai,Nilai,Nilai,2802150,101798441
+57,44,Gemas,Gemas,Gemas,2580785,102612712
+56,43,Gemencheh,Gemencheh,Gemencheh,2535812,102404466
+55,42,"Kuala Pilah","Kuala Pilah","Kuala Pilah",2740858,102247769
+54,41,Tampin,Tampin,Tampin,2466436,102229987
+53,40,Grik,Gerik,Gerik,5445807,101135459
+52,39,"Kuala Kangsar","Kuala Kangsar","Kuala Kangsar",4771308,100939366
+51,5,Kamunting,Kamunting,Kamunting,4894267,100724522
+50,38,"Sri Manjung","Sri Manjung","Sri Manjung",4197385,100667541
+49,37,Lumut,Lumut,Lumut,4234949,100633883
+48,36,"Teluk Intan","Teluk Intan","Teluk Intan",4024817,101020798
+47,35,Kampar,Kampar,Kampar,4312396,101151975
+46,34,"Hentian Raya","Hentian Raya","Hentian Raya",5118216,100487276
+45,33,Gurun,Gurun,Gurun,5817112,100478125
+44,32,Sik,Sik,Sik,5817862,100745763
+43,31,Kulim,Kulim,Kulim,5370586,100558086
+42,30,Jitra,Jitra,Jitra,6259418,100418065
+41,29,Segamat,Segamat,Segamat,2508464,102813250
+40,28,Chaah,Chaah,Chaah,2249019,103040453
+39,27,"Bukit Kayu Hitam","Bukit Kayu Hitam","Bukit Kayu Hitam",6510935,100420193
+38,26,Changloon,Changlun,Changlun,6431243,100428578
+37,25,"Muadzam Shah","Muadzam Shah","Muadzam Shah",3057361,103085207
 36,24,MPKT,MPKT,MPKT,5336905,103140678
-35,23,"Nadi Kota","Nadi Kota","NADI KOTA",3769312,102549142
-34,22,"Utama Temerloh","Utama Temerloh","UTAMA TEMERLOH",3449777,102415301
-33,21,"Sg Petani","Sg Petani","SG PETANI",5643031,100489732
-32,8,"Pasir Gudang","Pasir Gudang","PASIR GUDANG",1466804,103901190
-31,20,Kajang,Kajang,KAJANG,2957254,101791803
-30,2,"Bersepadu Selatan","Bersepadu Selatan","BERSEPADU SELATAN",3077781,101711499
-29,2,"Hentian Pekeliling","Hentian Pekeliling",PEKELILING,3172386,101695697
-28,2,"Hentian Putra","Hentian Putra","HENTIAN PUTRA",3167169,101690670
-27,2,"Pasar Rakyat","Pasar Rakyat","PASAR RAKYAT",3143087,101718868
+35,23,"Nadi Kota","Nadi Kota","Nadi Kota",3769312,102549142
+34,22,"Utama Temerloh","Utama Temerloh","Utama Temerloh",3449777,102415301
+33,21,"Sg Petani","Sg Petani","Sg petani",5643031,100489732
+32,8,"Pasir Gudang","Pasir Gudang","Pasir Gudang",1466804,103901190
+31,20,Kajang,Kajang,Kajang,2957254,101791803
+30,2,"Bersepadu Selatan","Bersepadu Selatan","Bersepadu Selatan",3077781,101711499
+29,2,"Hentian Pekeliling","Hentian Pekeliling",Pekeliling,3172386,101695697
+28,2,"Hentian Putra","Hentian Putra","Hentian Putra",3167169,101690670
+27,2,"Pasar Rakyat","Pasar Rakyat","Pasar Rakyat",3143087,101718868
 26,19,LCCT,LCCT,LCCT,2726241,101718654
-25,18,"Shah Alam","Shah Alam","SHAH ALAM",3047394,101503957
-24,17,"Klang Sentral","Klang Sentral","KLANG SENTRAL",3108977,101438300
-23,16,Kangar,Kangar,KANGAR,6435390,100192511
-22,15,"Kuala Perlis","Kuala Perlis","KUALA PERLIS",6397808,100130936
-21,14,"First World","First World","FIRST WORLD",3427036,101790432
-20,13,"Hentian Makmur","Hentian Makmur","HENTIAN MAKMUR",3813578,103324837
+25,18,"Shah Alam","Shah Alam","Shah Alam",3047394,101503957
+24,17,"Klang Sentral","Klang Sentral","Klang Sentral",3108977,101438300
+23,16,Kangar,Kangar,Kangar,6435390,100192511
+22,15,"Kuala Perlis","Kuala Perlis","Kuala Perlis",6397808,100130936
+21,14,"First World","First World","First World",3427036,101790432
+20,13,"Hentian Makmur","Hentian Makmur","Hentian Makmur",3813578,103324837
 19,7,Butterworth,Butterworth,北海,5395426,100365363
-18,12,"Terminal One","Terminal One","TERMINAL ONE",2721343,101937191
-17,11,"Malacca Sentral","Melaka Sentral","MELAKA SENTRAL",2221428,102248950
-16,10,"SKMK Langgar","SKMK Langgar","SKMK LANGGAR",6116788,102243274
-15,10,"Jalan Hamzah","Jalan Hamzah","JALAN HAMZAH",6116724,102240180
-14,9,"Shahab Perdana","Shahab Perdana","SHAHAB PERDANA",6146187,100352872
-13,8,Larkin,Larkin,LARKIN,1495602,103742586
-12,1,"Medan Gopeng","Medan Gopeng","MEDAN GOPENG",4575184,101109912
-11,3,Queensbay,Queensbay,QUEENSBAY,5333615,100306854
+18,12,"Terminal One","Terminal One","Terminal One",2721343,101937191
+17,11,"Malacca Sentral","Melaka Sentral","Melaka Sentral",2221428,102248950
+16,10,"SKMK Langgar","SKMK Langgar","SKMK Langgar",6116788,102243274
+15,10,"Jalan Hamzah","Jalan Hamzah","Jalan Hamzah",6116724,102240180
+14,9,"Shahab Perdana","Shahab Perdana","Shahab Perdana",6146187,100352872
+13,8,Larkin,Larkin,Larkin,1495602,103742586
+12,1,"Medan Gopeng","Medan Gopeng","Medan Gopeng",4575184,101109912
+11,3,Queensbay,Queensbay,Queensbay,5333615,100306854
 10,3,"Vistana Hotel","Vistana Hotel",VISTANA酒店,5336945,100291939
 9,2,"Jalan Duta","Jalan Duta",督大路,3176939,101657662
 8,2,"1 Utama","1 Utama",1UTAMA,3151031,101615107
