@@ -480,7 +480,7 @@ public class SubmitTripActivity extends Activity
 			',' + arrival_time + ',' + counter + ',' + safety +
 			',' + comfort + ',' + comment + "\n";
 
-		Intent intent = new Intent(Intent.ACTION_SEND);
+		Intent intent = new Intent(Intent.ACTION_SEND_MULTIPLE);
 		intent.putExtra(Intent.EXTRA_EMAIL, new String[] {EMAIL_ADDRESS} );
 		intent.putExtra(Intent.EXTRA_SUBJECT, EMAIL_SUBJECT);
 		intent.putExtra(Intent.EXTRA_TEXT, msg);
