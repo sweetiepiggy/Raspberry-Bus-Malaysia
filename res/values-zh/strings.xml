@@ -33,7 +33,7 @@
 	<string name="route">路线</string>
 	<string name="submit">提交</string>
 	<string name="clear">删除</string>
-	<string name="company">公司</string>
+	<string name="company">代理商</string>
 	<string name="avg_time">平均时间</string>
 	<string name="avg_delay">平均延迟</string>
 	<string name="num_trips">次数</string>
@@ -42,9 +42,9 @@
 	<string name="depart_time">实际出发时间</string>
 	<string name="arrival_time">到达时间</string>
 
-	<string name="company_hint">输入公司名称，例如Konsortium Bas Ekspres</string>
-	<string name="brand">品牌</string>
-	<string name="brand_hint">输入巴士品牌，例如Seasons, Eagle</string>
+	<string name="company_hint">输入代理商名称，例如United Travel</string>
+	<string name="brand">经营者</string>
+	<string name="brand_hint">输入巴士经营者，例如Seasons</string>
 
 	<string name="from_city_hint">输入出发城市，例如吉隆坡</string>
 	<string name="from_station_hint">输入车站，例如富都车站</string>
@@ -62,8 +62,8 @@
 	<string name="comfort">舒适</string>
 
 	<string name="route_stat">路线概要</string>
-	<string name="company_stat">公司详情</string>
-	<string name="submit_trip">提交车程</string>
+	<string name="company_stat">代理商详情</string>
+	<string name="submit_trip">提交意见</string>
 
 	<string name="sync">同步</string>
 	<string name="syncing">同步中...</string>
@@ -73,7 +73,7 @@
 	<string name="missing_to_city">输入到达城市</string>
 	<string name="depart_before_arrival">到达时间不能早过出发时间</string>
 
-	<string name="search_hint">搜索公司</string>
+	<string name="search_hint">搜索代理商</string>
 
 	<string name="delay">延迟</string>
 	<string name="trip_time">往返时间</string>
@@ -91,6 +91,8 @@
 	<string name="friday">星期五</string>
 	<string name="saturday">星期六</string>
 	<string name="sunday">星期日</string>
+
+	<string name="map">地图</string>
 
 	<string name="lang_code">zh</string>
 
