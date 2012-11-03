@@ -74,7 +74,11 @@ public class RbmItemizedOverlay extends ItemizedOverlay
 	private void prompt_confirm(final String station, final String city, final boolean set_result)
 	{
 		AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
-		builder.setTitle(station + ", " + city);
+		if (station.equals(city)) {
+			builder.setTitle(station);
+		} else {
+			builder.setTitle(station + ", " + city);
+		}
 		builder.setPositiveButton(android.R.string.ok, new OnClickListener() {
 			@Override
 			public void onClick(DialogInterface dialog, int which) {
