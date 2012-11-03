@@ -1,11 +1,11 @@
 _id,city_id,station_en,station_ms,station_zh,latitude,longitude
-90,76,"Putrajaya Sentral","Putrajaya Sentral","PUTRAJAYA SENTRAL",2931394,10167109
+90,76,"Putrajaya Sentral","Putrajaya Sentral","PUTRAJAYA SENTRAL",2931394,101671090
 89,75,Tumpat,Tumpat,TUMPAT,6196302,102170738
 88,74,"Gua Musang","Gua Musang","GUA MUSANG",4861304,101959271
 87,73,Bachok,Bachok,BACHOK,6060181,102401708
 86,72,"Kuala Krai","Kuala Krai","KUALA KRAI",5530668,102201861
 85,71,"Rantau Panjang","Rantau Panjang","RANTAU PANJANG",6019286,101978552
-84,10,"Kota Bharu","Kota Bharu","KOTA BHARU",6.128245,102.238317
+84,10,"Kota Bharu","Kota Bharu","KOTA BHARU",6128245,102238317
 83,70,Kemaman,Kemaman,KEMAMAN,4206629,103434915
 82,69,"Kuala Besut","Kuala Besut","KUALA BESUT",5817517,102569549
 81,68,Jerteh,Jerteh,JERTEH,5736958,102495273
@@ -61,7 +61,7 @@ _id,city_id,station_en,station_ms,station_zh,latitude,longitude
 31,20,"Hentian Kajang","Hentian Kajang","HENTIAN KAJANG",2957254,101791803
 30,2,"Bersepadu Selatan","Bersepadu Selatan","BERSEPADU SELATAN",3077781,101711499
 29,2,"Hentian Pekeliling","Hentian Pekeliling",PEKELILING,3172386,101695697
-28,2,"Hentian Putra","Hentian Putra","HENTIAN PUTRA",3167169,10169067
+28,2,"Hentian Putra","Hentian Putra","HENTIAN PUTRA",3167169,101690670
 27,2,"Pasar Rakyat","Pasar Rakyat","PASAR RAKYAT",3143087,101718868
 26,19,LCCT,LCCT,LCCT,2726241,101718654
 25,18,"Shah Alam","Shah Alam","SHAH ALAM",3047394,101503957
@@ -72,9 +72,9 @@ _id,city_id,station_en,station_ms,station_zh,latitude,longitude
 20,13,"Hentian Makmur","Hentian Makmur","HENTIAN MAKMUR",3813578,103324837
 19,7,Butterworth,Butterworth,北海,5395426,100365363
 18,12,"Terminal One","Terminal One","TERMINAL ONE",2721343,101937191
-17,11,"Malacca Sentral","Melaka Sentral","MELAKA SENTRAL",2221428,10224895
+17,11,"Malacca Sentral","Melaka Sentral","MELAKA SENTRAL",2221428,102248950
 16,10,"SKMK Langgar","SKMK Langgar","SKMK LANGGAR",6116788,102243274
-15,10,"Jalan Hamzah","Jalan Hamzah","JALAN HAMZAH",6116724,10224018
+15,10,"Jalan Hamzah","Jalan Hamzah","JALAN HAMZAH",6116724,102240180
 14,9,"Shahab Perdana","Shahab Perdana","SHAHAB PERDANA",6146187,100352872
 13,8,Larkin,Larkin,LARKIN,1495602,103742586
 12,1,"Medan Gopeng","Medan Gopeng","MEDAN GOPENG",5333615,100306854
