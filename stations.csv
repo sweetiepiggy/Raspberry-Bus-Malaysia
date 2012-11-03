@@ -58,7 +58,7 @@ _id,city_id,station_en,station_ms,station_zh,latitude,longitude
 34,22,"Utama Temerloh","Utama Temerloh","UTAMA TEMERLOH",3449777,102415301
 33,21,"Sg Petani","Sg Petani","SG PETANI",5643031,100489732
 32,8,"Pasir Gudang","Pasir Gudang","PASIR GUDANG",1466804,103901190
-31,20,"Hentian Kajang","Hentian Kajang","HENTIAN KAJANG",2957254,101791803
+31,20,Kajang,Kajang,KAJANG,2957254,101791803
 30,2,"Bersepadu Selatan","Bersepadu Selatan","BERSEPADU SELATAN",3077781,101711499
 29,2,"Hentian Pekeliling","Hentian Pekeliling",PEKELILING,3172386,101695697
 28,2,"Hentian Putra","Hentian Putra","HENTIAN PUTRA",3167169,101690670
