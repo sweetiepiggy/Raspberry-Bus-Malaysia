@@ -19,6 +19,8 @@
     along with Raspberry Bus Malaysia ; if not, see <http://www.gnu.org/licenses/>.
 -->
 
+<!-- DEBUG API KEY -->
+<!--
 <com.google.android.maps.MapView
 	xmlns:android="http://schemas.android.com/apk/res/android"
 	android:id="@+id/mapview"
@@ -26,4 +28,14 @@
 	android:layout_height="fill_parent"
 	android:clickable="true"
 	android:apiKey="0TUdqsjiI67K1HTOmMpK3IINNuD4cNEbv055G6A" />
+-->
+
+<!-- PRODUCTION API KEY -->
+<com.google.android.maps.MapView
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	android:id="@+id/mapview"
+	android:layout_width="fill_parent"
+	android:layout_height="fill_parent"
+	android:clickable="true"
+	android:apiKey="0TUdqsjiI67JgOlLb7EwxtOgtWKU1tbgiVBYI6g" />
 
