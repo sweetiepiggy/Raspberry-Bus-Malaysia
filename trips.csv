@@ -76,7 +76,7 @@ _id,company,bus_brand,from_city_id,from_station_id,to_city_id,to_station_id,sche
 29,Plusliner,Plusliner,2,3,3,7,"2012-01-16 00:00","2012-01-16 00:00","2012-01-16 04:01","","","",""
 28,Plusliner,Plusliner,4,5,3,7,"2012-01-15 23:15","2012-01-15 23:09","2012-01-16 04:01","","","",""
 27,"Alisan Express",Seasons,3,7,2,6,"2012-01-13 18:30","2012-01-13 18:42","2012-01-13 23:27","","","",""
-26,"Alisan Express","Lion Star",2,4,3,7,"2012-01-08 23:59","2012-01-09 00:27",Cancelled,"","","","lied, said bus stopped at Komtar but it stopped at Sg Nibong instead"
+26,"Alisan Express","Lion Star",2,6,3,4,"2012-01-08 23:59","2012-01-09 00:27",Cancelled,"","","","lied, said bus stopped at Komtar but it stopped at Sg Nibong instead"
 25,"Alisan Express","Lion Star",2,6,3,7,"2012-01-08 23:59","2012-01-09 00:27","2012-01-09 04:37","","","","lied, said bus stopped at Komtar but it stopped at Sg Nibong instead"
 24,KKKL,Eagle,3,7,2,2,"2012-01-06 20:30","2012-01-06 20:42","2012-01-07 01:01","","","","lied, it was easy to find bus from Puduraya to Komtar"
 23,KKKL,Eagle,3,7,2,6,"2012-01-06 20:30","2012-01-06 20:42","2012-01-07 01:12","","","","lied, it was easy to find bus from Puduraya to Komtar"
