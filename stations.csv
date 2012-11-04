@@ -1,73 +1,72 @@
 _id,city_id,station_en,station_ms,station_zh,latitude,longitude
 90,76,"Putrajaya Sentral","Putrajaya Sentral","Putrajaya Sentral",2931394,101671090
-89,75,Tumpat,Tumpat,Tumpat,6196302,102170738
-88,74,"Gua Musang","Gua Musang","Gua Musang",4861304,101959271
-87,73,Bachok,Bachok,Bachok,6060181,102401708
-86,72,"Kuala Krai","Kuala Krai","Kuala Krai",5530668,102201861
-85,71,"Rantau Panjang","Rantau Panjang","Rantau Panjang",6019286,101978552
-84,10,"Kota Bharu","Kota Bharu","Kota Bharu",6128245,102238317
-83,70,Kemaman,Kemaman,Kemaman,4206629,103434915
-82,69,"Kuala Besut","Kuala Besut","Kuala Besut",5817517,102569549
-81,68,Jerteh,Jerteh,Jerteh,5736958,102495273
-80,67,Dungun,Dungun,Dungun,4756125,103411624
-79,66,Triang,Teriang,Teriang,3245078,102414635
-78,65,"Kuala Rompin","Kuala Rompin","Kuala Rompin",2800441,103486092
-77,64,"Kuala Lipis","Kuala Lipis","Kuala Lipis",4188675,102052397
-76,63,Jerantut,Jerantut,Jerantut,3937930,102360863
-75,62,Bentong,Bentong,Bentong,3521924,101910230
-74,61,Raub,Raub,RAUB,3792211,101855995
+89,75,Tumpat,Tumpat,道北,6196302,102170738
+88,74,"Gua Musang","Gua Musang",话望生,4861304,101959271
+87,73,Bachok,Bachok,万捷,6060181,102401708
+86,72,"Kuala Krai","Kuala Krai",瓜拉吉赖,5530668,102201861
+85,71,"Rantau Panjang","Rantau Panjang",兰斗班让,6019286,101978552
+84,10,"Kota Bharu","Kota Bharu",哥打巴鲁,6128245,102238317
+83,70,Kemaman,Kemaman,甘马挽,4206629,103434915
+82,69,"Kuala Besut","Kuala Besut",瓜拉勿述,5817517,102569549
+81,68,Jerteh,Jerteh,日底,5736958,102495273
+80,67,Dungun,Dungun,龙运,4756125,103411624
+79,66,Triang,Teriang,直凉,3245078,102414635
+78,65,"Kuala Rompin","Kuala Rompin",瓜拉云冰,2800441,103486092
+77,64,"Kuala Lipis","Kuala Lipis",瓜拉立卑,4188675,102052397
+76,63,Jerantut,Jerantut,而连突,3937930,102360863
+75,62,Bentong,Bentong,文冬,3521924,101910230
+74,61,Raub,Raub,劳勿,3792211,101855995
 73,60,"Alor Gajah Sentral","Alor Gajah Sentral","Alor Gajah Sentral",2382145,102211517
-72,59,Tangkak,Tangkak,Tangkak,2268352,102541038
-71,58,Labis,Labis,Labis,2385104,103021426
-70,57,"Yong Peng","Yong Peng","Yong Peng",2013195,103064064
-69,56,Kluang,Kluang,Kluang,2036098,103322558
-68,55,"Bandar Penawar","Bandar Penawar","Bandar Penawar",1554986,104228463
-67,54,"Simpang Renggam","Simpang Renggam","Simpang Renggam",1825750,103310064
-66,53,"Sg Rengit","Sg Rengit","Sg Rengit",1350040,104222048
-65,52,Kulai,Kulai,Kulai,1662511,103598691
-64,51,"Pasir Gudang","Pasir Gudang","Pasir Gudang",1466171,103901169
-63,50,Pontian,Pontian,Pontian,1485509,103388298
+72,59,Tangkak,Tangkak,东甲,2268352,102541038
+71,58,Labis,Labis,拉美士,2385104,103021426
+70,57,"Yong Peng","Yong Peng",永平,2013195,103064064
+69,56,Kluang,Kluang,居銮,2036098,103322558
+68,55,"Bandar Penawar","Bandar Penawar",本那瓦鎮,1554986,104228463
+67,54,"Simpang Renggam","Simpang Renggam",新邦,1825750,103310064
+66,53,"Sg Rengit","Sg Rengit",四湾,1350040,104222048
+65,52,Kulai,Kulai,古来,1662511,103598691
+64,51,"Pasir Gudang","Pasir Gudang",巴西古当,1466171,103901169
+63,50,Pontian,Pontian,笨珍,1485509,103388298
 62,49,"Hentian Bentayan","Hentian Bentayan","Hentian Bentayan",2050508,102569815
-61,48,"Batu Pahat","Batu Pahat","Batu Pahat",1851046,102926134
-60,47,"Kota Tinggi","Kota Tinggi","Kota Tinggi",1719896,103894577
-59,46,Mersing,Mersing,Mersing,2430822,103832590
-58,45,Nilai,Nilai,Nilai,2802150,101798441
-57,44,Gemas,Gemas,Gemas,2580785,102612712
-56,43,Gemencheh,Gemencheh,Gemencheh,2535812,102404466
-55,42,"Kuala Pilah","Kuala Pilah","Kuala Pilah",2740858,102247769
-54,41,Tampin,Tampin,Tampin,2466436,102229987
-53,40,Grik,Gerik,Gerik,5445807,101135459
-52,39,"Kuala Kangsar","Kuala Kangsar","Kuala Kangsar",4771308,100939366
+61,48,"Batu Pahat","Batu Pahat",岜株岜辖,1851046,102926134
+60,47,"Kota Tinggi","Kota Tinggi",哥打丁宜,1719896,103894577
+59,46,Mersing,Mersing,丰盛港,2430822,103832590
+58,45,Nilai,Nilai,汝来,2802150,101798441
+57,44,Gemas,Gemas,金马士,2580785,102612712
+56,43,Gemencheh,Gemencheh,利民济,2535812,102404466
+55,42,"Kuala Pilah","Kuala Pilah",瓜拉庇劳,2740858,102247769
+54,41,Tampin,Tampin,淡边,2466436,102229987
+53,40,Grik,Gerik,宜力,5445807,101135459
+52,39,"Kuala Kangsar","Kuala Kangsar",瓜拉江沙,4771308,100939366
 51,5,Kamunting,Kamunting,Kamunting,4894267,100724522
 50,38,"Sri Manjung","Sri Manjung","Sri Manjung",4197385,100667541
-49,37,Lumut,Lumut,Lumut,4234949,100633883
-48,36,"Teluk Intan","Teluk Intan","Teluk Intan",4024817,101020798
-47,35,Kampar,Kampar,Kampar,4312396,101151975
+49,37,Lumut,Lumut,红土坎,4234949,100633883
+48,36,"Teluk Intan","Teluk Intan",安顺,4024817,101020798
+47,35,Kampar,Kampar,金保,4312396,101151975
 46,34,"Hentian Raya","Hentian Raya","Hentian Raya",5118216,100487276
-45,33,Gurun,Gurun,Gurun,5817112,100478125
-44,32,Sik,Sik,Sik,5817862,100745763
-43,31,Kulim,Kulim,Kulim,5370586,100558086
-42,30,Jitra,Jitra,Jitra,6259418,100418065
-41,29,Segamat,Segamat,Segamat,2508464,102813250
-40,28,Chaah,Chaah,Chaah,2249019,103040453
-39,27,"Bukit Kayu Hitam","Bukit Kayu Hitam","Bukit Kayu Hitam",6510935,100420193
-38,26,Changloon,Changlun,Changlun,6431243,100428578
-37,25,"Muadzam Shah","Muadzam Shah","Muadzam Shah",3057361,103085207
+45,33,Gurun,Gurun,莪仑,5817112,100478125
+44,32,Sik,Sik,西里,5817862,100745763
+43,31,Kulim,Kulim,居林,5370586,100558086
+42,30,Jitra,Jitra,实达,6259418,100418065
+41,29,Segamat,Segamat,昔加末,2508464,102813250
+40,28,Chaah,Chaah,三合港,2249019,103040453
+39,27,"Bukit Kayu Hitam","Bukit Kayu Hitam",黑木山,6510935,100420193
+38,26,Changloon,Changlun,张伦,6431243,100428578
+37,25,"Muadzam Shah","Muadzam Shah",姆阿詹沙,3057361,103085207
 36,24,MPKT,MPKT,MPKT,5336905,103140678
 35,23,"Nadi Kota","Nadi Kota","Nadi Kota",3769312,102549142
 34,22,"Utama Temerloh","Utama Temerloh","Utama Temerloh",3449777,102415301
-33,21,"Sg Petani","Sg Petani","Sg petani",5643031,100489732
-32,8,"Pasir Gudang","Pasir Gudang","Pasir Gudang",1466804,103901190
-31,20,Kajang,Kajang,Kajang,2957254,101791803
+33,21,"Sg Petani","Sg Petani",双溪大年,5643031,100489732
+31,20,Kajang,Kajang,加央,2957254,101791803
 30,2,"Bersepadu Selatan","Bersepadu Selatan","Bersepadu Selatan",3077781,101711499
-29,2,"Hentian Pekeliling","Hentian Pekeliling",Pekeliling,3172386,101695697
+29,2,"Hentian Pekeliling","Hentian Pekeliling","Hentian Pekeliling",3172386,101695697
 28,2,"Hentian Putra","Hentian Putra","Hentian Putra",3167169,101690670
 27,2,"Pasar Rakyat","Pasar Rakyat","Pasar Rakyat",3143087,101718868
 26,19,LCCT,LCCT,LCCT,2726241,101718654
 25,18,"Shah Alam","Shah Alam","Shah Alam",3047394,101503957
 24,17,"Klang Sentral","Klang Sentral","Klang Sentral",3108977,101438300
-23,16,Kangar,Kangar,Kangar,6435390,100192511
-22,15,"Kuala Perlis","Kuala Perlis","Kuala Perlis",6397808,100130936
+23,16,Kangar,Kangar,江沙,6435390,100192511
+22,15,"Kuala Perlis","Kuala Perlis",瓜拉玻璃士,6397808,100130936
 21,14,"First World","First World","First World",3427036,101790432
 20,13,"Hentian Makmur","Hentian Makmur","Hentian Makmur",3813578,103324837
 19,7,Butterworth,Butterworth,北海,5395426,100365363
