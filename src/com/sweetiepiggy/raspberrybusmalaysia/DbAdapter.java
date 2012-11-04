@@ -291,12 +291,16 @@ public class DbAdapter
 	public Cursor fetch_from_stations()
 	{
 		String key_station = KEY_STN + "_" + mDbHelper.mCtx.getResources().getString(R.string.lang_code);
+		String key_city = KEY_CITY + "_" + mDbHelper.mCtx.getResources().getString(R.string.lang_code);
 		return mDbHelper.mDb.rawQuery("SELECT DISTINCT " + TABLE_TRIPS +
 				"." + KEY_ROWID + " AS " + KEY_ROWID + ", " + key_station + " AS " + KEY_STN +
+				", " + key_city + " AS " + KEY_CITY +
 				", " + KEY_LATITUDE + ", " + KEY_LONGITUDE +
 				" FROM " + TABLE_TRIPS + " JOIN " + TABLE_STATIONS +
 				" on " + TABLE_TRIPS + "." + KEY_FROM_STN_ID + " == " +
 				TABLE_STATIONS + "." + KEY_ROWID +
+				" JOIN " + TABLE_CITIES + " on " + TABLE_TRIPS + "." +
+				KEY_FROM_CITY_ID + " == " + TABLE_CITIES + "." + KEY_ROWID +
 				" GROUP BY " + key_station +
 				" ORDER BY " + key_station + " ASC",
 			null);
@@ -361,6 +365,27 @@ public class DbAdapter
 				" GROUP BY " + key_station +
 				" ORDER BY " + key_station + " ASC",
 			new String[] {from_station_id});
+	}
+
+	public Cursor fetch_to_stations_from_city(String from_city)
+	{
+		String key_station = KEY_STN + "_" + mDbHelper.mCtx.getResources().getString(R.string.lang_code);
+		String key_city = KEY_CITY + "_" + mDbHelper.mCtx.getResources().getString(R.string.lang_code);
+		String from_city_id = fetch_city_id(from_city);
+
+		return mDbHelper.mDb.rawQuery("SELECT DISTINCT " + TABLE_TRIPS +
+				"." + KEY_ROWID + " AS " + KEY_ROWID + ", " + key_station + " AS " + KEY_STN +
+				", " + key_city + " AS " + KEY_CITY +
+				", " + KEY_LATITUDE + ", " + KEY_LONGITUDE +
+				" FROM " + TABLE_TRIPS + " JOIN " + TABLE_STATIONS +
+				" on " + TABLE_TRIPS + "." + KEY_TO_STN_ID + " == " +
+				TABLE_STATIONS + "." + KEY_ROWID +
+				" JOIN " + TABLE_CITIES + " on " + TABLE_TRIPS + "." +
+				KEY_TO_CITY_ID + " == " + TABLE_CITIES + "." + KEY_ROWID +
+				" WHERE " + KEY_FROM_CITY_ID + " == ? " +
+				" GROUP BY " + key_station +
+				" ORDER BY " + key_station + " ASC",
+			new String[] {from_city_id});
 	}
 
 	public Cursor fetch_agent_to_cities(String from_city, String agent)

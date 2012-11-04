@@ -48,6 +48,12 @@ public class RbmMapActivity extends MapActivity
 		Bundle b = getIntent().getExtras();
 		boolean draw_routes = (b == null) ? false : b.getBoolean("draw_routes");
 		boolean set_result = (b == null) ? false : b.getBoolean("set_result");
+		boolean valid_from = (b == null) ? false : b.getBoolean("valid_from");
+		boolean valid_to = (b == null) ? false : b.getBoolean("valid_to");
+		String from_city = (b == null) ? "" : b.getString("from_city");
+		if (from_city == null || from_city.length() == 0) {
+			valid_to = false;
+		}
 
 		MapView mv = (MapView) findViewById(R.id.mapview);
 		mv.setBuiltInZoomControls(true);
@@ -58,7 +64,9 @@ public class RbmMapActivity extends MapActivity
 
 		DbAdapter dbHelper = new DbAdapter();
 		dbHelper.open(this);
-		Cursor c = dbHelper.fetch_stations();
+		Cursor c = valid_from ? dbHelper.fetch_from_stations() :
+			valid_to ? dbHelper.fetch_to_stations_from_city(from_city) :
+			dbHelper.fetch_stations();
 		if (c.moveToFirst()) do {
 			int latitude = c.getInt(c.getColumnIndex(DbAdapter.KEY_LATITUDE));
 			int longitude = c.getInt(c.getColumnIndex(DbAdapter.KEY_LONGITUDE));

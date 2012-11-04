@@ -39,6 +39,12 @@
 			android:layout_height="wrap_content"
 			android:drawSelectorOnTop="true"
 			android:prompt="@string/from"/>
+		<Button
+			android:id="@+id/from_map_button"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:drawableLeft="@android:drawable/ic_dialog_map"
+			android:text="@string/map" />
 		<TextView
 			android:id="@+id/to_label"
 			android:layout_width="fill_parent"
@@ -51,6 +57,12 @@
 			android:layout_height="wrap_content"
 			android:drawSelectorOnTop="true"
 			android:prompt="@string/to"/>
+		<Button
+			android:id="@+id/to_map_button"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:drawableLeft="@android:drawable/ic_dialog_map"
+			android:text="@string/map" />
 
 		<RadioGroup xmlns:android="http://schemas.android.com/apk/res/android"
 			android:layout_width="fill_parent"

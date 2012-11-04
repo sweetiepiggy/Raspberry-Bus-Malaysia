@@ -26,6 +26,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
@@ -48,6 +49,9 @@ public class RouteActivity extends Activity
 	private DbAdapter mDbHelper;
 	private ArrayList<TableRow> m_rows = new ArrayList<TableRow>();
 
+	private static final int ACTIVITY_FROM = 0;
+	private static final int ACTIVITY_TO = 1;
+
 	/** Called when the activity is first created. */
 	@Override
 	public void onCreate(Bundle savedInstanceState)
@@ -59,6 +63,7 @@ public class RouteActivity extends Activity
 
 		mDbHelper = new DbAdapter();
 		mDbHelper.open(this);
+		init_from_map_button();
 		fill_data();
 	}
 
@@ -68,6 +73,37 @@ public class RouteActivity extends Activity
 			mDbHelper.close();
 		}
 		super.onDestroy();
+	}
+
+	private void init_from_map_button()
+	{
+		Button from_map_button = (Button) findViewById(R.id.from_map_button);
+		from_map_button.setOnClickListener(new View.OnClickListener() {
+			public void onClick(View v) {
+				Intent intent = new Intent(getApplicationContext(), RbmMapActivity.class);
+				Bundle b = new Bundle();
+				b.putBoolean("set_result", true);
+				b.putBoolean("valid_from", true);
+				intent.putExtras(b);
+				startActivityForResult(intent, ACTIVITY_FROM);
+			}
+		});
+	}
+
+	private void init_to_map_button(final String from_city)
+	{
+		Button to_map_button = (Button) findViewById(R.id.to_map_button);
+		to_map_button.setOnClickListener(new View.OnClickListener() {
+			public void onClick(View v) {
+				Intent intent = new Intent(getApplicationContext(), RbmMapActivity.class);
+				Bundle b = new Bundle();
+				b.putBoolean("set_result", true);
+				b.putBoolean("valid_to", true);
+				b.putString("from_city", from_city);
+				intent.putExtras(b);
+				startActivityForResult(intent, ACTIVITY_TO);
+			}
+		});
 	}
 
 	private void fill_data()
@@ -89,6 +125,7 @@ public class RouteActivity extends Activity
 					long id)
 			{
 				m_from_city = ((Cursor)parent.getItemAtPosition(pos)).getString(1);
+				init_to_map_button(m_from_city);
 				Cursor c = mDbHelper.fetch_to_cities(m_from_city);
 				startManagingCursor(c);
 				SimpleCursorAdapter to_cities = new SimpleCursorAdapter(getApplicationContext(),
@@ -124,9 +161,14 @@ public class RouteActivity extends Activity
 
 	private void spinner_set_selection(Spinner spinner, String value)
 	{
-		for (int i = 0; i < spinner.getCount(); ++i) {
+		boolean done = false;
+		Log.i("RouteActivity", "spinner_set_selection() " + Integer.toString(spinner.getCount()));
+		for (int i = 0; i < spinner.getCount() && !done; ++i) {
+			Log.i("RouteActivity", "spinner_set_selection comparing " + value + " to " + ((Cursor)spinner.getItemAtPosition(i)).getString(1));
 			if (((Cursor)spinner.getItemAtPosition(i)).getString(1).equals(value)) {
 				spinner.setSelection(i);
+				Log.i("RouteActivity", "spinner_set_selection found, setting " + Integer.toString(i));
+				done = true;
 			}
 		}
 	}
@@ -327,6 +369,40 @@ public class RouteActivity extends Activity
 
 		int min = time / 60;
 		return String.format("%s%d%s", negative, min, getResources().getString(R.string.minute_abbr));
+	}
+
+	@Override
+	protected void onActivityResult(int request_code, int result_code, Intent data)
+	{
+		super.onActivityResult(request_code, result_code, data);
+		Log.i("RouteActivity", "onActivityResult");
+
+		switch (request_code) {
+		case ACTIVITY_FROM:
+			if (result_code == RESULT_OK) {
+				Bundle b = data.getExtras();
+				if (b != null) {
+					String city = b.getString("city");
+					m_from_city = city;
+					Spinner from_spinner = (Spinner) findViewById(R.id.from_spinner);
+					Log.i("RouteActivity", "result is [" + city + "]");
+					spinner_set_selection(from_spinner, city);
+				}
+			}
+			break;
+		case ACTIVITY_TO:
+			if (result_code == RESULT_OK) {
+				Bundle b = data.getExtras();
+				if (b != null) {
+					String city = b.getString("city");
+					m_to_city = city;
+					Spinner to_spinner = (Spinner) findViewById(R.id.to_spinner);
+					Log.i("RouteActivity", "result is [" + city + "]");
+					spinner_set_selection(to_spinner, city);
+				}
+			}
+			break;
+		}
 	}
 }
 
