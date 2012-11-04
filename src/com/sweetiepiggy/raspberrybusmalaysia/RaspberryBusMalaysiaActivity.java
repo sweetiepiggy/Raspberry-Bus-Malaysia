@@ -20,6 +20,7 @@
 package com.sweetiepiggy.raspberrybusmalaysia;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -28,7 +29,6 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
-import android.widget.Toast;
 
 public class RaspberryBusMalaysiaActivity extends Activity
 {
@@ -82,7 +82,7 @@ public class RaspberryBusMalaysiaActivity extends Activity
 
 		/* open database only to sync if it has not been created yet */
 		DbAdapter dbHelper = new DbAdapter();
-		dbHelper.open_readwrite(getApplicationContext());
+		dbHelper.open_readwrite(this);
 		dbHelper.check_last_update_and_sync();
 		dbHelper.close();
 	}
@@ -103,10 +103,8 @@ public class RaspberryBusMalaysiaActivity extends Activity
 			startActivity(intent);
 			return true;
 		case R.id.sync:
-			SyncTask sync = new SyncTask(getApplicationContext());
+			SyncTask sync = new SyncTask(this);
 			sync.execute();
-			Toast.makeText(getApplicationContext(), R.string.syncing,
-					Toast.LENGTH_SHORT).show();
 			return true;
 		case R.id.source:
 			intent = new Intent(Intent.ACTION_VIEW);

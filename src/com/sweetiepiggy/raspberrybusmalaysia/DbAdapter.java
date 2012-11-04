@@ -25,7 +25,6 @@ import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.widget.Toast;
 
 public class DbAdapter
 {
@@ -170,7 +169,6 @@ public class DbAdapter
 			if (mAllowSync) {
 				SyncTask sync = new SyncTask(mCtx);
 				sync.execute();
-				Toast.makeText(mCtx, R.string.syncing, Toast.LENGTH_SHORT).show();
 
 				Cursor c = db.rawQuery("SELECT strftime(\"%Y-%m-%d %H:%M:%S\", 'now')", null);
 				if (!c.moveToFirst()) {
@@ -249,7 +247,6 @@ public class DbAdapter
 		if (sec_since_last_update() > SEC_BETWEEN_UPDATES) {
 			SyncTask sync = new SyncTask(mDbHelper.mCtx);
 			sync.execute();
-			Toast.makeText(mDbHelper.mCtx, R.string.syncing, Toast.LENGTH_SHORT).show();
 			set_last_update();
 		}
 	}

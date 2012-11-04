@@ -24,12 +24,13 @@ import java.io.FileNotFoundException;
 import java.io.InputStreamReader;
 import java.net.URL;
 
+import android.app.ProgressDialog;
 import android.content.ContentValues;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.widget.Toast;
 
-public class SyncTask extends AsyncTask<Void, Void, Void>
+public class SyncTask extends AsyncTask<Void, Integer, Void>
 {
 	private final String TAG = "SyncTask";
 
@@ -40,25 +41,47 @@ public class SyncTask extends AsyncTask<Void, Void, Void>
 
 	private Context mCtx;
 	private int new_trip_cnt = 0;
+	private ProgressDialog mProgressDialog;
 
 	public SyncTask(Context ctx)
 	{
 		mCtx = ctx;
+		mProgressDialog = new ProgressDialog(mCtx);
 	}
 
 	@Override
 	protected Void doInBackground(Void... params)
 	{
 		sync_cities();
+		publishProgress(33);
 		sync_stations();
+		publishProgress(66);
 		sync_trips();
+		publishProgress(100);
 
 		return null;
 	}
 
 	@Override
+	protected void onPreExecute()
+	{
+		super.onPreExecute();
+		if (mProgressDialog != null) {
+			mProgressDialog.setMessage(mCtx.getResources().getString(R.string.syncing));
+			mProgressDialog.setIndeterminate(false);
+			mProgressDialog.setMax(100);
+			mProgressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+			mProgressDialog.setProgress(0);
+			mProgressDialog.show();
+		}
+	}
+
+	@Override
 	protected void onPostExecute(Void result)
 	{
+		if (mProgressDialog != null) {
+			mProgressDialog.dismiss();
+		}
 		Toast.makeText(mCtx,
 				Integer.toString(new_trip_cnt) + " " +
 				mCtx.getResources().getString(R.string.updates_found),
@@ -66,8 +89,12 @@ public class SyncTask extends AsyncTask<Void, Void, Void>
 	}
 
 	@Override
-	protected void onProgressUpdate(Void... values)
+	protected void onProgressUpdate(Integer... values)
 	{
+		super.onProgressUpdate(values);
+		if (mProgressDialog != null) {
+			mProgressDialog.setProgress(values[0]);
+		}
 	}
 
 	private void sync_cities()
