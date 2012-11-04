@@ -112,9 +112,16 @@ public class SyncTask extends AsyncTask<Void, Integer, Void>
 				DbAdapter dbHelper = new DbAdapter();
 				dbHelper.open_no_sync(mCtx);
 
+				long max_id = dbHelper.fetch_cities_max_id();
+				long added_cities = 0;
+
 				while ((line = in.readLine()) != null) {
 					ContentValues city = parse_line(line, field_names);
 					dbHelper.create_city(city);
+					++added_cities;
+					if (max_id != 0) {
+						publishProgress(java.lang.Math.min(33, (int)(33. * added_cities / max_id)));
+					}
 				}
 				dbHelper.close();
 			}
@@ -141,9 +148,16 @@ public class SyncTask extends AsyncTask<Void, Integer, Void>
 				DbAdapter dbHelper = new DbAdapter();
 				dbHelper.open_no_sync(mCtx);
 
+				long max_id = dbHelper.fetch_stations_max_id();
+				long added_stations = 0;
+
 				while ((line = in.readLine()) != null) {
 					ContentValues station = parse_line(line, field_names);
 					dbHelper.create_station(station);
+					++added_stations;
+					if (max_id != 0) {
+						publishProgress(java.lang.Math.min(66, 33 + (int)(33. * added_stations / max_id)));
+					}
 				}
 				dbHelper.close();
 			}
