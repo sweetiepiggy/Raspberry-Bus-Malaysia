@@ -63,11 +63,11 @@ public class CompanyActivity extends ListActivity
 
 	private void fill_data(DbAdapter dbHelper, String company_query)
 	{
-		Cursor c = dbHelper.fetch_companies('%' + company_query + '%');
+		Cursor c = dbHelper.fetch_agents('%' + company_query + '%');
 		startManagingCursor(c);
 		SimpleCursorAdapter companies = new SimpleCursorAdapter(this,
 				android.R.layout.simple_list_item_1,
-				c, new String[] {DbAdapter.KEY_COMP},
+				c, new String[] {DbAdapter.KEY_AGENT},
 				new int[] {android.R.id.text1});
 		setListAdapter(companies);
 	}

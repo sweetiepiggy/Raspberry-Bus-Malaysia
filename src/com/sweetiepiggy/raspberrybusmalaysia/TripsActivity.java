@@ -29,13 +29,15 @@ import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
 
-public class TripsActivity extends Activity {
+public class TripsActivity extends Activity
+{
 	private DbAdapter mDbHelper;
-	private boolean m_is_brand = false;
+	private boolean m_is_operator = false;
 
 	/** Called when the activity is first created. */
 	@Override
-	public void onCreate(Bundle savedInstanceState) {
+	public void onCreate(Bundle savedInstanceState)
+	{
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.trips);
 
@@ -43,7 +45,7 @@ public class TripsActivity extends Activity {
 		String from_city = (b == null) ? "<NULL>" : b.getString("from_city");
 		String to_city = (b == null) ? "<NULL>" : b.getString("to_city");
 		String company = (b == null) ? "<NULL>" : b.getString("company");
-		m_is_brand = (b == null) ? false : b.getBoolean("is_brand");
+		m_is_operator = (b == null) ? false : b.getBoolean("is_operator");
 		String company_display = company.length() == 0 ? getResources().getString(R.string.unknown) : company;
 
 		((TextView) findViewById(R.id.company)).setText(company_display);
@@ -57,7 +59,8 @@ public class TripsActivity extends Activity {
 	}
 
 	@Override
-	protected void onDestroy() {
+	protected void onDestroy()
+	{
 		if (mDbHelper != null) {
 			mDbHelper.close();
 		}
@@ -67,8 +70,8 @@ public class TripsActivity extends Activity {
 	private void print_averages(String from_city, String to_city,
 			String company)
 	{
-		Cursor c = m_is_brand ?
-			mDbHelper.fetch_avg_brand(from_city, to_city, company) :
+		Cursor c = m_is_operator ?
+			mDbHelper.fetch_avg_operator(from_city, to_city, company) :
 			mDbHelper.fetch_avg(from_city, to_city, company);
 		startManagingCursor(c);
 
@@ -81,8 +84,8 @@ public class TripsActivity extends Activity {
 	private void print_rows(String from_city, String to_city,
 			String company)
 	{
-		Cursor c = m_is_brand ?
-			mDbHelper.fetch_trips_brand(from_city, to_city, company) :
+		Cursor c = m_is_operator ?
+			mDbHelper.fetch_trips_operator(from_city, to_city, company) :
 			mDbHelper.fetch_trips(from_city, to_city, company);
 		startManagingCursor(c);
 		if (c.moveToFirst()) do {

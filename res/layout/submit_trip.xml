@@ -80,16 +80,16 @@
 			android:text="@string/map" />
 
 		<TextView
-			android:id="@+id/company_label"
+			android:id="@+id/agent_label"
 			android:layout_width="fill_parent"
 			android:layout_height="wrap_content"
 			style="@android:style/TextAppearance.Large"
-			android:text="@string/company" />
+			android:text="@string/agent" />
 		<AutoCompleteTextView
-			android:id="@+id/company_entry"
+			android:id="@+id/agent_entry"
 			android:layout_width="fill_parent"
 			android:layout_height="wrap_content"
-			android:hint="@string/company_hint"
+			android:hint="@string/agent_hint"
 			android:background="@android:drawable/editbox_background"/>
 
 		<TextView
@@ -106,16 +106,16 @@
 			android:background="@android:drawable/editbox_background"/>
 
 		<TextView
-			android:id="@+id/brand_label"
+			android:id="@+id/operator_label"
 			android:layout_width="fill_parent"
 			android:layout_height="wrap_content"
 			style="@android:style/TextAppearance.Large"
-			android:text="@string/brand" />
+			android:text="@string/operator" />
 		<AutoCompleteTextView
-			android:id="@+id/brand_entry"
+			android:id="@+id/operator_entry"
 			android:layout_width="fill_parent"
 			android:layout_height="wrap_content"
-			android:hint="@string/brand_hint"
+			android:hint="@string/operator_hint"
 			android:background="@android:drawable/editbox_background"/>
 
 		<TextView

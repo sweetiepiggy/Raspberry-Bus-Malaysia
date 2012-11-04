@@ -56,17 +56,17 @@
 			android:layout_width="fill_parent"
 			android:layout_height="wrap_content"
 			android:orientation="horizontal">
-		<RadioButton android:id="@+id/company_radio"
+		<RadioButton android:id="@+id/agent_radio"
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
 			android:layout_weight="1"
-			android:text="@string/company"
+			android:text="@string/agent"
 			android:onClick="on_radio_button_clicked"/>
-		<RadioButton android:id="@+id/bus_brand_radio"
+		<RadioButton android:id="@+id/operator_radio"
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
 			android:layout_weight="1"
-			android:text="@string/brand"
+			android:text="@string/operator"
 			android:onClick="on_radio_button_clicked"/>
 		</RadioGroup>
 
@@ -81,7 +81,7 @@
 					android:layout_width="fill_parent"
 					android:layout_height="fill_parent"
 					android:textStyle="bold"
-					android:text="@string/company"/>
+					android:text="@string/agent"/>
 				<Button
 					android:id="@+id/avg_time"
 					android:layout_width="fill_parent"

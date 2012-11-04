@@ -33,7 +33,7 @@
 	<string name="route">路线</string>
 	<string name="submit">提交</string>
 	<string name="clear">删除</string>
-	<string name="company">代理商</string>
+	<string name="agent">代理商</string>
 	<string name="avg_time">平均时间</string>
 	<string name="avg_delay">平均延迟</string>
 	<string name="num_trips">次数</string>
@@ -42,9 +42,9 @@
 	<string name="depart_time">实际出发时间</string>
 	<string name="arrival_time">到达时间</string>
 
-	<string name="company_hint">输入代理商名称，例如United Travel</string>
-	<string name="brand">经营者</string>
-	<string name="brand_hint">输入巴士经营者，例如Seasons</string>
+	<string name="agent_hint">输入代理商名称，例如United Travel</string>
+	<string name="operator">经营者</string>
+	<string name="operator_hint">输入巴士经营者，例如Seasons</string>
 
 	<string name="from_city_hint">输入出发城市，例如吉隆坡</string>
 	<string name="from_station_hint">输入车站，例如富都车站</string>
@@ -62,7 +62,7 @@
 	<string name="comfort">舒适</string>
 
 	<string name="route_stat">路线概要</string>
-	<string name="company_stat">代理商详情</string>
+	<string name="agent_stat">代理商详情</string>
 	<string name="submit_trip">提交意见</string>
 
 	<string name="sync">同步</string>

@@ -55,7 +55,7 @@ public class RouteActivity extends Activity
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.route);
 
-		((RadioButton) findViewById(R.id.company_radio)).setChecked(true);
+		((RadioButton) findViewById(R.id.agent_radio)).setChecked(true);
 
 		mDbHelper = new DbAdapter();
 		mDbHelper.open(this);
@@ -142,20 +142,20 @@ public class RouteActivity extends Activity
 
 	private void init_labels(final String from_city, final String to_city)
 	{
-		TextView company = (TextView) findViewById(R.id.company);
-		int company_text_id = ((RadioButton) findViewById(R.id.bus_brand_radio)).isChecked() ?
-			R.string.brand : R.string.company;
+		Button company = (Button) findViewById(R.id.company);
+		int company_text_id = ((RadioButton) findViewById(R.id.operator_radio)).isChecked() ?
+			R.string.operator : R.string.agent;
 		company.setText(company_text_id);
 		company.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v)
 			{
-				String company_key = ((RadioButton) findViewById(R.id.bus_brand_radio)).isChecked() ?
-					DbAdapter.KEY_BRAND : DbAdapter.KEY_COMP;
+				String company_key = ((RadioButton) findViewById(R.id.operator_radio)).isChecked() ?
+					DbAdapter.KEY_OPERATOR : DbAdapter.KEY_AGENT;
 				print_rows(from_city, to_city, company_key);
 			}
 		});
 
-		TextView avg_time = (TextView) findViewById(R.id.avg_time);
+		Button avg_time = (Button) findViewById(R.id.avg_time);
 		avg_time.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v)
 			{
@@ -163,7 +163,7 @@ public class RouteActivity extends Activity
 			}
 		});
 
-		TextView avg_delay = (TextView) findViewById(R.id.avg_delay);
+		Button avg_delay = (Button) findViewById(R.id.avg_delay);
 		avg_delay.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v)
 			{
@@ -171,7 +171,7 @@ public class RouteActivity extends Activity
 			}
 		});
 
-		TextView num_trips = (TextView) findViewById(R.id.num_trips);
+		Button num_trips = (Button) findViewById(R.id.num_trips);
 		num_trips.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v)
 			{
@@ -184,21 +184,21 @@ public class RouteActivity extends Activity
 	{
 		init_labels(from_city, to_city);
 
-		String group_by = ((RadioButton) findViewById(R.id.bus_brand_radio)).isChecked() ?
-			DbAdapter.KEY_BRAND : DbAdapter.KEY_COMP;
+		String group_by = ((RadioButton) findViewById(R.id.operator_radio)).isChecked() ?
+			DbAdapter.KEY_OPERATOR : DbAdapter.KEY_AGENT;
 		Cursor c = mDbHelper.fetch_avg(from_city, to_city, group_by, sort_by);
 		startManagingCursor(c);
 
 		clear_rows();
 		if (c.moveToFirst()) do {
-			String company = c.getString(c.getColumnIndex(DbAdapter.KEY_COMP));
-			String brand = c.getString(c.getColumnIndex(DbAdapter.KEY_BRAND));
+			String agent = c.getString(c.getColumnIndex(DbAdapter.KEY_AGENT));
+			String operator = c.getString(c.getColumnIndex(DbAdapter.KEY_OPERATOR));
 			String avg = format_time(c.getInt(c.getColumnIndex(DbAdapter.AVG_TIME)));
 			String delay = format_time_min(c.getInt(c.getColumnIndex(DbAdapter.AVG_DELAY)));
 			String count = c.getString(c.getColumnIndex(DbAdapter.NUM_TRIPS));
 
-			String disp_comp = ((RadioButton) findViewById(R.id.bus_brand_radio)).isChecked() ?
-				brand : company;
+			String disp_comp = ((RadioButton) findViewById(R.id.operator_radio)).isChecked() ?
+				operator : agent;
 
 			print_row(disp_comp, avg, delay, count, from_city,
 					to_city);
@@ -295,7 +295,7 @@ public class RouteActivity extends Activity
 				b.putString("company", company);
 				b.putString("from_city", from_city);
 				b.putString("to_city", to_city);
-				b.putBoolean("is_brand", ((RadioButton) findViewById(R.id.bus_brand_radio)).isChecked());
+				b.putBoolean("is_operator", ((RadioButton) findViewById(R.id.operator_radio)).isChecked());
 				intent.putExtras(b);
 				startActivity(intent);
 			}

@@ -29,8 +29,8 @@ import android.database.sqlite.SQLiteOpenHelper;
 public class DbAdapter
 {
 	public static final String KEY_ROWID = "_id";
-	public static final String KEY_COMP = "company";
-	public static final String KEY_BRAND = "bus_brand";
+	public static final String KEY_AGENT = "company";
+	public static final String KEY_OPERATOR = "bus_brand";
 	public static final String KEY_FROM_CITY = "from_city";
 	public static final String KEY_FROM_STN = "from_station";
 	public static final String KEY_TO_CITY = "to_city";
@@ -63,7 +63,7 @@ public class DbAdapter
 	public static final String TRIP_DELAY = "(strftime('%s', " + KEY_ACTUAL_DEP + ") - strftime('%s', " + KEY_SCHED_DEP + "))";
 	public static final String AVG_TIME = "avg(" + TRIP_TIME + ")";
 	public static final String AVG_DELAY = "avg(" + TRIP_DELAY + ")";
-	public static final String NUM_TRIPS = "count(" + KEY_COMP + ")";
+	public static final String NUM_TRIPS = "count(" + KEY_AGENT + ")";
 
 	private static final int SEC_BETWEEN_UPDATES = 60 * 60 * 24 * 7;
 
@@ -82,8 +82,8 @@ public class DbAdapter
 	private static final String DATABASE_CREATE_TRIPS =
 		"CREATE TABLE " + TABLE_TRIPS + " (" +
 		KEY_ROWID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
-		KEY_COMP + " TEXT, " +
-		KEY_BRAND + " TEXT, " +
+		KEY_AGENT + " TEXT, " +
+		KEY_OPERATOR + " TEXT, " +
 		KEY_FROM_CITY_ID + " INTEGER NOT NULL, " +
 		KEY_FROM_STN_ID + " INTEGER, " +
 		KEY_TO_CITY_ID + " INTEGER NOT NULL, " +
@@ -103,8 +103,8 @@ public class DbAdapter
 	private static final String DATABASE_CREATE_TMP =
 		"CREATE TABLE " + TABLE_TMP + " (" +
 		KEY_ROWID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
-		KEY_COMP + " TEXT, " +
-		KEY_BRAND + " TEXT, " +
+		KEY_AGENT + " TEXT, " +
+		KEY_OPERATOR + " TEXT, " +
 		KEY_FROM_CITY + " TEXT, " +
 		KEY_FROM_STN + " TEXT, " +
 		KEY_TO_CITY + " TEXT, " +
@@ -302,7 +302,7 @@ public class DbAdapter
 			null);
 	}
 
-	public Cursor fetch_from_cities(String company)
+	public Cursor fetch_from_cities(String agent)
 	{
 		String key_city = KEY_CITY + "_" + mDbHelper.mCtx.getResources().getString(R.string.lang_code);
 		return mDbHelper.mDb.rawQuery("SELECT DISTINCT " + TABLE_TRIPS +
@@ -310,10 +310,10 @@ public class DbAdapter
 				" FROM " + TABLE_TRIPS + " JOIN " + TABLE_CITIES +
 				" on " + TABLE_TRIPS + "." + KEY_FROM_CITY_ID + " == " +
 				TABLE_CITIES + "." + KEY_ROWID +
-				" WHERE " + KEY_COMP + " == ? " +
+				" WHERE " + KEY_AGENT + " == ? " +
 				" GROUP BY " + key_city +
 				" ORDER BY " + key_city + " ASC",
-			new String[] {company});
+			new String[] {agent});
 	}
 
 	public Cursor fetch_to_cities(String from_city)
@@ -349,7 +349,7 @@ public class DbAdapter
 			new String[] {from_station_id});
 	}
 
-	public Cursor fetch_to_cities(String from_city, String company)
+	public Cursor fetch_to_cities(String from_city, String agent)
 	{
 		String key_city = KEY_CITY + "_" + mDbHelper.mCtx.getResources().getString(R.string.lang_code);
 		String from_city_id = fetch_city_id(from_city);
@@ -360,10 +360,10 @@ public class DbAdapter
 				" on " + TABLE_TRIPS + "." + KEY_TO_CITY_ID + " == " +
 				TABLE_CITIES + "." + KEY_ROWID +
 				" WHERE " + KEY_FROM_CITY_ID + " == ? " + " AND " +
-				KEY_COMP + " == ? " +
+				KEY_AGENT + " == ? " +
 				" GROUP BY " + key_city +
 				" ORDER BY " + key_city + " ASC",
-			new String[] {from_city_id, company});
+			new String[] {from_city_id, agent});
 	}
 
 	public Cursor fetch_stations()
@@ -388,18 +388,18 @@ public class DbAdapter
 				null, null, null, null, key_city + " ASC", null);
 	}
 
-	public Cursor fetch_companies()
+	public Cursor fetch_agents()
 	{
-		return mDbHelper.mDb.query(true, TABLE_TRIPS, new String[] {KEY_ROWID, KEY_COMP},
-				"length(" + KEY_COMP + ") != 0", null,
-				KEY_COMP, null, KEY_COMP + " ASC", null);
+		return mDbHelper.mDb.query(true, TABLE_TRIPS, new String[] {KEY_ROWID, KEY_AGENT},
+				"length(" + KEY_AGENT + ") != 0", null,
+				KEY_AGENT, null, KEY_AGENT + " ASC", null);
 	}
 
-	public Cursor fetch_brands()
+	public Cursor fetch_operators()
 	{
-		return mDbHelper.mDb.query(true, TABLE_TRIPS, new String[] {KEY_ROWID, KEY_BRAND},
-				"length(" + KEY_BRAND + ") != 0", null,
-				KEY_BRAND, null, KEY_BRAND + " ASC", null);
+		return mDbHelper.mDb.query(true, TABLE_TRIPS, new String[] {KEY_ROWID, KEY_OPERATOR},
+				"length(" + KEY_OPERATOR + ") != 0", null,
+				KEY_OPERATOR, null, KEY_OPERATOR + " ASC", null);
 	}
 
 	public Cursor fetch_counter_nums()
@@ -409,11 +409,11 @@ public class DbAdapter
 				KEY_CTR, null, KEY_CTR + " ASC", null);
 	}
 
-	public Cursor fetch_companies(String company_query)
+	public Cursor fetch_agents(String agent_query)
 	{
-		return mDbHelper.mDb.query(true, TABLE_TRIPS, new String[] {KEY_ROWID, KEY_COMP},
-				"length(" + KEY_COMP + ") != 0 AND " + KEY_COMP + " LIKE ?", new String[] {company_query},
-				KEY_COMP, null, KEY_COMP + " ASC", null);
+		return mDbHelper.mDb.query(true, TABLE_TRIPS, new String[] {KEY_ROWID, KEY_AGENT},
+				"length(" + KEY_AGENT + ") != 0 AND " + KEY_AGENT + " LIKE ?", new String[] {agent_query},
+				KEY_AGENT, null, KEY_AGENT + " ASC", null);
 	}
 
 	public Cursor fetch_avg(String from_city, String to_city, String group_by, String sort_by)
@@ -421,55 +421,55 @@ public class DbAdapter
 		String from_city_id = fetch_city_id(from_city);
 		String to_city_id = fetch_city_id(to_city);
 		return mDbHelper.mDb.query(true, TABLE_TRIPS,
-				new String[] {KEY_COMP, KEY_BRAND, AVG_TIME, AVG_DELAY, NUM_TRIPS},
+				new String[] {KEY_AGENT, KEY_OPERATOR, AVG_TIME, AVG_DELAY, NUM_TRIPS},
 				KEY_FROM_CITY_ID + " = ? AND " + KEY_TO_CITY_ID + " = ? AND " + KEY_ARRIVAL + "!= 'Cancelled'",
 				new String[] {from_city_id, to_city_id},
 				group_by, null, sort_by + " ASC", null);
 	}
 
-	public Cursor fetch_avg(String from_city, String to_city, String company)
+	public Cursor fetch_avg(String from_city, String to_city, String agent)
 	{
 		String from_city_id = fetch_city_id(from_city);
 		String to_city_id = fetch_city_id(to_city);
 		return mDbHelper.mDb.query(true, TABLE_TRIPS, new String[] {AVG_TIME, AVG_DELAY, NUM_TRIPS},
-				KEY_COMP + " = ? AND " + KEY_FROM_CITY_ID + " = ? AND " + KEY_TO_CITY_ID + " = ?",
-				new String[] {company, from_city_id, to_city_id},
+				KEY_AGENT + " = ? AND " + KEY_FROM_CITY_ID + " = ? AND " + KEY_TO_CITY_ID + " = ?",
+				new String[] {agent, from_city_id, to_city_id},
 				null, null, null, null);
 	}
 
-	public Cursor fetch_avg_brand(String from_city, String to_city, String brand)
+	public Cursor fetch_avg_operator(String from_city, String to_city, String operator)
 	{
 		String from_city_id = fetch_city_id(from_city);
 		String to_city_id = fetch_city_id(to_city);
 		return mDbHelper.mDb.query(true, TABLE_TRIPS, new String[] {AVG_TIME, AVG_DELAY, NUM_TRIPS},
-				KEY_BRAND + " = ? AND " + KEY_FROM_CITY_ID + " = ? AND " + KEY_TO_CITY_ID + " = ?",
-				new String[] {brand, from_city_id, to_city_id},
+				KEY_OPERATOR + " = ? AND " + KEY_FROM_CITY_ID + " = ? AND " + KEY_TO_CITY_ID + " = ?",
+				new String[] {operator, from_city_id, to_city_id},
 				null, null, null, null);
 	}
 
-	public Cursor fetch_avg_delay(String company)
+	public Cursor fetch_avg_delay(String agent)
 	{
 		return mDbHelper.mDb.query(true, TABLE_TRIPS, new String[] {AVG_DELAY},
-				KEY_COMP + " = ?", new String[] {company}, null, null, null, null);
+				KEY_AGENT + " = ?", new String[] {agent}, null, null, null, null);
 	}
 
-	public Cursor fetch_trips(String from_city, String to_city, String company)
+	public Cursor fetch_trips(String from_city, String to_city, String agent)
 	{
 		String from_city_id = fetch_city_id(from_city);
 		String to_city_id = fetch_city_id(to_city);
 		return mDbHelper.mDb.query(TABLE_TRIPS, new String[] {KEY_SCHED_DEP, TRIP_DELAY, TRIP_TIME},
-				KEY_COMP + " = ? AND " + KEY_FROM_CITY_ID + " = ? AND " + KEY_TO_CITY_ID + " = ?",
-				new String[] {company, from_city_id, to_city_id},
+				KEY_AGENT + " = ? AND " + KEY_FROM_CITY_ID + " = ? AND " + KEY_TO_CITY_ID + " = ?",
+				new String[] {agent, from_city_id, to_city_id},
 				null, null, "strftime('%s', " + KEY_SCHED_DEP + ") DESC", null);
 	}
 
-	public Cursor fetch_trips_brand(String from_city, String to_city, String brand)
+	public Cursor fetch_trips_operator(String from_city, String to_city, String operator)
 	{
 		String from_city_id = fetch_city_id(from_city);
 		String to_city_id = fetch_city_id(to_city);
 		return mDbHelper.mDb.query(TABLE_TRIPS, new String[] {KEY_SCHED_DEP, TRIP_DELAY, TRIP_TIME},
-				KEY_BRAND + " = ? AND " + KEY_FROM_CITY_ID + " = ? AND " + KEY_TO_CITY_ID + " = ?",
-				new String[] {brand, from_city_id, to_city_id},
+				KEY_OPERATOR + " = ? AND " + KEY_FROM_CITY_ID + " = ? AND " + KEY_TO_CITY_ID + " = ?",
+				new String[] {operator, from_city_id, to_city_id},
 				null, null, "strftime('%s', " + KEY_SCHED_DEP + ") DESC", null);
 	}
 
@@ -599,15 +599,15 @@ public class DbAdapter
 		return c.moveToFirst() ? c.getInt(0) : 0;
 	}
 
-	public void save_tmp(String company, String bus_brand,
+	public void save_tmp(String agent, String operator,
 			String from_city, String from_station, String to_city,
 			String to_station, String scheduled_departure,
 			String actual_departure, String arrival_time,
 			String counter, int safety, int comfort, String comment)
 	{
 		ContentValues cv = new ContentValues();
-		cv.put(KEY_COMP, company);
-		cv.put(KEY_BRAND, bus_brand);
+		cv.put(KEY_AGENT, agent);
+		cv.put(KEY_OPERATOR, operator);
 		cv.put(KEY_FROM_CITY, from_city);
 		cv.put(KEY_FROM_STN, from_station);
 		cv.put(KEY_TO_CITY, to_city);

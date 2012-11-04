@@ -50,8 +50,8 @@ public class RaspberryBusMalaysiaActivity extends Activity
 			}
 		});
 
-		TextView company = (TextView) findViewById(R.id.company);
-		company.setOnClickListener(new View.OnClickListener() {
+		TextView agent = (TextView) findViewById(R.id.agent);
+		agent.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v)
 			{
 				Intent intent = new Intent(getApplicationContext(), CompanyActivity.class);

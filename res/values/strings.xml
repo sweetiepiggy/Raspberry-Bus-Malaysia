@@ -33,7 +33,7 @@
 	<string name="route">Route</string>
 	<string name="submit">submit</string>
 	<string name="clear">clear</string>
-	<string name="company">Agent</string>
+	<string name="agent">Agent</string>
 	<string name="avg_time">Average\nTime</string>
 	<string name="avg_delay">Average\nDelay</string>
 	<string name="num_trips">Trips</string>
@@ -42,9 +42,9 @@
 	<string name="depart_time">Actual Departure Time</string>
 	<string name="arrival_time">Arrival Time</string>
 
-	<string name="company_hint">Enter agent name, e.g. United Travel</string>
-	<string name="brand">Operator</string>
-	<string name="brand_hint">Enter bus operator, e.g. Seasons</string>
+	<string name="agent_hint">Enter agent name, e.g. United Travel</string>
+	<string name="operator">Operator</string>
+	<string name="operator_hint">Enter bus operator, e.g. Seasons</string>
 
 	<string name="from_city_hint">Enter city of departure, e.g. Kuala Lumpur</string>
 	<string name="from_station_hint">Enter station of departure, e.g. Puduraya</string>
@@ -62,7 +62,7 @@
 	<string name="comfort">Comfort</string>
 
 	<string name="route_stat">route\nsummary</string>
-	<string name="company_stat">agent\ndetails</string>
+	<string name="agent_stat">agent\ndetails</string>
 	<string name="submit_trip">submit\nreview</string>
 
 	<string name="sync">Sync</string>

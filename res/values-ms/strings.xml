@@ -33,7 +33,7 @@
 	<string name="route">Perjalanan</string>
 	<string name="submit">Hantar</string>
 	<string name="clear">Batal</string>
-	<string name="company">Ejen</string>
+	<string name="agent">Ejen</string>
 	<string name="avg_time">Purata\nMasa</string>
 	<string name="avg_delay">Purata\nLewat</string>
 	<string name="num_trips">Jumlah\nPerjalanan</string>
@@ -42,9 +42,9 @@
 	<string name="depart_time">Masa Bertolak</string>
 	<string name="arrival_time">Masa Ketibaan</string>
 
-	<string name="company_hint">Masukkan nama ejen, contoh: United Travel</string>
-	<string name="brand">Juruoperasi</string>
-	<string name="brand_hint">Masukkan juruoperasi bas, contoh: Seasons</string>
+	<string name="agent_hint">Masukkan nama ejen, contoh: United Travel</string>
+	<string name="operator">Juruoperasi</string>
+	<string name="operator_hint">Masukkan juruoperasi bas, contoh: Seasons</string>
 
 	<string name="from_city_hint">Masukkan tempat bertolak, contoh: Kuala Lumpur</string>
 	<string name="from_station_hint">Masukkan nama hentian bas bertolak, contoh: Puduraya</string>
@@ -62,7 +62,7 @@
 	<string name="comfort">Keselesaan</string>
 
 	<string name="route_stat">kesimpulan\nperjalanan</string>
-	<string name="company_stat">maklumat\nejen</string>
+	<string name="agent_stat">maklumat\nejen</string>
 	<string name="submit_trip">hantar\npendapat</string>
 
 	<string name="sync">Penyegerakan</string>

@@ -90,12 +90,13 @@ public class SubmitTripActivity extends Activity
 	}
 
 	@Override
-	protected void onDestroy() {
+	protected void onDestroy()
+	{
 		String sched_time = format_time(mData.sched_time);
 		String depart_time = format_time(mData.depart_time);
 		String arrival_time = format_time(mData.arrival_time);
-		String company = ((AutoCompleteTextView) findViewById(R.id.company_entry)).getText().toString();
-		String brand = ((AutoCompleteTextView) findViewById(R.id.brand_entry)).getText().toString();
+		String agent = ((AutoCompleteTextView) findViewById(R.id.agent_entry)).getText().toString();
+		String operator = ((AutoCompleteTextView) findViewById(R.id.operator_entry)).getText().toString();
 		String from_city = ((AutoCompleteTextView) findViewById(R.id.from_city_entry)).getText().toString();
 		String from_station = ((AutoCompleteTextView) findViewById(R.id.from_station_entry)).getText().toString();
 		String to_city = ((AutoCompleteTextView) findViewById(R.id.to_city_entry)).getText().toString();
@@ -104,7 +105,7 @@ public class SubmitTripActivity extends Activity
 		int safety = (int) ((RatingBar) findViewById(R.id.safety_bar)).getRating();
 		int comfort = (int) ((RatingBar) findViewById(R.id.comfort_bar)).getRating();
 		String comment = ((EditText) findViewById(R.id.comment_entry)).getText().toString();
-		mDbHelper.save_tmp(company, brand, from_city,
+		mDbHelper.save_tmp(agent, operator, from_city,
 				from_station, to_city, to_station, sched_time,
 				depart_time, arrival_time, counter_num,
 				safety, comfort, comment);
@@ -247,16 +248,16 @@ public class SubmitTripActivity extends Activity
 		update_city_autocomplete(R.id.to_city_entry);
 		update_station_autocomplete(R.id.to_station_entry);
 		update_station_autocomplete(R.id.from_station_entry);
-		update_company_autocomplete(R.id.company_entry);
-		update_brand_autocomplete(R.id.brand_entry);
+		update_agent_autocomplete(R.id.agent_entry);
+		update_operator_autocomplete(R.id.operator_entry);
 		update_counter_num_autocomplete(R.id.counter_num_entry);
 
 		String from_city = mDbHelper.fetch_tmp(DbAdapter.KEY_FROM_CITY);
 		String from_station = mDbHelper.fetch_tmp(DbAdapter.KEY_FROM_STN);
 		String to_city = mDbHelper.fetch_tmp(DbAdapter.KEY_TO_CITY);
 		String to_station = mDbHelper.fetch_tmp(DbAdapter.KEY_TO_STN);
-		String company = mDbHelper.fetch_tmp(DbAdapter.KEY_COMP);
-		String brand = mDbHelper.fetch_tmp(DbAdapter.KEY_BRAND);
+		String agent = mDbHelper.fetch_tmp(DbAdapter.KEY_AGENT);
+		String operator = mDbHelper.fetch_tmp(DbAdapter.KEY_OPERATOR);
 		String counter_num = mDbHelper.fetch_tmp(DbAdapter.KEY_CTR);
 		String comment = mDbHelper.fetch_tmp(DbAdapter.KEY_COMMENT);
 		int safety = mDbHelper.fetch_safety();
@@ -266,8 +267,8 @@ public class SubmitTripActivity extends Activity
 		((AutoCompleteTextView) findViewById(R.id.from_station_entry)).setText(from_station);
 		((AutoCompleteTextView) findViewById(R.id.to_city_entry)).setText(to_city);
 		((AutoCompleteTextView) findViewById(R.id.to_station_entry)).setText(to_station);
-		((AutoCompleteTextView) findViewById(R.id.company_entry)).setText(company);
-		((AutoCompleteTextView) findViewById(R.id.brand_entry)).setText(brand);
+		((AutoCompleteTextView) findViewById(R.id.agent_entry)).setText(agent);
+		((AutoCompleteTextView) findViewById(R.id.operator_entry)).setText(operator);
 		((AutoCompleteTextView) findViewById(R.id.counter_num_entry)).setText(counter_num);
 
 		((RatingBar) findViewById(R.id.safety_bar)).setRating(safety);
@@ -301,30 +302,30 @@ public class SubmitTripActivity extends Activity
 		stations_entry.setAdapter(stations);
 	}
 
-	private void update_company_autocomplete(int id)
+	private void update_agent_autocomplete(int id)
 	{
-		ArrayAdapter<String> companies = new ArrayAdapter<String>(this, android.R.layout.simple_dropdown_item_1line);
-		Cursor c = mDbHelper.fetch_companies();
+		ArrayAdapter<String> agents = new ArrayAdapter<String>(this, android.R.layout.simple_dropdown_item_1line);
+		Cursor c = mDbHelper.fetch_agents();
 		startManagingCursor(c);
 		if (c.moveToFirst()) do {
-			companies.add(c.getString(c.getColumnIndex(DbAdapter.KEY_COMP)));
+			agents.add(c.getString(c.getColumnIndex(DbAdapter.KEY_AGENT)));
 		} while (c.moveToNext());
-		AutoCompleteTextView companies_entry = (AutoCompleteTextView) findViewById(id);
-		companies_entry.setThreshold(1);
-		companies_entry.setAdapter(companies);
+		AutoCompleteTextView agents_entry = (AutoCompleteTextView) findViewById(id);
+		agents_entry.setThreshold(1);
+		agents_entry.setAdapter(agents);
 	}
 
-	private void update_brand_autocomplete(int id)
+	private void update_operator_autocomplete(int id)
 	{
-		ArrayAdapter<String> brands = new ArrayAdapter<String>(this, android.R.layout.simple_dropdown_item_1line);
-		Cursor c = mDbHelper.fetch_brands();
+		ArrayAdapter<String> operators = new ArrayAdapter<String>(this, android.R.layout.simple_dropdown_item_1line);
+		Cursor c = mDbHelper.fetch_operators();
 		startManagingCursor(c);
 		if (c.moveToFirst()) do {
-			brands.add(c.getString(c.getColumnIndex(DbAdapter.KEY_BRAND)));
+			operators.add(c.getString(c.getColumnIndex(DbAdapter.KEY_OPERATOR)));
 		} while (c.moveToNext());
-		AutoCompleteTextView brands_entry = (AutoCompleteTextView) findViewById(id);
-		brands_entry.setThreshold(1);
-		brands_entry.setAdapter(brands);
+		AutoCompleteTextView operators_entry = (AutoCompleteTextView) findViewById(id);
+		operators_entry.setThreshold(1);
+		operators_entry.setAdapter(operators);
 	}
 
 	private void update_counter_num_autocomplete(int id)
@@ -451,8 +452,8 @@ public class SubmitTripActivity extends Activity
 		String sched_time = format_time(mData.sched_time);
 		String depart_time = format_time(mData.depart_time);
 		String arrival_time = format_time(mData.arrival_time);
-		String company = ((AutoCompleteTextView) findViewById(R.id.company_entry)).getText().toString();
-		String brand = ((AutoCompleteTextView) findViewById(R.id.brand_entry)).getText().toString();
+		String agent = ((AutoCompleteTextView) findViewById(R.id.agent_entry)).getText().toString();
+		String operator = ((AutoCompleteTextView) findViewById(R.id.operator_entry)).getText().toString();
 		String from_city = ((AutoCompleteTextView) findViewById(R.id.from_city_entry)).getText().toString();
 		String from_station = ((AutoCompleteTextView) findViewById(R.id.from_station_entry)).getText().toString();
 		String to_city = ((AutoCompleteTextView) findViewById(R.id.to_city_entry)).getText().toString();
@@ -462,19 +463,19 @@ public class SubmitTripActivity extends Activity
 		String comfort = Integer.toString((int) ((RatingBar) findViewById(R.id.comfort_bar)).getRating());
 		String comment = ((EditText) findViewById(R.id.comment_entry)).getText().toString();
 
-		send_email(company, brand, from_city,
+		send_email(agent, operator, from_city,
 			from_station, to_city, to_station, sched_time,
 			depart_time, arrival_time, counter_num,
 			safety, comfort, comment);
 	}
 
-	private void send_email(String company, String bus_brand,
+	private void send_email(String agent, String operator,
 			String from_city, String from_station, String to_city,
 			String to_station, String scheduled_departure,
 			String actual_departure, String arrival_time,
 			String counter, String safety, String comfort, String comment)
 	{
-		final String msg  = company + ',' + bus_brand + ',' + from_city +
+		final String msg  = agent + ',' + operator + ',' + from_city +
 			',' + from_station + ',' + to_city + ',' + to_station +
 			',' + scheduled_departure + ',' + actual_departure +
 			',' + arrival_time + ',' + counter + ',' + safety +
