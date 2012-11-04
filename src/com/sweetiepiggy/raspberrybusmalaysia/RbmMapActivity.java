@@ -32,13 +32,15 @@ import com.google.android.maps.MapView;
 import com.google.android.maps.Overlay;
 import com.google.android.maps.OverlayItem;
 
-public class RbmMapActivity extends MapActivity {
-	/* center map on Puduraya */
-	private static final GeoPoint CENTER_GEOPOINT = new GeoPoint(3145792,101701098);
+public class RbmMapActivity extends MapActivity
+{
+	/* center map here */
+	private static final GeoPoint CENTER_GEOPOINT = new GeoPoint(3657249,102144600);
 
 	/** Called when the activity is first created. */
 	@Override
-	public void onCreate(Bundle savedInstanceState) {
+	public void onCreate(Bundle savedInstanceState)
+	{
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.map);
 
@@ -82,7 +84,8 @@ public class RbmMapActivity extends MapActivity {
 
 
 	@Override
-	protected boolean isRouteDisplayed() {
+	protected boolean isRouteDisplayed()
+	{
 		return false;
 	}
 }
