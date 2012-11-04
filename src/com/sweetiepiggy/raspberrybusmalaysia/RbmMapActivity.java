@@ -36,6 +36,7 @@ public class RbmMapActivity extends MapActivity
 {
 	/* center map here */
 	private static final GeoPoint CENTER_GEOPOINT = new GeoPoint(3657249,102144600);
+	private static final int CENTER_ZOOM = 8;
 
 	/** Called when the activity is first created. */
 	@Override
@@ -79,7 +80,7 @@ public class RbmMapActivity extends MapActivity
 
 		MapController mc = mv.getController();
 		mc.setCenter(CENTER_GEOPOINT);
-		mc.setZoom(8);
+		mc.setZoom(CENTER_ZOOM);
 	}
 
 
