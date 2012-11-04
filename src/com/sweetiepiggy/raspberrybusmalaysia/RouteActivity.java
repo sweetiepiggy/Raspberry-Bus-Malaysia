@@ -276,6 +276,7 @@ public class RouteActivity extends Activity
 					CompanyResultActivity.class);
 				Bundle b = new Bundle();
 				b.putString("company", company);
+				b.putBoolean("is_operator", ((RadioButton) findViewById(R.id.operator_radio)).isChecked());
 				intent.putExtras(b);
 				startActivity(intent);
 			}

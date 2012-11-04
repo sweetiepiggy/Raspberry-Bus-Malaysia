@@ -71,8 +71,8 @@ public class TripsActivity extends Activity
 			String company)
 	{
 		Cursor c = m_is_operator ?
-			mDbHelper.fetch_avg_operator(from_city, to_city, company) :
-			mDbHelper.fetch_avg(from_city, to_city, company);
+			mDbHelper.fetch_operator_avg(from_city, to_city, company) :
+			mDbHelper.fetch_agent_avg(from_city, to_city, company);
 		startManagingCursor(c);
 
 		if (c.moveToFirst()) do {
@@ -85,8 +85,8 @@ public class TripsActivity extends Activity
 			String company)
 	{
 		Cursor c = m_is_operator ?
-			mDbHelper.fetch_trips_operator(from_city, to_city, company) :
-			mDbHelper.fetch_trips(from_city, to_city, company);
+			mDbHelper.fetch_operator_trips(from_city, to_city, company) :
+			mDbHelper.fetch_agent_trips(from_city, to_city, company);
 		startManagingCursor(c);
 		if (c.moveToFirst()) do {
 			String sched_dep = c.getString(c.getColumnIndex(DbAdapter.KEY_SCHED_DEP));

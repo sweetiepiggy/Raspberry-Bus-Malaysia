@@ -63,6 +63,7 @@
 
 	<string name="route_stat">route\nsummary</string>
 	<string name="agent_stat">agent\ndetails</string>
+	<string name="operator_stat">operator\ndetails</string>
 	<string name="submit_trip">submit\nreview</string>
 
 	<string name="sync">Sync</string>

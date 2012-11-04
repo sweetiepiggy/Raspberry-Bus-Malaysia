@@ -302,7 +302,7 @@ public class DbAdapter
 			null);
 	}
 
-	public Cursor fetch_from_cities(String agent)
+	public Cursor fetch_agent_from_cities(String agent)
 	{
 		String key_city = KEY_CITY + "_" + mDbHelper.mCtx.getResources().getString(R.string.lang_code);
 		return mDbHelper.mDb.rawQuery("SELECT DISTINCT " + TABLE_TRIPS +
@@ -314,6 +314,20 @@ public class DbAdapter
 				" GROUP BY " + key_city +
 				" ORDER BY " + key_city + " ASC",
 			new String[] {agent});
+	}
+
+	public Cursor fetch_operator_from_cities(String operator)
+	{
+		String key_city = KEY_CITY + "_" + mDbHelper.mCtx.getResources().getString(R.string.lang_code);
+		return mDbHelper.mDb.rawQuery("SELECT DISTINCT " + TABLE_TRIPS +
+				"." + KEY_ROWID + " AS " + KEY_ROWID + ", " + key_city + " AS " + KEY_FROM_CITY +
+				" FROM " + TABLE_TRIPS + " JOIN " + TABLE_CITIES +
+				" on " + TABLE_TRIPS + "." + KEY_FROM_CITY_ID + " == " +
+				TABLE_CITIES + "." + KEY_ROWID +
+				" WHERE " + KEY_OPERATOR + " == ? " +
+				" GROUP BY " + key_city +
+				" ORDER BY " + key_city + " ASC",
+			new String[] {operator});
 	}
 
 	public Cursor fetch_to_cities(String from_city)
@@ -349,7 +363,7 @@ public class DbAdapter
 			new String[] {from_station_id});
 	}
 
-	public Cursor fetch_to_cities(String from_city, String agent)
+	public Cursor fetch_agent_to_cities(String from_city, String agent)
 	{
 		String key_city = KEY_CITY + "_" + mDbHelper.mCtx.getResources().getString(R.string.lang_code);
 		String from_city_id = fetch_city_id(from_city);
@@ -364,6 +378,23 @@ public class DbAdapter
 				" GROUP BY " + key_city +
 				" ORDER BY " + key_city + " ASC",
 			new String[] {from_city_id, agent});
+	}
+
+	public Cursor fetch_operator_to_cities(String from_city, String operator)
+	{
+		String key_city = KEY_CITY + "_" + mDbHelper.mCtx.getResources().getString(R.string.lang_code);
+		String from_city_id = fetch_city_id(from_city);
+
+		return mDbHelper.mDb.rawQuery("SELECT DISTINCT " + TABLE_TRIPS +
+				"." + KEY_ROWID + " AS " + KEY_ROWID + ", " + key_city + " AS " + KEY_TO_CITY +
+				" FROM " + TABLE_TRIPS + " JOIN " + TABLE_CITIES +
+				" on " + TABLE_TRIPS + "." + KEY_TO_CITY_ID + " == " +
+				TABLE_CITIES + "." + KEY_ROWID +
+				" WHERE " + KEY_FROM_CITY_ID + " == ? " + " AND " +
+				KEY_OPERATOR + " == ? " +
+				" GROUP BY " + key_city +
+				" ORDER BY " + key_city + " ASC",
+			new String[] {from_city_id, operator});
 	}
 
 	public Cursor fetch_stations()
@@ -416,6 +447,13 @@ public class DbAdapter
 				KEY_AGENT, null, KEY_AGENT + " ASC", null);
 	}
 
+	public Cursor fetch_operators(String operator_query)
+	{
+		return mDbHelper.mDb.query(true, TABLE_TRIPS, new String[] {KEY_ROWID, KEY_OPERATOR},
+				"length(" + KEY_OPERATOR + ") != 0 AND " + KEY_OPERATOR + " LIKE ?", new String[] {operator_query},
+				KEY_OPERATOR, null, KEY_OPERATOR + " ASC", null);
+	}
+
 	public Cursor fetch_avg(String from_city, String to_city, String group_by, String sort_by)
 	{
 		String from_city_id = fetch_city_id(from_city);
@@ -427,7 +465,7 @@ public class DbAdapter
 				group_by, null, sort_by + " ASC", null);
 	}
 
-	public Cursor fetch_avg(String from_city, String to_city, String agent)
+	public Cursor fetch_agent_avg(String from_city, String to_city, String agent)
 	{
 		String from_city_id = fetch_city_id(from_city);
 		String to_city_id = fetch_city_id(to_city);
@@ -437,7 +475,7 @@ public class DbAdapter
 				null, null, null, null);
 	}
 
-	public Cursor fetch_avg_operator(String from_city, String to_city, String operator)
+	public Cursor fetch_operator_avg(String from_city, String to_city, String operator)
 	{
 		String from_city_id = fetch_city_id(from_city);
 		String to_city_id = fetch_city_id(to_city);
@@ -447,13 +485,19 @@ public class DbAdapter
 				null, null, null, null);
 	}
 
-	public Cursor fetch_avg_delay(String agent)
+	public Cursor fetch_avg_agent_delay(String agent)
 	{
 		return mDbHelper.mDb.query(true, TABLE_TRIPS, new String[] {AVG_DELAY},
 				KEY_AGENT + " = ?", new String[] {agent}, null, null, null, null);
 	}
 
-	public Cursor fetch_trips(String from_city, String to_city, String agent)
+	public Cursor fetch_avg_operator_delay(String operator)
+	{
+		return mDbHelper.mDb.query(true, TABLE_TRIPS, new String[] {AVG_DELAY},
+				KEY_OPERATOR + " = ?", new String[] {operator}, null, null, null, null);
+	}
+
+	public Cursor fetch_agent_trips(String from_city, String to_city, String agent)
 	{
 		String from_city_id = fetch_city_id(from_city);
 		String to_city_id = fetch_city_id(to_city);
@@ -463,7 +507,7 @@ public class DbAdapter
 				null, null, "strftime('%s', " + KEY_SCHED_DEP + ") DESC", null);
 	}
 
-	public Cursor fetch_trips_operator(String from_city, String to_city, String operator)
+	public Cursor fetch_operator_trips(String from_city, String to_city, String operator)
 	{
 		String from_city_id = fetch_city_id(from_city);
 		String to_city_id = fetch_city_id(to_city);

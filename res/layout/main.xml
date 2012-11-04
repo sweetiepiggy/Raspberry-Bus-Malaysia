@@ -26,6 +26,20 @@
 	android:gravity="center"
 	android:stretchColumns="1">
 	<TableRow>
+		<TextView/>
+		<TextView
+			android:id="@+id/agent"
+			android:layout_width="fill_parent"
+			android:layout_height="wrap_content"
+			android:layout_gravity="center"
+			android:gravity="center"
+			android:paddingBottom="30dp"
+			android:drawableTop="@drawable/agent"
+			style="@android:style/TextAppearance.Large"
+			android:text="@string/agent_stat" />
+		<TextView/>
+	</TableRow>
+	<TableRow>
 		<TextView
 			android:id="@+id/route"
 			android:layout_width="fill_parent"
@@ -37,14 +51,14 @@
 			style="@android:style/TextAppearance.Large"
 			android:text="@string/route_stat" />
 		<TextView
-			android:id="@+id/agent"
+			android:id="@+id/operator"
 			android:layout_width="fill_parent"
 			android:layout_height="wrap_content"
 			android:layout_gravity="center"
 			android:gravity="center"
-			android:drawableTop="@drawable/agent"
+			android:drawableTop="@drawable/ic_launcher"
 			style="@android:style/TextAppearance.Large"
-			android:text="@string/agent_stat" />
+			android:text="@string/operator_stat" />
 		<TextView
 			android:id="@+id/submit_trip"
 			android:layout_width="fill_parent"

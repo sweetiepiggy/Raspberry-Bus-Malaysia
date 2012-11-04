@@ -59,6 +59,18 @@ public class RaspberryBusMalaysiaActivity extends Activity
 			}
 		});
 
+		TextView operator = (TextView) findViewById(R.id.operator);
+		operator.setOnClickListener(new View.OnClickListener() {
+			public void onClick(View v)
+			{
+				Intent intent = new Intent(getApplicationContext(), CompanyActivity.class);
+				Bundle b = new Bundle();
+				b.putBoolean("is_operator", true);
+				intent.putExtras(b);
+				startActivity(intent);
+			}
+		});
+
 		TextView submit_trip = (TextView) findViewById(R.id.submit_trip);
 		submit_trip.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v)

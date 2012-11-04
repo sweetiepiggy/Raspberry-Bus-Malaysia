@@ -63,6 +63,7 @@
 
 	<string name="route_stat">路线概要</string>
 	<string name="agent_stat">代理商详情</string>
+	<string name="operator_stat">经营者详情</string>
 	<string name="submit_trip">提交意见</string>
 
 	<string name="sync">同步</string>

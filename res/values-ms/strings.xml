@@ -63,6 +63,7 @@
 
 	<string name="route_stat">kesimpulan\nperjalanan</string>
 	<string name="agent_stat">maklumat\nejen</string>
+	<string name="operator_stat">maklumat\njuruoperasi</string>
 	<string name="submit_trip">hantar\npendapat</string>
 
 	<string name="sync">Penyegerakan</string>

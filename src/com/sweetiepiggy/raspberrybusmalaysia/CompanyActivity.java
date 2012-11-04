@@ -34,11 +34,15 @@ import android.widget.TextView;
 public class CompanyActivity extends ListActivity
 {
 	private DbAdapter mDbHelper;
+	private boolean m_is_operator = false;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState)
 	{
 		super.onCreate(savedInstanceState);
+
+		Bundle b = getIntent().getExtras();
+		m_is_operator = (b == null) ? false : b.getBoolean("is_operator");
 
 		Intent intent = getIntent();
 		String query = "";
@@ -63,11 +67,15 @@ public class CompanyActivity extends ListActivity
 
 	private void fill_data(DbAdapter dbHelper, String company_query)
 	{
-		Cursor c = dbHelper.fetch_agents('%' + company_query + '%');
+		Cursor c = m_is_operator ?
+			dbHelper.fetch_operators('%' + company_query + '%') :
+			dbHelper.fetch_agents('%' + company_query + '%');
 		startManagingCursor(c);
+		String key = m_is_operator ?
+			DbAdapter.KEY_OPERATOR : DbAdapter.KEY_AGENT;
 		SimpleCursorAdapter companies = new SimpleCursorAdapter(this,
 				android.R.layout.simple_list_item_1,
-				c, new String[] {DbAdapter.KEY_AGENT},
+				c, new String[] {key},
 				new int[] {android.R.id.text1});
 		setListAdapter(companies);
 	}
@@ -83,6 +91,7 @@ public class CompanyActivity extends ListActivity
 					CompanyResultActivity.class);
 				Bundle b = new Bundle();
 				b.putString("company", company);
+				b.putBoolean("is_operator", m_is_operator);
 				intent.putExtras(b);
 				startActivity(intent);
 			}

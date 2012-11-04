@@ -33,6 +33,7 @@ import android.widget.TextView;
 public class CompanyResultActivity extends Activity
 {
 	private DbAdapter mDbHelper;
+	private boolean m_is_operator = false;
 
 	/** Called when the activity is first created. */
 	@Override
@@ -42,6 +43,7 @@ public class CompanyResultActivity extends Activity
 		setContentView(R.layout.company_result);
 
 		Bundle b = getIntent().getExtras();
+		m_is_operator = (b == null) ? false : b.getBoolean("is_operator");
 		String company = (b == null) ? "<NULL>" : b.getString("company");
 		String company_display = company.length() == 0 ? getResources().getString(R.string.unknown) : company;
 		((TextView) findViewById(R.id.title)).setText(company_display);
@@ -49,24 +51,32 @@ public class CompanyResultActivity extends Activity
 		mDbHelper = new DbAdapter();
 		mDbHelper.open(this);
 
-		Cursor c_comp = mDbHelper.fetch_avg_delay(company);
+		Cursor c_comp = m_is_operator ?
+			mDbHelper.fetch_avg_operator_delay(company) :
+			mDbHelper.fetch_avg_agent_delay(company);
 		startManagingCursor(c_comp);
 		if (c_comp.moveToFirst()) do {
 			String avg_delay = format_time_min(c_comp.getInt(c_comp.getColumnIndex(DbAdapter.AVG_DELAY)));
 			((TextView) findViewById(R.id.total_avg_delay)).setText(avg_delay);
 		} while (c_comp.moveToNext());
 
-		Cursor c_from = mDbHelper.fetch_from_cities(company);
+		Cursor c_from = m_is_operator ?
+			mDbHelper.fetch_operator_from_cities(company) :
+			mDbHelper.fetch_agent_from_cities(company);
 		startManagingCursor(c_from);
 		if (c_from.moveToFirst()) do {
 			String from_city = c_from.getString(c_from.getColumnIndex(DbAdapter.KEY_FROM_CITY));
 
-			Cursor c_to = mDbHelper.fetch_to_cities(from_city, company);
+			Cursor c_to = m_is_operator ?
+				mDbHelper.fetch_operator_to_cities(from_city, company) :
+				mDbHelper.fetch_agent_to_cities(from_city, company);
 			startManagingCursor(c_to);
 			if (c_to.moveToFirst()) do {
 				String to_city = c_to.getString(c_to.getColumnIndex(DbAdapter.KEY_TO_CITY));
 
-				Cursor c_avg = mDbHelper.fetch_avg(from_city, to_city, company);
+				Cursor c_avg = m_is_operator ?
+					mDbHelper.fetch_operator_avg(from_city, to_city, company) :
+					mDbHelper.fetch_agent_avg(from_city, to_city, company);
 				startManagingCursor(c_avg);
 				if (c_avg.moveToFirst()) {
 					/* TODO: check that getColumnIndex is not -1 */
@@ -132,7 +142,7 @@ public class CompanyResultActivity extends Activity
 				b.putString("company", company);
 				b.putString("from_city", from_city);
 				b.putString("to_city", to_city);
-				b.putBoolean("is_brand", false);
+				b.putBoolean("is_operator", m_is_operator);
 				intent.putExtras(b);
 				startActivity(intent);
 			}
