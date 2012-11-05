@@ -61,10 +61,10 @@
 	<string name="safety">Safety</string>
 	<string name="comfort">Comfort</string>
 
-	<string name="route_stat">route\nsummary</string>
-	<string name="agent_stat">agent\ndetails</string>
-	<string name="operator_stat">operator\ndetails</string>
-	<string name="submit_trip">submit\nreview</string>
+	<string name="route_stat">routes</string>
+	<string name="agent_stat">agents</string>
+	<string name="operator_stat">operators</string>
+	<string name="submit_trip">review</string>
 
 	<string name="sync">Sync</string>
 	<string name="syncing">Syncing...</string>

@@ -61,10 +61,10 @@
 	<string name="safety">Keselamatan</string>
 	<string name="comfort">Keselesaan</string>
 
-	<string name="route_stat">kesimpulan\nperjalanan</string>
-	<string name="agent_stat">maklumat\nejen</string>
-	<string name="operator_stat">maklumat\njuruoperasi</string>
-	<string name="submit_trip">hantar\npendapat</string>
+	<string name="route_stat">perjalanan</string>
+	<string name="agent_stat">ejen</string>
+	<string name="operator_stat">juruoperasi</string>
+	<string name="submit_trip">pendapat</string>
 
 	<string name="sync">Penyegerakan</string>
 	<string name="syncing">Segerakkan...</string>

@@ -61,10 +61,10 @@
 	<string name="safety">安全</string>
 	<string name="comfort">舒适</string>
 
-	<string name="route_stat">路线概要</string>
-	<string name="agent_stat">代理商详情</string>
-	<string name="operator_stat">经营者详情</string>
-	<string name="submit_trip">提交意见</string>
+	<string name="route_stat">路线</string>
+	<string name="agent_stat">代理商</string>
+	<string name="operator_stat">经营者</string>
+	<string name="submit_trip">意见</string>
 
 	<string name="sync">同步</string>
 	<string name="syncing">同步中...</string>
