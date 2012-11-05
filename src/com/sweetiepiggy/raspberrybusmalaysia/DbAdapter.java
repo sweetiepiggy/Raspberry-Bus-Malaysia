@@ -19,6 +19,11 @@
 
 package com.sweetiepiggy.raspberrybusmalaysia;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Iterator;
+import java.util.Map.Entry;
+
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
@@ -260,19 +265,42 @@ public class DbAdapter
 	/** @return row_id or -1 if failed */
 	public long create_city(ContentValues city)
 	{
+		rm_unknown_cols(city, TABLE_CITIES);
 		return mDbHelper.mDb.replace(TABLE_CITIES, null, city);
 	}
 
 	/** @return row_id or -1 if failed */
 	public long create_station(ContentValues station)
 	{
+		rm_unknown_cols(station, TABLE_STATIONS);
 		return mDbHelper.mDb.replace(TABLE_STATIONS, null, station);
 	}
 
 	/** @return row_id or -1 if failed */
 	public long create_trip(ContentValues trip)
 	{
+		rm_unknown_cols(trip, TABLE_TRIPS);
 		return mDbHelper.mDb.insert(TABLE_TRIPS, null, trip);
+	}
+
+	private void rm_unknown_cols(ContentValues cv, String table)
+	{
+		Cursor c = mDbHelper.mDb.query(true, table, null, null, null,
+				null, null, null, "1");
+		ArrayList<String> col_names = new ArrayList<String>(Arrays.asList(c.getColumnNames()));
+		ArrayList<String> to_remove = new ArrayList<String>();
+
+		Iterator<Entry<String, Object>> itr = cv.valueSet().iterator();
+		while (itr.hasNext()) {
+			String key = itr.next().getKey().toString();
+			if (!col_names.contains(key)) {
+				to_remove.add(key);
+			}
+		}
+		Iterator<String> to_rm_itr = to_remove.iterator();
+		while (to_rm_itr.hasNext()) {
+			cv.remove(to_rm_itr.next());
+		}
 	}
 
 	public Cursor fetch_from_cities()
