@@ -26,7 +26,6 @@ import android.app.Activity;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
@@ -64,7 +63,7 @@ public class RouteActivity extends Activity
 		mDbHelper = new DbAdapter();
 		mDbHelper.open(this);
 		init_from_map_button();
-		fill_data();
+		init_from_spinner(null);
 	}
 
 	@Override
@@ -106,7 +105,7 @@ public class RouteActivity extends Activity
 		});
 	}
 
-	private void fill_data()
+	private void init_from_spinner(String set_from_city)
 	{
 		Cursor c = mDbHelper.fetch_from_cities();
 		startManagingCursor(c);
@@ -116,7 +115,11 @@ public class RouteActivity extends Activity
 				new int[] {android.R.id.text1});
 		Spinner from_spinner = (Spinner) findViewById(R.id.from_spinner);
 		from_spinner.setAdapter(from_cities);
-		spinner_set_selection(from_spinner, mDbHelper.get_most_freq_from_city());
+
+		if (set_from_city == null) {
+			set_from_city = mDbHelper.get_most_freq_from_city();
+		}
+		spinner_set_selection(from_spinner, set_from_city);
 
 		from_spinner.setOnItemSelectedListener(new OnItemSelectedListener() {
 			@Override
@@ -124,31 +127,12 @@ public class RouteActivity extends Activity
 					View selected_item, int pos,
 					long id)
 			{
-				m_from_city = ((Cursor)parent.getItemAtPosition(pos)).getString(1);
-				init_to_map_button(m_from_city);
-				Cursor c = mDbHelper.fetch_to_cities(m_from_city);
-				startManagingCursor(c);
-				SimpleCursorAdapter to_cities = new SimpleCursorAdapter(getApplicationContext(),
-						android.R.layout.simple_spinner_item,
-						c, new String[] {DbAdapter.KEY_TO_CITY},
-						new int[] {android.R.id.text1});
-				Spinner to_spinner = (Spinner) findViewById(R.id.to_spinner);
-				to_spinner.setAdapter(to_cities);
-				spinner_set_selection(to_spinner, mDbHelper.get_most_freq_to_city(m_from_city));
-
-				to_spinner.setOnItemSelectedListener(new OnItemSelectedListener() {
-					@Override
-					public void onItemSelected(AdapterView<?> parent,
-							View selected_item, int pos,
-							long id) {
-						m_to_city = ((Cursor)parent.getItemAtPosition(pos)).getString(1);
-						print_rows(m_from_city, m_to_city, DbAdapter.AVG_TIME);
-					}
-					@Override
-					public void onNothingSelected(AdapterView<?> parentView) {
-					}
-
-				});
+				String new_from_city = ((Cursor)parent.getItemAtPosition(pos)).getString(1);
+				if (!m_from_city.equals(new_from_city)) {
+					m_from_city = new_from_city;
+					init_to_map_button(m_from_city);
+					init_to_spinner(m_from_city, null);
+				}
 			}
 
 			@Override
@@ -159,15 +143,43 @@ public class RouteActivity extends Activity
 		});
 	}
 
+	private void init_to_spinner(final String from_city, String set_to_city)
+	{
+		Cursor c = mDbHelper.fetch_to_cities(from_city);
+		startManagingCursor(c);
+		SimpleCursorAdapter to_cities = new SimpleCursorAdapter(getApplicationContext(),
+				android.R.layout.simple_spinner_item,
+				c, new String[] {DbAdapter.KEY_TO_CITY},
+				new int[] {android.R.id.text1});
+		Spinner to_spinner = (Spinner) findViewById(R.id.to_spinner);
+		to_spinner.setAdapter(to_cities);
+
+		if (set_to_city == null) {
+			set_to_city = mDbHelper.get_most_freq_to_city(from_city);
+		}
+		spinner_set_selection(to_spinner, set_to_city);
+
+		to_spinner.setOnItemSelectedListener(new OnItemSelectedListener() {
+			@Override
+			public void onItemSelected(AdapterView<?> parent,
+					View selected_item, int pos,
+					long id) {
+				m_to_city = ((Cursor)parent.getItemAtPosition(pos)).getString(1);
+				print_rows(from_city, m_to_city, DbAdapter.AVG_TIME);
+			}
+			@Override
+			public void onNothingSelected(AdapterView<?> parentView) {
+			}
+
+		});
+	}
+
 	private void spinner_set_selection(Spinner spinner, String value)
 	{
 		boolean done = false;
-		Log.i("RouteActivity", "spinner_set_selection() " + Integer.toString(spinner.getCount()));
 		for (int i = 0; i < spinner.getCount() && !done; ++i) {
-			Log.i("RouteActivity", "spinner_set_selection comparing " + value + " to " + ((Cursor)spinner.getItemAtPosition(i)).getString(1));
 			if (((Cursor)spinner.getItemAtPosition(i)).getString(1).equals(value)) {
 				spinner.setSelection(i);
-				Log.i("RouteActivity", "spinner_set_selection found, setting " + Integer.toString(i));
 				done = true;
 			}
 		}
@@ -375,7 +387,6 @@ public class RouteActivity extends Activity
 	protected void onActivityResult(int request_code, int result_code, Intent data)
 	{
 		super.onActivityResult(request_code, result_code, data);
-		Log.i("RouteActivity", "onActivityResult");
 
 		switch (request_code) {
 		case ACTIVITY_FROM:
@@ -383,10 +394,7 @@ public class RouteActivity extends Activity
 				Bundle b = data.getExtras();
 				if (b != null) {
 					String city = b.getString("city");
-					m_from_city = city;
-					Spinner from_spinner = (Spinner) findViewById(R.id.from_spinner);
-					Log.i("RouteActivity", "result is [" + city + "]");
-					spinner_set_selection(from_spinner, city);
+					init_from_spinner(city);
 				}
 			}
 			break;
@@ -395,10 +403,7 @@ public class RouteActivity extends Activity
 				Bundle b = data.getExtras();
 				if (b != null) {
 					String city = b.getString("city");
-					m_to_city = city;
-					Spinner to_spinner = (Spinner) findViewById(R.id.to_spinner);
-					Log.i("RouteActivity", "result is [" + city + "]");
-					spinner_set_selection(to_spinner, city);
+					init_to_spinner(m_from_city, city);
 				}
 			}
 			break;
