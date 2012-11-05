@@ -1,6 +1,4 @@
 /*
-    Copyright (C) 2012 Sweetie Piggy Apps <sweetiepiggyapps@gmail.com>
-
     This file is part of Raspberry Bus Malaysia.
 
     Raspberry Bus Malaysia is free software; you can redistribute it and/or modify
@@ -39,6 +37,8 @@ public class SyncTask extends AsyncTask<Void, Integer, Void>
 	private final String TRIPS_URL = BASE_URL + "trips.csv";
 	private final String CITIES_URL = BASE_URL + "cities.csv";
 	private final String STATIONS_URL = BASE_URL + "stations.csv";
+
+	private final String LAST_UPDATE_STR = "LAST_MODIFIED";
 
 	private Context mCtx;
 	private int mUpdatesFnd = 0;
@@ -113,36 +113,46 @@ public class SyncTask extends AsyncTask<Void, Integer, Void>
 					new InputStreamReader(url.openStream(), "utf-8"));
 
 			String line = in.readLine();
+			String[] field_names = null;
 
 			if (line != null) {
-				String[] field_names = line.split(",");
-
-				DbAdapter dbHelper = new DbAdapter();
-				dbHelper.open_no_sync(mCtx);
-
-				long max_id = dbHelper.fetch_max_id(table);
-				final long orig_max_id = max_id;
-
-				int read = 0;
-
-				while ((line = in.readLine()) != null) {
-					ContentValues cv = parse_line(line, field_names);
-					if (dbHelper.replace(cv, table) > orig_max_id) {
-						++added;
-					}
-					++read;
-					if (cv.containsKey(DbAdapter.KEY_ROWID)) {
-						max_id = java.lang.Math.max(max_id, cv.getAsLong(DbAdapter.KEY_ROWID));
-					}
-					if (max_id != 0) {
-						publishProgress(java.lang.Math.min(progress_max,
-									progress_offset +
-									(int)((progress_max - progress_offset) *
-										(double) read / max_id)));
-					}
-				}
-				dbHelper.close();
+				field_names = line.split(",");
 			}
+
+			/* skip first line if it is used to store last update time */
+			if (field_names.length > 0 &&
+					field_names[0].equals(LAST_UPDATE_STR)) {
+				line = in.readLine();
+				if (line != null) {
+					field_names = line.split(",");
+				}
+			}
+
+			DbAdapter dbHelper = new DbAdapter();
+			dbHelper.open_no_sync(mCtx);
+
+			long max_id = dbHelper.fetch_max_id(table);
+			final long orig_max_id = max_id;
+
+			int read = 0;
+
+			while ((line = in.readLine()) != null) {
+				ContentValues cv = parse_line(line, field_names);
+				if (dbHelper.replace(cv, table) > orig_max_id) {
+					++added;
+				}
+				++read;
+				if (cv.containsKey(DbAdapter.KEY_ROWID)) {
+					max_id = java.lang.Math.max(max_id, cv.getAsLong(DbAdapter.KEY_ROWID));
+				}
+				if (max_id != 0) {
+					publishProgress(java.lang.Math.min(progress_max,
+								progress_offset +
+								(int)((progress_max - progress_offset) *
+									(double) read / max_id)));
+				}
+			}
+			dbHelper.close();
 
 			in.close();
 		} catch (FileNotFoundException e) {
@@ -155,15 +165,12 @@ public class SyncTask extends AsyncTask<Void, Integer, Void>
 
 	private ContentValues parse_line(String line, String[] field_names)
 	{
-//		Log.i(TAG, "line:[" + line + "]");
-
 		ContentValues ret = new ContentValues();
 
 		String[] fields = line.split(",", field_names.length);
 		for (int i = 0; i < fields.length; ++i) {
 			fields[i] = fields[i].replaceAll("^\"", "");
 			fields[i] = fields[i].replaceAll("\"$", "");
-//			Log.i(TAG, field_names[i] + ":[" + fields[i] + "]");
 			ret.put(field_names[i], fields[i]);
 		}
 
