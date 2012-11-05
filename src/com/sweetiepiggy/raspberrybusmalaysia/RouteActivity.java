@@ -113,6 +113,7 @@ public class RouteActivity extends Activity
 				android.R.layout.simple_spinner_item,
 				c, new String[] {DbAdapter.KEY_FROM_CITY},
 				new int[] {android.R.id.text1});
+		from_cities.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 		Spinner from_spinner = (Spinner) findViewById(R.id.from_spinner);
 		from_spinner.setAdapter(from_cities);
 
@@ -151,6 +152,7 @@ public class RouteActivity extends Activity
 				android.R.layout.simple_spinner_item,
 				c, new String[] {DbAdapter.KEY_TO_CITY},
 				new int[] {android.R.id.text1});
+		to_cities.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 		Spinner to_spinner = (Spinner) findViewById(R.id.to_spinner);
 		to_spinner.setAdapter(to_cities);
 
