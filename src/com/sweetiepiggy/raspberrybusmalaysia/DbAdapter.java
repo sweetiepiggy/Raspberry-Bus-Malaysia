@@ -21,6 +21,7 @@ package com.sweetiepiggy.raspberrybusmalaysia;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map.Entry;
 
@@ -69,6 +70,8 @@ public class DbAdapter
 	public static final String AVG_TIME = "avg(" + TRIP_TIME + ")";
 	public static final String AVG_DELAY = "avg(" + TRIP_DELAY + ")";
 	public static final String NUM_TRIPS = "count(" + KEY_AGENT + ")";
+
+	private static HashMap<String, ArrayList<String>> TABLE_MAPS = new HashMap<String, ArrayList<String>>();
 
 	private static final int SEC_BETWEEN_UPDATES = 60 * 60 * 24 * 7;
 
@@ -285,9 +288,17 @@ public class DbAdapter
 
 	private void rm_unknown_cols(ContentValues cv, String table)
 	{
-		Cursor c = mDbHelper.mDb.query(true, table, null, null, null,
-				null, null, null, "1");
-		ArrayList<String> col_names = new ArrayList<String>(Arrays.asList(c.getColumnNames()));
+		ArrayList<String> col_names;
+
+		if (TABLE_MAPS.containsKey(table)) {
+			col_names = TABLE_MAPS.get(table);
+		} else {
+			Cursor c = mDbHelper.mDb.query(true, table, null, null, null,
+					null, null, null, "1");
+			col_names = new ArrayList<String>(Arrays.asList(c.getColumnNames()));
+			TABLE_MAPS.put(table, col_names);
+		}
+
 		ArrayList<String> to_remove = new ArrayList<String>();
 
 		Iterator<Entry<String, Object>> itr = cv.valueSet().iterator();
