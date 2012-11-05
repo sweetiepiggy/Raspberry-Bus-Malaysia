@@ -35,9 +35,10 @@ public class SyncTask extends AsyncTask<Void, Integer, Void>
 	private final String TAG = "SyncTask";
 
 	/* TODO: move to Constants.java */
-	private final String TRIPS_URL = "https://raw.github.com/sweetiepiggy/Raspberry-Bus-Malaysia/trips/trips.csv";
-	private final String CITIES_URL = "https://raw.github.com/sweetiepiggy/Raspberry-Bus-Malaysia/trips/cities.csv";
-	private final String STATIONS_URL = "https://raw.github.com/sweetiepiggy/Raspberry-Bus-Malaysia/trips/stations.csv";
+	private final String BASE_URL = "https://raw.github.com/sweetiepiggy/Raspberry-Bus-Malaysia/trips/";
+	private final String TRIPS_URL = BASE_URL + "trips.csv";
+	private final String CITIES_URL = BASE_URL + "cities.csv";
+	private final String STATIONS_URL = BASE_URL + "stations.csv";
 
 	private Context mCtx;
 	private int new_trip_cnt = 0;
@@ -119,6 +120,9 @@ public class SyncTask extends AsyncTask<Void, Integer, Void>
 					ContentValues city = parse_line(line, field_names);
 					dbHelper.create_city(city);
 					++added_cities;
+					if (city.containsKey(DbAdapter.KEY_ROWID)) {
+						max_id = java.lang.Math.max(max_id, city.getAsLong(DbAdapter.KEY_ROWID));
+					}
 					if (max_id != 0) {
 						publishProgress(java.lang.Math.min(33, (int)(33. * added_cities / max_id)));
 					}
@@ -155,6 +159,9 @@ public class SyncTask extends AsyncTask<Void, Integer, Void>
 					ContentValues station = parse_line(line, field_names);
 					dbHelper.create_station(station);
 					++added_stations;
+					if (station.containsKey(DbAdapter.KEY_ROWID)) {
+						max_id = java.lang.Math.max(max_id, station.getAsLong(DbAdapter.KEY_ROWID));
+					}
 					if (max_id != 0) {
 						publishProgress(java.lang.Math.min(66, 33 + (int)(33. * added_stations / max_id)));
 					}
@@ -185,6 +192,7 @@ public class SyncTask extends AsyncTask<Void, Integer, Void>
 				dbHelper.open_no_sync(mCtx);
 
 				long max_id = dbHelper.fetch_trips_max_id();
+				long _max_id = max_id;
 
 				boolean done = false;
 				while ((line = in.readLine()) != null && !done) {
@@ -195,6 +203,12 @@ public class SyncTask extends AsyncTask<Void, Integer, Void>
 						done = true;
 					} else if (dbHelper.create_trip(trip) != -1) {
 						++new_trip_cnt;
+						if (trip.containsKey(DbAdapter.KEY_ROWID)) {
+							_max_id = java.lang.Math.max(_max_id, trip.getAsLong(DbAdapter.KEY_ROWID));
+						}
+						if (_max_id != 0) {
+							publishProgress(java.lang.Math.min(100, 66 + (int)(33. * new_trip_cnt / _max_id)));
+						}
 					}
 				}
 				dbHelper.close();
