@@ -283,7 +283,7 @@ public class DbAdapter
 	public long create_trip(ContentValues trip)
 	{
 		rm_unknown_cols(trip, TABLE_TRIPS);
-		return mDbHelper.mDb.insert(TABLE_TRIPS, null, trip);
+		return mDbHelper.mDb.replace(TABLE_TRIPS, null, trip);
 	}
 
 	private void rm_unknown_cols(ContentValues cv, String table)
