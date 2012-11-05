@@ -71,6 +71,10 @@ public class DbAdapter
 	public static final String AVG_DELAY = "avg(" + TRIP_DELAY + ")";
 	public static final String NUM_TRIPS = "count(" + KEY_AGENT + ")";
 
+	public static final String TABLE_TRIPS = "trips";
+	public static final String TABLE_CITIES = "cities";
+	public static final String TABLE_STATIONS = "stations";
+
 	private static HashMap<String, ArrayList<String>> TABLE_MAPS = new HashMap<String, ArrayList<String>>();
 
 	private static final int SEC_BETWEEN_UPDATES = 60 * 60 * 24 * 7;
@@ -79,12 +83,9 @@ public class DbAdapter
 	private DatabaseHelper mDbHelper;
 
 	private static final String DATABASE_NAME = "rbm.db";
-	private static final String TABLE_TRIPS = "trips";
 	/** "tmp" table was originally named "submit" in db-v7 / rbm-v0.1.1 */
 	private static final String TABLE_TMP = "tmp";
 	private static final String TABLE_LAST_UPDATE = "last_update";
-	private static final String TABLE_CITIES = "cities";
-	private static final String TABLE_STATIONS = "stations";
 	private static final int DATABASE_VERSION = 11;
 
 	private static final String DATABASE_CREATE_TRIPS =
@@ -268,22 +269,26 @@ public class DbAdapter
 	/** @return row_id or -1 if failed */
 	public long create_city(ContentValues city)
 	{
-		rm_unknown_cols(city, TABLE_CITIES);
-		return mDbHelper.mDb.replace(TABLE_CITIES, null, city);
+		return replace(city, TABLE_CITIES);
 	}
 
 	/** @return row_id or -1 if failed */
 	public long create_station(ContentValues station)
 	{
-		rm_unknown_cols(station, TABLE_STATIONS);
-		return mDbHelper.mDb.replace(TABLE_STATIONS, null, station);
+		return replace(station, TABLE_STATIONS);
 	}
 
 	/** @return row_id or -1 if failed */
 	public long create_trip(ContentValues trip)
 	{
-		rm_unknown_cols(trip, TABLE_TRIPS);
-		return mDbHelper.mDb.replace(TABLE_TRIPS, null, trip);
+		return replace(trip, TABLE_TRIPS);
+	}
+
+	/** @return row_id or -1 if failed */
+	public long replace(ContentValues cv, String table)
+	{
+		rm_unknown_cols(cv, table);
+		return mDbHelper.mDb.replace(table, null, cv);
 	}
 
 	private void rm_unknown_cols(ContentValues cv, String table)
@@ -684,22 +689,7 @@ public class DbAdapter
 		return c.moveToFirst() ? c.getInt(1) : 3;
 	}
 
-	public long fetch_cities_max_id()
-	{
-		return fetch_max_id(TABLE_CITIES);
-	}
-
-	public long fetch_stations_max_id()
-	{
-		return fetch_max_id(TABLE_STATIONS);
-	}
-
-	public long fetch_trips_max_id()
-	{
-		return fetch_max_id(TABLE_TRIPS);
-	}
-
-	private long fetch_max_id(String table)
+	public long fetch_max_id(String table)
 	{
 		Cursor c = mDbHelper.mDb.query(table,
 				new String[] {KEY_ROWID},

@@ -41,7 +41,7 @@ public class SyncTask extends AsyncTask<Void, Integer, Void>
 	private final String STATIONS_URL = BASE_URL + "stations.csv";
 
 	private Context mCtx;
-	private int mNewTripCnt = 0;
+	private int mUpdatesFnd = 0;
 	private ProgressDialog mProgressDialog;
 
 	public SyncTask(Context ctx)
@@ -53,11 +53,15 @@ public class SyncTask extends AsyncTask<Void, Integer, Void>
 	@Override
 	protected Void doInBackground(Void... params)
 	{
-		sync_cities();
+		mUpdatesFnd = 0;
+
+		mUpdatesFnd += sync_table(CITIES_URL, DbAdapter.TABLE_CITIES, 0, 33);
 		publishProgress(33);
-		sync_stations();
+
+		mUpdatesFnd += sync_table(STATIONS_URL, DbAdapter.TABLE_STATIONS, 33, 66);
 		publishProgress(66);
-		mNewTripCnt = sync_trips();
+
+		mUpdatesFnd += sync_table(TRIPS_URL, DbAdapter.TABLE_TRIPS, 66, 99);
 		publishProgress(100);
 
 		return null;
@@ -84,7 +88,7 @@ public class SyncTask extends AsyncTask<Void, Integer, Void>
 			mProgressDialog.dismiss();
 		}
 		Toast.makeText(mCtx,
-				Integer.toString(mNewTripCnt) + " " +
+				Integer.toString(mUpdatesFnd) + " " +
 				mCtx.getResources().getString(R.string.updates_found),
 				Toast.LENGTH_SHORT).show();
 	}
@@ -98,12 +102,13 @@ public class SyncTask extends AsyncTask<Void, Integer, Void>
 		}
 	}
 
-	private int sync_cities()
+	private int sync_table(String url_name, String table,
+			int progress_offset, int progress_max)
 	{
-		int added_cities = 0;
+		int added = 0;
 
 		try {
-			URL url = new URL(CITIES_URL);
+			URL url = new URL(url_name);
 			BufferedReader in = new BufferedReader(
 					new InputStreamReader(url.openStream(), "utf-8"));
 
@@ -115,106 +120,25 @@ public class SyncTask extends AsyncTask<Void, Integer, Void>
 				DbAdapter dbHelper = new DbAdapter();
 				dbHelper.open_no_sync(mCtx);
 
-				long max_id = dbHelper.fetch_cities_max_id();
-
-				while ((line = in.readLine()) != null) {
-					ContentValues city = parse_line(line, field_names);
-					dbHelper.create_city(city);
-					++added_cities;
-					if (city.containsKey(DbAdapter.KEY_ROWID)) {
-						max_id = java.lang.Math.max(max_id, city.getAsLong(DbAdapter.KEY_ROWID));
-					}
-					if (max_id != 0) {
-						publishProgress(java.lang.Math.min(33, (int)(33. * added_cities / max_id)));
-					}
-				}
-				dbHelper.close();
-			}
-
-			in.close();
-		} catch (FileNotFoundException e) {
-		} catch (Exception e) {
-			throw new Error(e);
-		}
-
-		return added_cities;
-	}
-
-	private int sync_stations()
-	{
-		int added_stations = 0;
-
-		try {
-			URL url = new URL(STATIONS_URL);
-			BufferedReader in = new BufferedReader(
-					new InputStreamReader(url.openStream(), "utf-8"));
-
-			String line = in.readLine();
-
-			if (line != null) {
-				String[] field_names = line.split(",");
-
-				DbAdapter dbHelper = new DbAdapter();
-				dbHelper.open_no_sync(mCtx);
-
-				long max_id = dbHelper.fetch_stations_max_id();
-
-				while ((line = in.readLine()) != null) {
-					ContentValues station = parse_line(line, field_names);
-					dbHelper.create_station(station);
-					++added_stations;
-					if (station.containsKey(DbAdapter.KEY_ROWID)) {
-						max_id = java.lang.Math.max(max_id, station.getAsLong(DbAdapter.KEY_ROWID));
-					}
-					if (max_id != 0) {
-						publishProgress(java.lang.Math.min(66, 33 + (int)(33. * added_stations / max_id)));
-					}
-				}
-				dbHelper.close();
-			}
-
-			in.close();
-		} catch (FileNotFoundException e) {
-		} catch (Exception e) {
-			throw new Error(e);
-		}
-
-		return added_stations;
-	}
-
-	private int sync_trips()
-	{
-		int added_trips = 0;
-
-		try {
-			URL url = new URL(TRIPS_URL);
-			BufferedReader in = new BufferedReader(
-					new InputStreamReader(url.openStream(), "utf-8"));
-
-			String line = in.readLine();
-
-			if (line != null) {
-				String[] field_names = line.split(",");
-
-				DbAdapter dbHelper = new DbAdapter();
-				dbHelper.open_no_sync(mCtx);
-
-				long max_id = dbHelper.fetch_trips_max_id();
+				long max_id = dbHelper.fetch_max_id(table);
 				final long orig_max_id = max_id;
 
-				int read_trips = 0;
+				int read = 0;
 
 				while ((line = in.readLine()) != null) {
-					ContentValues trip = parse_line(line, field_names);
-					if (dbHelper.create_trip(trip) > orig_max_id) {
-						++added_trips;
+					ContentValues cv = parse_line(line, field_names);
+					if (dbHelper.replace(cv, table) > orig_max_id) {
+						++added;
 					}
-					++read_trips;
-					if (trip.containsKey(DbAdapter.KEY_ROWID)) {
-						max_id = java.lang.Math.max(max_id, trip.getAsLong(DbAdapter.KEY_ROWID));
+					++read;
+					if (cv.containsKey(DbAdapter.KEY_ROWID)) {
+						max_id = java.lang.Math.max(max_id, cv.getAsLong(DbAdapter.KEY_ROWID));
 					}
 					if (max_id != 0) {
-						publishProgress(java.lang.Math.min(100, 66 + (int)(33. * read_trips / max_id)));
+						publishProgress(java.lang.Math.min(progress_max,
+									progress_offset +
+									(int)((progress_max - progress_offset) *
+										(double) read / max_id)));
 					}
 				}
 				dbHelper.close();
@@ -226,7 +150,7 @@ public class SyncTask extends AsyncTask<Void, Integer, Void>
 			throw new Error(e);
 		}
 
-		return added_trips;
+		return added;
 	}
 
 	private ContentValues parse_line(String line, String[] field_names)
