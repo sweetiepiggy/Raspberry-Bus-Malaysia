@@ -20,69 +20,76 @@
 -->
 
 <TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
-	android:layout_width="fill_parent"
+	android:layout_width="wrap_content"
 	android:layout_height="wrap_content"
 	android:layout_gravity="center"
-	android:gravity="center"
-	android:stretchColumns="1">
-	<TableRow>
-		<TextView/>
-		<TextView
-			android:id="@+id/agent"
-			android:layout_width="fill_parent"
-			android:layout_height="wrap_content"
-			android:layout_gravity="center"
-			android:gravity="center"
-			android:paddingBottom="30dp"
-			android:drawableTop="@drawable/agent"
-			style="@android:style/TextAppearance.Large"
-			android:text="@string/agent_stat" />
-		<TextView/>
-	</TableRow>
+	android:gravity="center">
 	<TableRow>
 		<TextView
 			android:id="@+id/route"
-			android:layout_width="fill_parent"
+			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
 			android:layout_gravity="center"
 			android:gravity="center"
-			android:paddingLeft="5dp"
+			android:padding="20dp"
 			android:drawableTop="@drawable/route"
 			style="@android:style/TextAppearance.Large"
 			android:text="@string/route_stat" />
 		<TextView
-			android:id="@+id/operator"
-			android:layout_width="fill_parent"
-			android:layout_height="wrap_content"
-			android:layout_gravity="center"
-			android:gravity="center"
-			android:drawableTop="@drawable/ic_launcher"
-			style="@android:style/TextAppearance.Large"
-			android:text="@string/operator_stat" />
-		<TextView
-			android:id="@+id/submit_trip"
-			android:layout_width="fill_parent"
-			android:layout_height="wrap_content"
-			android:layout_gravity="center"
-			android:gravity="center"
-			android:paddingRight="5dp"
-			android:drawableTop="@drawable/submit"
-			style="@android:style/TextAppearance.Large"
-			android:text="@string/submit_trip" />
-	</TableRow>
-	<TableRow>
-		<TextView/>
-		<TextView
 			android:id="@+id/map"
-			android:layout_width="fill_parent"
+			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
 			android:layout_gravity="center"
 			android:gravity="center"
-			android:paddingTop="30dp"
+			android:padding="20dp"
 			android:drawableTop="@drawable/map"
 			style="@android:style/TextAppearance.Large"
 			android:text="@string/map" />
 		<TextView/>
+	</TableRow>
+	<TableRow>
+		<TextView
+			android:id="@+id/agent"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_gravity="center"
+			android:gravity="center"
+			android:padding="20dp"
+			android:drawableTop="@drawable/agent"
+			style="@android:style/TextAppearance.Large"
+			android:text="@string/agent_stat" />
+		<TextView
+			android:id="@+id/operator"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_gravity="center"
+			android:gravity="center"
+			android:padding="20dp"
+			android:drawableTop="@drawable/ic_launcher"
+			style="@android:style/TextAppearance.Large"
+			android:text="@string/operator_stat" />
+	</TableRow>
+	<TableRow>
+		<TextView
+			android:id="@+id/submit_trip"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_gravity="center"
+			android:gravity="center"
+			android:padding="20dp"
+			android:drawableTop="@drawable/submit"
+			style="@android:style/TextAppearance.Large"
+			android:text="@string/submit_trip" />
+		<TextView
+			android:id="@+id/complain"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_gravity="center"
+			android:gravity="center"
+			android:padding="20dp"
+			android:drawableTop="@android:drawable/ic_dialog_alert"
+			style="@android:style/TextAppearance.Large"
+			android:text="complain" />
 	</TableRow>
 </TableLayout>
 
