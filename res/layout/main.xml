@@ -31,7 +31,7 @@
 			android:layout_height="wrap_content"
 			android:layout_gravity="center"
 			android:gravity="center"
-			android:padding="20dp"
+			android:padding="25dp"
 			android:drawableTop="@drawable/route"
 			style="@android:style/TextAppearance.Large"
 			android:text="@string/route_stat" />
@@ -41,7 +41,7 @@
 			android:layout_height="wrap_content"
 			android:layout_gravity="center"
 			android:gravity="center"
-			android:padding="20dp"
+			android:padding="25dp"
 			android:drawableTop="@drawable/map"
 			style="@android:style/TextAppearance.Large"
 			android:text="@string/map" />
@@ -54,7 +54,7 @@
 			android:layout_height="wrap_content"
 			android:layout_gravity="center"
 			android:gravity="center"
-			android:padding="20dp"
+			android:padding="25dp"
 			android:drawableTop="@drawable/agent"
 			style="@android:style/TextAppearance.Large"
 			android:text="@string/agent_stat" />
@@ -64,7 +64,7 @@
 			android:layout_height="wrap_content"
 			android:layout_gravity="center"
 			android:gravity="center"
-			android:padding="20dp"
+			android:padding="25dp"
 			android:drawableTop="@drawable/ic_launcher"
 			style="@android:style/TextAppearance.Large"
 			android:text="@string/operator_stat" />
@@ -76,7 +76,7 @@
 			android:layout_height="wrap_content"
 			android:layout_gravity="center"
 			android:gravity="center"
-			android:padding="20dp"
+			android:padding="25dp"
 			android:drawableTop="@drawable/submit"
 			style="@android:style/TextAppearance.Large"
 			android:text="@string/submit_trip" />
@@ -86,7 +86,7 @@
 			android:layout_height="wrap_content"
 			android:layout_gravity="center"
 			android:gravity="center"
-			android:padding="20dp"
+			android:padding="25dp"
 			android:drawableTop="@drawable/complain"
 			style="@android:style/TextAppearance.Large"
 			android:text="complain" />
