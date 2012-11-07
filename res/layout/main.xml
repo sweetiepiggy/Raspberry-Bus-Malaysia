@@ -87,7 +87,7 @@
 			android:layout_gravity="center"
 			android:gravity="center"
 			android:padding="20dp"
-			android:drawableTop="@android:drawable/ic_dialog_alert"
+			android:drawableTop="@drawable/complain"
 			style="@android:style/TextAppearance.Large"
 			android:text="complain" />
 	</TableRow>
