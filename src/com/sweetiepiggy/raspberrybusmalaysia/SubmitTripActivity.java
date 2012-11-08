@@ -105,12 +105,12 @@ public class SubmitTripActivity extends Activity
 		int safety = (int) ((RatingBar) findViewById(R.id.safety_bar)).getRating();
 		int comfort = (int) ((RatingBar) findViewById(R.id.comfort_bar)).getRating();
 		String comment = ((EditText) findViewById(R.id.comment_entry)).getText().toString();
-		mDbHelper.save_tmp(agent, operator, from_city,
-				from_station, to_city, to_station, sched_time,
-				depart_time, arrival_time, counter_num,
-				safety, comfort, comment);
 
 		if (mDbHelper != null) {
+			mDbHelper.save_tmp(agent, operator, from_city,
+					from_station, to_city, to_station, sched_time,
+					depart_time, arrival_time, counter_num,
+					safety, comfort, comment);
 			mDbHelper.close();
 		}
 		super.onDestroy();
@@ -285,7 +285,7 @@ public class SubmitTripActivity extends Activity
 			cities.add(c.getString(c.getColumnIndex(DbAdapter.KEY_CITY)));
 		} while (c.moveToNext());
 		AutoCompleteTextView cities_entry = (AutoCompleteTextView) findViewById(id);
-		cities_entry.setThreshold(1);
+		cities_entry.setThreshold(2);
 		cities_entry.setAdapter(cities);
 	}
 

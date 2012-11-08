@@ -815,14 +815,14 @@ public class DbAdapter
 		cv.put(KEY_CTR, counter);
 		cv.put(KEY_COMMENT, comment);
 
-		Cursor c =  mDbHelper.mDb.query(TABLE_TMP, new String[] {KEY_ROWID},
+		Cursor c =  mDbHelper.mDb.query(TABLE_TMP_COMPLAINT, new String[] {KEY_ROWID},
 				null, null, null, null, null, "1");
 		if (c.moveToFirst()) {
 			long row_id = c.getInt(0);
-			mDbHelper.mDb.update(TABLE_TMP, cv,
+			mDbHelper.mDb.update(TABLE_TMP_COMPLAINT, cv,
 					KEY_ROWID + " = ?", new String[] {Long.toString(row_id)});
 		} else {
-			mDbHelper.mDb.insert(TABLE_TMP, null, cv);
+			mDbHelper.mDb.insert(TABLE_TMP_COMPLAINT, null, cv);
 		}
 		c.close();
 	}
