@@ -140,6 +140,19 @@
 			android:background="@android:drawable/editbox_background"/>
 
 		<TextView
+			android:id="@+id/registration_label"
+			android:layout_width="fill_parent"
+			android:layout_height="wrap_content"
+			style="@android:style/TextAppearance.Large"
+			android:text="@string/registration" />
+		<EditText
+			android:id="@+id/reg_entry"
+			android:layout_width="fill_parent"
+			android:layout_height="wrap_content"
+			android:hint="@string/registration_hint"
+			android:background="@android:drawable/editbox_background"/>
+
+		<TextView
 			android:id="@+id/offence_label"
 			android:layout_width="fill_parent"
 			android:layout_height="wrap_content"

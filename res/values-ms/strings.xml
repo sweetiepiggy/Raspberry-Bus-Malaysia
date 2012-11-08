@@ -99,6 +99,8 @@
 	<string name="lang_code">ms</string>
 
 	<string name="offence">Kesalahan</string>
+	<string name="registration">Nombor Bas Pendaftaran</string>
+	<string name="registration_hint">Masuk nombor plat, cth WAB1234</string>
 
 	<string name="license">
 Copyright (C) 2012 Sweetie Piggy Apps sweetiepiggyapps@gmail.com\n\n

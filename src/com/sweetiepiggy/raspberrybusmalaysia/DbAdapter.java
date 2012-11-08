@@ -64,6 +64,7 @@ public class DbAdapter
 	public static final String KEY_STN_EN = "station_en";
 	public static final String KEY_STN_MS = "station_ms";
 	public static final String KEY_STN_ZH = "station_zh";
+	public static final String KEY_REG = "reg";
 
 	public static final String TRIP_TIME = "(strftime('%s', " + KEY_ARRIVAL + ") - strftime('%s', " + KEY_SCHED_DEP + "))";
 	public static final String TRIP_DELAY = "(strftime('%s', " + KEY_ACTUAL_DEP + ") - strftime('%s', " + KEY_SCHED_DEP + "))";
@@ -138,6 +139,7 @@ public class DbAdapter
 		KEY_TO_STN + " TEXT, " +
 		KEY_SCHED_DEP + " TEXT, " +
 		KEY_CTR + " TEXT, " +
+		KEY_REG + " TEXT, " +
 		KEY_COMMENT + " TEXT);";
 
 	private static final String DATABASE_CREATE_LAST_UPDATE =
@@ -771,7 +773,7 @@ public class DbAdapter
 	public void save_tmp_complaint(String agent, String operator,
 			String from_city, String from_station, String to_city,
 			String to_station, String scheduled_departure,
-			String counter, String comment)
+			String counter, String comment, String reg)
 	{
 		ContentValues cv = new ContentValues();
 		cv.put(KEY_AGENT, agent);
@@ -783,6 +785,7 @@ public class DbAdapter
 		cv.put(KEY_SCHED_DEP, scheduled_departure);
 		cv.put(KEY_CTR, counter);
 		cv.put(KEY_COMMENT, comment);
+		cv.put(KEY_REG, reg);
 
 		Cursor c =  mDbHelper.mDb.query(TABLE_TMP_COMPLAINT, new String[] {KEY_ROWID},
 				null, null, null, null, null, "1");

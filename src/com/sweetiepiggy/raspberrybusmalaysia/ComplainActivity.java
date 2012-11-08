@@ -96,11 +96,12 @@ public class ComplainActivity extends Activity
 		String to_station = ((AutoCompleteTextView) findViewById(R.id.to_station_entry)).getText().toString();
 		String counter_num = ((AutoCompleteTextView) findViewById(R.id.counter_num_entry)).getText().toString();
 		String comment = ((EditText) findViewById(R.id.comment_entry)).getText().toString();
+		String reg = ((EditText) findViewById(R.id.reg_entry)).getText().toString();
 
 		if (mDbHelper != null) {
 			mDbHelper.save_tmp_complaint(agent, operator, from_city,
 					from_station, to_city, to_station, sched_time,
-					counter_num, comment);
+					counter_num, comment, reg);
 			mDbHelper.close();
 		}
 		super.onDestroy();
@@ -212,6 +213,7 @@ public class ComplainActivity extends Activity
 		String operator = mDbHelper.fetch_tmp_complaint(DbAdapter.KEY_OPERATOR);
 		String counter_num = mDbHelper.fetch_tmp_complaint(DbAdapter.KEY_CTR);
 		String comment = mDbHelper.fetch_tmp_complaint(DbAdapter.KEY_COMMENT);
+		String reg = mDbHelper.fetch_tmp_complaint(DbAdapter.KEY_REG);
 
 		((AutoCompleteTextView) findViewById(R.id.from_city_entry)).setText(from_city);
 		((AutoCompleteTextView) findViewById(R.id.from_station_entry)).setText(from_station);
@@ -222,6 +224,7 @@ public class ComplainActivity extends Activity
 		((AutoCompleteTextView) findViewById(R.id.counter_num_entry)).setText(counter_num);
 
 		((EditText) findViewById(R.id.comment_entry)).setText(comment);
+		((EditText) findViewById(R.id.reg_entry)).setText(reg);
 	}
 
 	private void update_city_autocomplete(int id)
@@ -387,21 +390,22 @@ public class ComplainActivity extends Activity
 		String to_station = ((AutoCompleteTextView) findViewById(R.id.to_station_entry)).getText().toString();
 		String counter_num = ((AutoCompleteTextView) findViewById(R.id.counter_num_entry)).getText().toString();
 		String comment = ((EditText) findViewById(R.id.comment_entry)).getText().toString();
+		String reg = ((EditText) findViewById(R.id.reg_entry)).getText().toString();
 
 		send_email(agent, operator, from_city,
 			from_station, to_city, to_station, sched_time,
-			counter_num, comment);
+			counter_num, comment, reg);
 	}
 
 	private void send_email(String agent, String operator,
 			String from_city, String from_station, String to_city,
 			String to_station, String scheduled_departure,
-			String counter, String comment)
+			String counter, String comment, String reg)
 	{
 		final String msg  = agent + ',' + operator + ',' + from_city +
 			',' + from_station + ',' + to_city + ',' + to_station +
 			',' + scheduled_departure + ',' + counter + ',' +
-			comment + "\n";
+			comment + ',' + reg + "\n";
 
 		Intent intent = new Intent(Intent.ACTION_SEND_MULTIPLE);
 		intent.putExtra(Intent.EXTRA_EMAIL, new String[] {EMAIL_ADDRESS} );
