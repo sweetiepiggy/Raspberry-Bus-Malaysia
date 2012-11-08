@@ -101,6 +101,21 @@
 	<string name="registration">巴士登记号码</string>
 	<string name="registration_hint">输入车牌号码，例如WAB1234</string>
 
+	<string name="email_intro">
+To Whom It May Concern:\n\n
+I\'m writing this email to inform you of an unpleasant incident which I
+experienced recently. The details are below. Please take appropriate action
+regarding my complaint.\n\n
+Thank you.\n
+	</string>
+	<string name="email_reg">Registration Number of Bus</string>
+	<string name="email_from">From</string>
+	<string name="email_to">To</string>
+	<string name="email_agent">Agent</string>
+	<string name="email_counter">Counter Number</string>
+	<string name="email_operator">Operator</string>
+	<string name="email_offence">Nature of Offence</string>
+
 	<string name="license">
 版權所有(C) 2012 Sweetie Piggy Apps sweetiepiggyapps@gmail.com\n\n
 

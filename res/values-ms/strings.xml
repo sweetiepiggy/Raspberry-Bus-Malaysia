@@ -102,6 +102,22 @@
 	<string name="registration">Nombor Bas Pendaftaran</string>
 	<string name="registration_hint">Masuk nombor plat, cth WAB1234</string>
 
+	<string name="email_intro">
+Pihak Berkuasa yang berkenan,\n\n
+Tujuan saya menulis emel ini adalah kerana sesuatu kejadian
+berlaku yang tidak menyenang hati. Perkara tersebut adalah
+dicatat seperti dibawah. Sila ambil tindakan yang sepatutnya
+terhadap aduan saya.\n\n
+Sekian.\n
+	</string>
+	<string name="email_reg">Nombor Bas Pendaftaran</string>
+	<string name="email_from">Dari</string>
+	<string name="email_to">Ke</string>
+	<string name="email_agent">Ejen</string>
+	<string name="email_counter">Nombor Kaunter</string>
+	<string name="email_operator">Juruoperasi</string>
+	<string name="email_offence">Kesalahan</string>
+
 	<string name="license">
 Copyright (C) 2012 Sweetie Piggy Apps sweetiepiggyapps@gmail.com\n\n
 Raspberi Bas Ekspres adalah perisian bebas; anda boleh memaparkan dan / atau mengubah suai

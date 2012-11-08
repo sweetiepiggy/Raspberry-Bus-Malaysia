@@ -55,7 +55,7 @@ public class ComplainActivity extends Activity
 
 	/* TODO: move this to Constants.java */
 	private static final String EMAIL_ADDRESS = "sweetiepiggyapps@gmail.com";
-	private static final String EMAIL_SUBJECT = "Raspberry Bus Malaysia Trip Submission";
+	private static final String EMAIL_SUBJECT = "Aduan Bas Ekspres";
 
 	@Override
 	public void onCreate(Bundle savedInstanceState)
@@ -402,10 +402,9 @@ public class ComplainActivity extends Activity
 			String to_station, String scheduled_departure,
 			String counter, String comment, String reg)
 	{
-		final String msg  = agent + ',' + operator + ',' + from_city +
-			',' + from_station + ',' + to_city + ',' + to_station +
-			',' + scheduled_departure + ',' + counter + ',' +
-			comment + ',' + reg + "\n";
+		final String msg = format_email(agent, operator, from_city,
+				from_station, to_city, to_station, scheduled_departure,
+				counter, comment, reg);
 
 		Intent intent = new Intent(Intent.ACTION_SEND_MULTIPLE);
 		intent.putExtra(Intent.EXTRA_EMAIL, new String[] {EMAIL_ADDRESS} );
@@ -413,6 +412,66 @@ public class ComplainActivity extends Activity
 		intent.putExtra(Intent.EXTRA_TEXT, msg);
 		intent.setType("text/plain");
 		startActivity(Intent.createChooser(intent, getResources().getString(R.string.send_email)));
+	}
+
+	private String format_email(String agent, String operator,
+			String from_city, String from_station, String to_city,
+			String to_station, String scheduled_departure,
+			String counter, String comment, String reg)
+	{
+		String msg = getResources().getString(R.string.email_intro);
+
+		if (scheduled_departure.length() != 0) {
+			msg += '\n' + scheduled_departure;
+		}
+
+		if (reg.length() != 0) {
+			msg += '\n' + getResources().getString(R.string.email_reg) + ": " + reg;
+		}
+
+		if (from_city.length() != 0 || from_station.length() != 0) {
+			msg += '\n' + getResources().getString(R.string.email_from) + ": ";
+			if (from_station.length() != 0) {
+				msg += from_station;
+			}
+			if (from_city.length() != 0 && !from_city.equals(from_station)) {
+				if (from_station.length() != 0) {
+					msg += ", ";
+				}
+				msg += from_city;
+			}
+		}
+
+		if (to_city.length() != 0 || to_station.length() != 0) {
+			msg += '\n' + getResources().getString(R.string.email_to) + ": ";
+			if (to_station.length() != 0) {
+				msg += to_station;
+			}
+			if (to_city.length() != 0 && !to_city.equals(to_station)) {
+				if (to_station.length() != 0) {
+					msg += ", ";
+				}
+				msg += to_city;
+			}
+		}
+
+		if (agent.length() != 0) {
+			msg += '\n' + getResources().getString(R.string.email_agent) + ": " + agent;
+		}
+
+		if (counter.length() != 0) {
+			msg += '\n' + getResources().getString(R.string.email_counter) + ": " + counter;
+		}
+
+		if (operator.length() != 0) {
+			msg += '\n' + getResources().getString(R.string.email_operator) + ": " + operator;
+		}
+
+		if (comment.length() != 0) {
+			msg += '\n' + getResources().getString(R.string.email_offence) + ": " + comment;
+		}
+
+		return msg;
 	}
 
 	private String format_time(date_and_time d)
