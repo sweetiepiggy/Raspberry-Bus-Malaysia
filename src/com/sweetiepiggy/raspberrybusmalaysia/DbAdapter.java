@@ -85,8 +85,9 @@ public class DbAdapter
 	private static final String DATABASE_NAME = "rbm.db";
 	/** "tmp" table was originally named "submit" in db-v7 / rbm-v0.1.1 */
 	private static final String TABLE_TMP = "tmp";
+	private static final String TABLE_TMP_COMPLAINT = "tmp_complaint";
 	private static final String TABLE_LAST_UPDATE = "last_update";
-	private static final int DATABASE_VERSION = 11;
+	private static final int DATABASE_VERSION = 12;
 
 	private static final String DATABASE_CREATE_TRIPS =
 		"CREATE TABLE " + TABLE_TRIPS + " (" +
@@ -124,6 +125,21 @@ public class DbAdapter
 		KEY_CTR + " TEXT, " +
 		KEY_SAFETY + " INTEGER, " +
 		KEY_COMFORT + " INTEGER, " +
+		KEY_COMMENT + " TEXT);";
+
+	private static final String DATABASE_CREATE_TMP_COMPLAINT =
+		"CREATE TABLE " + TABLE_TMP_COMPLAINT + " (" +
+		KEY_ROWID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+		KEY_AGENT + " TEXT, " +
+		KEY_OPERATOR + " TEXT, " +
+		KEY_FROM_CITY + " TEXT, " +
+		KEY_FROM_STN + " TEXT, " +
+		KEY_TO_CITY + " TEXT, " +
+		KEY_TO_STN + " TEXT, " +
+		KEY_SCHED_DEP + " TEXT, " +
+		KEY_ACTUAL_DEP + " TEXT, " +
+		KEY_ARRIVAL + " TEXT, " +
+		KEY_CTR + " TEXT, " +
 		KEY_COMMENT + " TEXT);";
 
 	private static final String DATABASE_CREATE_LAST_UPDATE =
@@ -167,12 +183,14 @@ public class DbAdapter
 		{
 			db.execSQL("DROP TABLE IF EXISTS " + TABLE_TRIPS);
 			db.execSQL("DROP TABLE IF EXISTS " + TABLE_TMP);
+			db.execSQL("DROP TABLE IF EXISTS " + TABLE_TMP_COMPLAINT);
 			db.execSQL("DROP TABLE IF EXISTS " + TABLE_LAST_UPDATE);
 			db.execSQL("DROP TABLE IF EXISTS " + TABLE_STATIONS);
 			db.execSQL("DROP TABLE IF EXISTS " + TABLE_CITIES);
 			db.execSQL(DATABASE_CREATE_CITIES);
 			db.execSQL(DATABASE_CREATE_STATIONS);
 			db.execSQL(DATABASE_CREATE_TRIPS);
+			db.execSQL(DATABASE_CREATE_TMP_COMPLAINT);
 			db.execSQL(DATABASE_CREATE_TMP);
 			db.execSQL(DATABASE_CREATE_LAST_UPDATE);
 			if (mAllowSync) {
@@ -197,9 +215,10 @@ public class DbAdapter
 		@Override
 		public void onUpgrade(SQLiteDatabase db, int old_ver, int new_ver)
 		{
-			//Log.i(TAG, "upgrading database from " + old_ver +
-					//" to " + new_ver);
 			switch (old_ver) {
+			case 11:
+				db.execSQL(DATABASE_CREATE_TMP_COMPLAINT);
+				break;
 			default:
 				onCreate(db);
 				break;
@@ -673,6 +692,53 @@ public class DbAdapter
 		return c.moveToFirst() ? c.getString(1) : "";
 	}
 
+	public Cursor fetch_tmp_complaint_sched_time()
+	{
+		return mDbHelper.mDb.query(TABLE_TMP_COMPLAINT,
+				new String[] {KEY_ROWID,
+					"strftime(\"%Y\", " + KEY_SCHED_DEP + ")",
+					"strftime(\"%m\", " + KEY_SCHED_DEP + ")",
+					"strftime(\"%d\", " + KEY_SCHED_DEP + ")",
+					"strftime(\"%H\", " + KEY_SCHED_DEP + ")",
+					"strftime(\"%M\", " + KEY_SCHED_DEP + ")",
+				},
+				KEY_SCHED_DEP + " IS NOT NULL", null, null, null, null, "1");
+	}
+
+	public Cursor fetch_tmp_complaint_depart_time()
+	{
+		return mDbHelper.mDb.query(TABLE_TMP_COMPLAINT,
+				new String[] {KEY_ROWID,
+					"strftime(\"%Y\", " + KEY_ACTUAL_DEP + ")",
+					"strftime(\"%m\", " + KEY_ACTUAL_DEP + ")",
+					"strftime(\"%d\", " + KEY_ACTUAL_DEP + ")",
+					"strftime(\"%H\", " + KEY_ACTUAL_DEP + ")",
+					"strftime(\"%M\", " + KEY_ACTUAL_DEP + ")",
+				},
+				KEY_ACTUAL_DEP + " IS NOT NULL", null, null, null, null, "1");
+	}
+
+	public Cursor fetch_tmp_complaint_arrival_time()
+	{
+		return mDbHelper.mDb.query(TABLE_TMP_COMPLAINT,
+				new String[] {KEY_ROWID,
+					"strftime(\"%Y\", " + KEY_ARRIVAL + ")",
+					"strftime(\"%m\", " + KEY_ARRIVAL + ")",
+					"strftime(\"%d\", " + KEY_ARRIVAL + ")",
+					"strftime(\"%H\", " + KEY_ARRIVAL + ")",
+					"strftime(\"%M\", " + KEY_ARRIVAL + ")",
+				},
+				KEY_ARRIVAL + " IS NOT NULL", null, null, null, null, "1");
+	}
+
+	public String fetch_tmp_complaint(String key)
+	{
+		Cursor c = mDbHelper.mDb.query(TABLE_TMP_COMPLAINT,
+				new String[] {KEY_ROWID, key},
+				key + " IS NOT NULL", null, null, null, null, "1");
+		return c.moveToFirst() ? c.getString(1) : "";
+	}
+
 	public int fetch_safety()
 	{
 		Cursor c = mDbHelper.mDb.query(TABLE_TMP,
@@ -730,9 +796,45 @@ public class DbAdapter
 		c.close();
 	}
 
+	public void save_tmp_complaint(String agent, String operator,
+			String from_city, String from_station, String to_city,
+			String to_station, String scheduled_departure,
+			String actual_departure, String arrival_time,
+			String counter, String comment)
+	{
+		ContentValues cv = new ContentValues();
+		cv.put(KEY_AGENT, agent);
+		cv.put(KEY_OPERATOR, operator);
+		cv.put(KEY_FROM_CITY, from_city);
+		cv.put(KEY_FROM_STN, from_station);
+		cv.put(KEY_TO_CITY, to_city);
+		cv.put(KEY_TO_STN, to_station);
+		cv.put(KEY_SCHED_DEP, scheduled_departure);
+		cv.put(KEY_ACTUAL_DEP, actual_departure);
+		cv.put(KEY_ARRIVAL, arrival_time);
+		cv.put(KEY_CTR, counter);
+		cv.put(KEY_COMMENT, comment);
+
+		Cursor c =  mDbHelper.mDb.query(TABLE_TMP, new String[] {KEY_ROWID},
+				null, null, null, null, null, "1");
+		if (c.moveToFirst()) {
+			long row_id = c.getInt(0);
+			mDbHelper.mDb.update(TABLE_TMP, cv,
+					KEY_ROWID + " = ?", new String[] {Long.toString(row_id)});
+		} else {
+			mDbHelper.mDb.insert(TABLE_TMP, null, cv);
+		}
+		c.close();
+	}
+
 	public void clear_tmp_table()
 	{
 		mDbHelper.mDb.delete(TABLE_TMP, null, null);
+	}
+
+	public void clear_tmp_complaint_table()
+	{
+		mDbHelper.mDb.delete(TABLE_TMP_COMPLAINT, null, null);
 	}
 
 	private int sec_since_last_update()

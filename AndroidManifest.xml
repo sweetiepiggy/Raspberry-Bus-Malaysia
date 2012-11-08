@@ -35,6 +35,7 @@
 		<activity android:name="AboutActivity"></activity>
 		<activity android:name="RbmMapActivity"
 			android:theme="@android:style/Theme.NoTitleBar"></activity>
+		<activity android:name="ComplainActivity"></activity>
 	</application>
 </manifest>
 

@@ -92,6 +92,15 @@ public class RaspberryBusMalaysiaActivity extends Activity
 			}
 		});
 
+		TextView complain = (TextView) findViewById(R.id.complain);
+		complain.setOnClickListener(new View.OnClickListener() {
+			public void onClick(View v)
+			{
+				Intent intent = new Intent(getApplicationContext(), ComplainActivity.class);
+				startActivity(intent);
+			}
+		});
+
 		/* open database only to sync if it has not been created yet */
 		DbAdapter dbHelper = new DbAdapter();
 		dbHelper.open_readwrite(this);
