@@ -38,7 +38,6 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.RatingBar;
 import android.widget.TimePicker;
-import android.widget.Toast;
 
 import com.sweetiepiggy.raspberrybusmalaysia.DataWrapper.date_and_time;
 
@@ -50,10 +49,6 @@ public class ComplainActivity extends Activity
 
 	private static final int SCHED_DATE_DIALOG_ID = 0;
 	private static final int SCHED_TIME_DIALOG_ID = 1;
-	private static final int DEPART_DATE_DIALOG_ID = 2;
-	private static final int DEPART_TIME_DIALOG_ID = 3;
-	private static final int ARRIVAL_DATE_DIALOG_ID = 4;
-	private static final int ARRIVAL_TIME_DIALOG_ID = 5;
 
 	private static final int ACTIVITY_FROM = 0;
 	private static final int ACTIVITY_TO = 1;
@@ -93,8 +88,6 @@ public class ComplainActivity extends Activity
 	protected void onDestroy()
 	{
 		String sched_time = format_time(mData.sched_time);
-		String depart_time = format_time(mData.depart_time);
-		String arrival_time = format_time(mData.arrival_time);
 		String agent = ((AutoCompleteTextView) findViewById(R.id.agent_entry)).getText().toString();
 		String operator = ((AutoCompleteTextView) findViewById(R.id.operator_entry)).getText().toString();
 		String from_city = ((AutoCompleteTextView) findViewById(R.id.from_city_entry)).getText().toString();
@@ -107,8 +100,7 @@ public class ComplainActivity extends Activity
 		if (mDbHelper != null) {
 			mDbHelper.save_tmp_complaint(agent, operator, from_city,
 					from_station, to_city, to_station, sched_time,
-					depart_time, arrival_time, counter_num,
-					comment);
+					counter_num, comment);
 			mDbHelper.close();
 		}
 		super.onDestroy();
@@ -122,18 +114,6 @@ public class ComplainActivity extends Activity
 		savedInstanceState.putInt("sched_day", mData.sched_time.day);
 		savedInstanceState.putInt("sched_hour", mData.sched_time.hour);
 		savedInstanceState.putInt("sched_minute", mData.sched_time.minute);
-
-		savedInstanceState.putInt("depart_year", mData.depart_time.year);
-		savedInstanceState.putInt("depart_month", mData.depart_time.month);
-		savedInstanceState.putInt("depart_day", mData.depart_time.day);
-		savedInstanceState.putInt("depart_hour", mData.depart_time.hour);
-		savedInstanceState.putInt("depart_minute", mData.depart_time.minute);
-
-		savedInstanceState.putInt("arrival_year", mData.arrival_time.year);
-		savedInstanceState.putInt("arrival_month", mData.arrival_time.month);
-		savedInstanceState.putInt("arrival_day", mData.arrival_time.day);
-		savedInstanceState.putInt("arrival_hour", mData.arrival_time.hour);
-		savedInstanceState.putInt("arrival_minute", mData.arrival_time.minute);
 
 		super.onSaveInstanceState(savedInstanceState);
 	}
@@ -152,18 +132,6 @@ public class ComplainActivity extends Activity
 		mData.sched_time.day = savedInstanceState.getInt("sched_day");
 		mData.sched_time.hour = savedInstanceState.getInt("sched_hour");
 		mData.sched_time.minute = savedInstanceState.getInt("sched_minute");
-
-		mData.depart_time.year = savedInstanceState.getInt("depart_year");
-		mData.depart_time.month = savedInstanceState.getInt("depart_month");
-		mData.depart_time.day = savedInstanceState.getInt("depart_day");
-		mData.depart_time.hour = savedInstanceState.getInt("depart_hour");
-		mData.depart_time.minute = savedInstanceState.getInt("depart_minute");
-
-		mData.arrival_time.year = savedInstanceState.getInt("arrival_year");
-		mData.arrival_time.month = savedInstanceState.getInt("arrival_month");
-		mData.arrival_time.day = savedInstanceState.getInt("arrival_day");
-		mData.arrival_time.hour = savedInstanceState.getInt("arrival_hour");
-		mData.arrival_time.minute = savedInstanceState.getInt("arrival_minute");
 	}
 
 	@Override
@@ -176,17 +144,9 @@ public class ComplainActivity extends Activity
 	{
 		init_date_button(R.id.sched_date_button, SCHED_DATE_DIALOG_ID);
 		init_time_button(R.id.sched_time_button, SCHED_TIME_DIALOG_ID);
-		init_date_button(R.id.depart_date_button, DEPART_DATE_DIALOG_ID);
-		init_time_button(R.id.depart_time_button, DEPART_TIME_DIALOG_ID);
-		init_date_button(R.id.arrival_date_button, ARRIVAL_DATE_DIALOG_ID);
-		init_time_button(R.id.arrival_time_button, ARRIVAL_TIME_DIALOG_ID);
 
 		update_date_label(R.id.sched_date_button, mData.sched_time);
 		update_time_label(R.id.sched_time_button, mData.sched_time);
-		update_date_label(R.id.depart_date_button, mData.depart_time);
-		update_time_label(R.id.depart_time_button, mData.depart_time);
-		update_date_label(R.id.arrival_date_button, mData.arrival_time);
-		update_time_label(R.id.arrival_time_button, mData.arrival_time);
 	}
 
 	private void init_date_button(int button_id, final int dialog_id)
@@ -214,12 +174,6 @@ public class ComplainActivity extends Activity
 	{
 		Cursor c_sched_time = mDbHelper.fetch_tmp_complaint_sched_time();
 		init_time(c_sched_time, data.sched_time);
-
-		Cursor c_depart_time = mDbHelper.fetch_tmp_complaint_depart_time();
-		init_time(c_depart_time, data.depart_time);
-
-		Cursor c_arrival_time = mDbHelper.fetch_tmp_complaint_arrival_time();
-		init_time(c_arrival_time, data.arrival_time);
 	}
 
 	private void init_time(Cursor c, date_and_time dt)
@@ -379,26 +333,7 @@ public class ComplainActivity extends Activity
 		Button submit_button = (Button) findViewById(R.id.submit_button);
 		submit_button.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
-				boolean results_complete = true;
-				String incomplete_msg = "";
-
-				if (((AutoCompleteTextView) findViewById(R.id.from_city_entry)).getText().toString().length() == 0) {
-					results_complete = false;
-					incomplete_msg = getResources().getString(R.string.missing_from_city);
-				} else if (((AutoCompleteTextView) findViewById(R.id.to_city_entry)).getText().toString().length() == 0) {
-					results_complete = false;
-					incomplete_msg = getResources().getString(R.string.missing_to_city);
-				} else if (mData.depart_time.cmp(mData.arrival_time) >= 0) {
-					results_complete = false;
-					incomplete_msg = getResources().getString(R.string.depart_before_arrival);
-				}
-
-				if (results_complete) {
-					submit();
-				} else {
-					Toast.makeText(getApplicationContext(), incomplete_msg,
-							Toast.LENGTH_SHORT).show();
-				}
+				submit();
 			}
 		});
 	}
@@ -444,8 +379,6 @@ public class ComplainActivity extends Activity
 	private void submit()
 	{
 		String sched_time = format_time(mData.sched_time);
-		String depart_time = format_time(mData.depart_time);
-		String arrival_time = format_time(mData.arrival_time);
 		String agent = ((AutoCompleteTextView) findViewById(R.id.agent_entry)).getText().toString();
 		String operator = ((AutoCompleteTextView) findViewById(R.id.operator_entry)).getText().toString();
 		String from_city = ((AutoCompleteTextView) findViewById(R.id.from_city_entry)).getText().toString();
@@ -457,21 +390,18 @@ public class ComplainActivity extends Activity
 
 		send_email(agent, operator, from_city,
 			from_station, to_city, to_station, sched_time,
-			depart_time, arrival_time, counter_num,
-			comment);
+			counter_num, comment);
 	}
 
 	private void send_email(String agent, String operator,
 			String from_city, String from_station, String to_city,
 			String to_station, String scheduled_departure,
-			String actual_departure, String arrival_time,
 			String counter, String comment)
 	{
 		final String msg  = agent + ',' + operator + ',' + from_city +
 			',' + from_station + ',' + to_city + ',' + to_station +
-			',' + scheduled_departure + ',' + actual_departure +
-			',' + arrival_time + ',' + counter + ',' + comment +
-			"\n";
+			',' + scheduled_departure + ',' + counter + ',' +
+			comment + "\n";
 
 		Intent intent = new Intent(Intent.ACTION_SEND_MULTIPLE);
 		intent.putExtra(Intent.EXTRA_EMAIL, new String[] {EMAIL_ADDRESS} );
@@ -513,51 +443,6 @@ public class ComplainActivity extends Activity
 				}
 		};
 
-		DatePickerDialog.OnDateSetListener depart_date_listener =
-			new DatePickerDialog.OnDateSetListener() {
-				public void onDateSet(DatePicker view, int year,
-						int monthOfYear, int dayOfMonth) {
-					mData.depart_time.year = year;
-					mData.depart_time.month = monthOfYear;
-					mData.depart_time.day = dayOfMonth;
-					update_date_label(R.id.depart_date_button,
-							mData.depart_time);
-				}
-		};
-
-		TimePickerDialog.OnTimeSetListener depart_time_listener =
-			new TimePickerDialog.OnTimeSetListener() {
-				public void onTimeSet(TimePicker view,
-						int hourOfDay, int minute) {
-					mData.depart_time.hour = hourOfDay;
-					mData.depart_time.minute = minute;
-					update_time_label(R.id.depart_time_button,
-							mData.depart_time);
-				}
-		};
-		DatePickerDialog.OnDateSetListener arrival_date_listener =
-			new DatePickerDialog.OnDateSetListener() {
-				public void onDateSet(DatePicker view, int year,
-						int monthOfYear, int dayOfMonth) {
-					mData.arrival_time.year = year;
-					mData.arrival_time.month = monthOfYear;
-					mData.arrival_time.day = dayOfMonth;
-					update_date_label(R.id.arrival_date_button,
-							mData.arrival_time);
-				}
-		};
-
-		TimePickerDialog.OnTimeSetListener arrival_time_listener =
-			new TimePickerDialog.OnTimeSetListener() {
-				public void onTimeSet(TimePicker view,
-						int hourOfDay, int minute) {
-					mData.arrival_time.hour = hourOfDay;
-					mData.arrival_time.minute = minute;
-					update_time_label(R.id.arrival_time_button,
-							mData.arrival_time);
-				}
-		};
-
 		switch (id) {
 		case SCHED_DATE_DIALOG_ID:
 			return new DatePickerDialog(this, sched_date_listener, mData.sched_time.year,
@@ -565,18 +450,6 @@ public class ComplainActivity extends Activity
 		case SCHED_TIME_DIALOG_ID:
 			return new TimePickerDialog(this, sched_time_listener, mData.sched_time.hour,
 					mData.sched_time.minute, false);
-		case DEPART_DATE_DIALOG_ID:
-			return new DatePickerDialog(this, depart_date_listener, mData.depart_time.year,
-					mData.depart_time.month, mData.depart_time.day);
-		case DEPART_TIME_DIALOG_ID:
-			return new TimePickerDialog(this, depart_time_listener, mData.depart_time.hour,
-					mData.depart_time.minute, false);
-		case ARRIVAL_DATE_DIALOG_ID:
-			return new DatePickerDialog(this, arrival_date_listener, mData.arrival_time.year,
-					mData.arrival_time.month, mData.arrival_time.day);
-		case ARRIVAL_TIME_DIALOG_ID:
-			return new TimePickerDialog(this, arrival_time_listener, mData.arrival_time.hour,
-					mData.arrival_time.minute, false);
 		}
 
 		return null;

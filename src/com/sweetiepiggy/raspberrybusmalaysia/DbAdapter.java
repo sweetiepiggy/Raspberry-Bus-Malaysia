@@ -137,8 +137,6 @@ public class DbAdapter
 		KEY_TO_CITY + " TEXT, " +
 		KEY_TO_STN + " TEXT, " +
 		KEY_SCHED_DEP + " TEXT, " +
-		KEY_ACTUAL_DEP + " TEXT, " +
-		KEY_ARRIVAL + " TEXT, " +
 		KEY_CTR + " TEXT, " +
 		KEY_COMMENT + " TEXT);";
 
@@ -705,32 +703,6 @@ public class DbAdapter
 				KEY_SCHED_DEP + " IS NOT NULL", null, null, null, null, "1");
 	}
 
-	public Cursor fetch_tmp_complaint_depart_time()
-	{
-		return mDbHelper.mDb.query(TABLE_TMP_COMPLAINT,
-				new String[] {KEY_ROWID,
-					"strftime(\"%Y\", " + KEY_ACTUAL_DEP + ")",
-					"strftime(\"%m\", " + KEY_ACTUAL_DEP + ")",
-					"strftime(\"%d\", " + KEY_ACTUAL_DEP + ")",
-					"strftime(\"%H\", " + KEY_ACTUAL_DEP + ")",
-					"strftime(\"%M\", " + KEY_ACTUAL_DEP + ")",
-				},
-				KEY_ACTUAL_DEP + " IS NOT NULL", null, null, null, null, "1");
-	}
-
-	public Cursor fetch_tmp_complaint_arrival_time()
-	{
-		return mDbHelper.mDb.query(TABLE_TMP_COMPLAINT,
-				new String[] {KEY_ROWID,
-					"strftime(\"%Y\", " + KEY_ARRIVAL + ")",
-					"strftime(\"%m\", " + KEY_ARRIVAL + ")",
-					"strftime(\"%d\", " + KEY_ARRIVAL + ")",
-					"strftime(\"%H\", " + KEY_ARRIVAL + ")",
-					"strftime(\"%M\", " + KEY_ARRIVAL + ")",
-				},
-				KEY_ARRIVAL + " IS NOT NULL", null, null, null, null, "1");
-	}
-
 	public String fetch_tmp_complaint(String key)
 	{
 		Cursor c = mDbHelper.mDb.query(TABLE_TMP_COMPLAINT,
@@ -799,7 +771,6 @@ public class DbAdapter
 	public void save_tmp_complaint(String agent, String operator,
 			String from_city, String from_station, String to_city,
 			String to_station, String scheduled_departure,
-			String actual_departure, String arrival_time,
 			String counter, String comment)
 	{
 		ContentValues cv = new ContentValues();
@@ -810,8 +781,6 @@ public class DbAdapter
 		cv.put(KEY_TO_CITY, to_city);
 		cv.put(KEY_TO_STN, to_station);
 		cv.put(KEY_SCHED_DEP, scheduled_departure);
-		cv.put(KEY_ACTUAL_DEP, actual_departure);
-		cv.put(KEY_ARRIVAL, arrival_time);
 		cv.put(KEY_CTR, counter);
 		cv.put(KEY_COMMENT, comment);
 
