@@ -445,44 +445,49 @@ public class ComplainActivity extends Activity
 
 	private void submit_menu()
 	{
-		final String[] submit_choices = new String[] {
-			getResources().getString(R.string.sms),
-			getResources().getString(R.string.email),
-			getResources().getString(R.string.tweet),
-			getResources().getString(R.string.youtube),
-		};
-
-		AlertDialog.Builder builder = new AlertDialog.Builder(this);
-		builder.setTitle(R.string.select_submit);
-		builder.setMultiChoiceItems(submit_choices,
-				mData.submit_selected, new DialogInterface.OnMultiChoiceClickListener() {
-			public void onClick(DialogInterface dialog, int which, boolean is_checked) {
-				mData.submit_selected[which] = is_checked;
-			}
-		});
-		builder.setPositiveButton(android.R.string.ok, new OnClickListener() {
-			@Override
-			public void onClick(DialogInterface dialog, int which) {
-				m_youtube_sent = false;
-				m_email_sent = false;
-				m_tweet_sent = false;
-				m_sms_sent = false;
-				submit();
-			}
-		});
-		builder.setNegativeButton(android.R.string.cancel, new OnClickListener() {
-			@Override
-			public void onClick(DialogInterface dialog, int which) {
-			}
-		});
-
-		AlertDialog alert = builder.create();
-		ListView list = alert.getListView();
-		for (int i=0; i < mData.submit_selected.length; ++i) {
-			list.setItemChecked(i, mData.submit_selected[i]);
-		}
-
-		alert.show();
+		m_youtube_sent = false;
+		m_email_sent = false;
+		m_tweet_sent = false;
+		m_sms_sent = false;
+		submit();
+//		final String[] submit_choices = new String[] {
+//			getResources().getString(R.string.sms),
+//			getResources().getString(R.string.email),
+//			getResources().getString(R.string.tweet),
+//			getResources().getString(R.string.youtube),
+//		};
+//
+//		AlertDialog.Builder builder = new AlertDialog.Builder(this);
+//		builder.setTitle(R.string.select_submit);
+//		builder.setMultiChoiceItems(submit_choices,
+//				mData.submit_selected, new DialogInterface.OnMultiChoiceClickListener() {
+//			public void onClick(DialogInterface dialog, int which, boolean is_checked) {
+//				mData.submit_selected[which] = is_checked;
+//			}
+//		});
+//		builder.setPositiveButton(android.R.string.ok, new OnClickListener() {
+//			@Override
+//			public void onClick(DialogInterface dialog, int which) {
+//				m_youtube_sent = false;
+//				m_email_sent = false;
+//				m_tweet_sent = false;
+//				m_sms_sent = false;
+//				submit();
+//			}
+//		});
+//		builder.setNegativeButton(android.R.string.cancel, new OnClickListener() {
+//			@Override
+//			public void onClick(DialogInterface dialog, int which) {
+//			}
+//		});
+//
+//		AlertDialog alert = builder.create();
+//		ListView list = alert.getListView();
+//		for (int i=0; i < mData.submit_selected.length; ++i) {
+//			list.setItemChecked(i, mData.submit_selected[i]);
+//		}
+//
+//		alert.show();
 	}
 
 	private void send_email(String agent, String operator,
