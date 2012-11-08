@@ -140,11 +140,11 @@
 			android:background="@android:drawable/editbox_background"/>
 
 		<TextView
-			android:id="@+id/comment_label"
+			android:id="@+id/offence_label"
 			android:layout_width="fill_parent"
 			android:layout_height="wrap_content"
 			style="@android:style/TextAppearance.Large"
-			android:text="@string/comment" />
+			android:text="@string/offence" />
 		<EditText
 			android:id="@+id/comment_entry"
 			android:layout_width="fill_parent"
