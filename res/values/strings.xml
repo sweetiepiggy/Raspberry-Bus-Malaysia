@@ -101,6 +101,12 @@
 	<string name="registration">Registration Number of Bus</string>
 	<string name="registration_hint">Enter plate number, e.g. WAB1234</string>
 
+	<string name="select_submit">Select Method</string>
+	<string name="sms">sms</string>
+	<string name="tweet">tweet</string>
+	<string name="email">email</string>
+	<string name="youtube">youtube</string>
+
 	<string name="email_intro">
 To Whom It May Concern:\n\n
 I\'m writing this email to inform you of an unpleasant incident which I
@@ -115,6 +121,25 @@ Thank you.\n
 	<string name="email_counter">Counter Number</string>
 	<string name="email_operator">Operator</string>
 	<string name="email_offence">Nature of Offence</string>
+
+	<string name="who_email">Select Who to Email</string>
+	<string name="who_details">Details</string>
+	<string-array name="email_choices">
+		<item>SPAD</item>
+		<item>Other Government Departments</item>
+		<item>Consumer Groups</item>
+		<item>Government Ministers</item>
+		<item>News Media</item>
+		<item>Traffic Police</item>
+	</string-array>
+	<string name="email_details">
+SPAD: Land Public Transport Commission\n\n
+Government Departments: JPJ, KPDNKK, Ministry of Tourism, PEMUDAH, Public Complaints Bureau\n\n
+Consumer Groups: TRANSIT, NCCC\n\n
+Government Ministers: Minister of Transport, Minister of Tourism, Prime Minister\n\n
+News Media: The Star, Star Metro, Malay Mail, New Straits Times, New Straits Times Streets, The Sun, Malaysia Kini, The Malaysian Insider\n\n
+Traffic Police: rmp@rmp.gov.my
+	</string>
 
 	<string name="license">
 Copyright (C) 2012 Sweetie Piggy Apps sweetiepiggyapps@gmail.com\n\n

@@ -32,7 +32,7 @@
 		<activity android:name="CompanyResultActivity"></activity>
 		<activity android:name="SubmitTripActivity"></activity>
 		<activity android:name="TripsActivity"></activity>
-		<activity android:name="AboutActivity"></activity>
+		<activity android:name="TextViewActivity"></activity>
 		<activity android:name="RbmMapActivity"
 			android:theme="@android:style/Theme.NoTitleBar"></activity>
 		<activity android:name="ComplainActivity"></activity>

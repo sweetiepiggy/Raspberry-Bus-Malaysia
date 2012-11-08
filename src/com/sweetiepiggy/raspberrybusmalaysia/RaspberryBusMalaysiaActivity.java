@@ -124,7 +124,10 @@ public class RaspberryBusMalaysiaActivity extends Activity
 		Intent intent;
 		switch (item.getItemId()) {
 		case R.id.about:
-			intent = new Intent(getApplicationContext(), AboutActivity.class);
+			intent = new Intent(getApplicationContext(), TextViewActivity.class);
+			Bundle b = new Bundle();
+			b.putString("text", getResources().getString(R.string.license));
+			intent.putExtras(b);
 			startActivity(intent);
 			return true;
 		case R.id.sync:

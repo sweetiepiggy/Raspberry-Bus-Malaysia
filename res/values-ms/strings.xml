@@ -102,6 +102,12 @@
 	<string name="registration">Nombor Bas Pendaftaran</string>
 	<string name="registration_hint">Masuk nombor plat, cth WAB1234</string>
 
+	<string name="select_submit">Memilih Kaedah</string>
+	<string name="sms">sms</string>
+	<string name="tweet">tweet</string>
+	<string name="email">emel</string>
+	<string name="youtube">youtube</string>
+
 	<string name="email_intro">
 Pihak Berkuasa yang berkenan,\n\n
 Tujuan saya menulis emel ini adalah kerana sesuatu kejadian
@@ -117,6 +123,25 @@ Sekian.\n
 	<string name="email_counter">Nombor Kaunter</string>
 	<string name="email_operator">Juruoperasi</string>
 	<string name="email_offence">Kesalahan</string>
+
+	<string name="who_email">Pilih Talian Untuk Menghantar E-mel</string>
+	<string name="who_details">Butir-butir</string>
+	<string-array name="email_choices">
+		<item>SPAD</item>
+		<item>Jabatan Kerajaan Lain</item>
+		<item>Pengguna Kumpulan</item>
+		<item>Kerajaan Menteri</item>
+		<item>Berita Media</item>
+		<item>Trafik Polis</item>
+	</string-array>
+	<string name="email_details">
+SPAD: Suruhanjaya Pengangkutan Awam Darat\n\n
+Jabatan Kerajaan Lain: JPJ, KPDNKK, Kementerian Pelancongan, PEMUDA, Biro Pengaduan Awam\n\n
+Pengguna Kumpulan: TRANSIT, NCCC\n\n
+Kerajaan Menteri: Menteri Pengangkutan, Menteri Pelancongan, Perdana Menteri\n\n
+Berita Media: The Star, Star Metro, Malay Mail, New Straits Times, New Straits Times Streets, The Sun, Malaysia Kini, The Malaysian Insider\n\n
+Trafik Polis: rmp@rmp.gov.my
+	</string>
 
 	<string name="license">
 Copyright (C) 2012 Sweetie Piggy Apps sweetiepiggyapps@gmail.com\n\n

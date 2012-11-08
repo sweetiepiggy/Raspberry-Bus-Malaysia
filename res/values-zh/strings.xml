@@ -101,6 +101,12 @@
 	<string name="registration">巴士登记号码</string>
 	<string name="registration_hint">输入车牌号码，例如WAB1234</string>
 
+	<string name="select_submit">选择方法</string>
+	<string name="sms">短信</string>
+	<string name="tweet">啁啾 </string>
+	<string name="email">电子邮件</string>
+	<string name="youtube">优酷</string>
+
 	<string name="email_intro">
 To Whom It May Concern:\n\n
 I\'m writing this email to inform you of an unpleasant incident which I
@@ -115,6 +121,25 @@ Thank you.\n
 	<string name="email_counter">Counter Number</string>
 	<string name="email_operator">Operator</string>
 	<string name="email_offence">Nature of Offence</string>
+
+	<string name="who_email">选择谁电子邮件</string>
+	<string name="who_details">详情</string>
+	<string-array name="email_choices">
+		<item>SPAD</item>
+		<item>其它政府部门</item>
+		<item>消费群体</item>
+		<item>政府部长</item>
+		<item>新闻媒体</item>
+		<item>交通警</item>
+	</string-array>
+	<string name="email_details">
+SPAD: 陆路运输部门\n\n
+其它政府部门： JPJ, KPDNKK, 旅游部长, 企业家和合作社发展部, 公共投诉局\n\n
+消费群体： TRANSIT, NCCC\n\n
+政府部长： 交通部长,旅游部长,首相\n\n
+新闻媒体： The Star, Star Metro, Malay Mail, New Straits Times, New Straits Times Streets, The Sun, Malaysia Kini, The Malaysian Insider\n\n
+交通警： rmp@rmp.gov.my
+	</string>
 
 	<string name="license">
 版權所有(C) 2012 Sweetie Piggy Apps sweetiepiggyapps@gmail.com\n\n

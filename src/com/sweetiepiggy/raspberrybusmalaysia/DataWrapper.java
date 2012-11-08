@@ -67,6 +67,8 @@ public class DataWrapper
 	public date_and_time sched_time;
 	public date_and_time depart_time;
 	public date_and_time arrival_time;
+	public boolean[] who_selected;
+	public boolean[] submit_selected;
 
 	public DataWrapper()
 	{

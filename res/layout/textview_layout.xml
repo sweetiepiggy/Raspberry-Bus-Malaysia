@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
-
 <!--
     Copyright (C) 2012 Sweetie Piggy Apps <sweetiepiggyapps@gmail.com>
 
@@ -19,11 +18,9 @@
     along with Raspberry Bus Malaysia ; if not, see <http://www.gnu.org/licenses/>.
 -->
 
-
 <TextView xmlns:android="http://schemas.android.com/apk/res/android"
-	android:id="@+id/license"
-	android:autoLink="web|email"
+	android:id="@+id/text"
+	android:autoLink="web|email|phone"
 	android:layout_width="wrap_content"
-	android:layout_height="wrap_content"
-	android:text="@string/license" />
+	android:layout_height="wrap_content" />
 

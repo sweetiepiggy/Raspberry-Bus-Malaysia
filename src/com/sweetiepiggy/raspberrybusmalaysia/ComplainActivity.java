@@ -23,9 +23,12 @@ import java.util.Calendar;
 import java.util.Date;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
+import android.content.DialogInterface.OnClickListener;
 import android.app.TimePickerDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
@@ -36,7 +39,7 @@ import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
-import android.widget.RatingBar;
+import android.widget.ListView;
 import android.widget.TimePicker;
 
 import com.sweetiepiggy.raspberrybusmalaysia.DataWrapper.date_and_time;
@@ -47,15 +50,29 @@ public class ComplainActivity extends Activity
 	private DataWrapper mData;
 	private DbAdapter mDbHelper;
 
+	private boolean m_youtube_sent;
+	private boolean m_email_sent;
+	private boolean m_tweet_sent;
+	private boolean m_sms_sent;
+
 	private static final int SCHED_DATE_DIALOG_ID = 0;
 	private static final int SCHED_TIME_DIALOG_ID = 1;
 
 	private static final int ACTIVITY_FROM = 0;
 	private static final int ACTIVITY_TO = 1;
+	private static final int ACTIVITY_SUBMIT = 2;
 
 	/* TODO: move this to Constants.java */
-	private static final String EMAIL_ADDRESS = "sweetiepiggyapps@gmail.com";
 	private static final String EMAIL_SUBJECT = "Aduan Bas Ekspres";
+
+	static final String[] EMAIL_ADDRESSES = {
+		"aduan@spad.gov.my; ",
+		"aduantrafik@jpj.gov.my; e-aduan@kpdnkk.gov.my; info@motour.gov.my; bahria@miti.gov.my; unitpro@pcb.gov.my; ",
+		"klangvalley.transit@gmail.com; nccc@nccc.org.my; ",
+		"menteri@mot.gov.my; yenyenng@motour.gov.my; najib@1malaysia.com.my; ",
+		"editor@thestar.com.my; metro@thestar.com.my; mmnews@mmail.com.my; syedn@nst.com.my; letters@nst.com.my; streets@nst.com.my; letters@thesundaily.com, editor@malaysiakini.com.my; editor@themalaysianinsider.com; ",
+		"rmp@rmp.gov.my; "
+	};
 
 	@Override
 	public void onCreate(Bundle savedInstanceState)
@@ -71,6 +88,7 @@ public class ComplainActivity extends Activity
 			if (mData == null) {
 				mData = new DataWrapper();
 				init_vars(mData);
+				init_selected(mData);
 				init_entries();
 			}
 		} else {
@@ -115,6 +133,8 @@ public class ComplainActivity extends Activity
 		savedInstanceState.putInt("sched_day", mData.sched_time.day);
 		savedInstanceState.putInt("sched_hour", mData.sched_time.hour);
 		savedInstanceState.putInt("sched_minute", mData.sched_time.minute);
+		savedInstanceState.putBooleanArray("who_selected", mData.who_selected);
+		savedInstanceState.putBooleanArray("submit_selected", mData.submit_selected);
 
 		super.onSaveInstanceState(savedInstanceState);
 	}
@@ -133,6 +153,9 @@ public class ComplainActivity extends Activity
 		mData.sched_time.day = savedInstanceState.getInt("sched_day");
 		mData.sched_time.hour = savedInstanceState.getInt("sched_hour");
 		mData.sched_time.minute = savedInstanceState.getInt("sched_minute");
+
+		mData.who_selected = savedInstanceState.getBooleanArray("who_selected");
+		mData.submit_selected = savedInstanceState.getBooleanArray("submit_selected");
 	}
 
 	@Override
@@ -175,6 +198,13 @@ public class ComplainActivity extends Activity
 	{
 		Cursor c_sched_time = mDbHelper.fetch_tmp_complaint_sched_time();
 		init_time(c_sched_time, data.sched_time);
+	}
+
+	private void init_selected(DataWrapper data)
+	{
+		/* TODO: selected defaults should not be hard coded here */
+		data.who_selected = new boolean[] {true, true, true, false, false, false};
+		data.submit_selected = new boolean[] {false, true, false, false};
 	}
 
 	private void init_time(Cursor c, date_and_time dt)
@@ -336,7 +366,7 @@ public class ComplainActivity extends Activity
 		Button submit_button = (Button) findViewById(R.id.submit_button);
 		submit_button.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
-				submit();
+				submit_menu();
 			}
 		});
 	}
@@ -392,26 +422,139 @@ public class ComplainActivity extends Activity
 		String comment = ((EditText) findViewById(R.id.comment_entry)).getText().toString();
 		String reg = ((EditText) findViewById(R.id.reg_entry)).getText().toString();
 
-		send_email(agent, operator, from_city,
-			from_station, to_city, to_station, sched_time,
-			counter_num, comment, reg);
+		/* TODO: order of index shouldn't be hard coded like this */
+		boolean sms_checked = mData.submit_selected[0];
+		boolean email_checked = mData.submit_selected[1];
+		boolean tweet_checked = mData.submit_selected[2];
+		boolean youtube_checked = mData.submit_selected[3];
+
+		/* send one at a time, repeated call submit()
+			until all checked are sent */
+		if (sms_checked && !m_sms_sent) {
+			//send_sms(msg);
+		} else if (email_checked && !m_email_sent) {
+			send_email(agent, operator, from_city,
+				from_station, to_city, to_station, sched_time,
+				counter_num, comment, reg);
+		} else if (tweet_checked && !m_tweet_sent) {
+			//send_tweet(date, time, loc, reg, details);
+		} else if (youtube_checked && !m_youtube_sent) {
+			//send_youtube(msg);
+		}
+	}
+
+	private void submit_menu()
+	{
+		final String[] submit_choices = new String[] {
+			getResources().getString(R.string.sms),
+			getResources().getString(R.string.email),
+			getResources().getString(R.string.tweet),
+			getResources().getString(R.string.youtube),
+		};
+
+		AlertDialog.Builder builder = new AlertDialog.Builder(this);
+		builder.setTitle(R.string.select_submit);
+		builder.setMultiChoiceItems(submit_choices,
+				mData.submit_selected, new DialogInterface.OnMultiChoiceClickListener() {
+			public void onClick(DialogInterface dialog, int which, boolean is_checked) {
+				mData.submit_selected[which] = is_checked;
+			}
+		});
+		builder.setPositiveButton(android.R.string.ok, new OnClickListener() {
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				m_youtube_sent = false;
+				m_email_sent = false;
+				m_tweet_sent = false;
+				m_sms_sent = false;
+				submit();
+			}
+		});
+		builder.setNegativeButton(android.R.string.cancel, new OnClickListener() {
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+			}
+		});
+
+		AlertDialog alert = builder.create();
+		ListView list = alert.getListView();
+		for (int i=0; i < mData.submit_selected.length; ++i) {
+			list.setItemChecked(i, mData.submit_selected[i]);
+		}
+
+		alert.show();
 	}
 
 	private void send_email(String agent, String operator,
 			String from_city, String from_station, String to_city,
 			String to_station, String scheduled_departure,
-			String counter, String comment, String reg)
+			String counter, String comment, final String reg)
 	{
 		final String msg = format_email(agent, operator, from_city,
 				from_station, to_city, to_station, scheduled_departure,
 				counter, comment, reg);
 
-		Intent intent = new Intent(Intent.ACTION_SEND_MULTIPLE);
-		intent.putExtra(Intent.EXTRA_EMAIL, new String[] {EMAIL_ADDRESS} );
-		intent.putExtra(Intent.EXTRA_SUBJECT, EMAIL_SUBJECT);
-		intent.putExtra(Intent.EXTRA_TEXT, msg);
-		intent.setType("text/plain");
-		startActivity(Intent.createChooser(intent, getResources().getString(R.string.send_email)));
+		AlertDialog.Builder builder = new AlertDialog.Builder(this);
+		builder.setTitle(R.string.who_email);
+		builder.setMultiChoiceItems(R.array.email_choices,
+				mData.who_selected, new DialogInterface.OnMultiChoiceClickListener() {
+			public void onClick(DialogInterface dialog, int which, boolean is_checked) {
+				mData.who_selected[which] = is_checked;
+			}
+		});
+		builder.setPositiveButton(android.R.string.ok, new OnClickListener() {
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				String email_addresses = "";
+
+				/* TODO: who_selected and EMAIL_ADDRESSES need to be better linked,
+					possible problem if their lengths are not equal */
+				for (int i=0; i < mData.who_selected.length; ++i) {
+					if (mData.who_selected[i]) {
+						email_addresses += EMAIL_ADDRESSES[i];
+					}
+				}
+
+				String subj = EMAIL_SUBJECT;
+				if (reg.length() != 0) {
+					subj += ' ' + reg;
+				}
+
+				Intent intent = new Intent(Intent.ACTION_SEND_MULTIPLE);
+				intent.putExtra(Intent.EXTRA_EMAIL, new String[] {email_addresses} );
+				intent.putExtra(Intent.EXTRA_SUBJECT, subj);
+				intent.putExtra(Intent.EXTRA_TEXT, msg);
+				intent.setType("text/plain");
+				startActivity(Intent.createChooser(intent, getResources().getString(R.string.send_email)));
+			}
+		});
+
+		builder.setNeutralButton(R.string.who_details, new OnClickListener() {
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				Intent intent = new Intent(getApplicationContext(), TextViewActivity.class);
+				Bundle b = new Bundle();
+				b.putString("text", getResources().getString(R.string.email_details));
+				intent.putExtras(b);
+				startActivityForResult(intent, ACTIVITY_SUBMIT);
+			}
+		});
+
+		builder.setNegativeButton(android.R.string.cancel, new OnClickListener() {
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				m_email_sent = true;
+				submit();
+			}
+		});
+
+		AlertDialog alert = builder.create();
+		ListView list = alert.getListView();
+		for (int i=0; i < mData.who_selected.length; ++i) {
+			list.setItemChecked(i, mData.who_selected[i]);
+		}
+
+		alert.show();
 	}
 
 	private String format_email(String agent, String operator,
@@ -545,6 +688,10 @@ public class ComplainActivity extends Activity
 					((AutoCompleteTextView) findViewById(R.id.to_station_entry)).setText(station);
 				}
 			}
+			break;
+		case ACTIVITY_SUBMIT:
+			/* repeatedly submit until all send_*() functions have been called */
+			submit();
 			break;
 		}
 	}
