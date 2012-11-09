@@ -101,6 +101,8 @@
 	<string name="registration">巴士登记号码</string>
 	<string name="registration_hint">输入车牌号码，例如WAB1234</string>
 
+	<string name="record">记录</string>
+
 	<string name="select_submit">选择方法</string>
 	<string name="sms">短信</string>
 	<string name="tweet">啁啾 </string>

@@ -102,6 +102,8 @@
 	<string name="registration">Nombor Bas Pendaftaran</string>
 	<string name="registration_hint">Masuk nombor plat, cth WAB1234</string>
 
+	<string name="record">Rekod</string>
+
 	<string name="select_submit">Memilih Kaedah</string>
 	<string name="sms">sms</string>
 	<string name="tweet">tweet</string>
