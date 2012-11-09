@@ -51,6 +51,7 @@ public class DbAdapter
 	public static final String KEY_CTR = "counter";
 	public static final String KEY_SAFETY = "safety";
 	public static final String KEY_COMFORT = "comfort";
+	public static final String KEY_OVERALL = "overall";
 	public static final String KEY_COMMENT = "comment";
 	public static final String KEY_LAST_UPDATE = "comment";
 	public static final String KEY_CITY = "city";
@@ -88,7 +89,7 @@ public class DbAdapter
 	private static final String TABLE_TMP = "tmp";
 	private static final String TABLE_TMP_COMPLAINT = "tmp_complaint";
 	private static final String TABLE_LAST_UPDATE = "last_update";
-	private static final int DATABASE_VERSION = 12;
+	private static final int DATABASE_VERSION = 13;
 
 	private static final String DATABASE_CREATE_TRIPS =
 		"CREATE TABLE " + TABLE_TRIPS + " (" +
@@ -105,6 +106,7 @@ public class DbAdapter
 		KEY_CTR + " TEXT, " +
 		KEY_SAFETY + " INTEGER, " +
 		KEY_COMFORT + " INTEGER, " +
+		KEY_OVERALL + " INTEGER, " +
 		KEY_COMMENT + " TEXT, " +
 		"FOREIGN KEY(" + KEY_FROM_CITY_ID + ") REFERENCES " + TABLE_CITIES + "(" + KEY_ROWID + "), " +
 		"FOREIGN KEY(" + KEY_FROM_STN_ID + ") REFERENCES " + TABLE_STATIONS + "(" + KEY_ROWID + "), " +
@@ -126,6 +128,7 @@ public class DbAdapter
 		KEY_CTR + " TEXT, " +
 		KEY_SAFETY + " INTEGER, " +
 		KEY_COMFORT + " INTEGER, " +
+		KEY_OVERALL + " INTEGER, " +
 		KEY_COMMENT + " TEXT);";
 
 	private static final String DATABASE_CREATE_TMP_COMPLAINT =
@@ -218,6 +221,9 @@ public class DbAdapter
 			switch (old_ver) {
 			case 11:
 				db.execSQL(DATABASE_CREATE_TMP_COMPLAINT);
+			case 12:
+				db.execSQL("ALTER TABLE trips ADD COLUMN overall INTEGER;");
+				db.execSQL("ALTER TABLE tmp ADD COLUMN overall INTEGER;");
 				break;
 			default:
 				onCreate(db);
@@ -729,6 +735,14 @@ public class DbAdapter
 		return c.moveToFirst() ? c.getInt(1) : 3;
 	}
 
+	public int fetch_overall()
+	{
+		Cursor c = mDbHelper.mDb.query(TABLE_TMP,
+				new String[] {KEY_ROWID, KEY_OVERALL},
+				KEY_OVERALL + " IS NOT NULL", null, null, null, null, "1");
+		return c.moveToFirst() ? c.getInt(1) : 3;
+	}
+
 	public long fetch_max_id(String table)
 	{
 		Cursor c = mDbHelper.mDb.query(table,
@@ -741,7 +755,8 @@ public class DbAdapter
 			String from_city, String from_station, String to_city,
 			String to_station, String scheduled_departure,
 			String actual_departure, String arrival_time,
-			String counter, int safety, int comfort, String comment)
+			String counter, int safety, int comfort, int overall,
+			String comment)
 	{
 		ContentValues cv = new ContentValues();
 		cv.put(KEY_AGENT, agent);
@@ -756,6 +771,7 @@ public class DbAdapter
 		cv.put(KEY_CTR, counter);
 		cv.put(KEY_SAFETY, safety);
 		cv.put(KEY_COMFORT, comfort);
+		cv.put(KEY_OVERALL, overall);
 		cv.put(KEY_COMMENT, comment);
 
 		Cursor c =  mDbHelper.mDb.query(TABLE_TMP, new String[] {KEY_ROWID},

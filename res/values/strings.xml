@@ -58,6 +58,7 @@
 	<string name="comment">Comment</string>
 	<string name="comment_hint">Enter comments about your trip</string>
 
+	<string name="overall">Overall</string>
 	<string name="safety">Safety</string>
 	<string name="comfort">Comfort</string>
 

@@ -182,6 +182,20 @@
 		</LinearLayout>
 
 		<TextView
+			android:id="@+id/overall_label"
+			android:layout_width="fill_parent"
+			android:layout_height="wrap_content"
+			style="@android:style/TextAppearance.Large"
+			android:text="@string/overall" />
+		<RatingBar
+			android:id="@+id/overall_bar"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:numStars="5"
+			android:rating="3"
+			android:stepSize="1.0" />
+
+		<TextView
 			android:id="@+id/safety_label"
 			android:layout_width="fill_parent"
 			android:layout_height="wrap_content"

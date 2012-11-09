@@ -104,13 +104,14 @@ public class SubmitTripActivity extends Activity
 		String counter_num = ((AutoCompleteTextView) findViewById(R.id.counter_num_entry)).getText().toString();
 		int safety = (int) ((RatingBar) findViewById(R.id.safety_bar)).getRating();
 		int comfort = (int) ((RatingBar) findViewById(R.id.comfort_bar)).getRating();
+		int overall = (int) ((RatingBar) findViewById(R.id.overall_bar)).getRating();
 		String comment = ((EditText) findViewById(R.id.comment_entry)).getText().toString();
 
 		if (mDbHelper != null) {
 			mDbHelper.save_tmp(agent, operator, from_city,
 					from_station, to_city, to_station, sched_time,
 					depart_time, arrival_time, counter_num,
-					safety, comfort, comment);
+					safety, comfort, overall, comment);
 			mDbHelper.close();
 		}
 		super.onDestroy();
@@ -262,6 +263,7 @@ public class SubmitTripActivity extends Activity
 		String comment = mDbHelper.fetch_tmp(DbAdapter.KEY_COMMENT);
 		int safety = mDbHelper.fetch_safety();
 		int comfort = mDbHelper.fetch_comfort();
+		int overall = mDbHelper.fetch_overall();
 
 		((AutoCompleteTextView) findViewById(R.id.from_city_entry)).setText(from_city);
 		((AutoCompleteTextView) findViewById(R.id.from_station_entry)).setText(from_station);
@@ -272,7 +274,7 @@ public class SubmitTripActivity extends Activity
 		((AutoCompleteTextView) findViewById(R.id.counter_num_entry)).setText(counter_num);
 
 		((RatingBar) findViewById(R.id.safety_bar)).setRating(safety);
-		((RatingBar) findViewById(R.id.comfort_bar)).setRating(comfort);
+		((RatingBar) findViewById(R.id.overall_bar)).setRating(overall);
 		((EditText) findViewById(R.id.comment_entry)).setText(comment);
 	}
 
@@ -461,25 +463,27 @@ public class SubmitTripActivity extends Activity
 		String counter_num = ((AutoCompleteTextView) findViewById(R.id.counter_num_entry)).getText().toString();
 		String safety = Integer.toString((int) ((RatingBar) findViewById(R.id.safety_bar)).getRating());
 		String comfort = Integer.toString((int) ((RatingBar) findViewById(R.id.comfort_bar)).getRating());
+		String overall = Integer.toString((int) ((RatingBar) findViewById(R.id.overall_bar)).getRating());
 		String comment = ((EditText) findViewById(R.id.comment_entry)).getText().toString();
 
 		send_email(agent, operator, from_city,
 			from_station, to_city, to_station, sched_time,
 			depart_time, arrival_time, counter_num,
-			safety, comfort, comment);
+			safety, comfort, overall, comment);
 	}
 
 	private void send_email(String agent, String operator,
 			String from_city, String from_station, String to_city,
 			String to_station, String scheduled_departure,
 			String actual_departure, String arrival_time,
-			String counter, String safety, String comfort, String comment)
+			String counter, String safety, String comfort,
+			String overall, String comment)
 	{
 		final String msg  = agent + ',' + operator + ',' + from_city +
 			',' + from_station + ',' + to_city + ',' + to_station +
 			',' + scheduled_departure + ',' + actual_departure +
 			',' + arrival_time + ',' + counter + ',' + safety +
-			',' + comfort + ',' + comment + "\n";
+			',' + comfort + ',' + overall + ',' + comment + "\n";
 
 		Intent intent = new Intent(Intent.ACTION_SEND_MULTIPLE);
 		intent.putExtra(Intent.EXTRA_EMAIL, new String[] {EMAIL_ADDRESS} );
