@@ -79,7 +79,10 @@
 	<string name="delay">延迟</string>
 	<string name="trip_time">往返时间</string>
 
+	<string name="send_youtube">上载至优酷</string>
+	<string name="send_tweet">啁啾 </string>
 	<string name="send_email">电子邮件</string>
+
 	<string name="minute_abbr">分钟</string>
 	<string name="hour_abbr">小时</string>
 

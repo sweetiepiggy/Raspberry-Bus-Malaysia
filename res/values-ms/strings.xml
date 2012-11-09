@@ -79,6 +79,8 @@
 	<string name="delay">Kelewatan</string>
 	<string name="trip_time">Masa Perjalanan</string>
 
+	<string name="send_youtube">Upload ke YouTube</string>
+	<string name="send_tweet">Menghantar tweet</string>
 	<string name="send_email">Hantarkan emel</string>
 
 	<string name="minute_abbr">min</string>

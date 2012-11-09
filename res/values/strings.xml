@@ -79,7 +79,10 @@
 	<string name="delay">Delay</string>
 	<string name="trip_time">Trip Time</string>
 
+	<string name="send_youtube">Upload to YouTube</string>
+	<string name="send_tweet">Send tweet</string>
 	<string name="send_email">Send email</string>
+
 	<string name="minute_abbr">min</string>
 	<string name="hour_abbr">hr</string>
 

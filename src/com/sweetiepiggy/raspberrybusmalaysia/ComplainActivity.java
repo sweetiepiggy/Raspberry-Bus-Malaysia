@@ -22,6 +22,7 @@ package com.sweetiepiggy.raspberrybusmalaysia;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Iterator;
 
 import android.app.Activity;
@@ -72,6 +73,11 @@ public class ComplainActivity extends Activity
 
 	/* TODO: move this to Constants.java */
 	private static final String EMAIL_SUBJECT = "Aduan Bas Ekspres";
+	private static final String TWITTER_ADDRESS1 = "@aduanSPAD";
+	private static final String TWITTER_ADDRESS2 = "@transitmy";
+	private static final String TWITTER_ADDRESS3 = "@myAduan";
+	private static final String SMS_NUMBER = "15888";
+	private static final int MAX_TWEET_LENGTH = 140;
 
 	static final String[] EMAIL_ADDRESSES = {
 		"aduan@spad.gov.my; ",
@@ -505,6 +511,10 @@ public class ComplainActivity extends Activity
 		String comment = ((EditText) findViewById(R.id.comment_entry)).getText().toString();
 		String reg = ((EditText) findViewById(R.id.reg_entry)).getText().toString();
 
+		String msg = format_msg(agent, operator, from_city,
+				from_station, to_city, to_station,
+				sched_time, counter_num, comment, reg);
+
 		/* TODO: order of index shouldn't be hard coded like this */
 		boolean sms_checked = mData.submit_selected[0];
 		boolean email_checked = mData.submit_selected[1];
@@ -514,74 +524,98 @@ public class ComplainActivity extends Activity
 		/* send one at a time, repeated call submit()
 			until all checked are sent */
 		if (sms_checked && !m_sms_sent) {
-			//send_sms(msg);
+			send_sms(msg);
 		} else if (email_checked && !m_email_sent) {
-			send_email(agent, operator, from_city,
-				from_station, to_city, to_station, sched_time,
-				counter_num, comment, reg);
+			send_email(msg, reg);
 		} else if (tweet_checked && !m_tweet_sent) {
-			//send_tweet(date, time, loc, reg, details);
+			send_tweet(agent, operator, from_city, from_station,
+					to_city, to_station, sched_time,
+					comment, reg);
 		} else if (youtube_checked && !m_youtube_sent) {
-			//send_youtube(msg);
+			send_youtube(msg);
 		}
 	}
 
 	private void submit_menu()
 	{
-		m_youtube_sent = false;
-		m_email_sent = false;
-		m_tweet_sent = false;
-		m_sms_sent = false;
-		submit();
-//		final String[] submit_choices = new String[] {
-//			getResources().getString(R.string.sms),
-//			getResources().getString(R.string.email),
-//			getResources().getString(R.string.tweet),
-//			getResources().getString(R.string.youtube),
-//		};
-//
-//		AlertDialog.Builder builder = new AlertDialog.Builder(this);
-//		builder.setTitle(R.string.select_submit);
-//		builder.setMultiChoiceItems(submit_choices,
-//				mData.submit_selected, new DialogInterface.OnMultiChoiceClickListener() {
-//			public void onClick(DialogInterface dialog, int which, boolean is_checked) {
-//				mData.submit_selected[which] = is_checked;
-//			}
-//		});
-//		builder.setPositiveButton(android.R.string.ok, new OnClickListener() {
-//			@Override
-//			public void onClick(DialogInterface dialog, int which) {
-//				m_youtube_sent = false;
-//				m_email_sent = false;
-//				m_tweet_sent = false;
-//				m_sms_sent = false;
-//				submit();
-//			}
-//		});
-//		builder.setNegativeButton(android.R.string.cancel, new OnClickListener() {
-//			@Override
-//			public void onClick(DialogInterface dialog, int which) {
-//			}
-//		});
-//
-//		AlertDialog alert = builder.create();
-//		ListView list = alert.getListView();
-//		for (int i=0; i < mData.submit_selected.length; ++i) {
-//			list.setItemChecked(i, mData.submit_selected[i]);
-//		}
-//
-//		alert.show();
+		final String[] submit_choices = new String[] {
+			getResources().getString(R.string.sms),
+			getResources().getString(R.string.email),
+			getResources().getString(R.string.tweet),
+			getResources().getString(R.string.youtube),
+		};
+
+		AlertDialog.Builder builder = new AlertDialog.Builder(this);
+		builder.setTitle(R.string.select_submit);
+		builder.setMultiChoiceItems(submit_choices,
+				mData.submit_selected, new DialogInterface.OnMultiChoiceClickListener() {
+			public void onClick(DialogInterface dialog, int which, boolean is_checked) {
+				mData.submit_selected[which] = is_checked;
+			}
+		});
+		builder.setPositiveButton(android.R.string.ok, new OnClickListener() {
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				m_youtube_sent = false;
+				m_email_sent = false;
+				m_tweet_sent = false;
+				m_sms_sent = false;
+				submit();
+			}
+		});
+		builder.setNegativeButton(android.R.string.cancel, new OnClickListener() {
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+			}
+		});
+
+		AlertDialog alert = builder.create();
+		ListView list = alert.getListView();
+		for (int i=0; i < mData.submit_selected.length; ++i) {
+			list.setItemChecked(i, mData.submit_selected[i]);
+		}
+
+		alert.show();
 	}
 
-	private void send_email(String agent, String operator,
-			String from_city, String from_station, String to_city,
-			String to_station, String scheduled_departure,
-			String counter, String comment, final String reg)
+	private void send_sms(String msg)
 	{
-		final String msg = format_email(agent, operator, from_city,
-				from_station, to_city, to_station, scheduled_departure,
-				counter, comment, reg);
+		String sms_msg = EMAIL_SUBJECT + " " + msg;
+		Intent intent = new Intent(Intent.ACTION_VIEW);
 
+		intent.putExtra("address",
+				SMS_NUMBER);
+		intent.putExtra("sms_body", sms_msg);
+		/* TODO: attach files to mms */
+		intent.setType("vnd.android-dir/mms-sms");
+		m_sms_sent = true;
+		startActivityForResult(intent, ACTIVITY_SUBMIT);
+	}
+
+	private void send_youtube(String msg)
+	{
+		String action = mData.video_uris.size() > 1 ?
+			Intent.ACTION_SEND_MULTIPLE : Intent.ACTION_SEND;
+		Intent youtube_intent = new Intent(action);
+		youtube_intent.putExtra(Intent.EXTRA_SUBJECT, EMAIL_SUBJECT);
+		youtube_intent.putExtra(Intent.EXTRA_TEXT, msg);
+		youtube_intent.setType("video/*");
+
+		if (mData.video_uris.size() == 1) {
+			youtube_intent.putExtra(Intent.EXTRA_STREAM,
+					mData.video_uris.get(mData.video_uris.size()-1));
+		} else if (mData.video_uris.size() > 1) {
+			youtube_intent.putExtra(Intent.EXTRA_STREAM, mData.video_uris);
+		}
+
+		m_youtube_sent = true;
+		startActivityForResult(Intent.createChooser(youtube_intent,
+					getResources().getString(R.string.send_youtube)),
+				ACTIVITY_SUBMIT);
+	}
+
+	private void send_email(final String msg, final String reg)
+	{
 		AlertDialog.Builder builder = new AlertDialog.Builder(this);
 		builder.setTitle(R.string.who_email);
 		builder.setMultiChoiceItems(R.array.email_choices,
@@ -593,6 +627,7 @@ public class ComplainActivity extends Activity
 		builder.setPositiveButton(android.R.string.ok, new OnClickListener() {
 			@Override
 			public void onClick(DialogInterface dialog, int which) {
+				String email_msg = getResources().getString(R.string.email_intro) + "\n" + msg;
 				String email_addresses = "";
 
 				/* TODO: who_selected and EMAIL_ADDRESSES need to be better linked,
@@ -621,7 +656,7 @@ public class ComplainActivity extends Activity
 
 				intent.putExtra(Intent.EXTRA_EMAIL, new String[] {email_addresses} );
 				intent.putExtra(Intent.EXTRA_SUBJECT, subj);
-				intent.putExtra(Intent.EXTRA_TEXT, msg);
+				intent.putExtra(Intent.EXTRA_TEXT, email_msg);
 				intent.setType("text/plain");
 				startActivity(Intent.createChooser(intent, getResources().getString(R.string.send_email)));
 			}
@@ -655,15 +690,269 @@ public class ComplainActivity extends Activity
 		alert.show();
 	}
 
-	private String format_email(String agent, String operator,
+	private void send_tweet(String agent, String operator,
 			String from_city, String from_station, String to_city,
-			String to_station, String scheduled_departure,
+			String to_station, String sched_time,
+			String comment, String reg)
+	{
+		String msg = format_tweet(agent, operator, from_city,
+				from_station, to_city, to_station,
+				sched_time, comment, reg);
+		Intent intent = new Intent(Intent.ACTION_SEND);
+		intent.putExtra(Intent.EXTRA_TEXT, msg);
+		if (!mData.photo_uris.isEmpty()) {
+			intent.putExtra(Intent.EXTRA_STREAM,
+					mData.photo_uris.get(mData.photo_uris.size()-1));
+			intent.setType("image/*");
+		} else {
+			intent.setType("text/plain");
+		}
+
+		m_tweet_sent = true;
+		startActivityForResult(Intent.createChooser(intent,
+					getResources().getString(R.string.send_tweet)),
+				ACTIVITY_SUBMIT);
+	}
+
+	private String format_tweet(String agent, String operator,
+			String from_city, String from_station, String to_city,
+			String to_station, String sched_time,
+			String comment, String reg)
+	{
+		/** map to keep track of which info should be printed and
+			which should be dropped to keep tweet under 140 characters */
+		HashMap<String, Boolean> map = new HashMap<String, Boolean>();
+		map.put("twitter_address1", true);
+		map.put("twitter_address2", false);
+		map.put("twitter_address3", false);
+		map.put("sched_time", false);
+		map.put("reg", reg.length() != 0);
+		map.put("operator",false);
+		map.put("agent", false);
+		map.put("from_city", false);
+		map.put("from_station", false);
+		map.put("to_city", false);
+		map.put("to_station", false);
+
+		int max_length = MAX_TWEET_LENGTH;
+		if (mData.photo_uris.size() > 0) {
+			max_length -= 21;
+		}
+
+		map.put("comment", true);
+		if (comment.length() == 0 || build_tweet(map, operator, agent,
+					from_city, from_station, to_city,
+					to_station, sched_time, comment,
+					reg).length() >
+				max_length) {
+			map.put("comment", false);
+		}
+
+		map.put("operator", true);
+		if (comment.length() == 0 || build_tweet(map, operator, agent,
+					from_city, from_station, to_city,
+					to_station, sched_time, comment,
+					reg).length() >
+				max_length) {
+			map.put("operator", false);
+		}
+
+		map.put("from_station", true);
+		if (from_station.length() == 0 || build_tweet(map, operator,
+					agent, from_city, from_station,
+					to_city, to_station, sched_time,
+					comment, reg).length() >
+				max_length) {
+			map.put("from_station", false);
+		}
+
+		map.put("to_station", true);
+		if (to_station.length() == 0 || build_tweet(map, operator,
+					agent, from_city, from_station,
+					to_city, to_station, sched_time,
+					comment, reg).length() >
+				max_length) {
+			map.put("to_station", false);
+		}
+
+		map.put("from_city", true);
+		if (from_city.length() == 0 || build_tweet(map, operator,
+					agent, from_city, from_station,
+					to_city, to_station, sched_time,
+					comment, reg).length() >
+				max_length) {
+			map.put("from_city", false);
+		}
+
+		map.put("to_city", true);
+		if (to_city.length() == 0 || build_tweet(map, operator,
+					agent, from_city, from_station,
+					to_city, to_station, sched_time,
+					comment, reg).length() >
+				max_length) {
+			map.put("to_city", false);
+		}
+
+		map.put("twitter_address2", true);
+		if (build_tweet(map, operator, agent, from_city, from_station,
+					to_city, to_station, sched_time,
+					comment, reg).length() >
+				max_length) {
+			map.put("twitter_address2", false);
+		}
+
+		map.put("sched_time", true);
+		if (sched_time.length() == 0 || build_tweet(map, operator,
+					agent, from_city, from_station,
+					to_city, to_station, sched_time,
+					comment, reg).length() >
+				max_length) {
+			map.put("sched_time", false);
+		}
+
+		map.put("agent", true);
+		if (comment.length() == 0 || build_tweet(map, operator,
+					agent, from_city, from_station,
+					to_city, to_station, sched_time,
+					comment, reg).length() >
+				max_length) {
+			map.put("agent", false);
+		}
+
+		map.put("twitter_address3", true);
+		if (build_tweet(map, operator, agent, from_city, from_station,
+					to_city, to_station, sched_time,
+					comment, reg).length() >
+				max_length) {
+			map.put("twitter_address3", false);
+		}
+
+		/* always include additional details, but wait until here to
+			set true to avoid cutting down other fields if user
+			description won't fit anyway */
+		if (comment.length() != 0) {
+			map.put("comment", true);
+		}
+
+		return build_tweet(map, operator, agent, from_city,
+				from_station, to_city, to_station, sched_time,
+				comment, reg);
+	}
+
+	private String build_tweet(HashMap<String, Boolean> map, String operator,
+			String agent, String from_city, String from_station,
+			String to_city, String to_station, String sched_time,
+			String comment, String reg)
+	{
+		String ret = "";
+
+		if (map.get("twitter_address1")) {
+			ret += TWITTER_ADDRESS1;
+		}
+
+		if (map.get("sched_time")) {
+			if (ret.length() != 0) {
+				ret += ' ';
+			}
+			ret += sched_time;
+		}
+
+		if (map.get("reg")) {
+			if (ret.length() != 0) {
+				ret += ' ';
+			}
+			ret += reg;
+		}
+
+		if (map.get("operator")) {
+			if (ret.length() != 0) {
+				ret += ' ';
+			}
+			ret += operator;
+		}
+
+		if (map.get("agent")) {
+			if (map.get("operator")) {
+				ret += ", ";
+			} else if (ret.length() != 0) {
+				ret += ' ';
+			}
+			ret += agent;
+		}
+
+		if (map.get("from_city") || map.get("from_station")) {
+			if (map.get("operator") || map.get("agent")) {
+				ret += ", ";
+			} else if (ret.length() != 0) {
+				ret += ' ';
+			}
+			if (map.get("from_station")) {
+				ret += from_station;
+			}
+			if (map.get("from_city") && !from_city.equals(from_station)) {
+				if (map.get("from_station")) {
+					ret += ", ";
+				}
+				ret += from_city;
+			}
+		}
+
+		if (map.get("to_city") || map.get("to_station")) {
+			if (ret.length() != 0) {
+				ret += ' ';
+			}
+			if (map.get("from_station") || map.get("from_city")) {
+				ret += "-> ";
+			}
+			if (map.get("to_station")) {
+				ret += to_station;
+			}
+			if (map.get("to_city") && !to_city.equals(to_station)) {
+				if (map.get("to_station")) {
+					ret += ", ";
+				}
+				ret += to_city;
+			}
+		}
+
+		if (map.get("comment")) {
+			if (map.get("from_city") || map.get("from_station") ||
+					map.get("to_city") ||
+					map.get("to_station")) {
+				ret += ',';
+			}
+			if (ret.length() != 0) {
+				ret += ' ';
+			}
+			ret += comment;
+		}
+
+		if (map.get("twitter_address2")) {
+			if (ret.length() != 0) {
+				ret += ' ';
+			}
+			ret += TWITTER_ADDRESS2;
+		}
+
+		if (map.get("twitter_address3")) {
+			if (ret.length() != 0) {
+				ret += ' ';
+			}
+			ret += TWITTER_ADDRESS3;
+		}
+
+		return ret;
+	}
+
+	private String format_msg(String agent, String operator,
+			String from_city, String from_station, String to_city,
+			String to_station, String sched_time,
 			String counter, String comment, String reg)
 	{
-		String msg = getResources().getString(R.string.email_intro);
+		String msg = "";
 
-		if (scheduled_departure.length() != 0) {
-			msg += '\n' + scheduled_departure;
+		if (sched_time.length() != 0) {
+			msg += '\n' + sched_time;
 		}
 
 		if (reg.length() != 0) {
