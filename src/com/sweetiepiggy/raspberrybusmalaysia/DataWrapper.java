@@ -19,6 +19,9 @@
 
 package com.sweetiepiggy.raspberrybusmalaysia;
 
+import java.util.ArrayList;
+import android.net.Uri;
+
 public class DataWrapper
 {
 	public class date_and_time
@@ -69,6 +72,9 @@ public class DataWrapper
 	public date_and_time arrival_time;
 	public boolean[] who_selected;
 	public boolean[] submit_selected;
+	public ArrayList<Uri> photo_uris;
+	public ArrayList<Uri> recording_uris;
+	public ArrayList<Uri> video_uris;
 
 	public DataWrapper()
 	{

@@ -19,19 +19,23 @@
 
 package com.sweetiepiggy.raspberrybusmalaysia;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Iterator;
 
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
-import android.content.DialogInterface.OnClickListener;
 import android.app.TimePickerDialog;
 import android.content.DialogInterface;
+import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
 import android.database.Cursor;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.text.format.DateFormat;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -40,6 +44,7 @@ import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.TimePicker;
 
 import com.sweetiepiggy.raspberrybusmalaysia.DataWrapper.date_and_time;
@@ -61,6 +66,9 @@ public class ComplainActivity extends Activity
 	private static final int ACTIVITY_FROM = 0;
 	private static final int ACTIVITY_TO = 1;
 	private static final int ACTIVITY_SUBMIT = 2;
+	private static final int ACTIVITY_TAKE_PHOTO = 3;
+	private static final int ACTIVITY_RECORD_SOUND = 4;
+	private static final int ACTIVITY_TAKE_VIDEO = 5;
 
 	/* TODO: move this to Constants.java */
 	private static final String EMAIL_SUBJECT = "Aduan Bas Ekspres";
@@ -98,6 +106,7 @@ public class ComplainActivity extends Activity
 
 		init_date_time_buttons();
 		init_map_buttons();
+		init_camera_recorder_buttons();
 		init_cancel_button();
 		init_submit_button();
 	}
@@ -135,6 +144,9 @@ public class ComplainActivity extends Activity
 		savedInstanceState.putInt("sched_minute", mData.sched_time.minute);
 		savedInstanceState.putBooleanArray("who_selected", mData.who_selected);
 		savedInstanceState.putBooleanArray("submit_selected", mData.submit_selected);
+		savedInstanceState.putStringArrayList("photo_uris", uriarr2strarr(mData.photo_uris));
+		savedInstanceState.putStringArrayList("recording_uris", uriarr2strarr(mData.recording_uris));
+		savedInstanceState.putStringArrayList("video_uris", uriarr2strarr(mData.video_uris));
 
 		super.onSaveInstanceState(savedInstanceState);
 	}
@@ -156,6 +168,10 @@ public class ComplainActivity extends Activity
 
 		mData.who_selected = savedInstanceState.getBooleanArray("who_selected");
 		mData.submit_selected = savedInstanceState.getBooleanArray("submit_selected");
+
+		mData.photo_uris = strarr2uriarr(savedInstanceState.getStringArrayList("photo_uris"));
+		mData.recording_uris = strarr2uriarr(savedInstanceState.getStringArrayList("recording_uris"));
+		mData.video_uris = strarr2uriarr(savedInstanceState.getStringArrayList("video_uris"));
 	}
 
 	@Override
@@ -198,6 +214,10 @@ public class ComplainActivity extends Activity
 	{
 		Cursor c_sched_time = mDbHelper.fetch_tmp_complaint_sched_time();
 		init_time(c_sched_time, data.sched_time);
+
+		data.photo_uris = new ArrayList<Uri>();
+		data.recording_uris = new ArrayList<Uri>();
+		data.video_uris = new ArrayList<Uri>();
 	}
 
 	private void init_selected(DataWrapper data)
@@ -255,6 +275,14 @@ public class ComplainActivity extends Activity
 
 		((EditText) findViewById(R.id.comment_entry)).setText(comment);
 		((EditText) findViewById(R.id.reg_entry)).setText(reg);
+
+		String photo_size = mData.photo_uris.size() > 0 ? Integer.toString(mData.photo_uris.size()) : "";
+		String video_size = mData.video_uris.size() > 0 ? Integer.toString(mData.video_uris.size()) : "";
+		String recording_size = mData.recording_uris.size() > 0 ? Integer.toString(mData.recording_uris.size()) : "";
+
+		((TextView) findViewById(R.id.camera_label)).setText(photo_size);
+		((TextView) findViewById(R.id.recorder_label)).setText(recording_size);
+		((TextView) findViewById(R.id.video_label)).setText(video_size);
 	}
 
 	private void update_city_autocomplete(int id)
@@ -396,6 +424,61 @@ public class ComplainActivity extends Activity
 		});
 	}
 
+	private void init_camera_recorder_buttons()
+	{
+		Button camera_button = (Button) findViewById(R.id.camera_button);
+		Button vidcam_button = (Button) findViewById(R.id.vidcam_button);
+		Button recorder_button = (Button) findViewById(R.id.recorder_button);
+
+		//boolean has_camera = getPackageManager().hasSystemFeature(PackageManager.FEATURE_CAMERA);
+		//boolean has_microphone = getPackageManager().hasSystemFeature(PackageManager.FEATURE_MICROPHONE);
+		boolean has_camera = true;
+		boolean has_microphone = true;
+
+		if (has_camera) {
+			camera_button.setOnClickListener(new View.OnClickListener() {
+				@Override
+				public void onClick(View v) {
+					Intent photo_intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+					startActivityForResult(Intent.createChooser(photo_intent,
+							getResources().getString(R.string.take_photo)),
+						ACTIVITY_TAKE_PHOTO);
+				}
+			});
+
+			vidcam_button.setOnClickListener(new View.OnClickListener() {
+				@Override
+				public void onClick(View v) {
+					Intent video_intent = new Intent(MediaStore.ACTION_VIDEO_CAPTURE);
+					startActivityForResult(Intent.createChooser(video_intent,
+							getResources().getString(R.string.record_video)),
+						ACTIVITY_TAKE_VIDEO);
+				}
+			});
+		} else {
+			camera_button.setVisibility(View.GONE);
+			vidcam_button.setVisibility(View.GONE);
+		}
+
+		if (has_microphone) {
+			recorder_button.setOnClickListener(new View.OnClickListener() {
+				@Override
+				public void onClick(View v) {
+					Intent recorder_intent = new Intent(MediaStore.Audio.Media.RECORD_SOUND_ACTION);
+					startActivityForResult(Intent.createChooser(recorder_intent,
+							getResources().getString(R.string.record_sound)),
+						ACTIVITY_RECORD_SOUND);
+				}
+			});
+		} else {
+			recorder_button.setVisibility(View.GONE);
+		}
+
+		if (!has_camera && !has_microphone) {
+			((TextView) findViewById(R.id.record_label)).setVisibility(View.GONE);
+		}
+	}
+
 	private void init_cancel_button()
 	{
 		Button cancel_button = (Button)findViewById(R.id.cancel_button);
@@ -526,6 +609,16 @@ public class ComplainActivity extends Activity
 				}
 
 				Intent intent = new Intent(Intent.ACTION_SEND_MULTIPLE);
+
+				ArrayList<Uri> uris = new ArrayList<Uri>();
+				uris.addAll(mData.photo_uris);
+				uris.addAll(mData.recording_uris);
+				uris.addAll(mData.video_uris);
+
+				if (uris.size() > 0) {
+					intent.putExtra(Intent.EXTRA_STREAM, uris);
+				}
+
 				intent.putExtra(Intent.EXTRA_EMAIL, new String[] {email_addresses} );
 				intent.putExtra(Intent.EXTRA_SUBJECT, subj);
 				intent.putExtra(Intent.EXTRA_TEXT, msg);
@@ -628,6 +721,26 @@ public class ComplainActivity extends Activity
 				d.month+1, d.day, d.hour, d.minute);
 	}
 
+	private ArrayList<Uri> strarr2uriarr(ArrayList<String> str_arr)
+	{
+		ArrayList<Uri> ret = new ArrayList<Uri>();
+		Iterator<String> itr = str_arr.iterator();
+		while (itr.hasNext()) {
+			ret.add(Uri.parse(itr.next()));
+		}
+		return ret;
+	}
+
+	private ArrayList<String> uriarr2strarr(ArrayList<Uri> uri_arr)
+	{
+		ArrayList<String> ret = new ArrayList<String>();
+		Iterator<Uri> itr = uri_arr.iterator();
+		while (itr.hasNext()) {
+			ret.add(itr.next().toString());
+		}
+		return ret;
+	}
+
 	@Override
 	protected Dialog onCreateDialog(int id)
 	{
@@ -692,6 +805,24 @@ public class ComplainActivity extends Activity
 					((AutoCompleteTextView) findViewById(R.id.to_city_entry)).setText(city);
 					((AutoCompleteTextView) findViewById(R.id.to_station_entry)).setText(station);
 				}
+			}
+			break;
+		case ACTIVITY_TAKE_PHOTO:
+			if (result_code == RESULT_OK) {
+				mData.photo_uris.add(data.getData());
+				((TextView)findViewById(R.id.camera_label)).setText(Integer.toString(mData.photo_uris.size()));
+			}
+			break;
+		case ACTIVITY_TAKE_VIDEO:
+			if (result_code == RESULT_OK) {
+				mData.video_uris.add(data.getData());
+				((TextView)findViewById(R.id.video_label)).setText(Integer.toString(mData.video_uris.size()));
+			}
+			break;
+		case ACTIVITY_RECORD_SOUND:
+			if (result_code == RESULT_OK) {
+				mData.recording_uris.add(data.getData());
+				((TextView)findViewById(R.id.recorder_label)).setText(Integer.toString(mData.recording_uris.size()));
 			}
 			break;
 		case ACTIVITY_SUBMIT:

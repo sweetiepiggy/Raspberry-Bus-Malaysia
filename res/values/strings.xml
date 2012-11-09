@@ -102,6 +102,9 @@
 	<string name="registration_hint">Enter plate number, e.g. WAB1234</string>
 
 	<string name="record">Record</string>
+	<string name="take_photo">Take photo</string>
+	<string name="record_video">Record video</string>
+	<string name="record_sound">Record audio</string>
 
 	<string name="select_submit">Select Method</string>
 	<string name="sms">sms</string>
