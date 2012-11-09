@@ -22,6 +22,7 @@ package com.sweetiepiggy.raspberrybusmalaysia;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.res.Configuration;
+import android.database.sqlite.SQLiteDatabaseLockedException;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.Menu;
@@ -40,6 +41,19 @@ public class RaspberryBusMalaysiaActivity extends Activity
 	{
 		super.onCreate(savedInstanceState);
 
+		init();
+		try {
+			/* open database only to sync if it has not been created yet */
+			DbAdapter dbHelper = new DbAdapter();
+			dbHelper.open_readwrite(this);
+			dbHelper.check_last_update_and_sync();
+			dbHelper.close();
+		} catch (SQLiteDatabaseLockedException e) {
+		}
+	}
+
+	public void init()
+	{
 		int content_view = getResources().getConfiguration().orientation ==
 			Configuration.ORIENTATION_LANDSCAPE ?
 			R.layout.main_landscape : R.layout.main;
@@ -104,12 +118,6 @@ public class RaspberryBusMalaysiaActivity extends Activity
 				startActivity(intent);
 			}
 		});
-
-		/* open database only to sync if it has not been created yet */
-		DbAdapter dbHelper = new DbAdapter();
-		dbHelper.open_readwrite(this);
-		dbHelper.check_last_update_and_sync();
-		dbHelper.close();
 	}
 
 	@Override
@@ -117,6 +125,13 @@ public class RaspberryBusMalaysiaActivity extends Activity
 		MenuInflater inflater = getMenuInflater();
 		inflater.inflate(R.menu.options_menu, menu);
 		return true;
+	}
+
+	@Override
+	public void onConfigurationChanged(Configuration new_cfg) {
+		super.onConfigurationChanged(new_cfg);
+
+		init();
 	}
 
 	@Override
