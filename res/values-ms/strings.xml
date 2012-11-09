@@ -65,6 +65,7 @@
 	<string name="agent_stat">ejen</string>
 	<string name="operator_stat">juruoperasi</string>
 	<string name="submit_trip">pendapat</string>
+	<string name="complain">aduan</string>
 
 	<string name="sync">Penyegerakan</string>
 	<string name="syncing">Segerakkan...</string>

@@ -65,6 +65,7 @@
 	<string name="agent_stat">agents</string>
 	<string name="operator_stat">operators</string>
 	<string name="submit_trip">review</string>
+	<string name="complain">complain</string>
 
 	<string name="sync">Sync</string>
 	<string name="syncing">Syncing...</string>

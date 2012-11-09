@@ -65,6 +65,7 @@
 	<string name="agent_stat">代理商</string>
 	<string name="operator_stat">经营者</string>
 	<string name="submit_trip">意见</string>
+	<string name="complain">投诉</string>
 
 	<string name="sync">同步</string>
 	<string name="syncing">同步中...</string>

@@ -88,7 +88,7 @@
 			android:padding="25dp"
 			android:drawableTop="@drawable/complain"
 			style="@android:style/TextAppearance.Large"
-			android:text="complain" />
+			android:text="@string/complain" />
 	</TableRow>
 </TableLayout>
 
