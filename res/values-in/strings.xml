@@ -21,100 +21,100 @@
 
 <resources>
 
-	<string name="app_name">Raspberi Bas Ekspres</string>
+	<string name="app_name">Raspberi Bis Ekspres</string>
 
-	<string name="about">Maklumat</string>
+	<string name="about">Informasi</string>
 	<string name="view_source">Sumber</string>
 
-	<string name="open_browser">Melayari Web</string>
+	<string name="open_browser">Menjelajahi Web</string>
 
 	<string name="from">Dari</string>
 	<string name="to">Ke</string>
-	<string name="route">Perjalanan</string>
-	<string name="submit">Hantar</string>
+	<string name="route">Rute</string>
+	<string name="submit">Kirim</string>
 	<string name="clear">Batal</string>
-	<string name="agent">Ejen</string>
-	<string name="avg_time">Purata\nMasa</string>
-	<string name="avg_delay">Purata\nLewat</string>
+	<string name="agent">Agen</string>
+	<string name="avg_time">Rata-rata\nWaktu</string>
+	<string name="avg_delay">Rata-rata\nTunda</string>
 	<string name="num_trips">Jumlah\nPerjalanan</string>
 
-	<string name="sched_time">Masa Ditetapkan</string>
-	<string name="depart_time">Masa Bertolak</string>
-	<string name="arrival_time">Masa Ketibaan</string>
+	<string name="sched_time">Waktu Ditetapkan</string>
+	<string name="depart_time">Waktu Bertolak</string>
+	<string name="arrival_time">Waktu Ketibaan</string>
 
-	<string name="agent_hint">Masukkan nama ejen, contoh: United Travel</string>
-	<string name="operator">Juruoperasi</string>
-	<string name="operator_hint">Masukkan juruoperasi bas, contoh: Seasons</string>
+	<string name="agent_hint">Masukkan nama agen, contoh: United Travel</string>
+	<string name="operator">Operator</string>
+	<string name="operator_hint">Masukkan operator bis, contoh: Seasons</string>
 
 	<string name="from_city_hint">Masukkan tempat bertolak, contoh: Kuala Lumpur</string>
-	<string name="from_station_hint">Masukkan nama hentian bas bertolak, contoh: Puduraya</string>
+	<string name="from_station_hint">Masukkan nama hentian bis bertolak, contoh: Puduraya</string>
 
 	<string name="to_city_hint">Masukkan tempat ketibaan, contoh: Pulau Pinang</string>
-	<string name="to_station_hint">Masukkan nama hentian bas ketibaan, contoh: Sg Nibong</string>
+	<string name="to_station_hint">Masukkan nama hentian bis ketibaan, contoh: Sg Nibong</string>
 
-	<string name="counter_num">Nombor Kaunter</string>
-	<string name="counter_num_hint">Masukkan nombor kaunter, contoh: 10</string>
+	<string name="counter_num">Nomor Konter</string>
+	<string name="counter_num_hint">Masukkan nomor konter, contoh: 10</string>
 
-	<string name="comment">Komen</string>
-	<string name="comment_hint">Masukkan komen tentang perjalanan anda</string>
+	<string name="comment">Komentar</string>
+	<string name="comment_hint">Masukkan komentar tentang rute anda</string>
 
 	<string name="overall">Keseluruhan</string>
 	<string name="safety">Keselamatan</string>
-	<string name="comfort">Keselesaan</string>
+	<string name="comfort">Kenyamanan</string>
 
-	<string name="route_stat">perjalanan</string>
-	<string name="agent_stat">ejen</string>
-	<string name="operator_stat">juruoperasi</string>
+	<string name="route_stat">rute</string>
+	<string name="agent_stat">agen</string>
+	<string name="operator_stat">operator</string>
 	<string name="submit_trip">pendapat</string>
 	<string name="complain">aduan</string>
 
-	<string name="sync">Penyegerakan</string>
-	<string name="syncing">Segerakkan...</string>
-	<string name="updates_found">kemaskini dijumpai</string>
+	<string name="sync">Sinkronisasi</string>
+	<string name="syncing">Sinkronisasi...</string>
+	<string name="updates_found">memperbarui didapati</string>
 
 	<string name="missing_from_city">Masukkan tempat bertolak</string>
 	<string name="missing_to_city">Masukkan tempat ketibaan</string>
-	<string name="depart_before_arrival">Masa Ketibaan mesti lewat daripada Masa Bertolak</string>
+	<string name="depart_before_arrival">Waktu Ketibaan mesti tunda daripada Waktu Bertolak</string>
 
-	<string name="search_hint">Cari ejen</string>
+	<string name="search_hint">Cari agen</string>
 
-	<string name="delay">Kelewatan</string>
-	<string name="trip_time">Masa Perjalanan</string>
+	<string name="delay">Tunda</string>
+	<string name="trip_time">Waktu Rute</string>
 
 	<string name="send_youtube">Upload ke YouTube</string>
 	<string name="send_tweet">Menghantar tweet</string>
-	<string name="send_email">Hantarkan emel</string>
+	<string name="send_email">Hantarkan email</string>
 
 	<string name="minute_abbr">min</string>
 	<string name="hour_abbr">jam</string>
 
 	<string name="unknown">(Tidak Diketahui)</string>
 
-	<string name="monday">Isnin</string>
+	<string name="monday">Senin</string>
 	<string name="tuesday">Selasa</string>
 	<string name="wednesday">Rabu</string>
-	<string name="thursday">Khamis</string>
-	<string name="friday">Jumaat</string>
+	<string name="thursday">Kamis</string>
+	<string name="friday">Jumat</string>
 	<string name="saturday">Sabtu</string>
-	<string name="sunday">Ahad</string>
+	<string name="sunday">Minggu</string>
 
 	<string name="map">peta</string>
 
 	<string name="lang_code">ms</string>
 
 	<string name="offence">Kesalahan</string>
-	<string name="registration">Nombor Bas Pendaftaran</string>
-	<string name="registration_hint">Masuk nombor plat, cth WAB1234</string>
+	<string name="registration">Nomor Bis Pendaftaran</string>
+	<string name="registration_hint">Masuk nomor plat, cth WAB1234</string>
 
-	<string name="record">Rekod</string>
+	<string name="record">Rekor</string>
 	<string name="take_photo">Ambil gambar</string>
-	<string name="record_video">Merakamkan vedeo</string>
-	<string name="record_sound">Merakamkan suara</string>
+	<string name="record_video">Merekam vedeo</string>
+	<string name="record_sound">Merekam suara</string>
 
 	<string name="select_submit">Memilih Kaedah</string>
 	<string name="sms">sms</string>
 	<string name="tweet">tweet</string>
-	<string name="email">emel</string>
+	<string name="email">email</string>
 	<string name="youtube">youtube</string>
 
 	<string name="email_intro">
@@ -133,15 +133,15 @@ Sekian.\n
 	<string name="email_operator">Juruoperasi</string>
 	<string name="email_offence">Kesalahan</string>
 
-	<string name="who_email">Pilih Siapa Untuk Menghantar Emel</string>
-	<string name="who_details">Butir-butir</string>
+	<string name="who_email">Pilih Siapa Untuk Menghantar Email</string>
+	<string name="who_details">Rincian</string>
 	<string-array name="email_choices">
 		<item>SPAD</item>
 		<item>Jabatan Kerajaan Lain</item>
 		<item>Pengguna Kumpulan</item>
 		<item>Kerajaan Menteri</item>
 		<item>Berita Media</item>
-		<item>Trafik Polis</item>
+		<item>Polisi Lalu Lintas</item>
 	</string-array>
 	<string name="email_details">
 SPAD: Suruhanjaya Pengangkutan Awam Darat\n\n
@@ -152,18 +152,22 @@ Berita Media: The Star, Star Metro, Malay Mail, New Straits Times, New Straits T
 Trafik Polis: rmp@rmp.gov.my
 	</string>
 
+	<!-- Bahasa Indonesia translation from http://vlsm.org/etc/gpl-unofficial.id.html -->
 	<string name="license">
-Copyright (C) 2012 Sweetie Piggy Apps sweetiepiggyapps@gmail.com\n\n
-Raspberi Bas Ekspres adalah perisian bebas; anda boleh memaparkan dan / atau mengubah suai
-	di bawah terma GNU Lesen Awam Am yang diterbitkan oleh Perisian Yayasan Percuma;
-	samada 3 versi Lesen, atau (atas pilihan anda) mana-mana versi selepas ini.\n\n
-Tujuan Raspberi Bas Ekspres diterbit adalah untuk manfaat pengguna. Walaubagaimanapun, ia
-	adalah produk yang tanpa sebarang waranti, tanpa jaminan terhadap sebarang
-	perdaganagan atau kegunaaan untuk tujuan tertentu. Sila merujuk GNU Lesen Awam
-	Am untuk maklumat lanjut.\n\n
-Anda akan menerima satu salinan GNU Lesen Awam Am bersama dengan Raspberi Bas Ekspres;
-	jika tidak, sila lihat http://www.gnu.org/licenses/.\n\n
-Raspberi Bas Ekspres mengandungi maklumat dari Raspberi Bas Ekspres Database yang bawah
-	Lesen Open Database (ODbL) v1.0, rujuk http://opendatacommons.org/licenses/odbl/1.0/.
+Hak Cipta (C) 2012 Sweetie Piggy Apps sweetiepiggyapps@gmail.com\n\n
+Raspberi Bis Ekspres adalah perangkat lunak bebas; Anda dapat menyebarluaskannya
+	dan/atau memodifikasinya di bawah ketentuan-ketentuan dari
+	GNU General Public License seperti yang diterbitkan oleh
+	Free Software Foundation; baik versi 3 dari Lisensi tersebut, atau (dengan
+	pilihan Anda) versi lain yang lebih tinggi.\n\n
+Raspberi Bis Ekspres didistribusikan dengan harapan bahwa program ini akan berguna,
+	tetapi TANPA GARANSI; tanpa garansi yang termasuk dari DAGANGAN atau
+	KECOCOKAN UNTUK TUJUAN TERTENTU sekalipun. Lihat
+	GNU General Public License untuk rincian lebih lanjut.\n\n
+Anda seharusnya menerima sebuah salinan GNU General Public License beserta
+	Raspberi Bis Ekspres; jika tidak, lihat http://www.gnu.org/licenses/.\n\n
+Raspberi Bis Ekspres mengandungi informasi dari Raspberi Bis Ekspres Database yang bawah
+	Open Database License (ODbL) v1.0, lihat http://opendatacommons.org/licenses/odbl/1.0/.
 	</string>
 </resources>
+
