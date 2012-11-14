@@ -259,6 +259,8 @@ public class RouteActivity extends Activity
 			print_row(disp_comp, avg, delay, count, from_city,
 					to_city);
 		} while (c.moveToNext());
+
+		findViewById(R.id.results_layout).requestLayout();
 	}
 
 	private String format_time(int time)
