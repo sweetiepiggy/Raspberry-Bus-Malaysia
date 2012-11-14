@@ -133,7 +133,7 @@ Sekian.\n
 	<string name="email_operator">Juruoperasi</string>
 	<string name="email_offence">Kesalahan</string>
 
-	<string name="who_email">Pilih Siapa Untuk Menghantar Emel</string>
+	<string name="who_email">Pilih siapa untuk menghantar emel</string>
 	<string name="who_details">Butir-butir</string>
 	<string-array name="email_choices">
 		<item>SPAD</item>

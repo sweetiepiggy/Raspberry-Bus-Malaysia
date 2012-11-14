@@ -132,7 +132,7 @@ Thank you.\n
 	<string name="email_operator">Operator</string>
 	<string name="email_offence">Nature of Offence</string>
 
-	<string name="who_email">Select Who to Email</string>
+	<string name="who_email">Select who to email</string>
 	<string name="who_details">Details</string>
 	<string-array name="email_choices">
 		<item>SPAD</item>
