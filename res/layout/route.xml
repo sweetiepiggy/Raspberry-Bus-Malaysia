@@ -86,7 +86,7 @@
 			android:id="@+id/results_layout"
 			android:layout_width="fill_parent"
 			android:layout_height="fill_parent"
-			android:stretchColumns="*" >
+			android:shrinkColumns="1" >
 			<TableRow>
 				<Button
 					android:id="@+id/company"
