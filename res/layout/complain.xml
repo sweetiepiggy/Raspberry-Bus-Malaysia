@@ -60,14 +60,12 @@
 			android:id="@+id/from_city_entry"
 			android:layout_width="fill_parent"
 			android:layout_height="wrap_content"
-			android:hint="@string/from_city_hint"
-			android:background="@android:drawable/editbox_background"/>
+			android:hint="@string/from_city_hint" />
 		<AutoCompleteTextView
 			android:id="@+id/from_station_entry"
 			android:layout_width="fill_parent"
 			android:layout_height="wrap_content"
-			android:hint="@string/from_station_hint"
-			android:background="@android:drawable/editbox_background"/>
+			android:hint="@string/from_station_hint" />
 		<Button
 			android:id="@+id/from_map_button"
 			android:layout_width="wrap_content"
@@ -85,14 +83,12 @@
 			android:id="@+id/to_city_entry"
 			android:layout_width="fill_parent"
 			android:layout_height="wrap_content"
-			android:hint="@string/to_city_hint"
-			android:background="@android:drawable/editbox_background"/>
+			android:hint="@string/to_city_hint" />
 		<AutoCompleteTextView
 			android:id="@+id/to_station_entry"
 			android:layout_width="fill_parent"
 			android:layout_height="wrap_content"
-			android:hint="@string/to_station_hint"
-			android:background="@android:drawable/editbox_background"/>
+			android:hint="@string/to_station_hint" />
 		<Button
 			android:id="@+id/to_map_button"
 			android:layout_width="wrap_content"
@@ -110,8 +106,7 @@
 			android:id="@+id/agent_entry"
 			android:layout_width="fill_parent"
 			android:layout_height="wrap_content"
-			android:hint="@string/agent_hint"
-			android:background="@android:drawable/editbox_background"/>
+			android:hint="@string/agent_hint" />
 
 		<TextView
 			android:id="@+id/counter_num_label"
@@ -123,8 +118,7 @@
 			android:id="@+id/counter_num_entry"
 			android:layout_width="fill_parent"
 			android:layout_height="wrap_content"
-			android:hint="@string/counter_num_hint"
-			android:background="@android:drawable/editbox_background"/>
+			android:hint="@string/counter_num_hint" />
 
 		<TextView
 			android:id="@+id/operator_label"
@@ -136,8 +130,7 @@
 			android:id="@+id/operator_entry"
 			android:layout_width="fill_parent"
 			android:layout_height="wrap_content"
-			android:hint="@string/operator_hint"
-			android:background="@android:drawable/editbox_background"/>
+			android:hint="@string/operator_hint" />
 
 		<TextView
 			android:id="@+id/registration_label"
@@ -149,8 +142,7 @@
 			android:id="@+id/reg_entry"
 			android:layout_width="fill_parent"
 			android:layout_height="wrap_content"
-			android:hint="@string/registration_hint"
-			android:background="@android:drawable/editbox_background"/>
+			android:hint="@string/registration_hint" />
 
 		<TextView
 			android:id="@+id/offence_label"
@@ -162,8 +154,7 @@
 			android:id="@+id/comment_entry"
 			android:layout_width="fill_parent"
 			android:layout_height="wrap_content"
-			android:hint="@string/comment_hint"
-			android:background="@android:drawable/editbox_background"/>
+			android:hint="@string/comment_hint" />
 
 		<TextView
 			android:id="@+id/record_label"
