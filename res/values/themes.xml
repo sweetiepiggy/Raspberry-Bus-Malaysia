@@ -20,7 +20,7 @@
 -->
 
 <resources>
-	<style name="RBM_Theme" parent="@android:style/Theme">
+	<style name="RBM_Theme" parent="@android:Theme">
 		<item name="android:windowBackground">@color/red</item>
 		<item name="android:colorBackground">@color/red</item>
 		<item name="android:textColorLink">@color/green</item>
