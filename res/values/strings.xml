@@ -26,8 +26,6 @@
 	<string name="about">About</string>
 	<string name="view_source">View Source</string>
 
-	<string name="open_browser">Open Web Browser</string>
-
 	<string name="from">From</string>
 	<string name="to">To</string>
 	<string name="route">Route</string>
