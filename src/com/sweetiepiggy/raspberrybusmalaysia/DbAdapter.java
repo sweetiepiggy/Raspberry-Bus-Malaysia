@@ -202,6 +202,7 @@ public class DbAdapter
 
 				Cursor c = db.rawQuery("SELECT strftime(\"%Y-%m-%d %H:%M:%S\", 'now')", null);
 				if (!c.moveToFirst()) {
+					c.close();
 					return;
 				}
 				String last_update = c.getString(0);
@@ -695,7 +696,12 @@ public class DbAdapter
 		Cursor c = mDbHelper.mDb.query(TABLE_TMP,
 				new String[] {KEY_ROWID, key},
 				key + " IS NOT NULL", null, null, null, null, "1");
-		return c.moveToFirst() ? c.getString(1) : "";
+		String ret = "";
+		if (c.moveToFirst()) {
+			ret = c.getString(c.getColumnIndex(key));
+		}
+		c.close();
+		return ret;
 	}
 
 	public Cursor fetch_tmp_complaint_sched_time()
@@ -716,7 +722,12 @@ public class DbAdapter
 		Cursor c = mDbHelper.mDb.query(TABLE_TMP_COMPLAINT,
 				new String[] {KEY_ROWID, key},
 				key + " IS NOT NULL", null, null, null, null, "1");
-		return c.moveToFirst() ? c.getString(1) : "";
+		String ret = "";
+		if (c.moveToFirst()) {
+			ret = c.getString(c.getColumnIndex(key));
+		}
+		c.close();
+		return ret;
 	}
 
 	public int fetch_safety()
@@ -724,7 +735,12 @@ public class DbAdapter
 		Cursor c = mDbHelper.mDb.query(TABLE_TMP,
 				new String[] {KEY_ROWID, KEY_SAFETY},
 				KEY_SAFETY + " IS NOT NULL", null, null, null, null, "1");
-		return c.moveToFirst() ? c.getInt(1) : 3;
+		int ret = 3;
+		if (c.moveToFirst()) {
+			ret = c.getInt(c.getColumnIndex(KEY_SAFETY));
+		}
+		c.close();
+		return ret;
 	}
 
 	public int fetch_comfort()
@@ -732,7 +748,12 @@ public class DbAdapter
 		Cursor c = mDbHelper.mDb.query(TABLE_TMP,
 				new String[] {KEY_ROWID, KEY_COMFORT},
 				KEY_COMFORT + " IS NOT NULL", null, null, null, null, "1");
-		return c.moveToFirst() ? c.getInt(1) : 3;
+		int ret = 3;
+		if (c.moveToFirst()) {
+			ret = c.getInt(c.getColumnIndex(KEY_COMFORT));
+		}
+		c.close();
+		return ret;
 	}
 
 	public int fetch_overall()
@@ -740,7 +761,12 @@ public class DbAdapter
 		Cursor c = mDbHelper.mDb.query(TABLE_TMP,
 				new String[] {KEY_ROWID, KEY_OVERALL},
 				KEY_OVERALL + " IS NOT NULL", null, null, null, null, "1");
-		return c.moveToFirst() ? c.getInt(1) : 3;
+		int ret = 3;
+		if (c.moveToFirst()) {
+			ret = c.getInt(c.getColumnIndex(KEY_OVERALL));
+		}
+		c.close();
+		return ret;
 	}
 
 	public long fetch_max_id(String table)
@@ -748,7 +774,12 @@ public class DbAdapter
 		Cursor c = mDbHelper.mDb.query(table,
 				new String[] {KEY_ROWID},
 				null, null, null, null, KEY_ROWID + " DESC", "1");
-		return c.moveToFirst() ? c.getInt(0) : 0;
+		long ret = 0;
+		if (c.moveToFirst()) {
+			ret = c.getInt(c.getColumnIndex(KEY_ROWID));
+		}
+		c.close();
+		return ret;
 	}
 
 	public void save_tmp(String agent, String operator,
@@ -842,6 +873,7 @@ public class DbAdapter
 	{
 		Cursor c = mDbHelper.mDb.rawQuery("SELECT strftime(\"%Y-%m-%d %H:%M:%S\", 'now')", null);
 		if (!c.moveToFirst()) {
+			c.close();
 			return;
 		}
 		String last_update = c.getString(0);
@@ -860,7 +892,12 @@ public class DbAdapter
 		Cursor c = mDbHelper.mDb.query(TABLE_CITIES, new String[] {KEY_ROWID},
 				key_city + " = ?", new String[] {city},
 				null, null, null, "1");
-		return c.moveToFirst() ? Integer.toString(c.getInt(0)) : "0";
+		String ret = "0";
+		if (c.moveToFirst()) {
+			ret = Integer.toString(c.getInt(c.getColumnIndex(KEY_ROWID)));
+		}
+		c.close();
+		return ret;
 	}
 
 	private String fetch_station_id(String station)
@@ -869,7 +906,12 @@ public class DbAdapter
 		Cursor c = mDbHelper.mDb.query(TABLE_STATIONS, new String[] {KEY_ROWID},
 				key_station + " = ?", new String[] {station},
 				null, null, null, "1");
-		return c.moveToFirst() ? Integer.toString(c.getInt(0)) : "0";
+		String ret = "0";
+		if (c.moveToFirst()) {
+			ret = Integer.toString(c.getInt(c.getColumnIndex(KEY_ROWID)));
+		}
+		c.close();
+		return ret;
 	}
 }
 
