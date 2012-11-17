@@ -295,10 +295,10 @@ public class ComplainActivity extends Activity
 	{
 		ArrayAdapter<String> cities = new ArrayAdapter<String>(this, android.R.layout.simple_dropdown_item_1line);
 		Cursor c = mDbHelper.fetch_cities();
-		startManagingCursor(c);
 		if (c.moveToFirst()) do {
 			cities.add(c.getString(c.getColumnIndex(DbAdapter.KEY_CITY)));
 		} while (c.moveToNext());
+		c.close();
 		AutoCompleteTextView cities_entry = (AutoCompleteTextView) findViewById(id);
 		cities_entry.setThreshold(2);
 		cities_entry.setAdapter(cities);
@@ -308,10 +308,10 @@ public class ComplainActivity extends Activity
 	{
 		ArrayAdapter<String> stations = new ArrayAdapter<String>(this, android.R.layout.simple_dropdown_item_1line);
 		Cursor c = mDbHelper.fetch_stations();
-		startManagingCursor(c);
 		if (c.moveToFirst()) do {
 			stations.add(c.getString(c.getColumnIndex(DbAdapter.KEY_STN)));
 		} while (c.moveToNext());
+		c.close();
 		AutoCompleteTextView stations_entry = (AutoCompleteTextView) findViewById(id);
 		stations_entry.setThreshold(1);
 		stations_entry.setAdapter(stations);
@@ -321,10 +321,10 @@ public class ComplainActivity extends Activity
 	{
 		ArrayAdapter<String> agents = new ArrayAdapter<String>(this, android.R.layout.simple_dropdown_item_1line);
 		Cursor c = mDbHelper.fetch_agents();
-		startManagingCursor(c);
 		if (c.moveToFirst()) do {
 			agents.add(c.getString(c.getColumnIndex(DbAdapter.KEY_AGENT)));
 		} while (c.moveToNext());
+		c.close();
 		AutoCompleteTextView agents_entry = (AutoCompleteTextView) findViewById(id);
 		agents_entry.setThreshold(1);
 		agents_entry.setAdapter(agents);
@@ -334,10 +334,10 @@ public class ComplainActivity extends Activity
 	{
 		ArrayAdapter<String> operators = new ArrayAdapter<String>(this, android.R.layout.simple_dropdown_item_1line);
 		Cursor c = mDbHelper.fetch_operators();
-		startManagingCursor(c);
 		if (c.moveToFirst()) do {
 			operators.add(c.getString(c.getColumnIndex(DbAdapter.KEY_OPERATOR)));
 		} while (c.moveToNext());
+		c.close();
 		AutoCompleteTextView operators_entry = (AutoCompleteTextView) findViewById(id);
 		operators_entry.setThreshold(1);
 		operators_entry.setAdapter(operators);
@@ -347,10 +347,10 @@ public class ComplainActivity extends Activity
 	{
 		ArrayAdapter<String> counter_nums = new ArrayAdapter<String>(this, android.R.layout.simple_dropdown_item_1line);
 		Cursor c = mDbHelper.fetch_counter_nums();
-		startManagingCursor(c);
 		if (c.moveToFirst()) do {
 			counter_nums.add(c.getString(c.getColumnIndex(DbAdapter.KEY_CTR)));
 		} while (c.moveToNext());
+		c.close();
 		AutoCompleteTextView counter_nums_entry = (AutoCompleteTextView) findViewById(id);
 		counter_nums_entry.setThreshold(1);
 		counter_nums_entry.setAdapter(counter_nums);
