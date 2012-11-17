@@ -74,6 +74,12 @@
 			android:layout_height="wrap_content"
 			android:drawableLeft="@android:drawable/ic_dialog_map"
 			android:text="@string/map" />
+		<View
+			android:layout_width="fill_parent"
+			android:layout_height="1dp"
+			android:layout_marginTop="5dp"
+			android:layout_marginBottom="5dp"
+			android:background="@android:color/darker_gray"/>
 
 		<TextView
 			android:id="@+id/agent_label"
@@ -110,6 +116,12 @@
 			android:layout_width="fill_parent"
 			android:layout_height="wrap_content"
 			android:hint="@string/operator_hint" />
+		<View
+			android:layout_width="fill_parent"
+			android:layout_height="1dp"
+			android:layout_marginTop="5dp"
+			android:layout_marginBottom="5dp"
+			android:background="@android:color/darker_gray"/>
 
 		<TextView
 			android:id="@+id/sched_time_label"
@@ -173,6 +185,12 @@
 				android:layout_width="wrap_content"
 				android:layout_height="wrap_content"/>
 		</LinearLayout>
+		<View
+			android:layout_width="fill_parent"
+			android:layout_height="1dp"
+			android:layout_marginTop="5dp"
+			android:layout_marginBottom="5dp"
+			android:background="@android:color/darker_gray"/>
 
 		<TextView
 			android:id="@+id/overall_label"
@@ -215,6 +233,12 @@
 			android:numStars="5"
 			android:rating="3"
 			android:stepSize="1.0" />
+		<View
+			android:layout_width="fill_parent"
+			android:layout_height="1dp"
+			android:layout_marginTop="5dp"
+			android:layout_marginBottom="5dp"
+			android:background="@android:color/darker_gray"/>
 
 		<TextView
 			android:id="@+id/comment_label"

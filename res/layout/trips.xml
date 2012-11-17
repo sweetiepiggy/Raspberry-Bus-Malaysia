@@ -31,29 +31,34 @@
 			android:id="@+id/company"
 			android:layout_width="fill_parent"
 			android:layout_height="wrap_content"
-			android:textStyle="bold" />
+			style="@android:style/TextAppearance.Large" />
 		<TextView
 			android:id="@+id/route"
 			android:layout_width="fill_parent"
 			android:layout_height="wrap_content" />
-
-		<TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+		<View
 			android:layout_width="fill_parent"
-			android:layout_height="fill_parent"
-			android:stretchColumns="1" >
-			<TableRow>
-				<TextView
-					android:id="@+id/avg_delay_label"
-					android:layout_width="fill_parent"
-					android:layout_height="wrap_content"
-					android:textStyle="bold"
-					android:text="@string/avg_delay"/>
-				<TextView
-					android:id="@+id/total_avg_delay"
-					android:layout_width="fill_parent"
-					android:layout_height="wrap_content"/>
-			</TableRow>
-		</TableLayout>
+			android:layout_height="1dp"
+			android:layout_marginTop="5dp"
+			android:layout_marginBottom="5dp"
+			android:background="@android:color/darker_gray"/>
+
+		<TextView
+			android:id="@+id/avg_delay_label"
+			android:layout_width="fill_parent"
+			android:layout_height="wrap_content"
+			android:textStyle="bold"
+			android:text="@string/avg_delay"/>
+		<TextView
+			android:id="@+id/total_avg_delay"
+			android:layout_width="fill_parent"
+			android:layout_height="wrap_content"/>
+		<View
+			android:layout_width="fill_parent"
+			android:layout_height="1dp"
+			android:layout_marginTop="5dp"
+			android:layout_marginBottom="5dp"
+			android:background="@android:color/darker_gray"/>
 
 		<TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
 		android:id="@+id/results_layout"
