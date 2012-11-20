@@ -128,13 +128,6 @@ public class RaspberryBusMalaysiaActivity extends Activity
 	}
 
 	@Override
-	public void onConfigurationChanged(Configuration new_cfg) {
-		super.onConfigurationChanged(new_cfg);
-
-		init();
-	}
-
-	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		Intent intent;
 		switch (item.getItemId()) {
