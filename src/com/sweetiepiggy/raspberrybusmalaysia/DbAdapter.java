@@ -232,10 +232,14 @@ public class DbAdapter
 			}
 		}
 
-		public void open_database(int perm) throws SQLException
+		public void open()
 		{
-			mDb = (perm == SQLiteDatabase.OPEN_READWRITE) ?
-				getWritableDatabase() : getReadableDatabase();
+			mDb = getReadableDatabase();
+		}
+
+		public void open_readwrite() throws SQLException
+		{
+			mDb = getWritableDatabase();
 		}
 
 		@Override
@@ -252,28 +256,24 @@ public class DbAdapter
 	{
 	}
 
-	public DbAdapter open(Context ctx) throws SQLException
+	public DbAdapter open(Context ctx)
 	{
-		return open(ctx, SQLiteDatabase.OPEN_READONLY, true);
+		mDbHelper = new DatabaseHelper(ctx, false);
+		mDbHelper.open();
+		return this;
 	}
 
-	public DbAdapter open_no_sync(Context ctx) throws SQLException
+	public DbAdapter open_no_sync(Context ctx)
 	{
-		return open(ctx, SQLiteDatabase.OPEN_READONLY, false);
+		mDbHelper = new DatabaseHelper(ctx, false);
+		mDbHelper.open();
+		return this;
 	}
 
 	public DbAdapter open_readwrite(Context ctx) throws SQLException
 	{
-		return open(ctx, SQLiteDatabase.OPEN_READWRITE, true);
-	}
-
-	private DbAdapter open(Context ctx, int perm, boolean allow_sync) throws SQLException
-	{
-		//Log.i(TAG, "new DatabaseHelper(ctx)");
-		mDbHelper = new DatabaseHelper(ctx, allow_sync);
-		//Log.i(TAG, "opening database with permission " + perm);
-		mDbHelper.open_database(perm);
-
+		mDbHelper = new DatabaseHelper(ctx, true);
+		mDbHelper.open_readwrite();
 		return this;
 	}
 
