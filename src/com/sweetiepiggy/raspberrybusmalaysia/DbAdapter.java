@@ -263,16 +263,14 @@ public class DbAdapter
 		return this;
 	}
 
-	public DbAdapter open_no_sync(Context ctx)
-	{
-		mDbHelper = new DatabaseHelper(ctx, false);
-		mDbHelper.open();
-		return this;
-	}
-
 	public DbAdapter open_readwrite(Context ctx) throws SQLException
 	{
-		mDbHelper = new DatabaseHelper(ctx, true);
+		return open_readwrite(ctx, true);
+	}
+
+	public DbAdapter open_readwrite(Context ctx, boolean allow_sync) throws SQLException
+	{
+		mDbHelper = new DatabaseHelper(ctx, allow_sync);
 		mDbHelper.open_readwrite();
 		return this;
 	}

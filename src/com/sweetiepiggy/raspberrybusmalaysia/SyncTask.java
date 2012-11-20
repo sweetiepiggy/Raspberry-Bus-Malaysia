@@ -129,7 +129,7 @@ public class SyncTask extends AsyncTask<Void, Integer, Void>
 			}
 
 			DbAdapter dbHelper = new DbAdapter();
-			dbHelper.open_no_sync(mCtx);
+			dbHelper.open_readwrite(mCtx, false);
 
 			long max_id = dbHelper.fetch_max_id(table);
 			final long orig_max_id = max_id;
