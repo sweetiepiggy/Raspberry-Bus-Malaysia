@@ -1,5 +1,9 @@
 _id,company,bus_brand,from_city_id,from_station_id,to_city_id,to_station_id,scheduled_departure,actual_departure,arrival_time,counter,overall,safety,comfort,comment
-103,"Sykt Pengangkutan Hamid Yacob S/B","Konsortium Bas Ekspres",3,7,2,6,2012-09-17 11:00,2012-09-17 11:12,2012-09-17 17:34,34,1,1,2,"12.15pm-12.54pm, we were waiting for bus repaired. then break time it took 2pm-2.55pm. again another break at 4.17pm-4.30pm. driver drive very fast."
+107,Transnasional,Transnasional,2,6,3,7,"2012-11-25 16:00","2012-11-25 16:03","2012-11-25 20:44",5,3,4,2,""
+106,Transnasional,Transnasional,2,2,3,7,"2012-11-25 16:30","2012-11-25 16:32","2012-11-25 20:44",5,3,4,2,""
+105,Transnasional,Transnasional,3,7,2,6,"2012-11-24 09:00","2012-11-24 09:03","2012-11-24 15:08",9,3,4,2,"stopped 40 minutes at Terminal Amanjaya Ipoh, too complicated to get off bus then find at another location"
+104,Transnasional,Transnasional,3,7,2,2,"2012-11-24 09:00","2012-11-24 09:03","2012-11-24 14:44",9,3,4,2,"stopped 40 minutes at Terminal Amanjaya Ipoh, too complicated to get off bus then find at another location"
+103,"Sykt Pengangkutan Hamid Yacob S/B","Konsortium Bas Ekspres",3,7,2,6,"2012-09-17 11:00","2012-09-17 11:12","2012-09-17 17:34",34,1,1,2,"12.15pm-12.54pm, we were waiting for bus repaired. then break time it took 2pm-2.55pm. again another break at 4.17pm-4.30pm. driver drive very fast."
 102,Transnasional,Transnasional,2,2,3,7,"2012-09-08 16:30","2012-09-08 16:34","2012-09-08 21:06",5,3,4,3,"stop at duta station at 4.36 pm and exchange bus."
 101,Transnasional,Transnasional,2,6,3,7,"2012-09-08 16:00","2012-09-08 16:02","2012-09-08 21:06",5,3,4,3,"stop at duta station at 4.36 pm and exchange bus."
 100,"Star Qisna","Starmart Express",2,6,3,7,"2012-09-02 16:00","2012-09-02 16:55","2012-09-02 21:56",15,1,2,2,"guy at counter lied, said bus was scheduled for 4pm but it was really scheduled for 4:30pm and didn't actually leave until 5pm, paid extra for massage chair but there was none, was told bus was direct to sg nibong with no stops but stopped at butterworth"
