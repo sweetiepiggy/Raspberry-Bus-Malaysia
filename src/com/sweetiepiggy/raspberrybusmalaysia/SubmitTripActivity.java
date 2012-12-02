@@ -466,31 +466,44 @@ public class SubmitTripActivity extends Activity
 		String overall = Integer.toString((int) ((RatingBar) findViewById(R.id.overall_bar)).getRating());
 		String comment = ((EditText) findViewById(R.id.comment_entry)).getText().toString();
 
-		send_email(agent, operator, from_city,
+		String msg = format_email(agent, operator, from_city,
 			from_station, to_city, to_station, sched_time,
 			depart_time, arrival_time, counter_num,
 			safety, comfort, overall, comment);
+		send_email(msg);
 	}
 
-	private void send_email(String agent, String operator,
-			String from_city, String from_station, String to_city,
-			String to_station, String scheduled_departure,
-			String actual_departure, String arrival_time,
-			String counter, String safety, String comfort,
-			String overall, String comment)
+	private void send_email(String msg)
 	{
-		final String msg  = agent + ',' + operator + ',' + from_city +
-			',' + from_station + ',' + to_city + ',' + to_station +
-			',' + scheduled_departure + ',' + actual_departure +
-			',' + arrival_time + ',' + counter + ',' + safety +
-			',' + comfort + ',' + overall + ',' + comment + "\n";
-
 		Intent intent = new Intent(Intent.ACTION_SEND_MULTIPLE);
 		intent.putExtra(Intent.EXTRA_EMAIL, new String[] {EMAIL_ADDRESS} );
 		intent.putExtra(Intent.EXTRA_SUBJECT, EMAIL_SUBJECT);
 		intent.putExtra(Intent.EXTRA_TEXT, msg);
 		intent.setType("text/plain");
 		startActivity(Intent.createChooser(intent, getResources().getString(R.string.send_email)));
+	}
+
+	private String format_email(String agent, String operator,
+			String from_city, String from_station, String to_city,
+			String to_station, String scheduled_departure,
+			String actual_departure, String arrival_time,
+			String counter, String safety, String comfort,
+			String overall, String comment)
+	{
+		return "Agent: " + agent + "\n" +
+			"Operator: " + operator + "\n" +
+			"From city: " + from_city + "\n" +
+			"From station: " + from_station + "\n" +
+			"From city: " + to_city + "\n" +
+			"To station: " + to_station + "\n" +
+			"Scheduled departure: " + scheduled_departure + "\n" +
+			"Actual departure: " + actual_departure + "\n" +
+			"Arrival time: " + arrival_time + "\n" +
+			"Counter: " + counter + "\n" +
+			"Safety: " + safety + "\n" +
+			"Comfort: " + comfort + "\n" +
+			"Overall: " + overall + "\n" +
+			"Comment: " + comment + "\n";
 	}
 
 	private String format_time(date_and_time d)
