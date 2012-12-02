@@ -324,6 +324,7 @@ public class SubmitTripActivity extends Activity
 		((AutoCompleteTextView) findViewById(R.id.counter_num_entry)).setText(counter_num);
 
 		((RatingBar) findViewById(R.id.safety_bar)).setRating(safety);
+		((RatingBar) findViewById(R.id.comfort_bar)).setRating(comfort);
 		((RatingBar) findViewById(R.id.overall_bar)).setRating(overall);
 		((EditText) findViewById(R.id.comment_entry)).setText(comment);
 	}
