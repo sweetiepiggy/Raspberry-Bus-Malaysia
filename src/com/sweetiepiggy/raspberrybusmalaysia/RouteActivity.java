@@ -19,25 +19,21 @@
 
 package com.sweetiepiggy.raspberrybusmalaysia;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
-import android.view.Gravity;
 import android.view.View;
-import android.view.ViewGroup;
-import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.Button;
+import android.widget.ListView;
 import android.widget.RadioButton;
+import android.widget.ResourceCursorAdapter;
 import android.widget.SimpleCursorAdapter;
 import android.widget.Spinner;
-import android.widget.TableLayout;
-import android.widget.TableRow;
 import android.widget.TextView;
 
 public class RouteActivity extends Activity
@@ -46,10 +42,47 @@ public class RouteActivity extends Activity
 	private String m_to_city = "";
 
 	private DbAdapter mDbHelper;
-	private ArrayList<TableRow> m_rows = new ArrayList<TableRow>();
 
 	private static final int ACTIVITY_FROM = 0;
 	private static final int ACTIVITY_TO = 1;
+
+	private class RouteListAdapter extends ResourceCursorAdapter
+	{
+		public RouteListAdapter(Context context, Cursor c)
+		{
+			super(context, R.layout.route_row, c);
+		}
+
+		@Override
+		public void bindView(View view, Context context, Cursor c)
+		{
+			TextView company_v = (TextView) view.findViewById(R.id.company);
+			TextView avg_v = (TextView) view.findViewById(R.id.avg);
+			TextView delay_v = (TextView) view.findViewById(R.id.delay);
+			TextView count_v = (TextView) view.findViewById(R.id.count);
+
+			final int row_id = c.getInt(c.getColumnIndex(DbAdapter.KEY_ROWID));
+			String agent = c.getString(c.getColumnIndex(DbAdapter.KEY_AGENT));
+			String operator = c.getString(c.getColumnIndex(DbAdapter.KEY_OPERATOR));
+			String avg = format_time(c.getInt(c.getColumnIndex(DbAdapter.AVG_TIME)));
+			String delay = format_time_min(c.getInt(c.getColumnIndex(DbAdapter.AVG_DELAY)));
+			String count = c.getString(c.getColumnIndex(DbAdapter.NUM_TRIPS));
+
+			String company = ((RadioButton) findViewById(R.id.operator_radio)).isChecked() ?
+				operator : agent;
+
+			if (company.length() > 15) {
+				company = company.replace(' ', '\n');
+			} else if (company.length() == 0) {
+				company = getResources().getString(R.string.unknown);
+			}
+
+			company_v.setText(company);
+			avg_v.setText(avg);
+			delay_v.setText(delay);
+			count_v.setText(count);
+		}
+	}
 
 	/** Called when the activity is first created. */
 	@Override
@@ -238,27 +271,27 @@ public class RouteActivity extends Activity
 
 	private void print_rows(String from_city, String to_city, String sort_by)
 	{
-		init_labels(from_city, to_city);
-
 		String group_by = ((RadioButton) findViewById(R.id.operator_radio)).isChecked() ?
 			DbAdapter.KEY_OPERATOR : DbAdapter.KEY_AGENT;
 		Cursor c = mDbHelper.fetch_avg(from_city, to_city, group_by, sort_by);
 		startManagingCursor(c);
-
-		clear_rows();
-		if (c.moveToFirst()) do {
-			String agent = c.getString(c.getColumnIndex(DbAdapter.KEY_AGENT));
-			String operator = c.getString(c.getColumnIndex(DbAdapter.KEY_OPERATOR));
-			String avg = format_time(c.getInt(c.getColumnIndex(DbAdapter.AVG_TIME)));
-			String delay = format_time_min(c.getInt(c.getColumnIndex(DbAdapter.AVG_DELAY)));
-			String count = c.getString(c.getColumnIndex(DbAdapter.NUM_TRIPS));
-
-			String disp_comp = ((RadioButton) findViewById(R.id.operator_radio)).isChecked() ?
-				operator : agent;
-
-			print_row(disp_comp, avg, delay, count, from_city,
-					to_city);
-		} while (c.moveToNext());
+		ListView lv = (ListView) findViewById(R.id.results_list);
+		lv.setAdapter(new RouteListAdapter(this, c));
+		lv.setOnItemClickListener(new OnItemClickListener() {
+			public void onItemClick(AdapterView<?> parent, View v,
+					int pos, long id) {
+				String group_by = ((RadioButton) findViewById(R.id.operator_radio)).isChecked() ?
+					DbAdapter.KEY_OPERATOR : DbAdapter.KEY_AGENT;
+				String company = mDbHelper.getCompany(id, group_by);
+				Intent intent = new Intent(getApplicationContext(),
+					CompanyResultActivity.class);
+				Bundle b = new Bundle();
+				b.putString("company", company);
+				b.putBoolean("is_operator", ((RadioButton) findViewById(R.id.operator_radio)).isChecked());
+				intent.putExtras(b);
+				startActivity(intent);
+			}
+		});
 	}
 
 	private String format_time(int time)
@@ -274,102 +307,6 @@ public class RouteActivity extends Activity
 		int min = time / 60;
 		return String.format("%s%d%s %02d%s", negative, hr, getResources().getString(R.string.hour_abbr),
 				min, getResources().getString(R.string.minute_abbr));
-	}
-
-	private void print_row(String company, String avg, String delay,
-			String count, String from_city, String to_city)
-	{
-		String display_company = company;
-		if (company.length() > 15) {
-//			company = company.substring(0, 15);
-			display_company = company.replace(' ', '\n');
-		} else if (company.length() == 0) {
-			display_company = getResources().getString(R.string.unknown);
-//			return;
-		}
-
-		Button company_view = new Button(getApplicationContext());
-		TextView avg_view = new TextView(getApplicationContext());
-		TextView delay_view = new TextView(getApplicationContext());
-		Button count_view = new Button(getApplicationContext());
-		company_view.setText(display_company);
-		avg_view.setText(avg);
-		delay_view.setText(delay);
-		count_view.setText(count);
-
-		company_view.setGravity(Gravity.CENTER);
-		avg_view.setGravity(Gravity.CENTER);
-		delay_view.setGravity(Gravity.CENTER);
-		count_view.setGravity(Gravity.CENTER);
-
-		init_company_button(company_view, company);
-		init_count_button(count_view, company, from_city, to_city);
-
-		TableRow tr = new TableRow(getApplicationContext());
-
-		TableRow.LayoutParams lp = new TableRow.LayoutParams(TableRow.LayoutParams.WRAP_CONTENT,
-				TableRow.LayoutParams.FILL_PARENT, 1.0f);
-		tr.setGravity(Gravity.CENTER);
-		tr.setLayoutParams(lp);
-
-		m_rows.add(tr);
-		tr.addView(company_view);
-		tr.addView(avg_view);
-		tr.addView(delay_view);
-		tr.addView(count_view);
-
-		TableLayout results_layout = (TableLayout) findViewById(R.id.results_layout);
-		results_layout.addView(tr);
-		tr.startAnimation(AnimationUtils.loadAnimation(getApplicationContext(), android.R.anim.fade_in));
-	}
-
-	private void init_company_button(Button b, final String company)
-	{
-		b.setOnClickListener(new View.OnClickListener() {
-			public void onClick(View v)
-			{
-				Intent intent = new Intent(getApplicationContext(),
-					CompanyResultActivity.class);
-				Bundle b = new Bundle();
-				b.putString("company", company);
-				b.putBoolean("is_operator", ((RadioButton) findViewById(R.id.operator_radio)).isChecked());
-				intent.putExtras(b);
-				startActivity(intent);
-			}
-		});
-
-	}
-
-	private void init_count_button(Button b, final String company,
-			final String from_city, final String to_city)
-	{
-		b.setOnClickListener(new View.OnClickListener() {
-			public void onClick(View v)
-			{
-				Intent intent = new Intent(getApplicationContext(),
-					TripsActivity.class);
-				Bundle b = new Bundle();
-				b.putString("company", company);
-				b.putString("from_city", from_city);
-				b.putString("to_city", to_city);
-				b.putBoolean("is_operator", ((RadioButton) findViewById(R.id.operator_radio)).isChecked());
-				intent.putExtras(b);
-				startActivity(intent);
-			}
-		});
-	}
-
-	private void clear_rows()
-	{
-		ViewGroup results_layout = (ViewGroup) findViewById(R.id.results_layout);
-		Iterator<TableRow> itr = m_rows.iterator();
-		while (itr.hasNext()) {
-			TableRow row = itr.next();
-//			row.startAnimation(AnimationUtils.loadAnimation(getApplicationContext(), android.R.anim.fade_out));
-//			row.setVisibility(View.INVISIBLE);
-			results_layout.removeView(row);
-		}
-		m_rows.clear();
 	}
 
 	/* TODO: move format_time() and format_time_min() to their own class */

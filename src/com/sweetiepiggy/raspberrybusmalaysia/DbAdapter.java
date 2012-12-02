@@ -664,7 +664,9 @@ public class DbAdapter
 				" TO_STATIONS." + KEY_CITY_ID + " == " +
 				"TO_CITIES." + KEY_ROWID,
 
-				new String[] {KEY_AGENT, KEY_OPERATOR, AVG_TIME, AVG_DELAY, NUM_TRIPS},
+				new String[] {TABLE_TRIPS + "." + KEY_ROWID,
+					KEY_AGENT, KEY_OPERATOR, AVG_TIME,
+					AVG_DELAY, NUM_TRIPS},
 				"FROM_CITIES." + key_city + " = ? AND " +
 				"TO_CITIES." + key_city + " = ? AND " + KEY_ARRIVAL + "!= 'Cancelled'",
 				new String[] {from_city, to_city},
@@ -692,7 +694,8 @@ public class DbAdapter
 				" TO_STATIONS." + KEY_CITY_ID + " == " +
 				"TO_CITIES." + KEY_ROWID,
 
-				new String[] {AVG_TIME, AVG_DELAY, NUM_TRIPS},
+				new String[] {TABLE_TRIPS + "." + KEY_ROWID,
+					AVG_TIME, AVG_DELAY, NUM_TRIPS},
 				KEY_AGENT + " = ? AND " +
 				"FROM_CITIES." + key_city + " = ? AND " +
 				"TO_CITIES." + key_city + " = ?",
@@ -722,7 +725,8 @@ public class DbAdapter
 				" TO_STATIONS." + KEY_CITY_ID + " == " +
 				"TO_CITIES." + KEY_ROWID,
 
-				new String[] {AVG_TIME, AVG_DELAY, NUM_TRIPS},
+				new String[] {TABLE_TRIPS + "." + KEY_ROWID,
+					AVG_TIME, AVG_DELAY, NUM_TRIPS},
 				KEY_OPERATOR + " = ? AND " +
 				"FROM_CITIES." + key_city + " = ? AND " +
 				"TO_CITIES." + key_city + " = ?",
@@ -762,7 +766,8 @@ public class DbAdapter
 				" TO_STATIONS." + KEY_CITY_ID + " == " +
 				"TO_CITIES." + KEY_ROWID,
 
-				new String[] {KEY_SCHED_DEP, TRIP_DELAY, TRIP_TIME},
+				new String[] {TABLE_TRIPS + "." + KEY_ROWID,
+					KEY_SCHED_DEP, TRIP_DELAY, TRIP_TIME},
 				KEY_AGENT + " = ? AND " +
 				"FROM_CITIES." + key_city + " = ? AND " +
 				"TO_CITIES." + key_city + " = ?",
@@ -790,7 +795,8 @@ public class DbAdapter
 				" TO_STATIONS." + KEY_CITY_ID + " == " +
 				"TO_CITIES." + KEY_ROWID,
 
-				new String[] {KEY_SCHED_DEP, TRIP_DELAY, TRIP_TIME},
+				new String[] {TABLE_TRIPS + "." + KEY_ROWID,
+					KEY_SCHED_DEP, TRIP_DELAY, TRIP_TIME},
 				KEY_OPERATOR + " = ? AND " +
 				"FROM_CITIES." + key_city + " = ? AND " +
 				"TO_CITIES." + key_city + " = ?",
@@ -814,7 +820,7 @@ public class DbAdapter
 				" ORDER BY COUNT(" + KEY_CITY_ID + ") DESC LIMIT 1",
 			null);
 		if (c.moveToFirst()) {
-			ret = c.getString(0);
+			ret = c.getString(c.getColumnIndex(key_city));
 		}
 		c.close();
 		return ret;
@@ -825,7 +831,7 @@ public class DbAdapter
 		String ret = null;
 		String key_city = KEY_CITY + "_" + mDbHelper.mCtx.getResources().getString(R.string.lang_code);
 
-		Cursor c = mDbHelper.mDb.rawQuery("SELECT TO_CITIES." + key_city +
+		Cursor c = mDbHelper.mDb.rawQuery("SELECT TO_CITIES." + key_city + " AS " + key_city +
 				" FROM " + TABLE_TRIPS +
 
 				" JOIN " + TABLE_STATIONS + " AS FROM_STATIONS ON " +
@@ -849,7 +855,23 @@ public class DbAdapter
 				" ORDER BY COUNT(TO_CITIES." + key_city + ") DESC LIMIT 1",
 			new String[] {from_city});
 		if (c.moveToFirst()) {
-			ret = c.getString(0);
+			ret = c.getString(c.getColumnIndex(key_city));
+		}
+		c.close();
+		return ret;
+	}
+
+	public String getCompany(long id, String group_by)
+	{
+		String ret = null;
+
+		Cursor c = mDbHelper.mDb.query(true, TABLE_TRIPS,
+				new String[] {KEY_ROWID, KEY_AGENT, KEY_OPERATOR},
+				KEY_ROWID + " = ?",
+				new String[] {Long.toString(id)},
+				group_by, null, null, null);
+		if (c.moveToFirst()) {
+			ret = c.getString(c.getColumnIndex(group_by));
 		}
 		c.close();
 		return ret;

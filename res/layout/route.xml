@@ -19,101 +19,87 @@
     along with Raspberry Bus Malaysia ; if not, see <http://www.gnu.org/licenses/>.
 -->
 
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
 	android:layout_width="fill_parent"
-	android:layout_height="fill_parent" >
+	android:layout_height="wrap_content"
+	android:orientation="vertical" >
+
 	<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
 		android:layout_width="fill_parent"
 		android:layout_height="wrap_content"
-		android:orientation="vertical" >
-
+		android:orientation="horizontal" >
 		<TextView
 			android:id="@+id/from_label"
-			android:layout_width="fill_parent"
+			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
+			android:layout_weight="1"
 			style="@android:style/TextAppearance.Large"
 			android:text="@string/from" />
-		<Spinner
-			android:id="@+id/from_spinner"
-			android:layout_width="fill_parent"
-			android:layout_height="wrap_content"
-			android:drawSelectorOnTop="true"
-			android:prompt="@string/from"/>
 		<Button
 			android:id="@+id/from_map_button"
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
 			android:drawableLeft="@android:drawable/ic_dialog_map"
 			android:text="@string/map" />
+	</LinearLayout>
+	<Spinner
+		android:id="@+id/from_spinner"
+		android:layout_width="fill_parent"
+		android:layout_height="wrap_content"
+		android:drawSelectorOnTop="true"
+		android:prompt="@string/from"/>
+	<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+		android:layout_width="fill_parent"
+		android:layout_height="wrap_content"
+		android:orientation="horizontal" >
 		<TextView
 			android:id="@+id/to_label"
-			android:layout_width="fill_parent"
+			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
+			android:layout_weight="1"
 			style="@android:style/TextAppearance.Large"
 			android:text="@string/to" />
-		<Spinner
-			android:id="@+id/to_spinner"
-			android:layout_width="fill_parent"
-			android:layout_height="wrap_content"
-			android:drawSelectorOnTop="true"
-			android:prompt="@string/to"/>
 		<Button
 			android:id="@+id/to_map_button"
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
 			android:drawableLeft="@android:drawable/ic_dialog_map"
 			android:text="@string/map" />
-
-		<RadioGroup xmlns:android="http://schemas.android.com/apk/res/android"
-			android:layout_width="fill_parent"
-			android:layout_height="wrap_content"
-			android:orientation="horizontal">
-		<RadioButton android:id="@+id/agent_radio"
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content"
-			android:layout_weight="1"
-			android:text="@string/agent"
-			android:onClick="on_radio_button_clicked"/>
-		<RadioButton android:id="@+id/operator_radio"
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content"
-			android:layout_weight="1"
-			android:text="@string/operator"
-			android:onClick="on_radio_button_clicked"/>
-		</RadioGroup>
-
-		<TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
-			android:id="@+id/results_layout"
-			android:layout_width="fill_parent"
-			android:layout_height="fill_parent"
-			android:shrinkColumns="1" >
-			<TableRow>
-				<Button
-					android:id="@+id/company"
-					android:layout_width="fill_parent"
-					android:layout_height="fill_parent"
-					android:textStyle="bold"
-					android:text="@string/agent"/>
-				<Button
-					android:id="@+id/avg_time"
-					android:layout_width="fill_parent"
-					android:layout_height="fill_parent"
-					android:textStyle="bold"
-					android:text="@string/avg_time"/>
-				<Button
-					android:id="@+id/avg_delay"
-					android:layout_width="fill_parent"
-					android:layout_height="fill_parent"
-					android:textStyle="bold"
-					android:text="@string/avg_delay"/>
-				<Button
-					android:id="@+id/num_trips"
-					android:layout_width="fill_parent"
-					android:layout_height="fill_parent"
-					android:textStyle="bold"
-					android:text="@string/num_trips"/>
-			</TableRow>
-		</TableLayout>
-
 	</LinearLayout>
-</ScrollView>
+	<Spinner
+		android:id="@+id/to_spinner"
+		android:layout_width="fill_parent"
+		android:layout_height="wrap_content"
+		android:drawSelectorOnTop="true"
+		android:prompt="@string/to"/>
+
+	<RadioGroup xmlns:android="http://schemas.android.com/apk/res/android"
+		android:layout_width="fill_parent"
+		android:layout_height="wrap_content"
+		android:orientation="horizontal">
+	<RadioButton android:id="@+id/agent_radio"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_weight="1"
+		android:text="@string/agent"
+		android:onClick="on_radio_button_clicked"/>
+	<RadioButton android:id="@+id/operator_radio"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_weight="1"
+		android:text="@string/operator"
+		android:onClick="on_radio_button_clicked"/>
+	</RadioGroup>
+	<View
+		android:layout_width="fill_parent"
+		android:layout_height="1dp"
+		android:layout_marginTop="5dp"
+		android:layout_marginBottom="5dp"
+		android:background="@android:color/darker_gray"/>
+
+	<ListView xmlns:android="http://schemas.android.com/apk/res/android"
+		android:id="@+id/results_list"
+		android:layout_width="fill_parent"
+		android:layout_height="fill_parent" />
+</LinearLayout>
+
