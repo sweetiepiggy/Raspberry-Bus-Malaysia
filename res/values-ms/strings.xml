@@ -35,6 +35,7 @@
 	<string name="avg_time">Purata\nMasa</string>
 	<string name="avg_delay">Purata\nLewat</string>
 	<string name="num_trips">Jumlah\nPerjalanan</string>
+	<string name="now">Sekarang</string>
 
 	<string name="sched_time">Masa Ditetapkan</string>
 	<string name="depart_time">Masa Bertolak</string>

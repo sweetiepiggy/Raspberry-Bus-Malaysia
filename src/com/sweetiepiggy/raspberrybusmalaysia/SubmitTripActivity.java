@@ -178,11 +178,14 @@ public class SubmitTripActivity extends Activity
 	private void init_date_time_buttons()
 	{
 		init_date_button(R.id.sched_date_button, SCHED_DATE_DIALOG_ID);
-		init_time_button(R.id.sched_time_button, SCHED_TIME_DIALOG_ID);
 		init_date_button(R.id.depart_date_button, DEPART_DATE_DIALOG_ID);
-		init_time_button(R.id.depart_time_button, DEPART_TIME_DIALOG_ID);
 		init_date_button(R.id.arrival_date_button, ARRIVAL_DATE_DIALOG_ID);
+
+		init_time_button(R.id.sched_time_button, SCHED_TIME_DIALOG_ID);
+		init_time_button(R.id.depart_time_button, DEPART_TIME_DIALOG_ID);
 		init_time_button(R.id.arrival_time_button, ARRIVAL_TIME_DIALOG_ID);
+
+		init_now_buttons();
 
 		update_date_label(R.id.sched_date_button, mData.sched_time);
 		update_time_label(R.id.sched_time_button, mData.sched_time);
@@ -205,10 +208,58 @@ public class SubmitTripActivity extends Activity
 
 	private void init_time_button(int button_id, final int dialog_id)
 	{
-		Button time_button = (Button)findViewById(button_id);
+		Button time_button = (Button) findViewById(button_id);
 		time_button.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
 				showDialog(dialog_id);
+			}
+		});
+	}
+
+	private void init_now_buttons()
+	{
+		Button sched_now_button = (Button) findViewById(R.id.sched_now_button);
+		sched_now_button.setOnClickListener(new View.OnClickListener() {
+			public void onClick(View v) {
+				Calendar cal = Calendar.getInstance();
+				mData.sched_time.year = cal.get(Calendar.YEAR);
+				mData.sched_time.month = cal.get(Calendar.MONTH);
+				mData.sched_time.day = cal.get(Calendar.DAY_OF_MONTH);
+				mData.sched_time.hour = cal.get(Calendar.HOUR_OF_DAY);
+				mData.sched_time.minute = cal.get(Calendar.MINUTE);
+
+				update_date_label(R.id.sched_date_button, mData.sched_time);
+				update_time_label(R.id.sched_time_button, mData.sched_time);
+			}
+		});
+
+		Button depart_now_button = (Button) findViewById(R.id.depart_now_button);
+		depart_now_button.setOnClickListener(new View.OnClickListener() {
+			public void onClick(View v) {
+				Calendar cal = Calendar.getInstance();
+				mData.depart_time.year = cal.get(Calendar.YEAR);
+				mData.depart_time.month = cal.get(Calendar.MONTH);
+				mData.depart_time.day = cal.get(Calendar.DAY_OF_MONTH);
+				mData.depart_time.hour = cal.get(Calendar.HOUR_OF_DAY);
+				mData.depart_time.minute = cal.get(Calendar.MINUTE);
+
+				update_date_label(R.id.depart_date_button, mData.depart_time);
+				update_time_label(R.id.depart_time_button, mData.depart_time);
+			}
+		});
+
+		Button arrival_now_button = (Button) findViewById(R.id.arrival_now_button);
+		arrival_now_button.setOnClickListener(new View.OnClickListener() {
+			public void onClick(View v) {
+				Calendar cal = Calendar.getInstance();
+				mData.arrival_time.year = cal.get(Calendar.YEAR);
+				mData.arrival_time.month = cal.get(Calendar.MONTH);
+				mData.arrival_time.day = cal.get(Calendar.DAY_OF_MONTH);
+				mData.arrival_time.hour = cal.get(Calendar.HOUR_OF_DAY);
+				mData.arrival_time.minute = cal.get(Calendar.MINUTE);
+
+				update_date_label(R.id.arrival_date_button, mData.arrival_time);
+				update_time_label(R.id.arrival_time_button, mData.arrival_time);
 			}
 		});
 	}

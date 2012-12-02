@@ -35,6 +35,7 @@
 	<string name="avg_time">平均时间</string>
 	<string name="avg_delay">平均延迟</string>
 	<string name="num_trips">次数</string>
+	<string name="now">现在</string>
 
 	<string name="sched_time">预定时间</string>
 	<string name="depart_time">实际出发时间</string>

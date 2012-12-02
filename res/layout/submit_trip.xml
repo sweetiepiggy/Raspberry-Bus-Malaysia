@@ -136,12 +136,17 @@
 			<Button
 				android:id="@+id/sched_date_button"
 				android:layout_width="wrap_content"
-				android:layout_height="wrap_content"
+				android:layout_height="fill_parent"
 				android:layout_weight="1"/>
 			<Button
 				android:id="@+id/sched_time_button"
 				android:layout_width="wrap_content"
-				android:layout_height="wrap_content"/>
+				android:layout_height="fill_parent"/>
+			<Button
+				android:id="@+id/sched_now_button"
+				android:text="@string/now"
+				android:layout_width="wrap_content"
+				android:layout_height="fill_parent"/>
 		</LinearLayout>
 
 		<TextView
@@ -157,12 +162,17 @@
 			<Button
 				android:id="@+id/depart_date_button"
 				android:layout_width="wrap_content"
-				android:layout_height="wrap_content"
+				android:layout_height="fill_parent"
 				android:layout_weight="1"/>
 			<Button
 				android:id="@+id/depart_time_button"
 				android:layout_width="wrap_content"
-				android:layout_height="wrap_content"/>
+				android:layout_height="fill_parent"/>
+			<Button
+				android:id="@+id/depart_now_button"
+				android:text="@string/now"
+				android:layout_width="wrap_content"
+				android:layout_height="fill_parent"/>
 		</LinearLayout>
 
 		<TextView
@@ -178,12 +188,17 @@
 			<Button
 				android:id="@+id/arrival_date_button"
 				android:layout_width="wrap_content"
-				android:layout_height="wrap_content"
+				android:layout_height="fill_parent"
 				android:layout_weight="1"/>
 			<Button
 				android:id="@+id/arrival_time_button"
 				android:layout_width="wrap_content"
-				android:layout_height="wrap_content"/>
+				android:layout_height="fill_parent"/>
+			<Button
+				android:id="@+id/arrival_now_button"
+				android:text="@string/now"
+				android:layout_width="wrap_content"
+				android:layout_height="fill_parent"/>
 		</LinearLayout>
 		<View
 			android:layout_width="fill_parent"
