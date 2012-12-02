@@ -41,9 +41,7 @@ public class DbAdapter
 	public static final String KEY_FROM_STN = "from_station";
 	public static final String KEY_TO_CITY = "to_city";
 	public static final String KEY_TO_STN = "to_station";
-	public static final String KEY_FROM_CITY_ID = "from_city_id";
 	public static final String KEY_FROM_STN_ID = "from_station_id";
-	public static final String KEY_TO_CITY_ID = "to_city_id";
 	public static final String KEY_TO_STN_ID = "to_station_id";
 	public static final String KEY_SCHED_DEP = "scheduled_departure";
 	public static final String KEY_ACTUAL_DEP = "actual_departure";
@@ -89,16 +87,14 @@ public class DbAdapter
 	private static final String TABLE_TMP = "tmp";
 	private static final String TABLE_TMP_COMPLAINT = "tmp_complaint";
 	private static final String TABLE_LAST_UPDATE = "last_update";
-	private static final int DATABASE_VERSION = 13;
+	private static final int DATABASE_VERSION = 14;
 
 	private static final String DATABASE_CREATE_TRIPS =
 		"CREATE TABLE " + TABLE_TRIPS + " (" +
 		KEY_ROWID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
 		KEY_AGENT + " TEXT, " +
 		KEY_OPERATOR + " TEXT, " +
-		KEY_FROM_CITY_ID + " INTEGER NOT NULL, " +
 		KEY_FROM_STN_ID + " INTEGER, " +
-		KEY_TO_CITY_ID + " INTEGER NOT NULL, " +
 		KEY_TO_STN_ID + " INTEGER, " +
 		KEY_SCHED_DEP + " TEXT NOT NULL, " +
 		KEY_ACTUAL_DEP + " TEXT NOT NULL, " +
@@ -108,9 +104,7 @@ public class DbAdapter
 		KEY_COMFORT + " INTEGER, " +
 		KEY_OVERALL + " INTEGER, " +
 		KEY_COMMENT + " TEXT, " +
-		"FOREIGN KEY(" + KEY_FROM_CITY_ID + ") REFERENCES " + TABLE_CITIES + "(" + KEY_ROWID + "), " +
 		"FOREIGN KEY(" + KEY_FROM_STN_ID + ") REFERENCES " + TABLE_STATIONS + "(" + KEY_ROWID + "), " +
-		"FOREIGN KEY(" + KEY_TO_CITY_ID + ") REFERENCES " + TABLE_CITIES + "(" + KEY_ROWID + "), " +
 		"FOREIGN KEY(" + KEY_TO_STN_ID + ") REFERENCES " + TABLE_STATIONS + "(" + KEY_ROWID + "));";
 
 	private static final String DATABASE_CREATE_TMP =
@@ -225,6 +219,9 @@ public class DbAdapter
 			case 12:
 				db.execSQL("ALTER TABLE trips ADD COLUMN overall INTEGER;");
 				db.execSQL("ALTER TABLE tmp ADD COLUMN overall INTEGER;");
+				break;
+			/* removed from_city_id and to_city_id columns from trips table */
+			case 13:
 				break;
 			default:
 				onCreate(db);
@@ -343,44 +340,55 @@ public class DbAdapter
 		}
 	}
 
+	/** @return cities that exist as departure point in submitted trips */
 	public Cursor fetch_from_cities()
 	{
 		String key_city = KEY_CITY + "_" + mDbHelper.mCtx.getResources().getString(R.string.lang_code);
 		return mDbHelper.mDb.rawQuery("SELECT DISTINCT " + TABLE_TRIPS +
 				"." + KEY_ROWID + " AS " + KEY_ROWID + ", " + key_city + " AS " + KEY_FROM_CITY +
-				" FROM " + TABLE_TRIPS + " JOIN " + TABLE_CITIES +
-				" on " + TABLE_TRIPS + "." + KEY_FROM_CITY_ID + " == " +
+				" FROM " + TABLE_TRIPS + " JOIN " + TABLE_STATIONS +
+				" ON " + TABLE_TRIPS + "." + KEY_FROM_STN_ID + " == " +
+				TABLE_STATIONS + "." + KEY_ROWID +
+				" JOIN " + TABLE_CITIES +
+				" ON " + KEY_CITY_ID + " == " +
 				TABLE_CITIES + "." + KEY_ROWID +
 				" GROUP BY " + key_city +
 				" ORDER BY " + key_city + " ASC",
 			null);
 	}
 
+	/** @return stations that exist as departure point in submitted trips */
 	public Cursor fetch_from_stations()
 	{
 		String key_station = KEY_STN + "_" + mDbHelper.mCtx.getResources().getString(R.string.lang_code);
 		String key_city = KEY_CITY + "_" + mDbHelper.mCtx.getResources().getString(R.string.lang_code);
 		return mDbHelper.mDb.rawQuery("SELECT DISTINCT " + TABLE_TRIPS +
-				"." + KEY_ROWID + " AS " + KEY_ROWID + ", " + key_station + " AS " + KEY_STN +
-				", " + key_city + " AS " + KEY_CITY +
-				", " + KEY_LATITUDE + ", " + KEY_LONGITUDE +
+				"." + KEY_ROWID + " AS " + KEY_ROWID + ", " +
+				key_station + " AS " + KEY_STN + ", " +
+				key_city + " AS " + KEY_CITY + ", " +
+				KEY_LATITUDE + ", " + KEY_LONGITUDE +
 				" FROM " + TABLE_TRIPS + " JOIN " + TABLE_STATIONS +
 				" on " + TABLE_TRIPS + "." + KEY_FROM_STN_ID + " == " +
 				TABLE_STATIONS + "." + KEY_ROWID +
-				" JOIN " + TABLE_CITIES + " on " + TABLE_TRIPS + "." +
-				KEY_FROM_CITY_ID + " == " + TABLE_CITIES + "." + KEY_ROWID +
+				" JOIN " + TABLE_CITIES + " on " +
+				KEY_CITY_ID + " == " + TABLE_CITIES + "." + KEY_ROWID +
 				" GROUP BY " + key_station +
 				" ORDER BY " + key_station + " ASC",
 			null);
 	}
 
+	/** @return cities that exist as departure point in submitted trips
+		@param agent - filter by agent */
 	public Cursor fetch_agent_from_cities(String agent)
 	{
 		String key_city = KEY_CITY + "_" + mDbHelper.mCtx.getResources().getString(R.string.lang_code);
 		return mDbHelper.mDb.rawQuery("SELECT DISTINCT " + TABLE_TRIPS +
 				"." + KEY_ROWID + " AS " + KEY_ROWID + ", " + key_city + " AS " + KEY_FROM_CITY +
-				" FROM " + TABLE_TRIPS + " JOIN " + TABLE_CITIES +
-				" on " + TABLE_TRIPS + "." + KEY_FROM_CITY_ID + " == " +
+				" FROM " + TABLE_TRIPS + " JOIN " + TABLE_STATIONS +
+				" ON " + TABLE_TRIPS + "." + KEY_FROM_STN_ID + " == " +
+				TABLE_STATIONS + "." + KEY_ROWID +
+				" JOIN " + TABLE_CITIES +
+				" ON " + KEY_CITY_ID + " == " +
 				TABLE_CITIES + "." + KEY_ROWID +
 				" WHERE " + KEY_AGENT + " == ? " +
 				" GROUP BY " + key_city +
@@ -388,13 +396,18 @@ public class DbAdapter
 			new String[] {agent});
 	}
 
+	/** @return cities that exist as departure point in submitted trips
+		@param operator - filter by operator */
 	public Cursor fetch_operator_from_cities(String operator)
 	{
 		String key_city = KEY_CITY + "_" + mDbHelper.mCtx.getResources().getString(R.string.lang_code);
 		return mDbHelper.mDb.rawQuery("SELECT DISTINCT " + TABLE_TRIPS +
 				"." + KEY_ROWID + " AS " + KEY_ROWID + ", " + key_city + " AS " + KEY_FROM_CITY +
-				" FROM " + TABLE_TRIPS + " JOIN " + TABLE_CITIES +
-				" on " + TABLE_TRIPS + "." + KEY_FROM_CITY_ID + " == " +
+				" FROM " + TABLE_TRIPS + " JOIN " + TABLE_STATIONS +
+				" ON " + TABLE_TRIPS + "." + KEY_FROM_STN_ID + " == " +
+				TABLE_STATIONS + "." + KEY_ROWID +
+				" JOIN " + TABLE_CITIES +
+				" ON " + KEY_CITY_ID + " == " +
 				TABLE_CITIES + "." + KEY_ROWID +
 				" WHERE " + KEY_OPERATOR + " == ? " +
 				" GROUP BY " + key_city +
@@ -402,6 +415,9 @@ public class DbAdapter
 			new String[] {operator});
 	}
 
+	/** @return cities that exist as arrival point in submitted trips for
+		a given departure city
+		@param from_city - departure city */
 	public Cursor fetch_to_cities(String from_city)
 	{
 		String key_city = KEY_CITY + "_" + mDbHelper.mCtx.getResources().getString(R.string.lang_code);
@@ -409,15 +425,29 @@ public class DbAdapter
 
 		return mDbHelper.mDb.rawQuery("SELECT DISTINCT " + TABLE_TRIPS +
 				"." + KEY_ROWID + " AS " + KEY_ROWID + ", " + key_city + " AS " + KEY_TO_CITY +
-				" FROM " + TABLE_TRIPS + " JOIN " + TABLE_CITIES +
-				" on " + TABLE_TRIPS + "." + KEY_TO_CITY_ID + " == " +
+				" FROM " + TABLE_TRIPS +
+
+				" JOIN " + TABLE_STATIONS + " AS FROM_STATIONS ON " +
+				TABLE_TRIPS + "." + KEY_FROM_STN_ID + " == " +
+				"FROM_STATIONS." + KEY_ROWID +
+
+				" JOIN " + TABLE_STATIONS + " AS TO_STATIONS ON " +
+				TABLE_TRIPS + "." + KEY_TO_STN_ID + " == " +
+				"TO_STATIONS." + KEY_ROWID +
+
+				" JOIN " + TABLE_CITIES +
+				" ON TO_STATIONS." + KEY_CITY_ID + " == " +
 				TABLE_CITIES + "." + KEY_ROWID +
-				" WHERE " + KEY_FROM_CITY_ID + " == ? " +
+
+				" WHERE FROM_STATIONS." + KEY_CITY_ID + " == ? " +
 				" GROUP BY " + key_city +
 				" ORDER BY " + key_city + " ASC",
 			new String[] {from_city_id});
 	}
 
+	/** @return stations that exist as arrival point in submitted trips
+		for a given departure station
+		@param from_station - departure station */
 	public Cursor fetch_to_stations(String from_station)
 	{
 		String key_station = KEY_STN + "_" + mDbHelper.mCtx.getResources().getString(R.string.lang_code);
@@ -427,14 +457,20 @@ public class DbAdapter
 				"." + KEY_ROWID + " AS " + KEY_ROWID + ", " + key_station + " AS " + KEY_TO_STN +
 				", " + KEY_LATITUDE + ", " + KEY_LONGITUDE +
 				" FROM " + TABLE_TRIPS + " JOIN " + TABLE_STATIONS +
-				" on " + TABLE_TRIPS + "." + KEY_TO_STN_ID + " == " +
+				" ON " + TABLE_TRIPS + "." + KEY_TO_STN_ID + " == " +
 				TABLE_STATIONS + "." + KEY_ROWID +
+				" JOIN " + TABLE_CITIES +
+				" ON " + KEY_CITY_ID + " == " +
+				TABLE_CITIES + "." + KEY_ROWID +
 				" WHERE " + KEY_FROM_STN_ID + " == ? " +
 				" GROUP BY " + key_station +
 				" ORDER BY " + key_station + " ASC",
 			new String[] {from_station_id});
 	}
 
+	/** @return stations that exist as arrival point in submitted trips
+		for a given departure city
+		@param from_city - departure city */
 	public Cursor fetch_to_stations_from_city(String from_city)
 	{
 		String key_station = KEY_STN + "_" + mDbHelper.mCtx.getResources().getString(R.string.lang_code);
@@ -442,20 +478,35 @@ public class DbAdapter
 		String from_city_id = fetch_city_id(from_city);
 
 		return mDbHelper.mDb.rawQuery("SELECT DISTINCT " + TABLE_TRIPS +
-				"." + KEY_ROWID + " AS " + KEY_ROWID + ", " + key_station + " AS " + KEY_STN +
+				"." + KEY_ROWID + " AS " + KEY_ROWID +
+				", TO_STATIONS." + key_station + " AS " + KEY_STN +
 				", " + key_city + " AS " + KEY_CITY +
-				", " + KEY_LATITUDE + ", " + KEY_LONGITUDE +
-				" FROM " + TABLE_TRIPS + " JOIN " + TABLE_STATIONS +
-				" on " + TABLE_TRIPS + "." + KEY_TO_STN_ID + " == " +
-				TABLE_STATIONS + "." + KEY_ROWID +
-				" JOIN " + TABLE_CITIES + " on " + TABLE_TRIPS + "." +
-				KEY_TO_CITY_ID + " == " + TABLE_CITIES + "." + KEY_ROWID +
-				" WHERE " + KEY_FROM_CITY_ID + " == ? " +
-				" GROUP BY " + key_station +
-				" ORDER BY " + key_station + " ASC",
+				", TO_STATIONS." + KEY_LATITUDE +
+				", TO_STATIONS." + KEY_LONGITUDE +
+				" FROM " + TABLE_TRIPS +
+
+				" JOIN " + TABLE_STATIONS + " AS FROM_STATIONS ON " +
+				TABLE_TRIPS + "." + KEY_FROM_STN_ID + " == " +
+				"FROM_STATIONS." + KEY_ROWID +
+
+				" JOIN " + TABLE_STATIONS + " AS TO_STATIONS ON " +
+				TABLE_TRIPS + "." + KEY_TO_STN_ID + " == " +
+				"TO_STATIONS." + KEY_ROWID +
+
+				" JOIN " + TABLE_CITIES +
+				" ON TO_STATIONS." + KEY_CITY_ID + " == " +
+				TABLE_CITIES + "." + KEY_ROWID +
+
+				" WHERE FROM_STATIONS." + KEY_CITY_ID + " == ? " +
+				" GROUP BY TO_STATIONS." + key_station +
+				" ORDER BY TO_STATIONS." + key_station + " ASC",
 			new String[] {from_city_id});
 	}
 
+	/** @return cities that exist as arrival point in submitted trips
+		for a given departure city and agent
+		@param from_city - departure city
+		@param agent - filter by agent */
 	public Cursor fetch_agent_to_cities(String from_city, String agent)
 	{
 		String key_city = KEY_CITY + "_" + mDbHelper.mCtx.getResources().getString(R.string.lang_code);
@@ -463,16 +514,31 @@ public class DbAdapter
 
 		return mDbHelper.mDb.rawQuery("SELECT DISTINCT " + TABLE_TRIPS +
 				"." + KEY_ROWID + " AS " + KEY_ROWID + ", " + key_city + " AS " + KEY_TO_CITY +
-				" FROM " + TABLE_TRIPS + " JOIN " + TABLE_CITIES +
-				" on " + TABLE_TRIPS + "." + KEY_TO_CITY_ID + " == " +
+				" FROM " + TABLE_TRIPS +
+
+				" JOIN " + TABLE_STATIONS + " AS FROM_STATIONS ON " +
+				TABLE_TRIPS + "." + KEY_FROM_STN_ID + " == " +
+				"FROM_STATIONS." + KEY_ROWID +
+
+				" JOIN " + TABLE_STATIONS + " AS TO_STATIONS ON " +
+				TABLE_TRIPS + "." + KEY_TO_STN_ID + " == " +
+				"TO_STATIONS." + KEY_ROWID +
+
+				" JOIN " + TABLE_CITIES +
+				" ON TO_STATIONS." + KEY_CITY_ID + " == " +
 				TABLE_CITIES + "." + KEY_ROWID +
-				" WHERE " + KEY_FROM_CITY_ID + " == ? " + " AND " +
+
+				" WHERE FROM_STATIONS." + KEY_CITY_ID + " == ? " + " AND " +
 				KEY_AGENT + " == ? " +
 				" GROUP BY " + key_city +
 				" ORDER BY " + key_city + " ASC",
 			new String[] {from_city_id, agent});
 	}
 
+	/** @return cities that exist as arrival point in submitted trips
+		for a given departure city and operator
+		@param from_city - departure city
+		@param operator - filter by operator */
 	public Cursor fetch_operator_to_cities(String from_city, String operator)
 	{
 		String key_city = KEY_CITY + "_" + mDbHelper.mCtx.getResources().getString(R.string.lang_code);
@@ -480,10 +546,21 @@ public class DbAdapter
 
 		return mDbHelper.mDb.rawQuery("SELECT DISTINCT " + TABLE_TRIPS +
 				"." + KEY_ROWID + " AS " + KEY_ROWID + ", " + key_city + " AS " + KEY_TO_CITY +
-				" FROM " + TABLE_TRIPS + " JOIN " + TABLE_CITIES +
-				" on " + TABLE_TRIPS + "." + KEY_TO_CITY_ID + " == " +
+				" FROM " + TABLE_TRIPS +
+
+				" JOIN " + TABLE_STATIONS + " AS FROM_STATIONS ON " +
+				TABLE_TRIPS + "." + KEY_FROM_STN_ID + " == " +
+				"FROM_STATIONS." + KEY_ROWID +
+
+				" JOIN " + TABLE_STATIONS + " AS TO_STATIONS ON " +
+				TABLE_TRIPS + "." + KEY_TO_STN_ID + " == " +
+				"TO_STATIONS." + KEY_ROWID +
+
+				" JOIN " + TABLE_CITIES +
+				" ON TO_STATIONS." + KEY_CITY_ID + " == " +
 				TABLE_CITIES + "." + KEY_ROWID +
-				" WHERE " + KEY_FROM_CITY_ID + " == ? " + " AND " +
+
+				" WHERE " + KEY_CITY_ID + " == ? " + " AND " +
 				KEY_OPERATOR + " == ? " +
 				" GROUP BY " + key_city +
 				" ORDER BY " + key_city + " ASC",
@@ -500,7 +577,7 @@ public class DbAdapter
 				key_city + " AS " + KEY_CITY + ", " +
 				KEY_LATITUDE + ", " + KEY_LONGITUDE +
 				" FROM " + TABLE_STATIONS + " JOIN " + TABLE_CITIES +
-				" on " + TABLE_STATIONS + "." + KEY_CITY_ID + " == " +
+				" ON " + TABLE_STATIONS + "." + KEY_CITY_ID + " == " +
 				TABLE_CITIES + "." + KEY_ROWID,
 			null);
 	}
@@ -551,9 +628,17 @@ public class DbAdapter
 	{
 		String from_city_id = fetch_city_id(from_city);
 		String to_city_id = fetch_city_id(to_city);
-		return mDbHelper.mDb.query(true, TABLE_TRIPS,
+		return mDbHelper.mDb.query(true,
+				TABLE_TRIPS + " JOIN " +
+				TABLE_STATIONS + " AS FROM_STATIONS ON " +
+				TABLE_TRIPS + "." + KEY_FROM_STN_ID + " == " +
+				"FROM_STATIONS." + KEY_ROWID + " JOIN " +
+				TABLE_STATIONS + " AS TO_STATIONS ON " +
+				TABLE_TRIPS + "." + KEY_TO_STN_ID + " == " +
+				"TO_STATIONS." + KEY_ROWID,
 				new String[] {KEY_AGENT, KEY_OPERATOR, AVG_TIME, AVG_DELAY, NUM_TRIPS},
-				KEY_FROM_CITY_ID + " = ? AND " + KEY_TO_CITY_ID + " = ? AND " + KEY_ARRIVAL + "!= 'Cancelled'",
+				"FROM_STATIONS." + KEY_CITY_ID + " = ? AND " +
+				"TO_STATIONS." + KEY_CITY_ID + " = ? AND " + KEY_ARRIVAL + "!= 'Cancelled'",
 				new String[] {from_city_id, to_city_id},
 				group_by, null, sort_by + " ASC", null);
 	}
@@ -562,8 +647,18 @@ public class DbAdapter
 	{
 		String from_city_id = fetch_city_id(from_city);
 		String to_city_id = fetch_city_id(to_city);
-		return mDbHelper.mDb.query(true, TABLE_TRIPS, new String[] {AVG_TIME, AVG_DELAY, NUM_TRIPS},
-				KEY_AGENT + " = ? AND " + KEY_FROM_CITY_ID + " = ? AND " + KEY_TO_CITY_ID + " = ?",
+		return mDbHelper.mDb.query(true,
+				TABLE_TRIPS + " JOIN " +
+				TABLE_STATIONS + " AS FROM_STATIONS ON " +
+				TABLE_TRIPS + "." + KEY_FROM_STN_ID + " == " +
+				"FROM_STATIONS." + KEY_ROWID + " JOIN " +
+				TABLE_STATIONS + " AS TO_STATIONS ON " +
+				TABLE_TRIPS + "." + KEY_TO_STN_ID + " == " +
+				"TO_STATIONS." + KEY_ROWID,
+				new String[] {AVG_TIME, AVG_DELAY, NUM_TRIPS},
+				KEY_AGENT + " = ? AND FROM_STATIONS." +
+				KEY_CITY_ID + " = ? AND TO_STATIONS." +
+				KEY_CITY_ID + " = ?",
 				new String[] {agent, from_city_id, to_city_id},
 				null, null, null, null);
 	}
@@ -572,8 +667,18 @@ public class DbAdapter
 	{
 		String from_city_id = fetch_city_id(from_city);
 		String to_city_id = fetch_city_id(to_city);
-		return mDbHelper.mDb.query(true, TABLE_TRIPS, new String[] {AVG_TIME, AVG_DELAY, NUM_TRIPS},
-				KEY_OPERATOR + " = ? AND " + KEY_FROM_CITY_ID + " = ? AND " + KEY_TO_CITY_ID + " = ?",
+		return mDbHelper.mDb.query(true,
+				TABLE_TRIPS + " JOIN " +
+				TABLE_STATIONS + " AS FROM_STATIONS ON " +
+				TABLE_TRIPS + "." + KEY_FROM_STN_ID + " == " +
+				"FROM_STATIONS." + KEY_ROWID + " JOIN " +
+				TABLE_STATIONS + " AS TO_STATIONS ON " +
+				TABLE_TRIPS + "." + KEY_TO_STN_ID + " == " +
+				"TO_STATIONS." + KEY_ROWID,
+				new String[] {AVG_TIME, AVG_DELAY, NUM_TRIPS},
+				KEY_OPERATOR + " = ? AND FROM_STATIONS." +
+				KEY_CITY_ID + " = ? AND TO_STATIONS." +
+				KEY_CITY_ID + " = ?",
 				new String[] {operator, from_city_id, to_city_id},
 				null, null, null, null);
 	}
@@ -594,8 +699,17 @@ public class DbAdapter
 	{
 		String from_city_id = fetch_city_id(from_city);
 		String to_city_id = fetch_city_id(to_city);
-		return mDbHelper.mDb.query(TABLE_TRIPS, new String[] {KEY_SCHED_DEP, TRIP_DELAY, TRIP_TIME},
-				KEY_AGENT + " = ? AND " + KEY_FROM_CITY_ID + " = ? AND " + KEY_TO_CITY_ID + " = ?",
+		return mDbHelper.mDb.query(TABLE_TRIPS + " JOIN " +
+				TABLE_STATIONS + " AS FROM_STATIONS ON " +
+				TABLE_TRIPS + "." + KEY_FROM_STN_ID + " == " +
+				"FROM_STATIONS." + KEY_ROWID + " JOIN " +
+				TABLE_STATIONS + " AS TO_STATIONS ON " +
+				TABLE_TRIPS + "." + KEY_TO_STN_ID + " == " +
+				"TO_STATIONS." + KEY_ROWID,
+				new String[] {KEY_SCHED_DEP, TRIP_DELAY, TRIP_TIME},
+				KEY_AGENT + " = ? AND FROM_STATIONS." +
+				KEY_CITY_ID + " = ? AND TO_STATIONS." +
+				KEY_CITY_ID + " = ?",
 				new String[] {agent, from_city_id, to_city_id},
 				null, null, "strftime('%s', " + KEY_SCHED_DEP + ") DESC", null);
 	}
@@ -604,8 +718,17 @@ public class DbAdapter
 	{
 		String from_city_id = fetch_city_id(from_city);
 		String to_city_id = fetch_city_id(to_city);
-		return mDbHelper.mDb.query(TABLE_TRIPS, new String[] {KEY_SCHED_DEP, TRIP_DELAY, TRIP_TIME},
-				KEY_OPERATOR + " = ? AND " + KEY_FROM_CITY_ID + " = ? AND " + KEY_TO_CITY_ID + " = ?",
+		return mDbHelper.mDb.query(TABLE_TRIPS + " JOIN " +
+				TABLE_STATIONS + " AS FROM_STATIONS ON " +
+				TABLE_TRIPS + "." + KEY_FROM_STN_ID + " == " +
+				"FROM_STATIONS." + KEY_ROWID + " JOIN " +
+				TABLE_STATIONS + " AS TO_STATIONS ON " +
+				TABLE_TRIPS + "." + KEY_TO_STN_ID + " == " +
+				"TO_STATIONS." + KEY_ROWID,
+				new String[] {KEY_SCHED_DEP, TRIP_DELAY, TRIP_TIME},
+				KEY_OPERATOR + " = ? AND FROM_STATIONS." +
+				KEY_CITY_ID + " = ? AND TO_STATIONS." +
+				KEY_CITY_ID + " = ?",
 				new String[] {operator, from_city_id, to_city_id},
 				null, null, "strftime('%s', " + KEY_SCHED_DEP + ") DESC", null);
 	}
@@ -616,11 +739,14 @@ public class DbAdapter
 		String key_city = KEY_CITY + "_" + mDbHelper.mCtx.getResources().getString(R.string.lang_code);
 
 		Cursor c = mDbHelper.mDb.rawQuery("SELECT " + key_city +
-				" FROM " + TABLE_TRIPS + " JOIN " + TABLE_CITIES +
-				" on " + TABLE_TRIPS + "." + KEY_FROM_CITY_ID + " == " +
+				" FROM " + TABLE_TRIPS + " JOIN " + TABLE_STATIONS +
+				" ON " + TABLE_TRIPS + "." + KEY_FROM_STN_ID + " == " +
+				TABLE_STATIONS + "." + KEY_ROWID +
+				" JOIN " + TABLE_CITIES +
+				" ON " + TABLE_STATIONS + "." + KEY_CITY_ID + " == " +
 				TABLE_CITIES + "." + KEY_ROWID +
 				" GROUP BY " + key_city +
-				" ORDER BY COUNT(" + KEY_FROM_CITY_ID + ") DESC LIMIT 1",
+				" ORDER BY COUNT(" + KEY_CITY_ID + ") DESC LIMIT 1",
 			null);
 		if (c.moveToFirst()) {
 			ret = c.getString(0);
@@ -636,12 +762,19 @@ public class DbAdapter
 		String from_city_id = fetch_city_id(from_city);
 
 		Cursor c = mDbHelper.mDb.rawQuery("SELECT " + key_city +
-				" FROM " + TABLE_TRIPS + " JOIN " + TABLE_CITIES +
-				" on " + TABLE_TRIPS + "." + KEY_TO_CITY_ID + " == " +
+				" FROM " + TABLE_TRIPS +
+				" JOIN " + TABLE_STATIONS + " AS FROM_STATIONS ON " +
+				TABLE_TRIPS + "." + KEY_FROM_STN_ID + " == " +
+				"FROM_STATIONS." + KEY_ROWID +
+				" JOIN " + TABLE_STATIONS + " AS TO_STATIONS ON " +
+				TABLE_TRIPS + "." + KEY_TO_STN_ID + " == " +
+				"TO_STATIONS." + KEY_ROWID +
+				" JOIN " + TABLE_CITIES +
+				" ON TO_STATIONS." + KEY_CITY_ID + " == " +
 				TABLE_CITIES + "." + KEY_ROWID +
-				" WHERE " + KEY_FROM_CITY_ID + " == ? " +
+				" WHERE FROM_STATIONS." + KEY_CITY_ID + " == ? " +
 				" GROUP BY " + key_city +
-				" ORDER BY COUNT(" + KEY_FROM_CITY_ID + ") DESC LIMIT 1",
+				" ORDER BY COUNT(TO_STATIONS." + KEY_CITY_ID + ") DESC LIMIT 1",
 			new String[] {from_city_id});
 		if (c.moveToFirst()) {
 			ret = c.getString(0);
