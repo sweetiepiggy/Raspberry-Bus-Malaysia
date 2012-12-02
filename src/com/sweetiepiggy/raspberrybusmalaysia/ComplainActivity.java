@@ -19,9 +19,10 @@
 
 package com.sweetiepiggy.raspberrybusmalaysia;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.Iterator;
 
@@ -47,8 +48,6 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.TimePicker;
-
-import com.sweetiepiggy.raspberrybusmalaysia.DataWrapper.date_and_time;
 
 public class ComplainActivity extends Activity
 {
@@ -87,6 +86,21 @@ public class ComplainActivity extends Activity
 		"editor@thestar.com.my; metro@thestar.com.my; mmnews@mmail.com.my; syedn@nst.com.my; letters@nst.com.my; streets@nst.com.my; letters@thesundaily.com, editor@malaysiakini.com.my; editor@themalaysianinsider.com; ",
 		"rmp@rmp.gov.my; "
 	};
+
+	private class DataWrapper
+	{
+		public Calendar sched_time;
+		public boolean[] who_selected;
+		public boolean[] submit_selected;
+		public ArrayList<Uri> photo_uris;
+		public ArrayList<Uri> recording_uris;
+		public ArrayList<Uri> video_uris;
+
+		public DataWrapper()
+		{
+			sched_time = new GregorianCalendar();
+		}
+	}
 
 	@Override
 	public void onCreate(Bundle savedInstanceState)
@@ -143,11 +157,11 @@ public class ComplainActivity extends Activity
 	@Override
 	public void onSaveInstanceState(Bundle savedInstanceState)
 	{
-		savedInstanceState.putInt("sched_year", mData.sched_time.year);
-		savedInstanceState.putInt("sched_month", mData.sched_time.month);
-		savedInstanceState.putInt("sched_day", mData.sched_time.day);
-		savedInstanceState.putInt("sched_hour", mData.sched_time.hour);
-		savedInstanceState.putInt("sched_minute", mData.sched_time.minute);
+		savedInstanceState.putInt("sched_year", mData.sched_time.get(Calendar.YEAR));
+		savedInstanceState.putInt("sched_month", mData.sched_time.get(Calendar.MONTH));
+		savedInstanceState.putInt("sched_day", mData.sched_time.get(Calendar.DAY_OF_MONTH));
+		savedInstanceState.putInt("sched_hour", mData.sched_time.get(Calendar.HOUR_OF_DAY));
+		savedInstanceState.putInt("sched_minute", mData.sched_time.get(Calendar.MINUTE));
 		savedInstanceState.putBooleanArray("who_selected", mData.who_selected);
 		savedInstanceState.putBooleanArray("submit_selected", mData.submit_selected);
 		savedInstanceState.putStringArrayList("photo_uris", uriarr2strarr(mData.photo_uris));
@@ -166,11 +180,12 @@ public class ComplainActivity extends Activity
 
 	private void restore_saved_state(Bundle savedInstanceState)
 	{
-		mData.sched_time.year = savedInstanceState.getInt("sched_year");
-		mData.sched_time.month = savedInstanceState.getInt("sched_month");
-		mData.sched_time.day = savedInstanceState.getInt("sched_day");
-		mData.sched_time.hour = savedInstanceState.getInt("sched_hour");
-		mData.sched_time.minute = savedInstanceState.getInt("sched_minute");
+		int year = savedInstanceState.getInt("sched_year");
+		int month = savedInstanceState.getInt("sched_month");
+		int day = savedInstanceState.getInt("sched_day");
+		int hour = savedInstanceState.getInt("sched_hour");
+		int minute = savedInstanceState.getInt("sched_minute");
+		mData.sched_time.set(year, month, day, hour, minute);
 
 		mData.who_selected = savedInstanceState.getBooleanArray("who_selected");
 		mData.submit_selected = savedInstanceState.getBooleanArray("submit_selected");
@@ -233,21 +248,20 @@ public class ComplainActivity extends Activity
 		data.submit_selected = new boolean[] {false, true, false, false};
 	}
 
-	private void init_time(Cursor c, date_and_time dt)
+	private void init_time(Cursor c, Calendar cal)
 	{
+		/* restore time from database */
 		if (c.moveToFirst()) {
-			dt.year = Integer.parseInt(c.getString(1));
-			dt.month = Integer.parseInt(c.getString(2)) - 1;
-			dt.day = Integer.parseInt(c.getString(3));
-			dt.hour = Integer.parseInt(c.getString(4));
-			dt.minute = Integer.parseInt(c.getString(5));
+			int year = Integer.parseInt(c.getString(1));
+			int month = Integer.parseInt(c.getString(2)) - 1;
+			int day = Integer.parseInt(c.getString(3));
+			int hour = Integer.parseInt(c.getString(4));
+			int minute = Integer.parseInt(c.getString(5));
+
+			cal.set(year, month, day, hour, minute);
+		/* use current time */
 		} else {
-			final Calendar cal = Calendar.getInstance();
-			dt.year = cal.get(Calendar.YEAR);
-			dt.month = cal.get(Calendar.MONTH);
-			dt.day = cal.get(Calendar.DAY_OF_MONTH);
-			dt.hour = cal.get(Calendar.HOUR_OF_DAY);
-			dt.minute = cal.get(Calendar.MINUTE);
+			cal = new GregorianCalendar();
 		}
 	}
 
@@ -356,13 +370,12 @@ public class ComplainActivity extends Activity
 		counter_nums_entry.setAdapter(counter_nums);
 	}
 
-	private void update_date_label(int button_id, date_and_time dt)
+	private void update_date_label(int button_id, Calendar cal)
 	{
-		Button date_button = (Button)findViewById(button_id);
-		Date d = new Date(dt.year - 1900, dt.month, dt.day);
+		Button date_button = (Button) findViewById(button_id);
 
-		String date = translate_day_of_week(DateFormat.format("EEEE", d).toString()) +
-			" " + DateFormat.getLongDateFormat(getApplicationContext()).format(d);
+		String date = translate_day_of_week(DateFormat.format("EEEE", cal.getTime()).toString()) +
+			" " + DateFormat.getLongDateFormat(getApplicationContext()).format(cal.getTime());
 		date_button.setText(date);
 	}
 
@@ -388,10 +401,10 @@ public class ComplainActivity extends Activity
 		return ret;
 	}
 
-	private void update_time_label(int button_id, date_and_time d)
+	private void update_time_label(int button_id, Calendar cal)
 	{
 		Button time_button = (Button)findViewById(button_id);
-		String time = DateFormat.getTimeFormat(getApplicationContext()).format(new Date(0, 0, 0, d.hour, d.minute, 0));
+		String time = DateFormat.getTimeFormat(getApplicationContext()).format(cal.getTime());
 		time_button.setText(time);
 	}
 
@@ -1004,10 +1017,9 @@ public class ComplainActivity extends Activity
 		return msg;
 	}
 
-	private String format_time(date_and_time d)
+	private String format_time(Calendar cal)
 	{
-		return String.format("%04d-%02d-%02d %02d:%02d", d.year,
-				d.month+1, d.day, d.hour, d.minute);
+		return new SimpleDateFormat("yyyy-MM-dd HH:mm").format(cal.getTime());
 	}
 
 	private ArrayList<Uri> strarr2uriarr(ArrayList<String> str_arr)
@@ -1037,9 +1049,7 @@ public class ComplainActivity extends Activity
 			new DatePickerDialog.OnDateSetListener() {
 				public void onDateSet(DatePicker view, int year,
 						int monthOfYear, int dayOfMonth) {
-					mData.sched_time.year = year;
-					mData.sched_time.month = monthOfYear;
-					mData.sched_time.day = dayOfMonth;
+					mData.sched_time.set(year, monthOfYear, dayOfMonth);
 					update_date_label(R.id.sched_date_button,
 							mData.sched_time);
 				}
@@ -1049,8 +1059,10 @@ public class ComplainActivity extends Activity
 			new TimePickerDialog.OnTimeSetListener() {
 				public void onTimeSet(TimePicker view,
 						int hourOfDay, int minute) {
-					mData.sched_time.hour = hourOfDay;
-					mData.sched_time.minute = minute;
+					int year =  mData.sched_time.get(Calendar.YEAR);
+					int month =  mData.sched_time.get(Calendar.MONTH);
+					int day =  mData.sched_time.get(Calendar.DAY_OF_MONTH);
+					mData.sched_time.set(year, month, day, hourOfDay, minute);
 					update_time_label(R.id.sched_time_button,
 							mData.sched_time);
 				}
@@ -1058,11 +1070,15 @@ public class ComplainActivity extends Activity
 
 		switch (id) {
 		case SCHED_DATE_DIALOG_ID:
-			return new DatePickerDialog(this, sched_date_listener, mData.sched_time.year,
-					mData.sched_time.month, mData.sched_time.day);
+			return new DatePickerDialog(this, sched_date_listener,
+					mData.sched_time.get(Calendar.YEAR),
+					mData.sched_time.get(Calendar.MONTH),
+					mData.sched_time.get(Calendar.DAY_OF_MONTH));
 		case SCHED_TIME_DIALOG_ID:
-			return new TimePickerDialog(this, sched_time_listener, mData.sched_time.hour,
-					mData.sched_time.minute, false);
+			return new TimePickerDialog(this, sched_time_listener,
+					mData.sched_time.get(Calendar.HOUR_OF_DAY),
+					mData.sched_time.get(Calendar.MINUTE),
+					false);
 		}
 
 		return null;

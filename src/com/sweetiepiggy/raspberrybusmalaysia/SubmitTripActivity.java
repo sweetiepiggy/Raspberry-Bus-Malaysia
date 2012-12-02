@@ -19,8 +19,9 @@
 
 package com.sweetiepiggy.raspberrybusmalaysia;
 
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.Date;
+import java.util.GregorianCalendar;
 
 import android.app.Activity;
 import android.app.DatePickerDialog;
@@ -40,11 +41,8 @@ import android.widget.RatingBar;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
-import com.sweetiepiggy.raspberrybusmalaysia.DataWrapper.date_and_time;
-
 public class SubmitTripActivity extends Activity
 {
-
 	private DataWrapper mData;
 	private DbAdapter mDbHelper;
 
@@ -61,6 +59,20 @@ public class SubmitTripActivity extends Activity
 	/* TODO: move this to Constants.java */
 	private static final String EMAIL_ADDRESS = "sweetiepiggyapps@gmail.com";
 	private static final String EMAIL_SUBJECT = "Raspberry Bus Malaysia Trip Submission";
+
+	private class DataWrapper
+	{
+		public Calendar sched_time;
+		public Calendar depart_time;
+		public Calendar arrival_time;
+
+		public DataWrapper()
+		{
+			sched_time = new GregorianCalendar();
+			depart_time = new GregorianCalendar();
+			arrival_time = new GregorianCalendar();
+		}
+	}
 
 	@Override
 	public void onCreate(Bundle savedInstanceState)
@@ -120,23 +132,23 @@ public class SubmitTripActivity extends Activity
 	@Override
 	public void onSaveInstanceState(Bundle savedInstanceState)
 	{
-		savedInstanceState.putInt("sched_year", mData.sched_time.year);
-		savedInstanceState.putInt("sched_month", mData.sched_time.month);
-		savedInstanceState.putInt("sched_day", mData.sched_time.day);
-		savedInstanceState.putInt("sched_hour", mData.sched_time.hour);
-		savedInstanceState.putInt("sched_minute", mData.sched_time.minute);
+		savedInstanceState.putInt("sched_year", mData.sched_time.get(Calendar.YEAR));
+		savedInstanceState.putInt("sched_month", mData.sched_time.get(Calendar.MONTH));
+		savedInstanceState.putInt("sched_day", mData.sched_time.get(Calendar.DAY_OF_MONTH));
+		savedInstanceState.putInt("sched_hour", mData.sched_time.get(Calendar.HOUR_OF_DAY));
+		savedInstanceState.putInt("sched_minute", mData.sched_time.get(Calendar.MINUTE));
 
-		savedInstanceState.putInt("depart_year", mData.depart_time.year);
-		savedInstanceState.putInt("depart_month", mData.depart_time.month);
-		savedInstanceState.putInt("depart_day", mData.depart_time.day);
-		savedInstanceState.putInt("depart_hour", mData.depart_time.hour);
-		savedInstanceState.putInt("depart_minute", mData.depart_time.minute);
+		savedInstanceState.putInt("depart_year", mData.depart_time.get(Calendar.YEAR));
+		savedInstanceState.putInt("depart_month", mData.depart_time.get(Calendar.MONTH));
+		savedInstanceState.putInt("depart_day", mData.depart_time.get(Calendar.DAY_OF_MONTH));
+		savedInstanceState.putInt("depart_hour", mData.depart_time.get(Calendar.HOUR_OF_DAY));
+		savedInstanceState.putInt("depart_minute", mData.depart_time.get(Calendar.MINUTE));
 
-		savedInstanceState.putInt("arrival_year", mData.arrival_time.year);
-		savedInstanceState.putInt("arrival_month", mData.arrival_time.month);
-		savedInstanceState.putInt("arrival_day", mData.arrival_time.day);
-		savedInstanceState.putInt("arrival_hour", mData.arrival_time.hour);
-		savedInstanceState.putInt("arrival_minute", mData.arrival_time.minute);
+		savedInstanceState.putInt("arrival_year", mData.arrival_time.get(Calendar.YEAR));
+		savedInstanceState.putInt("arrival_month", mData.arrival_time.get(Calendar.MONTH));
+		savedInstanceState.putInt("arrival_day", mData.arrival_time.get(Calendar.DAY_OF_MONTH));
+		savedInstanceState.putInt("arrival_hour", mData.arrival_time.get(Calendar.HOUR_OF_DAY));
+		savedInstanceState.putInt("arrival_minute", mData.arrival_time.get(Calendar.MINUTE));
 
 		super.onSaveInstanceState(savedInstanceState);
 	}
@@ -150,23 +162,26 @@ public class SubmitTripActivity extends Activity
 
 	private void restore_saved_state(Bundle savedInstanceState)
 	{
-		mData.sched_time.year = savedInstanceState.getInt("sched_year");
-		mData.sched_time.month = savedInstanceState.getInt("sched_month");
-		mData.sched_time.day = savedInstanceState.getInt("sched_day");
-		mData.sched_time.hour = savedInstanceState.getInt("sched_hour");
-		mData.sched_time.minute = savedInstanceState.getInt("sched_minute");
+		int year = savedInstanceState.getInt("sched_year");
+		int month = savedInstanceState.getInt("sched_month");
+		int day = savedInstanceState.getInt("sched_day");
+		int hour = savedInstanceState.getInt("sched_hour");
+		int minute = savedInstanceState.getInt("sched_minute");
+		mData.sched_time.set(year, month, day, hour, minute);
 
-		mData.depart_time.year = savedInstanceState.getInt("depart_year");
-		mData.depart_time.month = savedInstanceState.getInt("depart_month");
-		mData.depart_time.day = savedInstanceState.getInt("depart_day");
-		mData.depart_time.hour = savedInstanceState.getInt("depart_hour");
-		mData.depart_time.minute = savedInstanceState.getInt("depart_minute");
+		year = savedInstanceState.getInt("depart_year");
+		month = savedInstanceState.getInt("depart_month");
+		day = savedInstanceState.getInt("depart_day");
+		hour = savedInstanceState.getInt("depart_hour");
+		minute = savedInstanceState.getInt("depart_minute");
+		mData.depart_time.set(year, month, day, hour, minute);
 
-		mData.arrival_time.year = savedInstanceState.getInt("arrival_year");
-		mData.arrival_time.month = savedInstanceState.getInt("arrival_month");
-		mData.arrival_time.day = savedInstanceState.getInt("arrival_day");
-		mData.arrival_time.hour = savedInstanceState.getInt("arrival_hour");
-		mData.arrival_time.minute = savedInstanceState.getInt("arrival_minute");
+		year = savedInstanceState.getInt("arrival_year");
+		month = savedInstanceState.getInt("arrival_month");
+		day = savedInstanceState.getInt("arrival_day");
+		hour = savedInstanceState.getInt("arrival_hour");
+		minute = savedInstanceState.getInt("arrival_minute");
+		mData.arrival_time.set(year, month, day, hour, minute);
 	}
 
 	@Override
@@ -221,12 +236,7 @@ public class SubmitTripActivity extends Activity
 		Button sched_now_button = (Button) findViewById(R.id.sched_now_button);
 		sched_now_button.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
-				Calendar cal = Calendar.getInstance();
-				mData.sched_time.year = cal.get(Calendar.YEAR);
-				mData.sched_time.month = cal.get(Calendar.MONTH);
-				mData.sched_time.day = cal.get(Calendar.DAY_OF_MONTH);
-				mData.sched_time.hour = cal.get(Calendar.HOUR_OF_DAY);
-				mData.sched_time.minute = cal.get(Calendar.MINUTE);
+				mData.sched_time = new GregorianCalendar();
 
 				update_date_label(R.id.sched_date_button, mData.sched_time);
 				update_time_label(R.id.sched_time_button, mData.sched_time);
@@ -236,12 +246,7 @@ public class SubmitTripActivity extends Activity
 		Button depart_now_button = (Button) findViewById(R.id.depart_now_button);
 		depart_now_button.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
-				Calendar cal = Calendar.getInstance();
-				mData.depart_time.year = cal.get(Calendar.YEAR);
-				mData.depart_time.month = cal.get(Calendar.MONTH);
-				mData.depart_time.day = cal.get(Calendar.DAY_OF_MONTH);
-				mData.depart_time.hour = cal.get(Calendar.HOUR_OF_DAY);
-				mData.depart_time.minute = cal.get(Calendar.MINUTE);
+				mData.depart_time = new GregorianCalendar();
 
 				update_date_label(R.id.depart_date_button, mData.depart_time);
 				update_time_label(R.id.depart_time_button, mData.depart_time);
@@ -251,12 +256,7 @@ public class SubmitTripActivity extends Activity
 		Button arrival_now_button = (Button) findViewById(R.id.arrival_now_button);
 		arrival_now_button.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
-				Calendar cal = Calendar.getInstance();
-				mData.arrival_time.year = cal.get(Calendar.YEAR);
-				mData.arrival_time.month = cal.get(Calendar.MONTH);
-				mData.arrival_time.day = cal.get(Calendar.DAY_OF_MONTH);
-				mData.arrival_time.hour = cal.get(Calendar.HOUR_OF_DAY);
-				mData.arrival_time.minute = cal.get(Calendar.MINUTE);
+				mData.arrival_time = new GregorianCalendar();
 
 				update_date_label(R.id.arrival_date_button, mData.arrival_time);
 				update_time_label(R.id.arrival_time_button, mData.arrival_time);
@@ -276,21 +276,20 @@ public class SubmitTripActivity extends Activity
 		init_time(c_arrival_time, data.arrival_time);
 	}
 
-	private void init_time(Cursor c, date_and_time dt)
+	private void init_time(Cursor c, Calendar cal)
 	{
+		/* restore time from database */
 		if (c.moveToFirst()) {
-			dt.year = Integer.parseInt(c.getString(1));
-			dt.month = Integer.parseInt(c.getString(2)) - 1;
-			dt.day = Integer.parseInt(c.getString(3));
-			dt.hour = Integer.parseInt(c.getString(4));
-			dt.minute = Integer.parseInt(c.getString(5));
+			int year = Integer.parseInt(c.getString(1));
+			int month = Integer.parseInt(c.getString(2)) - 1;
+			int day = Integer.parseInt(c.getString(3));
+			int hour = Integer.parseInt(c.getString(4));
+			int minute = Integer.parseInt(c.getString(5));
+
+			cal.set(year, month, day, hour, minute);
+		/* use current time */
 		} else {
-			final Calendar cal = Calendar.getInstance();
-			dt.year = cal.get(Calendar.YEAR);
-			dt.month = cal.get(Calendar.MONTH);
-			dt.day = cal.get(Calendar.DAY_OF_MONTH);
-			dt.hour = cal.get(Calendar.HOUR_OF_DAY);
-			dt.minute = cal.get(Calendar.MINUTE);
+			cal = new GregorianCalendar();
 		}
 	}
 
@@ -394,13 +393,12 @@ public class SubmitTripActivity extends Activity
 		counter_nums_entry.setAdapter(counter_nums);
 	}
 
-	private void update_date_label(int button_id, date_and_time dt)
+	private void update_date_label(int button_id, Calendar cal)
 	{
-		Button date_button = (Button)findViewById(button_id);
-		Date d = new Date(dt.year - 1900, dt.month, dt.day);
+		Button date_button = (Button) findViewById(button_id);
 
-		String date = translate_day_of_week(DateFormat.format("EEEE", d).toString()) +
-			" " + DateFormat.getLongDateFormat(getApplicationContext()).format(d);
+		String date = translate_day_of_week(DateFormat.format("EEEE", cal.getTime()).toString()) +
+			" " + DateFormat.getLongDateFormat(getApplicationContext()).format(cal.getTime());
 		date_button.setText(date);
 	}
 
@@ -426,10 +424,10 @@ public class SubmitTripActivity extends Activity
 		return ret;
 	}
 
-	private void update_time_label(int button_id, date_and_time d)
+	private void update_time_label(int button_id, Calendar cal)
 	{
 		Button time_button = (Button)findViewById(button_id);
-		String time = DateFormat.getTimeFormat(getApplicationContext()).format(new Date(0, 0, 0, d.hour, d.minute, 0));
+		String time = DateFormat.getTimeFormat(getApplicationContext()).format(cal.getTime());
 		time_button.setText(time);
 	}
 
@@ -447,7 +445,7 @@ public class SubmitTripActivity extends Activity
 				} else if (((AutoCompleteTextView) findViewById(R.id.to_city_entry)).getText().toString().length() == 0) {
 					results_complete = false;
 					incomplete_msg = getResources().getString(R.string.missing_to_city);
-				} else if (mData.depart_time.cmp(mData.arrival_time) >= 0) {
+				} else if (!mData.arrival_time.after(mData.depart_time)) {
 					results_complete = false;
 					incomplete_msg = getResources().getString(R.string.depart_before_arrival);
 				}
@@ -557,10 +555,9 @@ public class SubmitTripActivity extends Activity
 			"Comment: " + comment + "\n";
 	}
 
-	private String format_time(date_and_time d)
+	private String format_time(Calendar cal)
 	{
-		return String.format("%04d-%02d-%02d %02d:%02d", d.year,
-				d.month+1, d.day, d.hour, d.minute);
+		return new SimpleDateFormat("yyyy-MM-dd HH:mm").format(cal.getTime());
 	}
 
 	@Override
@@ -570,9 +567,7 @@ public class SubmitTripActivity extends Activity
 			new DatePickerDialog.OnDateSetListener() {
 				public void onDateSet(DatePicker view, int year,
 						int monthOfYear, int dayOfMonth) {
-					mData.sched_time.year = year;
-					mData.sched_time.month = monthOfYear;
-					mData.sched_time.day = dayOfMonth;
+					mData.sched_time.set(year, monthOfYear, dayOfMonth);
 					update_date_label(R.id.sched_date_button,
 							mData.sched_time);
 				}
@@ -582,8 +577,10 @@ public class SubmitTripActivity extends Activity
 			new TimePickerDialog.OnTimeSetListener() {
 				public void onTimeSet(TimePicker view,
 						int hourOfDay, int minute) {
-					mData.sched_time.hour = hourOfDay;
-					mData.sched_time.minute = minute;
+					int year =  mData.sched_time.get(Calendar.YEAR);
+					int month =  mData.sched_time.get(Calendar.MONTH);
+					int day =  mData.sched_time.get(Calendar.DAY_OF_MONTH);
+					mData.sched_time.set(year, month, day, hourOfDay, minute);
 					update_time_label(R.id.sched_time_button,
 							mData.sched_time);
 				}
@@ -593,9 +590,7 @@ public class SubmitTripActivity extends Activity
 			new DatePickerDialog.OnDateSetListener() {
 				public void onDateSet(DatePicker view, int year,
 						int monthOfYear, int dayOfMonth) {
-					mData.depart_time.year = year;
-					mData.depart_time.month = monthOfYear;
-					mData.depart_time.day = dayOfMonth;
+					mData.depart_time.set(year, monthOfYear, dayOfMonth);
 					update_date_label(R.id.depart_date_button,
 							mData.depart_time);
 				}
@@ -605,8 +600,10 @@ public class SubmitTripActivity extends Activity
 			new TimePickerDialog.OnTimeSetListener() {
 				public void onTimeSet(TimePicker view,
 						int hourOfDay, int minute) {
-					mData.depart_time.hour = hourOfDay;
-					mData.depart_time.minute = minute;
+					int year =  mData.depart_time.get(Calendar.YEAR);
+					int month =  mData.depart_time.get(Calendar.MONTH);
+					int day =  mData.depart_time.get(Calendar.DAY_OF_MONTH);
+					mData.depart_time.set(year, month, day, hourOfDay, minute);
 					update_time_label(R.id.depart_time_button,
 							mData.depart_time);
 				}
@@ -615,9 +612,7 @@ public class SubmitTripActivity extends Activity
 			new DatePickerDialog.OnDateSetListener() {
 				public void onDateSet(DatePicker view, int year,
 						int monthOfYear, int dayOfMonth) {
-					mData.arrival_time.year = year;
-					mData.arrival_time.month = monthOfYear;
-					mData.arrival_time.day = dayOfMonth;
+					mData.arrival_time.set(year, monthOfYear, dayOfMonth);
 					update_date_label(R.id.arrival_date_button,
 							mData.arrival_time);
 				}
@@ -627,8 +622,10 @@ public class SubmitTripActivity extends Activity
 			new TimePickerDialog.OnTimeSetListener() {
 				public void onTimeSet(TimePicker view,
 						int hourOfDay, int minute) {
-					mData.arrival_time.hour = hourOfDay;
-					mData.arrival_time.minute = minute;
+					int year =  mData.arrival_time.get(Calendar.YEAR);
+					int month =  mData.arrival_time.get(Calendar.MONTH);
+					int day =  mData.arrival_time.get(Calendar.DAY_OF_MONTH);
+					mData.arrival_time.set(year, month, day, hourOfDay, minute);
 					update_time_label(R.id.arrival_time_button,
 							mData.arrival_time);
 				}
@@ -636,23 +633,35 @@ public class SubmitTripActivity extends Activity
 
 		switch (id) {
 		case SCHED_DATE_DIALOG_ID:
-			return new DatePickerDialog(this, sched_date_listener, mData.sched_time.year,
-					mData.sched_time.month, mData.sched_time.day);
+			return new DatePickerDialog(this, sched_date_listener,
+					mData.sched_time.get(Calendar.YEAR),
+					mData.sched_time.get(Calendar.MONTH),
+					mData.sched_time.get(Calendar.DAY_OF_MONTH));
 		case SCHED_TIME_DIALOG_ID:
-			return new TimePickerDialog(this, sched_time_listener, mData.sched_time.hour,
-					mData.sched_time.minute, false);
+			return new TimePickerDialog(this, sched_time_listener,
+					mData.sched_time.get(Calendar.HOUR_OF_DAY),
+					mData.sched_time.get(Calendar.MINUTE),
+					false);
 		case DEPART_DATE_DIALOG_ID:
-			return new DatePickerDialog(this, depart_date_listener, mData.depart_time.year,
-					mData.depart_time.month, mData.depart_time.day);
+			return new DatePickerDialog(this, depart_date_listener,
+					mData.depart_time.get(Calendar.YEAR),
+					mData.depart_time.get(Calendar.MONTH),
+					mData.depart_time.get(Calendar.DAY_OF_MONTH));
 		case DEPART_TIME_DIALOG_ID:
-			return new TimePickerDialog(this, depart_time_listener, mData.depart_time.hour,
-					mData.depart_time.minute, false);
+			return new TimePickerDialog(this, depart_time_listener,
+					mData.depart_time.get(Calendar.HOUR_OF_DAY),
+					mData.depart_time.get(Calendar.MINUTE),
+					false);
 		case ARRIVAL_DATE_DIALOG_ID:
-			return new DatePickerDialog(this, arrival_date_listener, mData.arrival_time.year,
-					mData.arrival_time.month, mData.arrival_time.day);
+			return new DatePickerDialog(this, arrival_date_listener,
+					mData.arrival_time.get(Calendar.YEAR),
+					mData.arrival_time.get(Calendar.MONTH),
+					mData.arrival_time.get(Calendar.DAY_OF_MONTH));
 		case ARRIVAL_TIME_DIALOG_ID:
-			return new TimePickerDialog(this, arrival_time_listener, mData.arrival_time.hour,
-					mData.arrival_time.minute, false);
+			return new TimePickerDialog(this, arrival_time_listener,
+					mData.arrival_time.get(Calendar.HOUR_OF_DAY),
+					mData.arrival_time.get(Calendar.MINUTE),
+					false);
 		}
 
 		return null;
