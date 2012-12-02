@@ -362,9 +362,9 @@ public class RouteActivity extends Activity
 	private void clear_rows()
 	{
 		ViewGroup results_layout = (ViewGroup) findViewById(R.id.results_layout);
-		Iterator itr = m_rows.iterator();
+		Iterator<TableRow> itr = m_rows.iterator();
 		while (itr.hasNext()) {
-			TableRow row = (TableRow) itr.next();
+			TableRow row = itr.next();
 //			row.startAnimation(AnimationUtils.loadAnimation(getApplicationContext(), android.R.anim.fade_out));
 //			row.setVisibility(View.INVISIBLE);
 			results_layout.removeView(row);

@@ -30,8 +30,6 @@ import android.widget.Toast;
 
 public class SyncTask extends AsyncTask<Void, Integer, Void>
 {
-	private final String TAG = "SyncTask";
-
 	/* TODO: move to Constants.java */
 	private final String BASE_URL = "https://raw.github.com/sweetiepiggy/Raspberry-Bus-Malaysia/trips/";
 	private final String TRIPS_URL = BASE_URL + "trips.csv";
