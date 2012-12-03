@@ -88,6 +88,7 @@
 	<string name="hour_abbr">小时</string>
 
 	<string name="unknown">（未知）</string>
+	<string name="unknown_host">无法连接到互联网</string>
 
 	<string name="monday">星期一</string>
 	<string name="tuesday">星期二</string>

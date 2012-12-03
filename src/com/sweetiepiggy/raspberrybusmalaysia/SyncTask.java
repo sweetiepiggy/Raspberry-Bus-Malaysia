@@ -18,13 +18,18 @@
 package com.sweetiepiggy.raspberrybusmalaysia;
 
 import java.io.BufferedReader;
-import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.UnsupportedEncodingException;
+import java.net.MalformedURLException;
 import java.net.URL;
+import java.net.UnknownHostException;
 
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.os.AsyncTask;
 import android.widget.Toast;
 
@@ -40,6 +45,7 @@ public class SyncTask extends AsyncTask<Void, Integer, Void>
 
 	private Context mCtx;
 	private int mUpdatesFnd = 0;
+	private String mAlertMsg = null;
 	private ProgressDialog mProgressDialog;
 
 	public SyncTask(Context ctx)
@@ -53,14 +59,29 @@ public class SyncTask extends AsyncTask<Void, Integer, Void>
 	{
 		mUpdatesFnd = 0;
 
-		mUpdatesFnd += sync_table(CITIES_URL, DbAdapter.TABLE_CITIES, 0, 33);
-		publishProgress(33);
+		try {
+			mUpdatesFnd += sync_table(CITIES_URL,
+					DbAdapter.TABLE_CITIES, 0, 33);
+			publishProgress(33);
 
-		mUpdatesFnd += sync_table(STATIONS_URL, DbAdapter.TABLE_STATIONS, 33, 66);
-		publishProgress(66);
+			mUpdatesFnd += sync_table(STATIONS_URL,
+					DbAdapter.TABLE_STATIONS, 33, 66);
+			publishProgress(66);
 
-		mUpdatesFnd += sync_table(TRIPS_URL, DbAdapter.TABLE_TRIPS, 66, 99);
-		publishProgress(100);
+			mUpdatesFnd += sync_table(TRIPS_URL,
+					DbAdapter.TABLE_TRIPS, 66, 99);
+			publishProgress(100);
+
+		/* probably no internet connection */
+		} catch (UnknownHostException e) {
+			mAlertMsg = mCtx.getResources().getString(R.string.unknown_host);
+		} catch (MalformedURLException e) {
+			throw new Error(e);
+		} catch (UnsupportedEncodingException e) {
+			throw new Error(e);
+		} catch (IOException e) {
+			throw new Error(e);
+		}
 
 		return null;
 	}
@@ -85,10 +106,14 @@ public class SyncTask extends AsyncTask<Void, Integer, Void>
 		if (mProgressDialog != null) {
 			mProgressDialog.dismiss();
 		}
-		Toast.makeText(mCtx,
-				Integer.toString(mUpdatesFnd) + " " +
-				mCtx.getResources().getString(R.string.updates_found),
-				Toast.LENGTH_SHORT).show();
+		if (mAlertMsg != null) {
+			alert(mAlertMsg);
+		} else {
+			Toast.makeText(mCtx,
+					Integer.toString(mUpdatesFnd) + " " +
+					mCtx.getResources().getString(R.string.updates_found),
+					Toast.LENGTH_SHORT).show();
+		}
 	}
 
 	@Override
@@ -101,62 +126,59 @@ public class SyncTask extends AsyncTask<Void, Integer, Void>
 	}
 
 	private int sync_table(String url_name, String table,
-			int progress_offset, int progress_max)
+			int progress_offset, int progress_max) throws
+		UnknownHostException, MalformedURLException, UnsupportedEncodingException,
+		IOException
 	{
 		int added = 0;
 
-		try {
-			URL url = new URL(url_name);
-			BufferedReader in = new BufferedReader(
-					new InputStreamReader(url.openStream(), "utf-8"));
+		URL url = new URL(url_name);
+		BufferedReader in = new BufferedReader(
+				new InputStreamReader(url.openStream(), "utf-8"));
 
-			String line = in.readLine();
-			String[] field_names = null;
+		String line = in.readLine();
+		String[] field_names = null;
 
+		if (line != null) {
+			field_names = line.split(",");
+		}
+
+		/* skip first line if it is used to store last update time */
+		if (field_names.length > 0 &&
+				field_names[0].equals(LAST_UPDATE_STR)) {
+			line = in.readLine();
 			if (line != null) {
 				field_names = line.split(",");
 			}
-
-			/* skip first line if it is used to store last update time */
-			if (field_names.length > 0 &&
-					field_names[0].equals(LAST_UPDATE_STR)) {
-				line = in.readLine();
-				if (line != null) {
-					field_names = line.split(",");
-				}
-			}
-
-			DbAdapter dbHelper = new DbAdapter();
-			dbHelper.open_readwrite(mCtx, false);
-
-			long max_id = dbHelper.fetch_max_id(table);
-			final long orig_max_id = max_id;
-
-			int read = 0;
-
-			while ((line = in.readLine()) != null) {
-				ContentValues cv = parse_line(line, field_names);
-				if (dbHelper.replace(cv, table) > orig_max_id) {
-					++added;
-				}
-				++read;
-				if (cv.containsKey(DbAdapter.KEY_ROWID)) {
-					max_id = java.lang.Math.max(max_id, cv.getAsLong(DbAdapter.KEY_ROWID));
-				}
-				if (max_id != 0) {
-					publishProgress(java.lang.Math.min(progress_max,
-								progress_offset +
-								(int)((progress_max - progress_offset) *
-									(double) read / max_id)));
-				}
-			}
-			dbHelper.close();
-
-			in.close();
-		} catch (FileNotFoundException e) {
-		} catch (Exception e) {
-			throw new Error(e);
 		}
+
+		DbAdapter dbHelper = new DbAdapter();
+		dbHelper.open_readwrite(mCtx, false);
+
+		long max_id = dbHelper.fetch_max_id(table);
+		final long orig_max_id = max_id;
+
+		int read = 0;
+
+		while ((line = in.readLine()) != null) {
+			ContentValues cv = parse_line(line, field_names);
+			if (dbHelper.replace(cv, table) > orig_max_id) {
+				++added;
+			}
+			++read;
+			if (cv.containsKey(DbAdapter.KEY_ROWID)) {
+				max_id = java.lang.Math.max(max_id, cv.getAsLong(DbAdapter.KEY_ROWID));
+			}
+			if (max_id != 0) {
+				publishProgress(java.lang.Math.min(progress_max,
+							progress_offset +
+							(int)((progress_max - progress_offset) *
+								(double) read / max_id)));
+			}
+		}
+		dbHelper.close();
+
+		in.close();
 
 		return added;
 	}
@@ -173,6 +195,18 @@ public class SyncTask extends AsyncTask<Void, Integer, Void>
 		}
 
 		return ret;
+	}
+
+	private void alert(String msg)
+	{
+		AlertDialog.Builder alert = new AlertDialog.Builder(mCtx);
+		alert.setTitle(mCtx.getResources().getString(android.R.string.dialog_alert_title));
+		alert.setMessage(msg);
+		alert.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+			public void onClick(DialogInterface dialog, int which) {
+			}
+		});
+		alert.show();
 	}
 }
 

@@ -88,6 +88,7 @@
 	<string name="hour_abbr">jam</string>
 
 	<string name="unknown">(Tidak Diketahui)</string>
+	<string name="unknown_host">Gagal menyambung ke pelayan penampungan</string>
 
 	<string name="monday">Isnin</string>
 	<string name="tuesday">Selasa</string>
