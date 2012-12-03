@@ -56,12 +56,24 @@
 			android:layout_marginBottom="5dp"
 			android:background="@android:color/darker_gray"/>
 
-		<TextView
-			android:id="@+id/from_label"
+		<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
 			android:layout_width="fill_parent"
 			android:layout_height="wrap_content"
-			style="@android:style/TextAppearance.Large"
-			android:text="@string/from" />
+			android:orientation="horizontal" >
+			<TextView
+				android:id="@+id/from_label"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:layout_weight="1"
+				style="@android:style/TextAppearance.Large"
+				android:text="@string/from" />
+			<Button
+				android:id="@+id/from_map_button"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:drawableLeft="@android:drawable/ic_dialog_map"
+				android:text="@string/map" />
+		</LinearLayout>
 		<AutoCompleteTextView
 			android:id="@+id/from_city_entry"
 			android:layout_width="fill_parent"
@@ -72,19 +84,25 @@
 			android:layout_width="fill_parent"
 			android:layout_height="wrap_content"
 			android:hint="@string/from_station_hint" />
-		<Button
-			android:id="@+id/from_map_button"
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content"
-			android:drawableLeft="@android:drawable/ic_dialog_map"
-			android:text="@string/map" />
 
-		<TextView
-			android:id="@+id/to_label"
+		<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
 			android:layout_width="fill_parent"
 			android:layout_height="wrap_content"
-			style="@android:style/TextAppearance.Large"
-			android:text="@string/to" />
+			android:orientation="horizontal" >
+			<TextView
+				android:id="@+id/to_label"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:layout_weight="1"
+				style="@android:style/TextAppearance.Large"
+				android:text="@string/to" />
+			<Button
+				android:id="@+id/to_map_button"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:drawableLeft="@android:drawable/ic_dialog_map"
+				android:text="@string/map" />
+		</LinearLayout>
 		<AutoCompleteTextView
 			android:id="@+id/to_city_entry"
 			android:layout_width="fill_parent"
@@ -95,12 +113,6 @@
 			android:layout_width="fill_parent"
 			android:layout_height="wrap_content"
 			android:hint="@string/to_station_hint" />
-		<Button
-			android:id="@+id/to_map_button"
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content"
-			android:drawableLeft="@android:drawable/ic_dialog_map"
-			android:text="@string/map" />
 		<View
 			android:layout_width="fill_parent"
 			android:layout_height="1dp"
