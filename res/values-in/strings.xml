@@ -35,6 +35,7 @@
 	<string name="avg_time">Rata-rata\nWaktu</string>
 	<string name="avg_delay">Rata-rata\nTunda</string>
 	<string name="num_trips">Jumlah\nPerjalanan</string>
+	<string name="now">Sekarang</string>
 
 	<string name="sched_time">Waktu Ditetapkan</string>
 	<string name="depart_time">Waktu Bertolak</string>
