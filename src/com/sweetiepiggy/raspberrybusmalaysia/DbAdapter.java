@@ -70,6 +70,7 @@ public class DbAdapter
 	public static final String AVG_TIME = "avg(" + TRIP_TIME + ")";
 	public static final String AVG_DELAY = "avg(" + TRIP_DELAY + ")";
 	public static final String NUM_TRIPS = "count(" + KEY_AGENT + ")";
+	public static final String AVG_OVERALL = "avg(" + KEY_OVERALL + ")";
 
 	public static final String TABLE_TRIPS = "trips";
 	public static final String TABLE_CITIES = "cities";
@@ -79,7 +80,6 @@ public class DbAdapter
 
 	private static final int SEC_BETWEEN_UPDATES = 60 * 60 * 24 * 7;
 
-//	private static final String TAG = "DbAdapter";
 	private DatabaseHelper mDbHelper;
 
 	private static final String DATABASE_NAME = "rbm.db";
@@ -642,7 +642,7 @@ public class DbAdapter
 				KEY_OPERATOR, null, KEY_OPERATOR + " ASC", null);
 	}
 
-	public Cursor fetch_avg(String from_city, String to_city, String group_by, String sort_by)
+	public Cursor fetch_avg(String from_city, String to_city, String group_by)
 	{
 		String key_city = KEY_CITY + "_" + mDbHelper.mCtx.getResources().getString(R.string.lang_code);
 		return mDbHelper.mDb.query(true,
@@ -666,11 +666,11 @@ public class DbAdapter
 
 				new String[] {TABLE_TRIPS + "." + KEY_ROWID,
 					KEY_AGENT, KEY_OPERATOR, AVG_TIME,
-					AVG_DELAY, NUM_TRIPS},
+					AVG_OVERALL, NUM_TRIPS},
 				"FROM_CITIES." + key_city + " = ? AND " +
 				"TO_CITIES." + key_city + " = ? AND " + KEY_ARRIVAL + "!= 'Cancelled'",
 				new String[] {from_city, to_city},
-				group_by, null, sort_by + " ASC", null);
+				group_by, null, AVG_OVERALL + " DESC", null);
 	}
 
 	public Cursor fetch_agent_avg(String from_city, String to_city, String agent)

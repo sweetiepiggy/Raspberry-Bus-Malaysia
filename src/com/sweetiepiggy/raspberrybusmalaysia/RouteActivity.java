@@ -31,6 +31,7 @@ import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.RadioButton;
+import android.widget.RatingBar;
 import android.widget.ResourceCursorAdapter;
 import android.widget.SimpleCursorAdapter;
 import android.widget.Spinner;
@@ -58,15 +59,15 @@ public class RouteActivity extends Activity
 		{
 			TextView company_v = (TextView) view.findViewById(R.id.company);
 			TextView avg_v = (TextView) view.findViewById(R.id.avg);
-			TextView delay_v = (TextView) view.findViewById(R.id.delay);
 			TextView count_v = (TextView) view.findViewById(R.id.count);
+			RatingBar overall_v = (RatingBar) view.findViewById(R.id.overall_bar);
 
 			final int row_id = c.getInt(c.getColumnIndex(DbAdapter.KEY_ROWID));
 			String agent = c.getString(c.getColumnIndex(DbAdapter.KEY_AGENT));
 			String operator = c.getString(c.getColumnIndex(DbAdapter.KEY_OPERATOR));
 			String avg = format_time(c.getInt(c.getColumnIndex(DbAdapter.AVG_TIME)));
-			String delay = format_time_min(c.getInt(c.getColumnIndex(DbAdapter.AVG_DELAY)));
 			String count = c.getString(c.getColumnIndex(DbAdapter.NUM_TRIPS));
+			float avg_overall = c.getFloat(c.getColumnIndex(DbAdapter.AVG_OVERALL));
 
 			String company = ((RadioButton) findViewById(R.id.operator_radio)).isChecked() ?
 				operator : agent;
@@ -79,8 +80,8 @@ public class RouteActivity extends Activity
 
 			company_v.setText(company);
 			avg_v.setText(avg);
-			delay_v.setText(delay);
-			count_v.setText(count);
+			count_v.setText("(" + count + ")");
+			overall_v.setRating(avg_overall);
 		}
 	}
 
@@ -199,8 +200,8 @@ public class RouteActivity extends Activity
 			public void onItemSelected(AdapterView<?> parent,
 					View selected_item, int pos,
 					long id) {
-				m_to_city = ((Cursor)parent.getItemAtPosition(pos)).getString(1);
-				print_rows(from_city, m_to_city, DbAdapter.AVG_TIME);
+				m_to_city = ((Cursor) parent.getItemAtPosition(pos)).getString(1);
+				print_rows(from_city, m_to_city);
 			}
 			@Override
 			public void onNothingSelected(AdapterView<?> parentView) {
@@ -225,55 +226,15 @@ public class RouteActivity extends Activity
 		boolean checked = ((RadioButton) v).isChecked();
 
 		if (checked) {
-			print_rows(m_from_city, m_to_city, DbAdapter.AVG_TIME);
+			print_rows(m_from_city, m_to_city);
 		}
 	}
 
-	private void init_labels(final String from_city, final String to_city)
-	{
-		Button company = (Button) findViewById(R.id.company);
-		int company_text_id = ((RadioButton) findViewById(R.id.operator_radio)).isChecked() ?
-			R.string.operator : R.string.agent;
-		company.setText(company_text_id);
-		company.setOnClickListener(new View.OnClickListener() {
-			public void onClick(View v)
-			{
-				String company_key = ((RadioButton) findViewById(R.id.operator_radio)).isChecked() ?
-					DbAdapter.KEY_OPERATOR : DbAdapter.KEY_AGENT;
-				print_rows(from_city, to_city, company_key);
-			}
-		});
-
-		Button avg_time = (Button) findViewById(R.id.avg_time);
-		avg_time.setOnClickListener(new View.OnClickListener() {
-			public void onClick(View v)
-			{
-				print_rows(from_city, to_city, DbAdapter.AVG_TIME);
-			}
-		});
-
-		Button avg_delay = (Button) findViewById(R.id.avg_delay);
-		avg_delay.setOnClickListener(new View.OnClickListener() {
-			public void onClick(View v)
-			{
-				print_rows(from_city, to_city, DbAdapter.AVG_DELAY);
-			}
-		});
-
-		Button num_trips = (Button) findViewById(R.id.num_trips);
-		num_trips.setOnClickListener(new View.OnClickListener() {
-			public void onClick(View v)
-			{
-				print_rows(from_city, to_city, DbAdapter.NUM_TRIPS);
-			}
-		});
-	}
-
-	private void print_rows(String from_city, String to_city, String sort_by)
+	private void print_rows(String from_city, String to_city)
 	{
 		String group_by = ((RadioButton) findViewById(R.id.operator_radio)).isChecked() ?
 			DbAdapter.KEY_OPERATOR : DbAdapter.KEY_AGENT;
-		Cursor c = mDbHelper.fetch_avg(from_city, to_city, group_by, sort_by);
+		Cursor c = mDbHelper.fetch_avg(from_city, to_city, group_by);
 		startManagingCursor(c);
 		ListView lv = (ListView) findViewById(R.id.results_list);
 		lv.setAdapter(new RouteListAdapter(this, c));

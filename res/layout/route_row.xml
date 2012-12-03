@@ -35,28 +35,18 @@
 		android:layout_alignParentRight="true"
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content" />
-	<TextView
-		android:id="@+id/delay_label"
-		android:text="@string/avg_delay"
+	<RatingBar
+		android:id="@+id/overall_bar"
+		style="?android:attr/ratingBarStyleIndicator"
 		android:layout_below="@id/company"
 		android:layout_width="wrap_content"
-		android:layout_height="wrap_content" />
-	<TextView
-		android:id="@+id/delay"
-		android:layout_below="@id/avg"
-		android:layout_alignParentRight="true"
-		android:layout_width="wrap_content"
-		android:layout_height="wrap_content" />
-	<TextView
-		android:id="@+id/count_label"
-		android:text="@string/num_trips"
-		android:layout_below="@id/delay_label"
-		android:layout_width="wrap_content"
-		android:layout_height="wrap_content" />
+		android:layout_height="wrap_content"
+		android:numStars="5"
+		android:rating="3"
+		android:stepSize="0.5" />
 	<TextView
 		android:id="@+id/count"
-		android:layout_below="@id/delay"
-		android:layout_alignParentRight="true"
+		android:layout_below="@id/overall_bar"
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content" />
 </RelativeLayout>
