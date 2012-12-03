@@ -24,6 +24,8 @@ import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.UnknownHostException;
+import java.util.Iterator;
+import java.util.LinkedList;
 
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
@@ -60,16 +62,17 @@ public class SyncTask extends AsyncTask<Void, Integer, Void>
 		mUpdatesFnd = 0;
 
 		try {
-			mUpdatesFnd += sync_table(CITIES_URL,
-					DbAdapter.TABLE_CITIES, 0, 33);
-			publishProgress(33);
+			LinkedList<ContentValues> cities = parse_csv(CITIES_URL, 0, 8);
+			mUpdatesFnd += sync_table(cities, DbAdapter.TABLE_CITIES, 8, 33);
 
-			mUpdatesFnd += sync_table(STATIONS_URL,
-					DbAdapter.TABLE_STATIONS, 33, 66);
-			publishProgress(66);
+			LinkedList<ContentValues> stations = parse_csv(STATIONS_URL, 33, 41);
+			mUpdatesFnd += sync_table(stations, DbAdapter.TABLE_STATIONS, 41, 66);
 
-			mUpdatesFnd += sync_table(TRIPS_URL,
-					DbAdapter.TABLE_TRIPS, 66, 99);
+			LinkedList<ContentValues> trips = parse_csv(TRIPS_URL, 66, 74);
+			mUpdatesFnd += sync_table(trips, DbAdapter.TABLE_TRIPS, 74, 99);
+
+			//mUpdatesFnd = cities.size() + stations.size() + trips.size();
+
 			publishProgress(100);
 
 		/* probably no internet connection */
@@ -125,12 +128,12 @@ public class SyncTask extends AsyncTask<Void, Integer, Void>
 		}
 	}
 
-	private int sync_table(String url_name, String table,
-			int progress_offset, int progress_max) throws
+	private LinkedList<ContentValues> parse_csv(String url_name, int progress_offset,
+			int progress_max) throws
 		UnknownHostException, MalformedURLException, UnsupportedEncodingException,
 		IOException
 	{
-		int added = 0;
+		LinkedList<ContentValues> ret = new LinkedList<ContentValues>();
 
 		URL url = new URL(url_name);
 		BufferedReader in = new BufferedReader(
@@ -152,6 +155,36 @@ public class SyncTask extends AsyncTask<Void, Integer, Void>
 			}
 		}
 
+		long max_id = 0;
+		int added = 0;
+
+		while ((line = in.readLine()) != null) {
+			ContentValues cv = parse_line(line, field_names);
+			ret.addFirst(cv);
+			++added;
+
+			if (cv.containsKey(DbAdapter.KEY_ROWID)) {
+				max_id = java.lang.Math.max(max_id, cv.getAsLong(DbAdapter.KEY_ROWID));
+			}
+			if (max_id != 0) {
+				publishProgress(java.lang.Math.min(progress_max,
+							progress_offset +
+							(int)((progress_max - progress_offset) *
+								(double) added / max_id)));
+			}
+		}
+
+		in.close();
+
+		return ret;
+	}
+
+
+	private int sync_table(LinkedList<ContentValues> values, String table,
+			int progress_offset, int progress_max)
+	{
+		int added = 0;
+
 		DbAdapter dbHelper = new DbAdapter();
 		dbHelper.open_readwrite(mCtx, false);
 
@@ -160,8 +193,9 @@ public class SyncTask extends AsyncTask<Void, Integer, Void>
 
 		int read = 0;
 
-		while ((line = in.readLine()) != null) {
-			ContentValues cv = parse_line(line, field_names);
+		Iterator<ContentValues> itr = values.listIterator();
+		while (itr.hasNext()) {
+			ContentValues cv = itr.next();
 			if (dbHelper.replace(cv, table) > orig_max_id) {
 				++added;
 			}
@@ -177,8 +211,6 @@ public class SyncTask extends AsyncTask<Void, Integer, Void>
 			}
 		}
 		dbHelper.close();
-
-		in.close();
 
 		return added;
 	}
