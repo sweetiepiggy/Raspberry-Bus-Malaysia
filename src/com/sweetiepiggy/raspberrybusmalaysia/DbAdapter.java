@@ -69,8 +69,10 @@ public class DbAdapter
 	public static final String TRIP_DELAY = "(strftime('%s', " + KEY_ACTUAL_DEP + ") - strftime('%s', " + KEY_SCHED_DEP + "))";
 	public static final String AVG_TIME = "avg(" + TRIP_TIME + ")";
 	public static final String AVG_DELAY = "avg(" + TRIP_DELAY + ")";
-	public static final String NUM_TRIPS = "count(" + KEY_AGENT + ")";
-	public static final String AVG_OVERALL = "avg(" + KEY_OVERALL + ")";
+	public static final String NUM_TRIPS = "num_trips";
+	public static final String AVG_OVERALL = "avg_overall";
+
+	private static final String CALC_NUM_TRIPS = "count(" + KEY_AGENT + ")";
 
 	public static final String TABLE_TRIPS = "trips";
 	public static final String TABLE_CITIES = "cities";
@@ -645,32 +647,71 @@ public class DbAdapter
 	public Cursor fetch_avg(String from_city, String to_city, String group_by)
 	{
 		String key_city = KEY_CITY + "_" + mDbHelper.mCtx.getResources().getString(R.string.lang_code);
-		return mDbHelper.mDb.query(true,
-				TABLE_TRIPS +
+		return mDbHelper.mDb.rawQuery(
+				"SELECT " +
+					TABLE_TRIPS + "." + KEY_ROWID + " AS " + KEY_ROWID + ", " +
+					TABLE_TRIPS + "." + KEY_AGENT + " AS " + KEY_AGENT + ", " +
+					TABLE_TRIPS + "." + KEY_OPERATOR + " AS " + KEY_OPERATOR + ", " +
+					AVG_TIME + ", " + AVG_OVERALL + ", " + NUM_TRIPS +
+				" FROM " + TABLE_TRIPS +
 
 				" JOIN " + TABLE_STATIONS + " AS FROM_STATIONS ON " +
-				TABLE_TRIPS + "." + KEY_FROM_STN_ID + " == " +
-				"FROM_STATIONS." + KEY_ROWID +
+					TABLE_TRIPS + "." + KEY_FROM_STN_ID + " == " +
+					"FROM_STATIONS." + KEY_ROWID +
 
 				" JOIN " + TABLE_STATIONS + " AS TO_STATIONS ON " +
-				TABLE_TRIPS + "." + KEY_TO_STN_ID + " == " +
-				"TO_STATIONS." + KEY_ROWID +
+					TABLE_TRIPS + "." + KEY_TO_STN_ID + " == " +
+					"TO_STATIONS." + KEY_ROWID +
 
 				" JOIN " + TABLE_CITIES + " AS FROM_CITIES ON " +
-				" FROM_STATIONS." + KEY_CITY_ID + " == " +
-				"FROM_CITIES." + KEY_ROWID +
+					" FROM_STATIONS." + KEY_CITY_ID + " == " +
+					"FROM_CITIES." + KEY_ROWID +
 
 				" JOIN " + TABLE_CITIES + " AS TO_CITIES ON " +
-				" TO_STATIONS." + KEY_CITY_ID + " == " +
-				"TO_CITIES." + KEY_ROWID,
+					" TO_STATIONS." + KEY_CITY_ID + " == " +
+					"TO_CITIES." + KEY_ROWID +
 
-				new String[] {TABLE_TRIPS + "." + KEY_ROWID,
-					KEY_AGENT, KEY_OPERATOR, AVG_TIME,
-					AVG_OVERALL, NUM_TRIPS},
-				"FROM_CITIES." + key_city + " = ? AND " +
-				"TO_CITIES." + key_city + " = ? AND " + KEY_ARRIVAL + "!= 'Cancelled'",
-				new String[] {from_city, to_city},
-				group_by, null, AVG_OVERALL + " DESC", null);
+				" JOIN (" +
+					" SELECT " +
+						group_by + ", AVG(" + KEY_OVERALL  + ") AS " + AVG_OVERALL +
+						", COUNT(" + group_by + ") AS " + NUM_TRIPS +
+
+					" FROM " + TABLE_TRIPS +
+
+					" JOIN " + TABLE_STATIONS + " AS FROM_STATIONS ON " +
+						TABLE_TRIPS + "." + KEY_FROM_STN_ID + " == " +
+						"FROM_STATIONS." + KEY_ROWID +
+
+					" JOIN " + TABLE_STATIONS + " AS TO_STATIONS ON " +
+						TABLE_TRIPS + "." + KEY_TO_STN_ID + " == " +
+						"TO_STATIONS." + KEY_ROWID +
+
+					" JOIN " + TABLE_CITIES + " AS FROM_CITIES ON " +
+						" FROM_STATIONS." + KEY_CITY_ID + " == " +
+						"FROM_CITIES." + KEY_ROWID +
+
+					" JOIN " + TABLE_CITIES + " AS TO_CITIES ON " +
+						" TO_STATIONS." + KEY_CITY_ID + " == " +
+						"TO_CITIES." + KEY_ROWID +
+
+					" WHERE FROM_CITIES." + key_city + " == ? AND " +
+						" TO_CITIES." + key_city + " == ? AND " +
+						KEY_OVERALL + " IS NOT NULL " +
+
+					" GROUP BY " + group_by + ") " +
+
+				" AS RATINGS ON " +
+					TABLE_TRIPS + "." + group_by + " == " +
+					" RATINGS." + group_by +
+
+				" WHERE FROM_CITIES." + key_city + " == ? AND " +
+					" TO_CITIES." + key_city + " == ? AND " +
+					KEY_ARRIVAL + " != 'Cancelled' " +
+
+				" GROUP BY " + group_by +
+				" ORDER BY " + AVG_OVERALL + " DESC, " +
+					AVG_TIME + " ASC",
+			new String[] {from_city, to_city, from_city, to_city});
 	}
 
 	public Cursor fetch_agent_avg(String from_city, String to_city, String agent)
@@ -695,7 +736,7 @@ public class DbAdapter
 				"TO_CITIES." + KEY_ROWID,
 
 				new String[] {TABLE_TRIPS + "." + KEY_ROWID,
-					AVG_TIME, AVG_DELAY, NUM_TRIPS},
+					AVG_TIME, AVG_DELAY, CALC_NUM_TRIPS + " AS " + NUM_TRIPS},
 				KEY_AGENT + " = ? AND " +
 				"FROM_CITIES." + key_city + " = ? AND " +
 				"TO_CITIES." + key_city + " = ?",
@@ -726,7 +767,7 @@ public class DbAdapter
 				"TO_CITIES." + KEY_ROWID,
 
 				new String[] {TABLE_TRIPS + "." + KEY_ROWID,
-					AVG_TIME, AVG_DELAY, NUM_TRIPS},
+					AVG_TIME, AVG_DELAY, CALC_NUM_TRIPS + " AS " + NUM_TRIPS},
 				KEY_OPERATOR + " = ? AND " +
 				"FROM_CITIES." + key_city + " = ? AND " +
 				"TO_CITIES." + key_city + " = ?",
