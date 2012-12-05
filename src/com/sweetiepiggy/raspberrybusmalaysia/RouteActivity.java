@@ -29,6 +29,8 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RadioButton;
 import android.widget.RatingBar;
@@ -41,6 +43,7 @@ public class RouteActivity extends Activity
 {
 	private String m_from_city = "";
 	private String m_to_city = "";
+	private boolean mHideSearch = false;
 
 	private DbAdapter mDbHelper;
 
@@ -102,6 +105,7 @@ public class RouteActivity extends Activity
 		mDbHelper.open(this);
 		init_from_map_button();
 		init_from_spinner(null);
+		init_shade();
 	}
 
 	@Override
@@ -179,6 +183,20 @@ public class RouteActivity extends Activity
 			{
 			}
 
+		});
+	}
+
+	private void init_shade()
+	{
+		ImageView shade_v = (ImageView) findViewById(R.id.shade);
+		shade_v.setOnClickListener(new View.OnClickListener() {
+			public void onClick(View v) {
+				mHideSearch = !mHideSearch;
+				((ImageView) v).setImageResource(mHideSearch ? android.R.drawable.arrow_down_float :
+					android.R.drawable.arrow_up_float);
+				((LinearLayout) findViewById(R.id.search_layout)).setVisibility(mHideSearch ?
+					View.GONE : View.VISIBLE);
+			}
 		});
 	}
 
