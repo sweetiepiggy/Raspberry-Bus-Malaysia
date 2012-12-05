@@ -493,6 +493,10 @@ public class SubmitTripActivity extends Activity
 			public void onClick(View v) {
 				mDbHelper.clear_tmp_table();
 				init_vars(mData);
+				/* TODO: why aren't these set correctly by init_vars() ? */
+				mData.sched_time = new GregorianCalendar();
+				mData.depart_time = new GregorianCalendar();
+				mData.arrival_time = new GregorianCalendar();
 				init_entries();
 				init_date_time_buttons();
 			}

@@ -505,6 +505,8 @@ public class ComplainActivity extends Activity
 			public void onClick(View v) {
 				mDbHelper.clear_tmp_complaint_table();
 				init_vars(mData);
+				/* TODO: why is this not set correctly by init_vars() ? */
+				mData.sched_time = new GregorianCalendar();
 				init_entries();
 				init_date_time_buttons();
 			}
