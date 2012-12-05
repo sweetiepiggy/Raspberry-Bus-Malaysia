@@ -67,11 +67,12 @@ public class DbAdapter
 
 	public static final String TRIP_TIME = "(strftime('%s', " + KEY_ARRIVAL + ") - strftime('%s', " + KEY_SCHED_DEP + "))";
 	public static final String TRIP_DELAY = "(strftime('%s', " + KEY_ACTUAL_DEP + ") - strftime('%s', " + KEY_SCHED_DEP + "))";
-	public static final String AVG_TIME = "avg(" + TRIP_TIME + ")";
+	public static final String AVG_TIME = "avg_time";
 	public static final String AVG_DELAY = "avg(" + TRIP_DELAY + ")";
 	public static final String NUM_TRIPS = "num_trips";
 	public static final String AVG_OVERALL = "avg_overall";
 
+	private static final String CALC_AVG_TIME = "avg(" + TRIP_TIME + ")";
 	private static final String CALC_NUM_TRIPS = "count(" + KEY_AGENT + ")";
 
 	public static final String TABLE_TRIPS = "trips";
@@ -649,32 +650,16 @@ public class DbAdapter
 		String key_city = KEY_CITY + "_" + mDbHelper.mCtx.getResources().getString(R.string.lang_code);
 		return mDbHelper.mDb.rawQuery(
 				"SELECT " +
-					TABLE_TRIPS + "." + KEY_ROWID + " AS " + KEY_ROWID + ", " +
-					TABLE_TRIPS + "." + KEY_AGENT + " AS " + KEY_AGENT + ", " +
-					TABLE_TRIPS + "." + KEY_OPERATOR + " AS " + KEY_OPERATOR + ", " +
+					"TIMES." + KEY_ROWID + " AS " + KEY_ROWID + ", " +
+					"TIMES." + KEY_AGENT + " AS " + KEY_AGENT + ", " +
+					"TIMES." + KEY_OPERATOR + " AS " + KEY_OPERATOR + ", " +
 					AVG_TIME + ", " + AVG_OVERALL + ", " + NUM_TRIPS +
-				" FROM " + TABLE_TRIPS +
+					" FROM " +
 
-				" JOIN " + TABLE_STATIONS + " AS FROM_STATIONS ON " +
-					TABLE_TRIPS + "." + KEY_FROM_STN_ID + " == " +
-					"FROM_STATIONS." + KEY_ROWID +
-
-				" JOIN " + TABLE_STATIONS + " AS TO_STATIONS ON " +
-					TABLE_TRIPS + "." + KEY_TO_STN_ID + " == " +
-					"TO_STATIONS." + KEY_ROWID +
-
-				" JOIN " + TABLE_CITIES + " AS FROM_CITIES ON " +
-					" FROM_STATIONS." + KEY_CITY_ID + " == " +
-					"FROM_CITIES." + KEY_ROWID +
-
-				" JOIN " + TABLE_CITIES + " AS TO_CITIES ON " +
-					" TO_STATIONS." + KEY_CITY_ID + " == " +
-					"TO_CITIES." + KEY_ROWID +
-
-				" JOIN (" +
-					" SELECT " +
-						group_by + ", AVG(" + KEY_OVERALL  + ") AS " + AVG_OVERALL +
-						", COUNT(" + group_by + ") AS " + NUM_TRIPS +
+				" (SELECT " +
+					TABLE_TRIPS + "." + KEY_ROWID + ", " +
+					KEY_AGENT + ", " + KEY_OPERATOR + ", " +
+					" AVG(" + TRIP_TIME  + ") AS " + AVG_TIME +
 
 					" FROM " + TABLE_TRIPS +
 
@@ -696,21 +681,48 @@ public class DbAdapter
 
 					" WHERE FROM_CITIES." + key_city + " == ? AND " +
 						" TO_CITIES." + key_city + " == ? AND " +
-						KEY_OVERALL + " IS NOT NULL " +
+						KEY_ARRIVAL + " != 'Cancelled' " +
+
+					" GROUP BY " + group_by  + ") " +
+				" AS TIMES " +
+
+				" LEFT JOIN " +
+
+				"(SELECT " +
+					group_by + ", AVG(" + KEY_OVERALL  + ") AS " + AVG_OVERALL +
+					", COUNT(" + group_by + ") AS " + NUM_TRIPS +
+
+					" FROM " + TABLE_TRIPS +
+
+					" JOIN " + TABLE_STATIONS + " AS FROM_STATIONS ON " +
+						TABLE_TRIPS + "." + KEY_FROM_STN_ID + " == " +
+						"FROM_STATIONS." + KEY_ROWID +
+
+					" JOIN " + TABLE_STATIONS + " AS TO_STATIONS ON " +
+						TABLE_TRIPS + "." + KEY_TO_STN_ID + " == " +
+						"TO_STATIONS." + KEY_ROWID +
+
+					" JOIN " + TABLE_CITIES + " AS FROM_CITIES ON " +
+						" FROM_STATIONS." + KEY_CITY_ID + " == " +
+						"FROM_CITIES." + KEY_ROWID +
+
+					" JOIN " + TABLE_CITIES + " AS TO_CITIES ON " +
+						" TO_STATIONS." + KEY_CITY_ID + " == " +
+						"TO_CITIES." + KEY_ROWID +
+
+					" WHERE FROM_CITIES." + key_city + " == ? AND " +
+						" TO_CITIES." + key_city + " == ? AND " +
+						" length(" + KEY_OVERALL + ") != 0 " +
 
 					" GROUP BY " + group_by + ") " +
 
 				" AS RATINGS ON " +
-					TABLE_TRIPS + "." + group_by + " == " +
+					"TIMES." + group_by + " == " +
 					" RATINGS." + group_by +
 
-				" WHERE FROM_CITIES." + key_city + " == ? AND " +
-					" TO_CITIES." + key_city + " == ? AND " +
-					KEY_ARRIVAL + " != 'Cancelled' " +
-
-				" GROUP BY " + group_by +
 				" ORDER BY " + AVG_OVERALL + " DESC, " +
 					AVG_TIME + " ASC",
+
 			new String[] {from_city, to_city, from_city, to_city});
 	}
 
@@ -736,7 +748,8 @@ public class DbAdapter
 				"TO_CITIES." + KEY_ROWID,
 
 				new String[] {TABLE_TRIPS + "." + KEY_ROWID,
-					AVG_TIME, AVG_DELAY, CALC_NUM_TRIPS + " AS " + NUM_TRIPS},
+					CALC_AVG_TIME + " AS " + AVG_TIME,
+					AVG_DELAY, CALC_NUM_TRIPS + " AS " + NUM_TRIPS},
 				KEY_AGENT + " = ? AND " +
 				"FROM_CITIES." + key_city + " = ? AND " +
 				"TO_CITIES." + key_city + " = ?",
@@ -767,7 +780,8 @@ public class DbAdapter
 				"TO_CITIES." + KEY_ROWID,
 
 				new String[] {TABLE_TRIPS + "." + KEY_ROWID,
-					AVG_TIME, AVG_DELAY, CALC_NUM_TRIPS + " AS " + NUM_TRIPS},
+					CALC_AVG_TIME + " AS " + AVG_TIME, AVG_DELAY,
+					CALC_NUM_TRIPS + " AS " + NUM_TRIPS},
 				KEY_OPERATOR + " = ? AND " +
 				"FROM_CITIES." + key_city + " = ? AND " +
 				"TO_CITIES." + key_city + " = ?",
