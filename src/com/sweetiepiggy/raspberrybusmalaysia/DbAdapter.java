@@ -459,22 +459,25 @@ public class DbAdapter
 	{
 		String key_station = KEY_STN + "_" + mDbHelper.mCtx.getResources().getString(R.string.lang_code);
 
-		return mDbHelper.mDb.rawQuery("SELECT DISTINCT " + TABLE_TRIPS +
-				"." + KEY_ROWID + " AS " + KEY_ROWID + ", " + key_station + " AS " + KEY_TO_STN +
-				", " + KEY_LATITUDE + ", " + KEY_LONGITUDE +
+		return mDbHelper.mDb.rawQuery(
+				"SELECT " +
+					TABLE_TRIPS + "." + KEY_ROWID + " AS " + KEY_ROWID + ", " +
+					"TO_STATIONS." + key_station + " AS " + KEY_TO_STN + ", " +
+					"TO_STATIONS." + KEY_LATITUDE + ", " +
+					"TO_STATIONS." + KEY_LONGITUDE +
 				" FROM " + TABLE_TRIPS +
 
-				" JOIN " + TABLE_STATIONS +
-				" ON " + TABLE_TRIPS + "." + KEY_TO_STN_ID + " == " +
-				TABLE_STATIONS + "." + KEY_ROWID +
+				" JOIN " + TABLE_STATIONS + " AS FROM_STATIONS ON " +
+					TABLE_TRIPS + "." + KEY_FROM_STN_ID + " == " +
+					"FROM_STATIONS." + KEY_ROWID +
 
-				" JOIN " + TABLE_CITIES +
-				" ON " + KEY_CITY_ID + " == " +
-				TABLE_CITIES + "." + KEY_ROWID +
+				" JOIN " + TABLE_STATIONS + " AS TO_STATIONS ON " +
+					TABLE_TRIPS + "." + KEY_TO_STN_ID + " == " +
+					"TO_STATIONS." + KEY_ROWID +
 
-				" WHERE " + key_station + " == ? " +
-				" GROUP BY " + key_station +
-				" ORDER BY " + key_station + " ASC",
+				" WHERE FROM_STATIONS." + key_station + " == ? " +
+				" GROUP BY TO_STATIONS." + key_station +
+				" ORDER BY TO_STATIONS." + key_station + " ASC",
 			new String[] {from_station});
 	}
 
