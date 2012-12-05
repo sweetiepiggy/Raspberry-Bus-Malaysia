@@ -78,9 +78,13 @@ public class RouteActivity extends Activity
 				company = getResources().getString(R.string.unknown);
 			}
 
+			if (count == null) {
+				count = "0";
+			}
+
 			company_v.setText(company);
 			avg_v.setText(avg);
-			count_v.setText("(" + count + ")");
+			count_v.setText(count + " " + getResources().getString(R.string.reviews));
 			overall_v.setRating(avg_overall);
 		}
 	}
