@@ -183,36 +183,33 @@ public class SyncTask extends AsyncTask<Void, Integer, Void>
 	private int sync_table(LinkedList<ContentValues> values, String table,
 			int progress_offset, int progress_max)
 	{
-		int added = 0;
+		int new_added = 0;
 
 		DbAdapter dbHelper = new DbAdapter();
 		dbHelper.open_readwrite(mCtx, false);
 
-		long max_id = dbHelper.fetch_max_id(table);
-		final long orig_max_id = max_id;
+		long add_total = values.size();
+		final long orig_max_id = dbHelper.fetch_max_id(table);
 
-		int read = 0;
+		int added = 0;
 
 		Iterator<ContentValues> itr = values.listIterator();
 		while (itr.hasNext()) {
 			ContentValues cv = itr.next();
 			if (dbHelper.replace(cv, table) > orig_max_id) {
-				++added;
+				++new_added;
 			}
-			++read;
-			if (cv.containsKey(DbAdapter.KEY_ROWID)) {
-				max_id = java.lang.Math.max(max_id, cv.getAsLong(DbAdapter.KEY_ROWID));
-			}
-			if (max_id != 0) {
+			++added;
+			if (add_total != 0) {
 				publishProgress(java.lang.Math.min(progress_max,
 							progress_offset +
 							(int)((progress_max - progress_offset) *
-								(double) read / max_id)));
+								(double) added / add_total)));
 			}
 		}
 		dbHelper.close();
 
-		return added;
+		return new_added;
 	}
 
 	private ContentValues parse_line(String line, String[] field_names)
