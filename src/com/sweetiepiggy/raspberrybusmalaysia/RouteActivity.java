@@ -196,6 +196,11 @@ public class RouteActivity extends Activity
 					android.R.drawable.arrow_up_float);
 				((LinearLayout) findViewById(R.id.search_layout)).setVisibility(mHideSearch ?
 					View.GONE : View.VISIBLE);
+
+				TextView route_v = (TextView) findViewById(R.id.route);
+				route_v.setText(m_from_city + " -> " + m_to_city);
+				route_v.setVisibility(mHideSearch ?
+					View.VISIBLE : View.GONE);
 			}
 		});
 	}

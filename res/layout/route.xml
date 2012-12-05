@@ -96,13 +96,26 @@
 			android:onClick="on_radio_button_clicked"/>
 		</RadioGroup>
 	</LinearLayout>
-	<ImageView
-		android:id="@+id/shade"
-		android:src="@android:drawable/arrow_up_float"
-		android:padding="3dp"
-		android:layout_gravity="right"
-		android:layout_width="wrap_content"
-		android:layout_height="wrap_content" />
+	<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+		android:layout_width="fill_parent"
+		android:layout_height="wrap_content"
+		android:gravity="right"
+		android:orientation="horizontal" >
+		<TextView
+			android:id="@+id/route"
+			android:visibility="gone"
+			style="@android:style/TextAppearance.Medium"
+			android:layout_weight="1"
+			android:layout_width="fill_parent"
+			android:layout_height="wrap_content" />
+		<ImageView
+			android:id="@+id/shade"
+			android:src="@android:drawable/arrow_up_float"
+			android:padding="3dp"
+			android:layout_gravity="right"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content" />
+	</LinearLayout>
 	<View
 		android:layout_width="fill_parent"
 		android:layout_height="1dp"
