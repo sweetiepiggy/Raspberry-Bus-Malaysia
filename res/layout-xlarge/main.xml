@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!--
+    Copyright (C) 2012 Sweetie Piggy Apps <sweetiepiggyapps@gmail.com>
+
+    This file is part of Raspberry Bus Malaysia.
+
+    Raspberry Bus Malaysia is free software; you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation; either version 3 of the License, or
+    (at your option) any later version.
+
+    Raspberry Bus Malaysia is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with Raspberry Bus Malaysia ; if not, see <http://www.gnu.org/licenses/>.
+-->
+
+<TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	android:layout_width="wrap_content"
+	android:layout_height="wrap_content"
+	android:layout_gravity="center"
+	android:gravity="center">
+	<TableRow>
+		<TextView
+			android:id="@+id/route"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_gravity="center"
+			android:gravity="center"
+			android:padding="25dp"
+			android:drawableTop="@drawable/route"
+			style="@android:style/TextAppearance.Large"
+			android:text="@string/route_stat" />
+		<TextView
+			android:id="@+id/map"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_gravity="center"
+			android:gravity="center"
+			android:padding="25dp"
+			android:drawableTop="@drawable/map"
+			style="@android:style/TextAppearance.Large"
+			android:text="@string/map" />
+	</TableRow>
+	<TableRow>
+		<TextView
+			android:id="@+id/agent"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_gravity="center"
+			android:gravity="center"
+			android:padding="25dp"
+			android:drawableTop="@drawable/agent"
+			style="@android:style/TextAppearance.Large"
+			android:text="@string/agent_stat" />
+		<TextView
+			android:id="@+id/operator"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_gravity="center"
+			android:gravity="center"
+			android:padding="25dp"
+			android:drawableTop="@drawable/ic_launcher"
+			style="@android:style/TextAppearance.Large"
+			android:text="@string/operator_stat" />
+	</TableRow>
+	<TableRow>
+		<TextView
+			android:id="@+id/submit_trip"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_gravity="center"
+			android:gravity="center"
+			android:padding="25dp"
+			android:drawableTop="@drawable/submit"
+			style="@android:style/TextAppearance.Large"
+			android:text="@string/submit_trip" />
+		<TextView
+			android:id="@+id/complain"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_gravity="center"
+			android:gravity="center"
+			android:padding="25dp"
+			android:drawableTop="@drawable/complain"
+			style="@android:style/TextAppearance.Large"
+			android:text="@string/complain" />
+	</TableRow>
+</TableLayout>
+
