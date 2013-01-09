@@ -656,13 +656,16 @@ public class DbAdapter
 					"TIMES." + KEY_ROWID + " AS " + KEY_ROWID + ", " +
 					"TIMES." + KEY_AGENT + " AS " + KEY_AGENT + ", " +
 					"TIMES." + KEY_OPERATOR + " AS " + KEY_OPERATOR + ", " +
-					AVG_TIME + ", " + AVG_OVERALL + ", " + NUM_TRIPS +
+					AVG_TIME + ", " + NUM_TRIPS + ", " +
+					"0.75 * RATINGS." + AVG_OVERALL + " + " +
+						"0.25 * min(5, max(1, (25 - avg_delay / 60.) / 5.)) AS " + AVG_OVERALL +
 					" FROM " +
 
 				" (SELECT " +
 					TABLE_TRIPS + "." + KEY_ROWID + ", " +
 					KEY_AGENT + ", " + KEY_OPERATOR + ", " +
-					" AVG(" + TRIP_TIME  + ") AS " + AVG_TIME +
+					" AVG(" + TRIP_TIME  + ") AS " + AVG_TIME + ", " +
+					" AVG(" + TRIP_DELAY  + ") AS avg_delay" +
 
 					" FROM " + TABLE_TRIPS +
 
@@ -692,7 +695,13 @@ public class DbAdapter
 				" LEFT JOIN " +
 
 				"(SELECT " +
-					group_by + ", AVG(" + KEY_OVERALL  + ") AS " + AVG_OVERALL +
+					group_by +
+					", " +
+						" 0.5 * AVG(" + KEY_OVERALL  + ") + " +
+						" 0.25 * AVG(" + KEY_SAFETY + ") + " +
+						" 0.25 * AVG(" + KEY_COMFORT + ") " +
+						" AS " + AVG_OVERALL +
+
 					", COUNT(" + group_by + ") AS " + NUM_TRIPS +
 
 					" FROM " + TABLE_TRIPS +
@@ -715,7 +724,9 @@ public class DbAdapter
 
 					" WHERE FROM_CITIES." + key_city + " == ? AND " +
 						" TO_CITIES." + key_city + " == ? AND " +
-						" length(" + KEY_OVERALL + ") != 0 " +
+						" length(" + KEY_OVERALL + ") != 0 AND " +
+						" length(" + KEY_SAFETY + ") != 0 AND " +
+						" length(" + KEY_COMFORT + ") != 0 " +
 
 					" GROUP BY " + group_by + ") " +
 
