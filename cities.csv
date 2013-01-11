@@ -1,77 +1,77 @@
-_id,city_en,city_ms,city_zh
-76,Putrajaya,Putrajaya,布得拉再也
-75,Tumpat,Tumpat,道北
-74,"Gua Musang","Gua Musang",话望生
-73,Bachok,Bachok,万捷
-72,"Kuala Krai","Kuala Krai",瓜拉吉赖
-71,"Rantau Panjang","Rantau Panjang",兰斗班让
-70,Kemaman,Kemaman,甘马挽
-69,"Kuala Besut","Kuala Besut",瓜拉勿述
-68,Jerteh,Jerteh,日底
-67,Dungun,Dungun,龙运
-66,Triang,Teriang,直凉
-65,"Kuala Rompin","Kuala Rompin",瓜拉云冰
-64,"Kuala Lipis","Kuala Lipis",瓜拉立卑
-63,Jerantut,Jerantut,而连突
-62,Bentong,Bentong,文冬
-61,Raub,Raub,劳勿
-60,"Alor Gajah","Alor Gajah",亚罗牙也
-59,Tangkak,Tangkak,东甲
-58,Labis,Labis,拉美士
-57,"Yong Peng","Yong Peng",永平
-56,Kluang,Kluang, 居銮
-55,"Bandar Penawar","Bandar Penawar",本那瓦鎮
-54,"Simpang Renggam","Simpang Renggam",新邦
-53,"Sg Rengit","Sg Rengit",四湾
-52,Kulai,Kulai,古来
-51,"Pasir Gudang","Pasir Gudang",巴西古当
-50,Pontian,Pontian,笨珍
-49,Muar,Muar,马口
-48,"Batu Pahat","Batu Pahat",岜株岜辖
-47,"Kota Tinggi","Kota Tinggi",哥打丁宜
-46,Mersing,Mersing,丰盛港
-45,Nilai,Nilai,汝来
-44,Gemas,Gemas,金马士
-43,Gemencheh,Gemencheh,利民济
-42,"Kuala Pilah","Kuala Pilah",瓜拉庇劳
-41,Tampin,Tampin,淡边
-40,Grik,Gerik,宜力
-39,"Kuala Kangsar","Kuala Kangsar",瓜拉江沙
-38,Manjung,Manjung,曼绒
-37,Lumut,Lumut,红土坎
-36,"Teluk Intan","Teluk Intan",安顺
-35,Kampar,Kampar,金保
-34,"Parit Buntar","Parit Buntar",巴里文打
-33,Gurun,Gurun,莪仑
-32,Sik,Sik,西里
-31,Kulim,Kulim,居林
-30,Jitra,Jitra,实达
-29,Segamat,Segamat,昔加末
-28,Chaah,Chaah,三合港
-27,"Bukit Kayu Hitam","Bukit Kayu Hitam",黑木山
-26,Changloon,Changlun,张伦
-25,"Muadzam Shah","Muadzam Shah",姆阿詹沙
-24,"Kuala Terengganu","Kuala Terengganu",瓜拉丁加奴
-23,"Bandar Jengka","Bandar Jengka",增卡市區
-22,Temerloh,Temerloh,淡马鲁
-21,"Sg Petani","Sg Petani",双溪大年
-20,Kajang,Kajang,加央
-19,LCCT,LCCT,廉价飞机场
-18,"Shah Alam","Shah Alam",沙亚南
-17,Klang,Klang,巴生
-16,Kangar,Kangar,江沙
-15,"Kuala Perlis","Kuala Perlis",瓜拉玻璃士
-14,"Genting Highland","Genting Highland",云顶高原
-13,Kuantan,Kuantan,关丹
-12,Seremban,Seremban,芙蓉
-11,Malacca,Melaka,马六甲
-10,"Kota Bharu","Kota Bharu",哥打巴鲁
-9,"Alor Setar","Alor Setar",亚罗士打
-8,"Johor Bahru","Johor Bahru",柔佛新山
-7,Butterworth,Butterworth,北海
-6,"Sg Buloh","Sg Buloh",白沙罗
-5,Taiping,Taiping,太平
-4,Puchong,Puchong,蒲种
-3,Penang,"Pulau Pinang",槟城
-2,"Kuala Lumpur","Kuala Lumpur",吉隆坡
-1,Ipoh,Ipoh,怡保
+_id,city_en,city_ms,city_zh,last_updated
+76,Putrajaya,Putrajaya,布得拉再也,"2013-01-11 21:13"
+75,Tumpat,Tumpat,道北,"2013-01-11 21:13"
+74,"Gua Musang","Gua Musang",话望生,"2013-01-11 21:13"
+73,Bachok,Bachok,万捷,"2013-01-11 21:13"
+72,"Kuala Krai","Kuala Krai",瓜拉吉赖,"2013-01-11 21:13"
+71,"Rantau Panjang","Rantau Panjang",兰斗班让,"2013-01-11 21:13"
+70,Kemaman,Kemaman,甘马挽,"2013-01-11 21:13"
+69,"Kuala Besut","Kuala Besut",瓜拉勿述,"2013-01-11 21:13"
+68,Jerteh,Jerteh,日底,"2013-01-11 21:13"
+67,Dungun,Dungun,龙运,"2013-01-11 21:13"
+66,Triang,Teriang,直凉,"2013-01-11 21:13"
+65,"Kuala Rompin","Kuala Rompin",瓜拉云冰,"2013-01-11 21:13"
+64,"Kuala Lipis","Kuala Lipis",瓜拉立卑,"2013-01-11 21:13"
+63,Jerantut,Jerantut,而连突,"2013-01-11 21:13"
+62,Bentong,Bentong,文冬,"2013-01-11 21:13"
+61,Raub,Raub,劳勿,"2013-01-11 21:13"
+60,"Alor Gajah","Alor Gajah",亚罗牙也,"2013-01-11 21:13"
+59,Tangkak,Tangkak,东甲,"2013-01-11 21:13"
+58,Labis,Labis,拉美士,"2013-01-11 21:13"
+57,"Yong Peng","Yong Peng",永平,"2013-01-11 21:13"
+56,Kluang,Kluang, 居銮,"2013-01-11 21:13"
+55,"Bandar Penawar","Bandar Penawar",本那瓦鎮,"2013-01-11 21:13"
+54,"Simpang Renggam","Simpang Renggam",新邦,"2013-01-11 21:13"
+53,"Sg Rengit","Sg Rengit",四湾,"2013-01-11 21:13"
+52,Kulai,Kulai,古来,"2013-01-11 21:13"
+51,"Pasir Gudang","Pasir Gudang",巴西古当,"2013-01-11 21:13"
+50,Pontian,Pontian,笨珍,"2013-01-11 21:13"
+49,Muar,Muar,马口,"2013-01-11 21:13"
+48,"Batu Pahat","Batu Pahat",岜株岜辖,"2013-01-11 21:13"
+47,"Kota Tinggi","Kota Tinggi",哥打丁宜,"2013-01-11 21:13"
+46,Mersing,Mersing,丰盛港,"2013-01-11 21:13"
+45,Nilai,Nilai,汝来,"2013-01-11 21:13"
+44,Gemas,Gemas,金马士,"2013-01-11 21:13"
+43,Gemencheh,Gemencheh,利民济,"2013-01-11 21:13"
+42,"Kuala Pilah","Kuala Pilah",瓜拉庇劳,"2013-01-11 21:13"
+41,Tampin,Tampin,淡边,"2013-01-11 21:13"
+40,Grik,Gerik,宜力,"2013-01-11 21:13"
+39,"Kuala Kangsar","Kuala Kangsar",瓜拉江沙,"2013-01-11 21:13"
+38,Manjung,Manjung,曼绒,"2013-01-11 21:13"
+37,Lumut,Lumut,红土坎,"2013-01-11 21:13"
+36,"Teluk Intan","Teluk Intan",安顺,"2013-01-11 21:13"
+35,Kampar,Kampar,金保,"2013-01-11 21:13"
+34,"Parit Buntar","Parit Buntar",巴里文打,"2013-01-11 21:13"
+33,Gurun,Gurun,莪仑,"2013-01-11 21:13"
+32,Sik,Sik,西里,"2013-01-11 21:13"
+31,Kulim,Kulim,居林,"2013-01-11 21:13"
+30,Jitra,Jitra,实达,"2013-01-11 21:13"
+29,Segamat,Segamat,昔加末,"2013-01-11 21:13"
+28,Chaah,Chaah,三合港,"2013-01-11 21:13"
+27,"Bukit Kayu Hitam","Bukit Kayu Hitam",黑木山,"2013-01-11 21:13"
+26,Changloon,Changlun,张伦,"2013-01-11 21:13"
+25,"Muadzam Shah","Muadzam Shah",姆阿詹沙,"2013-01-11 21:13"
+24,"Kuala Terengganu","Kuala Terengganu",瓜拉丁加奴,"2013-01-11 21:13"
+23,"Bandar Jengka","Bandar Jengka",增卡市區,"2013-01-11 21:13"
+22,Temerloh,Temerloh,淡马鲁,"2013-01-11 21:13"
+21,"Sg Petani","Sg Petani",双溪大年,"2013-01-11 21:13"
+20,Kajang,Kajang,加央,"2013-01-11 21:13"
+19,LCCT,LCCT,廉价飞机场,"2013-01-11 21:13"
+18,"Shah Alam","Shah Alam",沙亚南,"2013-01-11 21:13"
+17,Klang,Klang,巴生,"2013-01-11 21:13"
+16,Kangar,Kangar,江沙,"2013-01-11 21:13"
+15,"Kuala Perlis","Kuala Perlis",瓜拉玻璃士,"2013-01-11 21:13"
+14,"Genting Highland","Genting Highland",云顶高原,"2013-01-11 21:13"
+13,Kuantan,Kuantan,关丹,"2013-01-11 21:13"
+12,Seremban,Seremban,芙蓉,"2013-01-11 21:13"
+11,Malacca,Melaka,马六甲,"2013-01-11 21:13"
+10,"Kota Bharu","Kota Bharu",哥打巴鲁,"2013-01-11 21:13"
+9,"Alor Setar","Alor Setar",亚罗士打,"2013-01-11 21:13"
+8,"Johor Bahru","Johor Bahru",柔佛新山,"2013-01-11 21:13"
+7,Butterworth,Butterworth,北海,"2013-01-11 21:13"
+6,"Sg Buloh","Sg Buloh",白沙罗,"2013-01-11 21:13"
+5,Taiping,Taiping,太平,"2013-01-11 21:13"
+4,Puchong,Puchong,蒲种,"2013-01-11 21:13"
+3,Penang,"Pulau Pinang",槟城,"2013-01-11 21:13"
+2,"Kuala Lumpur","Kuala Lumpur",吉隆坡,"2013-01-11 21:13"
+1,Ipoh,Ipoh,怡保,"2013-01-11 21:13"
