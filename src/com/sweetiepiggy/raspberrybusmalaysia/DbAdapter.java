@@ -51,7 +51,9 @@ public class DbAdapter
 	public static final String KEY_COMFORT = "comfort";
 	public static final String KEY_OVERALL = "overall";
 	public static final String KEY_COMMENT = "comment";
+	/* TODO: correct KEY_LAST_UPDATE, should not be "comment" */
 	public static final String KEY_LAST_UPDATE = "comment";
+	public static final String KEY_UPDATE_DATE = "last_updated";
 	public static final String KEY_CITY = "city";
 	public static final String KEY_CITY_ID = "city_id";
 	public static final String KEY_CITY_EN = "city_en";
@@ -280,10 +282,8 @@ public class DbAdapter
 		if (sec_since_last_update() > SEC_BETWEEN_UPDATES) {
 			SyncTask sync = new SyncTask(mDbHelper.mCtx);
 			sync.execute();
-			set_last_update();
 		}
 	}
-
 
 	public void close()
 	{
@@ -1150,6 +1150,7 @@ public class DbAdapter
 		mDbHelper.mDb.delete(TABLE_TMP_COMPLAINT, null, null);
 	}
 
+	/** @return seconds from last update until now */
 	private int sec_since_last_update()
 	{
 		Cursor c = mDbHelper.mDb.query(TABLE_LAST_UPDATE,
@@ -1163,7 +1164,21 @@ public class DbAdapter
 		return ret;
 	}
 
-	private void set_last_update()
+	/** @return last update in YYYY-mm-DD HH:MM:SS format */
+	public String getLastUpdate()
+	{
+		Cursor c = mDbHelper.mDb.query(TABLE_LAST_UPDATE,
+				new String[] {KEY_LAST_UPDATE},
+				null, null, null, null, null, "1");
+		String ret = "";
+		if (c.moveToFirst()) {
+			ret = c.getString(c.getColumnIndex(KEY_LAST_UPDATE));
+		}
+		c.close();
+		return ret;
+	}
+
+	public void setLastUpdate()
 	{
 		Cursor c = mDbHelper.mDb.rawQuery("SELECT strftime(\"%Y-%m-%d %H:%M:%S\", 'now')", null);
 		if (!c.moveToFirst()) {

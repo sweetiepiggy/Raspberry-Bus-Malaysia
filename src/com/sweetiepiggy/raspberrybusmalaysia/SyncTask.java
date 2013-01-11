@@ -43,8 +43,6 @@ public class SyncTask extends AsyncTask<Void, Integer, Void>
 	private final String CITIES_URL = BASE_URL + "cities.csv";
 	private final String STATIONS_URL = BASE_URL + "stations.csv";
 
-	private final String LAST_UPDATE_STR = "LAST_MODIFIED";
-
 	private Context mCtx;
 	private int mUpdatesFnd = 0;
 	private String mAlertMsg = null;
@@ -62,18 +60,30 @@ public class SyncTask extends AsyncTask<Void, Integer, Void>
 		mUpdatesFnd = 0;
 
 		try {
-			LinkedList<ContentValues> cities = parse_csv(CITIES_URL, 0, 8);
+			DbAdapter dbHelper = new DbAdapter();
+			dbHelper.open(mCtx);
+			String lastUpdate = dbHelper.getLastUpdate();
+			dbHelper.close();
+
+			LinkedList<ContentValues> cities = parse_csv(CITIES_URL,
+					lastUpdate, 0, 8);
 			mUpdatesFnd += sync_table(cities, DbAdapter.TABLE_CITIES, 8, 33);
 
-			LinkedList<ContentValues> stations = parse_csv(STATIONS_URL, 33, 41);
+			LinkedList<ContentValues> stations = parse_csv(STATIONS_URL,
+					lastUpdate, 33, 41);
 			mUpdatesFnd += sync_table(stations, DbAdapter.TABLE_STATIONS, 41, 66);
 
-			LinkedList<ContentValues> trips = parse_csv(TRIPS_URL, 66, 74);
+			LinkedList<ContentValues> trips = parse_csv(TRIPS_URL,
+					lastUpdate, 66, 74);
 			mUpdatesFnd += sync_table(trips, DbAdapter.TABLE_TRIPS, 74, 99);
 
 			//mUpdatesFnd = cities.size() + stations.size() + trips.size();
 
 			publishProgress(100);
+
+			dbHelper.open(mCtx);
+			dbHelper.setLastUpdate();
+			dbHelper.close();
 
 		/* probably no internet connection */
 		} catch (UnknownHostException e) {
@@ -128,8 +138,8 @@ public class SyncTask extends AsyncTask<Void, Integer, Void>
 		}
 	}
 
-	private LinkedList<ContentValues> parse_csv(String url_name, int progress_offset,
-			int progress_max) throws
+	private LinkedList<ContentValues> parse_csv(String url_name, String lastUpdate,
+			int progress_offset, int progress_max) throws
 		UnknownHostException, MalformedURLException, UnsupportedEncodingException,
 		IOException
 	{
@@ -146,22 +156,20 @@ public class SyncTask extends AsyncTask<Void, Integer, Void>
 			field_names = line.split(",");
 		}
 
-		/* skip first line if it is used to store last update time */
-		if (field_names.length > 0 &&
-				field_names[0].equals(LAST_UPDATE_STR)) {
-			line = in.readLine();
-			if (line != null) {
-				field_names = line.split(",");
-			}
-		}
-
 		long max_id = 0;
 		int added = 0;
+		boolean done = false;
 
-		while ((line = in.readLine()) != null) {
+		while ((line = in.readLine()) != null && !done) {
 			ContentValues cv = parse_line(line, field_names);
-			ret.addFirst(cv);
-			++added;
+
+			if (cv.containsKey(DbAdapter.KEY_UPDATE_DATE) &&
+					lastUpdate.compareTo(cv.getAsString(DbAdapter.KEY_UPDATE_DATE)) >= 0) {
+				done = true;
+			} else {
+				ret.addFirst(cv);
+				++added;
+			}
 
 			if (cv.containsKey(DbAdapter.KEY_ROWID)) {
 				max_id = java.lang.Math.max(max_id, cv.getAsLong(DbAdapter.KEY_ROWID));
