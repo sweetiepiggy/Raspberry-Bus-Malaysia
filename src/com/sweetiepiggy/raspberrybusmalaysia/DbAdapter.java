@@ -74,7 +74,6 @@ public class DbAdapter
 	public static final String NUM_TRIPS = "num_trips";
 	public static final String AVG_OVERALL = "avg_overall";
 
-	private static final String CALC_AVG_TIME = "avg(" + TRIP_TIME + ")";
 	private static final String CALC_NUM_TRIPS = "count(" + KEY_AGENT + ")";
 
 	public static final String TABLE_TRIPS = "trips";
@@ -651,13 +650,15 @@ public class DbAdapter
 	public Cursor fetch_avg(String from_city, String to_city, String group_by)
 	{
 		String key_city = KEY_CITY + "_" + mDbHelper.mCtx.getResources().getString(R.string.lang_code);
+		String tripAvg = getTripAvg(from_city, to_city);
 		return mDbHelper.mDb.rawQuery(
 				"SELECT " +
 					"TIMES." + KEY_ROWID + " AS " + KEY_ROWID + ", " +
 					"TIMES." + KEY_AGENT + " AS " + KEY_AGENT + ", " +
 					"TIMES." + KEY_OPERATOR + " AS " + KEY_OPERATOR + ", " +
 					AVG_TIME + ", " + NUM_TRIPS + ", " +
-					"0.75 * RATINGS." + AVG_OVERALL + " + " +
+					"0.50 * RATINGS." + AVG_OVERALL + " + " +
+						"0.25 * min(5, max(1, 5 - ((" + AVG_TIME + " - " + tripAvg + ") / " + tripAvg + " + 0.1) / 0.1)) + " +
 						"0.25 * min(5, max(1, (25 - avg_delay / 60.) / 5.)) AS " + AVG_OVERALL +
 					" FROM " +
 
@@ -740,6 +741,43 @@ public class DbAdapter
 			new String[] {from_city, to_city, from_city, to_city});
 	}
 
+	public String getTripAvg(String from_city, String to_city)
+	{
+		String key_city = KEY_CITY + "_" + mDbHelper.mCtx.getResources().getString(R.string.lang_code);
+		String ret = "";
+		Cursor c = mDbHelper.mDb.query(true,
+				TABLE_TRIPS +
+				" JOIN " + TABLE_STATIONS + " AS FROM_STATIONS ON " +
+				TABLE_TRIPS + "." + KEY_FROM_STN_ID + " == " +
+				"FROM_STATIONS." + KEY_ROWID +
+
+				" JOIN " + TABLE_STATIONS + " AS TO_STATIONS ON " +
+				TABLE_TRIPS + "." + KEY_TO_STN_ID + " == " +
+				"TO_STATIONS." + KEY_ROWID +
+
+				" JOIN " + TABLE_CITIES + " AS FROM_CITIES ON " +
+				" FROM_STATIONS." + KEY_CITY_ID + " == " +
+				"FROM_CITIES." + KEY_ROWID +
+
+				" JOIN " + TABLE_CITIES + " AS TO_CITIES ON " +
+				" TO_STATIONS." + KEY_CITY_ID + " == " +
+				"TO_CITIES." + KEY_ROWID,
+
+				new String[] {TABLE_TRIPS + "." + KEY_ROWID,
+					"avg(" + TRIP_TIME + ") AS " + AVG_TIME},
+				"FROM_CITIES." + key_city + " = ? AND " +
+				"TO_CITIES." + key_city + " = ?",
+				new String[] {from_city, to_city},
+				null, null, null, null);
+		if (c.moveToFirst()) {
+			ret = c.getString(c.getColumnIndex(AVG_TIME));
+		}
+		c.close();
+		return ret;
+	}
+
+
+	/* TODO: combine fetch_agent_avg and fetch_operator_avg into one function? */
 	public Cursor fetch_agent_avg(String from_city, String to_city, String agent)
 	{
 		String key_city = KEY_CITY + "_" + mDbHelper.mCtx.getResources().getString(R.string.lang_code);
@@ -762,7 +800,7 @@ public class DbAdapter
 				"TO_CITIES." + KEY_ROWID,
 
 				new String[] {TABLE_TRIPS + "." + KEY_ROWID,
-					CALC_AVG_TIME + " AS " + AVG_TIME,
+					"avg(" + TRIP_TIME + ") AS " + AVG_TIME,
 					AVG_DELAY, CALC_NUM_TRIPS + " AS " + NUM_TRIPS},
 				KEY_AGENT + " = ? AND " +
 				"FROM_CITIES." + key_city + " = ? AND " +
@@ -794,7 +832,7 @@ public class DbAdapter
 				"TO_CITIES." + KEY_ROWID,
 
 				new String[] {TABLE_TRIPS + "." + KEY_ROWID,
-					CALC_AVG_TIME + " AS " + AVG_TIME, AVG_DELAY,
+					"avg(" + TRIP_TIME + ") AS " + AVG_TIME, AVG_DELAY,
 					CALC_NUM_TRIPS + " AS " + NUM_TRIPS},
 				KEY_OPERATOR + " = ? AND " +
 				"FROM_CITIES." + key_city + " = ? AND " +
