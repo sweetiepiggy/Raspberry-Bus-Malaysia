@@ -194,24 +194,17 @@ public class DbAdapter
 			db.execSQL(DATABASE_CREATE_TMP_COMPLAINT);
 			db.execSQL(DATABASE_CREATE_TMP);
 			db.execSQL(DATABASE_CREATE_LAST_UPDATE);
-			if (mAllowSync) {
-				SyncTask sync = new SyncTask(mCtx);
-				sync.execute();
 
-				Cursor c = db.rawQuery("SELECT strftime(\"%Y-%m-%d %H:%M:%S\", 'now')", null);
-				if (!c.moveToFirst()) {
-					c.close();
-					return;
-				}
-				String last_update = c.getString(0);
-				c.close();
+			ContentValues cv = new ContentValues();
+			cv.put(KEY_LAST_UPDATE, "1970-01-01 00:00:00");
 
-				ContentValues cv = new ContentValues();
-				cv.put(KEY_LAST_UPDATE, last_update);
+			db.delete(TABLE_LAST_UPDATE, null, null);
+			db.insert(TABLE_LAST_UPDATE, null, cv);
 
-				db.delete(TABLE_LAST_UPDATE, null, null);
-				db.insert(TABLE_LAST_UPDATE, null, cv);
-			}
+			//if (mAllowSync) {
+			//	SyncTask sync = new SyncTask(mCtx);
+			//	sync.execute();
+			//}
 		}
 
 		@Override
@@ -1208,7 +1201,7 @@ public class DbAdapter
 		Cursor c = mDbHelper.mDb.query(TABLE_LAST_UPDATE,
 				new String[] {KEY_LAST_UPDATE},
 				null, null, null, null, null, "1");
-		String ret = "";
+		String ret = "1970-01-01 00:00:00";
 		if (c.moveToFirst()) {
 			ret = c.getString(c.getColumnIndex(KEY_LAST_UPDATE));
 		}
@@ -1233,4 +1226,3 @@ public class DbAdapter
 		mDbHelper.mDb.insert(TABLE_LAST_UPDATE, null, cv);
 	}
 }
-

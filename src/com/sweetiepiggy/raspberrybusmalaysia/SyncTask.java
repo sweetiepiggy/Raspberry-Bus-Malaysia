@@ -165,8 +165,11 @@ public class SyncTask extends AsyncTask<Void, Integer, Void>
 
 			if (cv.containsKey(DbAdapter.KEY_UPDATE_DATE) &&
 					lastUpdate.compareTo(cv.getAsString(DbAdapter.KEY_UPDATE_DATE)) >= 0) {
+				android.util.Log.i("SyncTask", "lastUpdate is " + lastUpdate);
+				android.util.Log.i("SyncTask", "KEY_UPDATE_DATE is " + cv.getAsString(DbAdapter.KEY_UPDATE_DATE));
 				done = true;
 			} else {
+				android.util.Log.i("SyncTask", "adding " + cv.getAsString(DbAdapter.KEY_ROWID));
 				ret.addFirst(cv);
 				++added;
 			}
