@@ -1225,4 +1225,65 @@ public class DbAdapter
 		mDbHelper.mDb.delete(TABLE_LAST_UPDATE, null, null);
 		mDbHelper.mDb.insert(TABLE_LAST_UPDATE, null, cv);
 	}
+
+	public float getOperatorRating(String operator)
+	{
+		return getRating(operator, KEY_OPERATOR);
+	}
+
+	public float getAgentRating(String agent)
+	{
+		return getRating(agent, KEY_AGENT);
+	}
+
+	private float getRating(String company, String key)
+	{
+		Cursor c = mDbHelper.mDb.rawQuery(
+				"SELECT " +
+					"0.75 * RATINGS." + AVG_OVERALL + " + " +
+						"0.25 * min(5, max(1, (25 - avg_delay / 60.) / 5.)) AS " + AVG_OVERALL +
+					" FROM " +
+
+				" (SELECT " +
+					key + ", " +
+					" AVG(" + TRIP_DELAY  + ") AS avg_delay" +
+
+					" FROM " + TABLE_TRIPS +
+
+					" WHERE " + key + " == ? AND " +
+						KEY_ARRIVAL + " != 'Cancelled' " +
+
+					" GROUP BY " + key  + ") " +
+				" AS TIMES " +
+
+				" LEFT JOIN " +
+
+				"(SELECT " +
+					key + ", " +
+						" 0.5 * AVG(" + KEY_OVERALL  + ") + " +
+						" 0.25 * AVG(" + KEY_SAFETY + ") + " +
+						" 0.25 * AVG(" + KEY_COMFORT + ") " +
+						" AS " + AVG_OVERALL +
+
+					" FROM " + TABLE_TRIPS +
+
+					" WHERE " + key + " == ? AND " +
+						" length(" + KEY_OVERALL + ") != 0 AND " +
+						" length(" + KEY_SAFETY + ") != 0 AND " +
+						" length(" + KEY_COMFORT + ") != 0 " +
+
+					" GROUP BY " + key + ") " +
+
+				" AS RATINGS ON " +
+					"TIMES." + key + " == " +
+					" RATINGS." + key,
+
+			new String[] {company, company});
+		float ret = 0f;
+		if (c.moveToFirst()) {
+			ret = c.getFloat(c.getColumnIndex(AVG_OVERALL));
+		}
+		c.close();
+		return ret;
+	}
 }

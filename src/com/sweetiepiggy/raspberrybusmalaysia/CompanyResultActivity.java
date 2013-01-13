@@ -26,6 +26,7 @@ import android.os.Bundle;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
+import android.widget.RatingBar;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
@@ -50,6 +51,11 @@ public class CompanyResultActivity extends Activity
 
 		mDbHelper = new DbAdapter();
 		mDbHelper.open(this);
+
+		float rating = m_is_operator ?
+			mDbHelper.getOperatorRating(company) :
+			mDbHelper.getAgentRating(company);
+		((RatingBar) findViewById(R.id.rating_bar)).setRating(rating);
 
 		Cursor c_comp = m_is_operator ?
 			mDbHelper.fetch_avg_operator_delay(company) :
