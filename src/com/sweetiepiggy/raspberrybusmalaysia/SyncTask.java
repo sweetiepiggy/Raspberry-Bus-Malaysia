@@ -165,11 +165,8 @@ public class SyncTask extends AsyncTask<Void, Integer, Void>
 
 			if (cv.containsKey(DbAdapter.KEY_UPDATE_DATE) &&
 					lastUpdate.compareTo(cv.getAsString(DbAdapter.KEY_UPDATE_DATE)) >= 0) {
-				android.util.Log.i("SyncTask", "lastUpdate is " + lastUpdate);
-				android.util.Log.i("SyncTask", "KEY_UPDATE_DATE is " + cv.getAsString(DbAdapter.KEY_UPDATE_DATE));
 				done = true;
 			} else {
-				android.util.Log.i("SyncTask", "adding " + cv.getAsString(DbAdapter.KEY_ROWID));
 				ret.addFirst(cv);
 				++added;
 			}
@@ -227,7 +224,7 @@ public class SyncTask extends AsyncTask<Void, Integer, Void>
 	{
 		ContentValues ret = new ContentValues();
 
-		String[] fields = line.split(",", field_names.length);
+		String[] fields = splitNotIn(line, '"', ',');
 		for (int i = 0; i < fields.length; ++i) {
 			fields[i] = fields[i].replaceAll("^\"", "");
 			fields[i] = fields[i].replaceAll("\"$", "");
@@ -235,6 +232,52 @@ public class SyncTask extends AsyncTask<Void, Integer, Void>
 		}
 
 		return ret;
+	}
+
+	private String[] splitNotIn(String str, char notInChar, char delim)
+	{
+		LinkedList<String> tkns = new LinkedList<String>();
+
+		int len = str.length();
+		boolean isIn = false;
+		boolean needJoin = false;
+		int beg = 0;
+
+		for (int i=0; i < len; ++i) {
+			if (str.charAt(i) == notInChar) {
+				if (isIn) {
+					if (needJoin) {
+						String tmp = tkns.removeLast();
+						tkns.add(tmp + notInChar +
+								str.substring(beg+1, i) +
+								notInChar);
+						needJoin = false;
+					} else {
+						tkns.add(str.substring(beg+1, i));
+					}
+					beg = i + 1;
+				} else if (i - beg != 0) {
+					tkns.add(str.substring(beg, i));
+					beg = i;
+					needJoin = true;
+				}
+				isIn = !isIn;
+			/* not in and is a delim */
+			} else if (!isIn && str.charAt(i) == delim) {
+				if (i - beg != 0) {
+					tkns.add(str.substring(beg, i));
+				}
+				beg = i + 1;
+			}
+		}
+
+		if (beg != 0 && beg != len) {
+			tkns.add(str.substring(beg));
+		} else if (beg == 0) {
+			tkns.add(str);
+		}
+
+		return tkns.toArray(new String[tkns.size()]);
 	}
 
 	private void alert(String msg)
