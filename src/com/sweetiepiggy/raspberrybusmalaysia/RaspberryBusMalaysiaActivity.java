@@ -21,6 +21,7 @@ package com.sweetiepiggy.raspberrybusmalaysia;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.database.sqlite.SQLiteException;
 import android.net.Uri;
 import android.os.Bundle;
@@ -53,7 +54,10 @@ public class RaspberryBusMalaysiaActivity extends Activity
 
 	public void init()
 	{
-		setContentView(R.layout.main);
+		int content_view = getResources().getConfiguration().orientation ==
+			Configuration.ORIENTATION_LANDSCAPE ?
+			R.layout.main_landscape : R.layout.main;
+		setContentView(content_view);
 
 		TextView route = (TextView) findViewById(R.id.route);
 		route.setOnClickListener(new View.OnClickListener() {

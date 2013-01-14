@@ -32,7 +32,7 @@
 			android:layout_gravity="center"
 			android:gravity="center"
 			android:padding="25dp"
-			android:drawableTop="@drawable/ic_launcher"
+			android:drawableTop="@drawable/route"
 			style="@android:style/TextAppearance.Large"
 			android:text="@string/route_stat" />
 		<TextView
