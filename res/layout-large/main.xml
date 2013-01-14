@@ -19,54 +19,51 @@
     along with Raspberry Bus Malaysia ; if not, see <http://www.gnu.org/licenses/>.
 -->
 
-<TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	android:orientation="horizontal"
 	android:layout_width="wrap_content"
 	android:layout_height="wrap_content"
 	android:layout_gravity="center"
 	android:gravity="center">
-	<TableRow>
-		<TextView
-			android:id="@+id/route"
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content"
-			android:layout_gravity="center"
-			android:gravity="center"
-			android:padding="25dp"
-			android:drawableTop="@drawable/ic_launcher"
-			style="@android:style/TextAppearance.Large"
-			android:text="@string/route_stat" />
-		<TextView
-			android:id="@+id/map"
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content"
-			android:layout_gravity="center"
-			android:gravity="center"
-			android:padding="25dp"
-			android:drawableTop="@drawable/map"
-			style="@android:style/TextAppearance.Large"
-			android:text="@string/map" />
-	</TableRow>
-	<TableRow>
-		<TextView
-			android:id="@+id/submit_trip"
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content"
-			android:layout_gravity="center"
-			android:gravity="center"
-			android:padding="25dp"
-			android:drawableTop="@drawable/submit"
-			style="@android:style/TextAppearance.Large"
-			android:text="@string/submit_trip" />
-		<TextView
-			android:id="@+id/complain"
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content"
-			android:layout_gravity="center"
-			android:gravity="center"
-			android:padding="25dp"
-			android:drawableTop="@drawable/complain"
-			style="@android:style/TextAppearance.Large"
-			android:text="@string/complain" />
-	</TableRow>
-</TableLayout>
+	<TextView
+		android:id="@+id/route"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_gravity="center"
+		android:gravity="center"
+		android:padding="25dp"
+		android:drawableTop="@drawable/ic_launcher"
+		style="@android:style/TextAppearance.Large"
+		android:text="@string/route_stat" />
+	<TextView
+		android:id="@+id/map"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_gravity="center"
+		android:gravity="center"
+		android:padding="25dp"
+		android:drawableTop="@drawable/map"
+		style="@android:style/TextAppearance.Large"
+		android:text="@string/map" />
+	<TextView
+		android:id="@+id/submit_trip"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_gravity="center"
+		android:gravity="center"
+		android:padding="25dp"
+		android:drawableTop="@drawable/submit"
+		style="@android:style/TextAppearance.Large"
+		android:text="@string/submit_trip" />
+	<TextView
+		android:id="@+id/complain"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_gravity="center"
+		android:gravity="center"
+		android:padding="25dp"
+		android:drawableTop="@drawable/complain"
+		style="@android:style/TextAppearance.Large"
+		android:text="@string/complain" />
+</LinearLayout>
 
