@@ -32,7 +32,7 @@
 			android:layout_gravity="center"
 			android:gravity="center"
 			android:padding="25dp"
-			android:drawableTop="@drawable/route"
+			android:drawableTop="@drawable/ic_launcher"
 			style="@android:style/TextAppearance.Large"
 			android:text="@string/route_stat" />
 		<TextView
@@ -45,28 +45,6 @@
 			android:drawableTop="@drawable/map"
 			style="@android:style/TextAppearance.Large"
 			android:text="@string/map" />
-	</TableRow>
-	<TableRow>
-		<TextView
-			android:id="@+id/agent"
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content"
-			android:layout_gravity="center"
-			android:gravity="center"
-			android:padding="25dp"
-			android:drawableTop="@drawable/agent"
-			style="@android:style/TextAppearance.Large"
-			android:text="@string/agent_stat" />
-		<TextView
-			android:id="@+id/operator"
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content"
-			android:layout_gravity="center"
-			android:gravity="center"
-			android:padding="25dp"
-			android:drawableTop="@drawable/ic_launcher"
-			style="@android:style/TextAppearance.Large"
-			android:text="@string/operator_stat" />
 	</TableRow>
 	<TableRow>
 		<TextView

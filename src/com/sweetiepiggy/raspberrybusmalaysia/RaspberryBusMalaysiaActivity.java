@@ -21,7 +21,6 @@ package com.sweetiepiggy.raspberrybusmalaysia;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.content.res.Configuration;
 import android.database.sqlite.SQLiteException;
 import android.net.Uri;
 import android.os.Bundle;
@@ -54,37 +53,13 @@ public class RaspberryBusMalaysiaActivity extends Activity
 
 	public void init()
 	{
-		int content_view = getResources().getConfiguration().orientation ==
-			Configuration.ORIENTATION_LANDSCAPE ?
-			R.layout.main_landscape : R.layout.main;
-		setContentView(content_view);
+		setContentView(R.layout.main);
 
 		TextView route = (TextView) findViewById(R.id.route);
 		route.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v)
 			{
 				Intent intent = new Intent(getApplicationContext(), RouteActivity.class);
-				startActivity(intent);
-			}
-		});
-
-		TextView agent = (TextView) findViewById(R.id.agent);
-		agent.setOnClickListener(new View.OnClickListener() {
-			public void onClick(View v)
-			{
-				Intent intent = new Intent(getApplicationContext(), CompanyActivity.class);
-				startActivity(intent);
-			}
-		});
-
-		TextView operator = (TextView) findViewById(R.id.operator);
-		operator.setOnClickListener(new View.OnClickListener() {
-			public void onClick(View v)
-			{
-				Intent intent = new Intent(getApplicationContext(), CompanyActivity.class);
-				Bundle b = new Bundle();
-				b.putBoolean("is_operator", true);
-				intent.putExtras(b);
 				startActivity(intent);
 			}
 		});
