@@ -2,7 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
 	package="com.sweetiepiggy.raspberrybusmalaysia"
 	android:versionCode="15"
-	android:versionName="0.2.6-dev" >
+	android:versionName="0.2.6" >
 
 	<uses-sdk android:minSdkVersion="4"
 		android:targetSdkVersion="16" />
