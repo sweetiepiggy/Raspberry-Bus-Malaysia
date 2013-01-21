@@ -700,25 +700,7 @@ public class DbAdapter
 
 					" FROM " + TABLE_TRIPS +
 
-					" JOIN " + TABLE_STATIONS + " AS FROM_STATIONS ON " +
-						TABLE_TRIPS + "." + KEY_FROM_STN_ID + " == " +
-						"FROM_STATIONS." + KEY_ROWID +
-
-					" JOIN " + TABLE_STATIONS + " AS TO_STATIONS ON " +
-						TABLE_TRIPS + "." + KEY_TO_STN_ID + " == " +
-						"TO_STATIONS." + KEY_ROWID +
-
-					" JOIN " + TABLE_CITIES + " AS FROM_CITIES ON " +
-						" FROM_STATIONS." + KEY_CITY_ID + " == " +
-						"FROM_CITIES." + KEY_ROWID +
-
-					" JOIN " + TABLE_CITIES + " AS TO_CITIES ON " +
-						" TO_STATIONS." + KEY_CITY_ID + " == " +
-						"TO_CITIES." + KEY_ROWID +
-
-					" WHERE FROM_CITIES." + key_city + " == ? AND " +
-						" TO_CITIES." + key_city + " == ? AND " +
-						" length(" + KEY_OVERALL + ") != 0 AND " +
+					" WHERE length(" + KEY_OVERALL + ") != 0 AND " +
 						" length(" + KEY_SAFETY + ") != 0 AND " +
 						" length(" + KEY_COMFORT + ") != 0 " +
 
@@ -731,7 +713,7 @@ public class DbAdapter
 				" ORDER BY " + AVG_OVERALL + " DESC, " +
 					AVG_TIME + " ASC",
 
-			new String[] {from_city, to_city, from_city, to_city});
+			new String[] {from_city, to_city});
 	}
 
 	public String getTripAvg(String from_city, String to_city)
