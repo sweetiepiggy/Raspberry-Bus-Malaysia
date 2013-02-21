@@ -18,6 +18,7 @@
 package com.sweetiepiggy.raspberrybusmalaysia;
 
 import java.io.BufferedReader;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
@@ -42,6 +43,8 @@ public class SyncTask extends AsyncTask<Void, Integer, Void>
 	private final String TRIPS_URL = BASE_URL + "trips.csv";
 	private final String CITIES_URL = BASE_URL + "cities.csv";
 	private final String STATIONS_URL = BASE_URL + "stations.csv";
+	private final String AGENTS_URL = BASE_URL + "agents.csv";
+	private final String OPERATORS_URL = BASE_URL + "operators.csv";
 
 	private Context mCtx;
 	private int mUpdatesFnd = 0;
@@ -77,6 +80,14 @@ public class SyncTask extends AsyncTask<Void, Integer, Void>
 					lastUpdate, 66, 74);
 			mUpdatesFnd += sync_table(trips, DbAdapter.TABLE_TRIPS, 74, 99);
 
+			LinkedList<ContentValues> agents = parse_csv(AGENTS_URL,
+					lastUpdate, 66, 74);
+			mUpdatesFnd += sync_table(agents, DbAdapter.TABLE_AGENTS, 74, 99);
+
+			LinkedList<ContentValues> operators = parse_csv(OPERATORS_URL,
+					lastUpdate, 66, 74);
+			mUpdatesFnd += sync_table(operators, DbAdapter.TABLE_OPERATORS, 74, 99);
+
 			//mUpdatesFnd = cities.size() + stations.size() + trips.size();
 
 			publishProgress(100);
@@ -88,6 +99,8 @@ public class SyncTask extends AsyncTask<Void, Integer, Void>
 		/* probably no internet connection */
 		} catch (UnknownHostException e) {
 			mAlertMsg = mCtx.getResources().getString(R.string.unknown_host);
+		} catch (java.io.FileNotFoundException e) {
+			mAlertMsg = mCtx.getResources().getString(R.string.file_not_found) + ":\n" + e.getMessage();
 		} catch (MalformedURLException e) {
 			throw new Error(e);
 		} catch (UnsupportedEncodingException e) {

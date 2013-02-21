@@ -90,6 +90,7 @@
 
 	<string name="unknown">(Unknown)</string>
 	<string name="unknown_host">Unable to connect to internet</string>
+	<string name="file_not_found">File not found</string>
 
 	<string name="monday">Monday</string>
 	<string name="tuesday">Tuesday</string>

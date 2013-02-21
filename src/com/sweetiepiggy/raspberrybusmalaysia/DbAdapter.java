@@ -35,8 +35,10 @@ import android.database.sqlite.SQLiteOpenHelper;
 public class DbAdapter
 {
 	public static final String KEY_ROWID = "_id";
-	public static final String KEY_AGENT = "company";
-	public static final String KEY_OPERATOR = "bus_brand";
+	public static final String KEY_AGENT = "agent";
+	public static final String KEY_AGENT_ID = "agent_id";
+	public static final String KEY_OPERATOR = "operator";
+	public static final String KEY_OPERATOR_ID = "operator_id";
 	public static final String KEY_FROM_CITY = "from_city";
 	public static final String KEY_FROM_STN = "from_station";
 	public static final String KEY_TO_CITY = "to_city";
@@ -74,11 +76,13 @@ public class DbAdapter
 	public static final String NUM_TRIPS = "num_trips";
 	public static final String AVG_OVERALL = "avg_overall";
 
-	private static final String CALC_NUM_TRIPS = "count(" + KEY_AGENT + ")";
+	private static final String CALC_NUM_TRIPS = "count(" + KEY_AGENT_ID + ")";
 
 	public static final String TABLE_TRIPS = "trips";
 	public static final String TABLE_CITIES = "cities";
 	public static final String TABLE_STATIONS = "stations";
+	public static final String TABLE_AGENTS = "agents";
+	public static final String TABLE_OPERATORS = "operators";
 
 	private static HashMap<String, ArrayList<String>> TABLE_MAPS = new HashMap<String, ArrayList<String>>();
 
@@ -91,13 +95,13 @@ public class DbAdapter
 	private static final String TABLE_TMP = "tmp";
 	private static final String TABLE_TMP_COMPLAINT = "tmp_complaint";
 	private static final String TABLE_LAST_UPDATE = "last_update";
-	private static final int DATABASE_VERSION = 14;
+	private static final int DATABASE_VERSION = 15;
 
 	private static final String DATABASE_CREATE_TRIPS =
 		"CREATE TABLE " + TABLE_TRIPS + " (" +
 		KEY_ROWID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
-		KEY_AGENT + " TEXT, " +
-		KEY_OPERATOR + " TEXT, " +
+		KEY_AGENT_ID + " INTEGER, " +
+		KEY_OPERATOR_ID + " INTEGER, " +
 		KEY_FROM_STN_ID + " INTEGER, " +
 		KEY_TO_STN_ID + " INTEGER, " +
 		KEY_SCHED_DEP + " TEXT NOT NULL, " +
@@ -166,6 +170,16 @@ public class DbAdapter
 		KEY_LONGITUDE + " INTEGER, " +
 		"FOREIGN KEY(" + KEY_CITY_ID + ") REFERENCES " + TABLE_CITIES + "(" + KEY_ROWID + "));";
 
+	private static final String DATABASE_CREATE_AGENTS =
+		"CREATE TABLE " + TABLE_AGENTS + " (" +
+		KEY_ROWID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+		KEY_AGENT + " TEXT UNIQUE);";
+
+	private static final String DATABASE_CREATE_OPERATORS =
+		"CREATE TABLE " + TABLE_OPERATORS + " (" +
+		KEY_ROWID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+		KEY_OPERATOR + " TEXT UNIQUE);";
+
 	private static class DatabaseHelper extends SQLiteOpenHelper
 	{
 		private final Context mCtx;
@@ -188,6 +202,10 @@ public class DbAdapter
 			db.execSQL("DROP TABLE IF EXISTS " + TABLE_LAST_UPDATE);
 			db.execSQL("DROP TABLE IF EXISTS " + TABLE_STATIONS);
 			db.execSQL("DROP TABLE IF EXISTS " + TABLE_CITIES);
+			db.execSQL("DROP TABLE IF EXISTS " + TABLE_AGENTS);
+			db.execSQL("DROP TABLE IF EXISTS " + TABLE_OPERATORS);
+			db.execSQL(DATABASE_CREATE_OPERATORS);
+			db.execSQL(DATABASE_CREATE_AGENTS);
 			db.execSQL(DATABASE_CREATE_CITIES);
 			db.execSQL(DATABASE_CREATE_STATIONS);
 			db.execSQL(DATABASE_CREATE_TRIPS);
@@ -211,15 +229,10 @@ public class DbAdapter
 		public void onUpgrade(SQLiteDatabase db, int old_ver, int new_ver)
 		{
 			switch (old_ver) {
-			case 11:
-				db.execSQL(DATABASE_CREATE_TMP_COMPLAINT);
-			case 12:
-				db.execSQL("ALTER TABLE trips ADD COLUMN overall INTEGER;");
-				db.execSQL("ALTER TABLE tmp ADD COLUMN overall INTEGER;");
-				break;
-			/* removed from_city_id and to_city_id columns from trips table */
-			case 13:
-				break;
+			/* replaced operator and agent columns with operator_id and agent_id,
+				created operators and agents tables */
+			/* just start from scratch */
+			case 14:
 			default:
 				onCreate(db);
 				break;
@@ -379,12 +392,20 @@ public class DbAdapter
 		String key_city = KEY_CITY + "_" + mDbHelper.mCtx.getResources().getString(R.string.lang_code);
 		return mDbHelper.mDb.rawQuery("SELECT DISTINCT " + TABLE_TRIPS +
 				"." + KEY_ROWID + " AS " + KEY_ROWID + ", " + key_city + " AS " + KEY_FROM_CITY +
-				" FROM " + TABLE_TRIPS + " JOIN " + TABLE_STATIONS +
+				" FROM " + TABLE_TRIPS +
+
+				" JOIN " + TABLE_STATIONS +
 				" ON " + TABLE_TRIPS + "." + KEY_FROM_STN_ID + " == " +
 				TABLE_STATIONS + "." + KEY_ROWID +
+
 				" JOIN " + TABLE_CITIES +
 				" ON " + KEY_CITY_ID + " == " +
 				TABLE_CITIES + "." + KEY_ROWID +
+
+				" JOIN " + TABLE_AGENTS +
+				" ON " + KEY_AGENT_ID + " == " +
+				TABLE_AGENTS + "." + KEY_ROWID +
+
 				" WHERE " + KEY_AGENT + " == ? " +
 				" GROUP BY " + key_city +
 				" ORDER BY " + key_city + " ASC",
@@ -398,12 +419,20 @@ public class DbAdapter
 		String key_city = KEY_CITY + "_" + mDbHelper.mCtx.getResources().getString(R.string.lang_code);
 		return mDbHelper.mDb.rawQuery("SELECT DISTINCT " + TABLE_TRIPS +
 				"." + KEY_ROWID + " AS " + KEY_ROWID + ", " + key_city + " AS " + KEY_FROM_CITY +
-				" FROM " + TABLE_TRIPS + " JOIN " + TABLE_STATIONS +
+				" FROM " + TABLE_TRIPS +
+
+				" JOIN " + TABLE_STATIONS +
 				" ON " + TABLE_TRIPS + "." + KEY_FROM_STN_ID + " == " +
 				TABLE_STATIONS + "." + KEY_ROWID +
+
 				" JOIN " + TABLE_CITIES +
 				" ON " + KEY_CITY_ID + " == " +
 				TABLE_CITIES + "." + KEY_ROWID +
+
+				" JOIN " + TABLE_OPERATORS +
+				" ON " + KEY_OPERATOR_ID + " == " +
+				TABLE_OPERATORS + "." + KEY_ROWID +
+
 				" WHERE " + KEY_OPERATOR + " == ? " +
 				" GROUP BY " + key_city +
 				" ORDER BY " + key_city + " ASC",
@@ -540,6 +569,10 @@ public class DbAdapter
 				" TO_STATIONS." + KEY_CITY_ID + " == " +
 				"TO_CITIES." + KEY_ROWID +
 
+				" JOIN " + TABLE_AGENTS +
+				" ON " + KEY_AGENT_ID + " == " +
+				TABLE_AGENTS + "." + KEY_ROWID +
+
 				" WHERE FROM_CITIES." + key_city + " == ? " + " AND " +
 				KEY_AGENT + " == ? " +
 				" GROUP BY TO_CITIES." + key_city +
@@ -576,6 +609,10 @@ public class DbAdapter
 				" TO_STATIONS." + KEY_CITY_ID + " == " +
 				"TO_CITIES." + KEY_ROWID +
 
+				" JOIN " + TABLE_OPERATORS +
+				" ON " + KEY_OPERATOR_ID + " == " +
+				TABLE_OPERATORS + "." + KEY_ROWID +
+
 				" WHERE FROM_CITIES." + key_city + " == ? " + " AND " +
 				KEY_OPERATOR + " == ? " +
 				" GROUP BY TO_CITIES." + key_city +
@@ -607,14 +644,14 @@ public class DbAdapter
 
 	public Cursor fetch_agents()
 	{
-		return mDbHelper.mDb.query(true, TABLE_TRIPS, new String[] {KEY_ROWID, KEY_AGENT},
+		return mDbHelper.mDb.query(true, TABLE_AGENTS, new String[] {KEY_ROWID, KEY_AGENT},
 				"length(" + KEY_AGENT + ") != 0", null,
 				KEY_AGENT, null, KEY_AGENT + " ASC", null);
 	}
 
 	public Cursor fetch_operators()
 	{
-		return mDbHelper.mDb.query(true, TABLE_TRIPS, new String[] {KEY_ROWID, KEY_OPERATOR},
+		return mDbHelper.mDb.query(true, TABLE_OPERATORS, new String[] {KEY_ROWID, KEY_OPERATOR},
 				"length(" + KEY_OPERATOR + ") != 0", null,
 				KEY_OPERATOR, null, KEY_OPERATOR + " ASC", null);
 	}
@@ -628,14 +665,14 @@ public class DbAdapter
 
 	public Cursor fetch_agents(String agent_query)
 	{
-		return mDbHelper.mDb.query(true, TABLE_TRIPS, new String[] {KEY_ROWID, KEY_AGENT},
+		return mDbHelper.mDb.query(true, TABLE_AGENTS, new String[] {KEY_ROWID, KEY_AGENT},
 				"length(" + KEY_AGENT + ") != 0 AND " + KEY_AGENT + " LIKE ?", new String[] {agent_query},
 				KEY_AGENT, null, KEY_AGENT + " ASC", null);
 	}
 
 	public Cursor fetch_operators(String operator_query)
 	{
-		return mDbHelper.mDb.query(true, TABLE_TRIPS, new String[] {KEY_ROWID, KEY_OPERATOR},
+		return mDbHelper.mDb.query(true, TABLE_OPERATORS, new String[] {KEY_ROWID, KEY_OPERATOR},
 				"length(" + KEY_OPERATOR + ") != 0 AND " + KEY_OPERATOR + " LIKE ?", new String[] {operator_query},
 				KEY_OPERATOR, null, KEY_OPERATOR + " ASC", null);
 	}
@@ -657,7 +694,8 @@ public class DbAdapter
 
 				" (SELECT " +
 					TABLE_TRIPS + "." + KEY_ROWID + ", " +
-					KEY_AGENT + ", " + KEY_OPERATOR + ", " +
+					TABLE_AGENTS + "." + KEY_AGENT + " AS " + KEY_AGENT + ", " +
+					TABLE_OPERATORS + "." + KEY_OPERATOR + " AS " + KEY_OPERATOR + ", " +
 					" AVG(" + TRIP_TIME  + ") AS " + AVG_TIME + ", " +
 					" AVG(" + TRIP_DELAY  + ") AS avg_delay" +
 
@@ -678,6 +716,14 @@ public class DbAdapter
 					" JOIN " + TABLE_CITIES + " AS TO_CITIES ON " +
 						" TO_STATIONS." + KEY_CITY_ID + " == " +
 						"TO_CITIES." + KEY_ROWID +
+
+					" JOIN " + TABLE_AGENTS + " ON " +
+						KEY_AGENT_ID + " == " +
+						TABLE_AGENTS + "." + KEY_ROWID +
+
+					" JOIN " + TABLE_OPERATORS + " ON " +
+						KEY_OPERATOR_ID + " == " +
+						TABLE_OPERATORS + "." + KEY_ROWID +
 
 					" WHERE FROM_CITIES." + key_city + " == ? AND " +
 						" TO_CITIES." + key_city + " == ? AND " +
@@ -772,7 +818,11 @@ public class DbAdapter
 
 				" JOIN " + TABLE_CITIES + " AS TO_CITIES ON " +
 				" TO_STATIONS." + KEY_CITY_ID + " == " +
-				"TO_CITIES." + KEY_ROWID,
+				"TO_CITIES." + KEY_ROWID +
+
+				" JOIN " + TABLE_AGENTS + " ON " +
+				KEY_AGENT_ID + " == " +
+				TABLE_AGENTS + "." + KEY_ROWID,
 
 				new String[] {TABLE_TRIPS + "." + KEY_ROWID,
 					"avg(" + TRIP_TIME + ") AS " + AVG_TIME,
@@ -804,7 +854,11 @@ public class DbAdapter
 
 				" JOIN " + TABLE_CITIES + " AS TO_CITIES ON " +
 				" TO_STATIONS." + KEY_CITY_ID + " == " +
-				"TO_CITIES." + KEY_ROWID,
+				"TO_CITIES." + KEY_ROWID +
+
+				" JOIN " + TABLE_OPERATORS + " ON " +
+				KEY_OPERATOR_ID + " == " +
+				TABLE_OPERATORS + "." + KEY_ROWID,
 
 				new String[] {TABLE_TRIPS + "." + KEY_ROWID,
 					"avg(" + TRIP_TIME + ") AS " + AVG_TIME, AVG_DELAY,
@@ -818,13 +872,27 @@ public class DbAdapter
 
 	public Cursor fetch_avg_agent_delay(String agent)
 	{
-		return mDbHelper.mDb.query(true, TABLE_TRIPS, new String[] {AVG_DELAY},
+		return mDbHelper.mDb.query(true,
+				TABLE_TRIPS +
+
+				" JOIN " + TABLE_AGENTS + " ON " +
+				KEY_AGENT_ID + " == " +
+				TABLE_AGENTS + "." + KEY_ROWID,
+
+				new String[] {AVG_DELAY},
 				KEY_AGENT + " = ?", new String[] {agent}, null, null, null, null);
 	}
 
 	public Cursor fetch_avg_operator_delay(String operator)
 	{
-		return mDbHelper.mDb.query(true, TABLE_TRIPS, new String[] {AVG_DELAY},
+		return mDbHelper.mDb.query(true,
+				TABLE_TRIPS +
+
+				" JOIN " + TABLE_OPERATORS + " ON " +
+				KEY_OPERATOR_ID + " == " +
+				TABLE_OPERATORS + "." + KEY_ROWID,
+
+				new String[] {AVG_DELAY},
 				KEY_OPERATOR + " = ?", new String[] {operator}, null, null, null, null);
 	}
 
@@ -846,7 +914,11 @@ public class DbAdapter
 
 				" JOIN " + TABLE_CITIES + " AS TO_CITIES ON " +
 				" TO_STATIONS." + KEY_CITY_ID + " == " +
-				"TO_CITIES." + KEY_ROWID,
+				"TO_CITIES." + KEY_ROWID +
+
+				" JOIN " + TABLE_AGENTS + " ON " +
+				KEY_AGENT_ID + " == " +
+				TABLE_AGENTS + "." + KEY_ROWID,
 
 				new String[] {TABLE_TRIPS + "." + KEY_ROWID,
 					KEY_SCHED_DEP, TRIP_DELAY, TRIP_TIME},
@@ -875,7 +947,11 @@ public class DbAdapter
 
 				" JOIN " + TABLE_CITIES + " AS TO_CITIES ON " +
 				" TO_STATIONS." + KEY_CITY_ID + " == " +
-				"TO_CITIES." + KEY_ROWID,
+				"TO_CITIES." + KEY_ROWID +
+
+				" JOIN " + TABLE_OPERATORS + " ON " +
+				KEY_OPERATOR_ID + " == " +
+				TABLE_OPERATORS + "." + KEY_ROWID,
 
 				new String[] {TABLE_TRIPS + "." + KEY_ROWID,
 					KEY_SCHED_DEP, TRIP_DELAY, TRIP_TIME},
@@ -947,7 +1023,17 @@ public class DbAdapter
 	{
 		String ret = null;
 
-		Cursor c = mDbHelper.mDb.query(true, TABLE_TRIPS,
+		Cursor c = mDbHelper.mDb.query(true,
+				TABLE_TRIPS +
+
+				" JOIN " + TABLE_AGENTS + " ON " +
+				KEY_AGENT_ID + " == " +
+				TABLE_AGENTS + "." + KEY_ROWID +
+
+				" JOIN " + TABLE_OPERATORS + " ON " +
+				KEY_OPERATOR_ID + " == " +
+				TABLE_OPERATORS + "." + KEY_ROWID,
+
 				new String[] {KEY_ROWID, KEY_AGENT, KEY_OPERATOR},
 				KEY_ROWID + " = ?",
 				new String[] {Long.toString(id)},
