@@ -1,4 +1,12 @@
 _id,company,agent_id,bus_brand,operator_id,from_city_id,from_station_id,to_city_id,to_station_id,scheduled_departure,actual_departure,arrival_time,counter,overall,safety,comfort,comment,last_updated
+120,Plusliner,15,Plusliner,11,2,3,3,7,"2013-03-06 13:00","2013-03-06 13:00","2013-03-06 18:03",4,4,4,3,"accident happened on bridge cause delay","2013-03-07 07:30"
+119,Transnasional,20,Transnasional,16,2,2,3,7,"2013-03-03 16:30","2013-03-03 16:24","2013-03-03 20:57",5,3,2,2,"","2013-03-07 07:30"
+118,Transnasional,20,Transnasional,16,2,6,3,7,"2013-03-03 16:00","2013-03-03 16:00","2013-03-03 20:57",5,3,2,2,"","2013-03-07 07:30"
+117,"KPB Ekspres",12,Seasons,12,3,7,2,6,"2013-03-01 18:30","2013-03-01 18:38","2013-03-01 23:30",2,3,2,2,"driver smoked on bus, played annoying music, comfortable seats","2013-03-07 07:30"
+116,"KPB Ekspres",12,Seasons,12,3,7,2,2,"2013-03-01 18:30","2013-03-01 18:38","2013-03-01 23:19",2,3,2,2,"driver smoked on bus, played annoying music, comfortable seats","2013-03-07 07:30"
+115,Plusliner,15,Plusliner,11,2,3,3,7,"2013-01-20 17:00","2013-01-20 17:03","2013-01-20 21:47",4,4,3,3,"very bumpy","2013-01-21 02:00"
+114,Plusliner,15,Plusliner,11,2,6,3,7,"2013-01-20 16:40","2013-01-20 16:41","2013-01-20 21:47",4,4,3,3,"very bumpy","2013-01-21 02:00"
+113,Starmart,16,"Cepat Sedia",4,3,7,2,6,"2013-01-18 18:30","2013-01-18 19:13","2013-01-19 00:20",16/17,2,2,4,"wasted 20 minutes counting passengers when we were already 20 minutes late, weak bus barely able to make it up hill near Ipoh","2013-01-21 02:00"
 5,Nice,14,Nice,10,2,3,3,10,"2011-11-04 18:00","2011-11-04 18:12","2011-11-04 23:56","",5,5,5,"","2013-01-13 07:20"
 112,Plusliner,15,Plusliner,11,2,3,3,7,"2013-01-06 20:00","2013-01-06 20:07","2013-01-06 23:45","",3,3,2,"","2013-01-11 16:36"
 111,Plusliner,15,Plusliner,11,2,6,3,7,"2013-01-06 19:30","2013-01-06 19:45","2013-01-06 23:45","",3,3,2,"","2013-01-11 15:36"
