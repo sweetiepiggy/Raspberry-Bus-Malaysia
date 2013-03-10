@@ -259,18 +259,17 @@ public class RouteActivity extends Activity
 
 	private void print_rows(String from_city, String to_city)
 	{
-		String group_by = ((RadioButton) findViewById(R.id.operator_radio)).isChecked() ?
-			DbAdapter.KEY_OPERATOR : DbAdapter.KEY_AGENT;
-		Cursor c = mDbHelper.fetch_avg(from_city, to_city, group_by);
+		Cursor c = ((RadioButton) findViewById(R.id.operator_radio)).isChecked() ?
+			mDbHelper.fetch_avg_by_operator(from_city, to_city) :
+			mDbHelper.fetch_avg_by_agent(from_city, to_city);
 		startManagingCursor(c);
 		ListView lv = (ListView) findViewById(R.id.results_list);
 		lv.setAdapter(new RouteListAdapter(this, c));
 		lv.setOnItemClickListener(new OnItemClickListener() {
 			public void onItemClick(AdapterView<?> parent, View v,
 					int pos, long id) {
-				String group_by = ((RadioButton) findViewById(R.id.operator_radio)).isChecked() ?
-					DbAdapter.KEY_OPERATOR : DbAdapter.KEY_AGENT;
-				String company = mDbHelper.getCompany(id, group_by);
+				String company = ((RadioButton) findViewById(R.id.operator_radio)).isChecked() ?
+					mDbHelper.getCompanyByOperator(id) : mDbHelper.getCompanyByAgent(id);
 				Intent intent = new Intent(getApplicationContext(),
 					CompanyResultActivity.class);
 				Bundle b = new Bundle();

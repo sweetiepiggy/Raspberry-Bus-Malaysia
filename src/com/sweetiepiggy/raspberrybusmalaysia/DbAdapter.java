@@ -677,7 +677,17 @@ public class DbAdapter
 				KEY_OPERATOR, null, KEY_OPERATOR + " ASC", null);
 	}
 
-	public Cursor fetch_avg(String from_city, String to_city, String group_by)
+	public Cursor fetch_avg_by_agent(String from_city, String to_city)
+	{
+		return fetch_avg(from_city, to_city, KEY_AGENT_ID);
+	}
+
+	public Cursor fetch_avg_by_operator(String from_city, String to_city)
+	{
+		return fetch_avg(from_city, to_city, KEY_OPERATOR_ID);
+	}
+
+	private Cursor fetch_avg(String from_city, String to_city, String group_by)
 	{
 		String key_city = KEY_CITY + "_" + mDbHelper.mCtx.getResources().getString(R.string.lang_code);
 		String tripAvg = getTripAvg(from_city, to_city);
@@ -693,7 +703,7 @@ public class DbAdapter
 					" FROM " +
 
 				" (SELECT " +
-					TABLE_TRIPS + "." + KEY_ROWID + ", " +
+					TABLE_TRIPS + "." + KEY_ROWID + ", " + group_by + ", " +
 					TABLE_AGENTS + "." + KEY_AGENT + " AS " + KEY_AGENT + ", " +
 					TABLE_OPERATORS + "." + KEY_OPERATOR + " AS " + KEY_OPERATOR + ", " +
 					" AVG(" + TRIP_TIME  + ") AS " + AVG_TIME + ", " +
@@ -718,7 +728,7 @@ public class DbAdapter
 						"TO_CITIES." + KEY_ROWID +
 
 					" JOIN " + TABLE_AGENTS + " ON " +
-						KEY_AGENT_ID + " == " +
+						TABLE_TRIPS + "." + KEY_AGENT_ID + " == " +
 						TABLE_AGENTS + "." + KEY_ROWID +
 
 					" JOIN " + TABLE_OPERATORS + " ON " +
@@ -1019,7 +1029,17 @@ public class DbAdapter
 		return ret;
 	}
 
-	public String getCompany(long id, String group_by)
+	public String getCompanyByOperator(long id)
+	{
+		return getCompany(id, KEY_OPERATOR);
+	}
+
+	public String getCompanyByAgent(long id)
+	{
+		return getCompany(id, KEY_AGENT);
+	}
+
+	private String getCompany(long id, String group_by)
 	{
 		String ret = null;
 
@@ -1034,8 +1054,9 @@ public class DbAdapter
 				KEY_OPERATOR_ID + " == " +
 				TABLE_OPERATORS + "." + KEY_ROWID,
 
-				new String[] {KEY_ROWID, KEY_AGENT, KEY_OPERATOR},
-				KEY_ROWID + " = ?",
+				new String[] {TABLE_TRIPS + "." + KEY_ROWID,
+					KEY_AGENT, KEY_OPERATOR},
+				TABLE_TRIPS + "." + KEY_ROWID + " = ?",
 				new String[] {Long.toString(id)},
 				group_by, null, null, null);
 		if (c.moveToFirst()) {
@@ -1318,6 +1339,14 @@ public class DbAdapter
 
 					" FROM " + TABLE_TRIPS +
 
+					" JOIN " + TABLE_AGENTS + " ON " +
+						TABLE_TRIPS + "." + KEY_AGENT_ID + " == " +
+						TABLE_AGENTS + "." + KEY_ROWID +
+
+					" JOIN " + TABLE_OPERATORS + " ON " +
+						KEY_OPERATOR_ID + " == " +
+						TABLE_OPERATORS + "." + KEY_ROWID +
+
 					" WHERE " + key + " == ? AND " +
 						KEY_ARRIVAL + " != 'Cancelled' " +
 
@@ -1334,6 +1363,14 @@ public class DbAdapter
 						" AS " + AVG_OVERALL +
 
 					" FROM " + TABLE_TRIPS +
+
+					" JOIN " + TABLE_AGENTS + " ON " +
+						TABLE_TRIPS + "." + KEY_AGENT_ID + " == " +
+						TABLE_AGENTS + "." + KEY_ROWID +
+
+					" JOIN " + TABLE_OPERATORS + " ON " +
+						KEY_OPERATOR_ID + " == " +
+						TABLE_OPERATORS + "." + KEY_ROWID +
 
 					" WHERE " + key + " == ? AND " +
 						" length(" + KEY_OVERALL + ") != 0 AND " +
