@@ -68,6 +68,8 @@
 	<string name="reviews">ulasan</string>
 	<string name="complain">aduan</string>
 
+	<string name="submit_trip_success">Kajian berjaya diserahkan</string>
+
 	<string name="sync">Penyegerakan</string>
 	<string name="syncing">Segerakkan...</string>
 	<string name="updates_found">kemaskini dijumpai</string>
@@ -90,6 +92,7 @@
 
 	<string name="unknown">(Tidak Diketahui)</string>
 	<string name="unknown_host">Gagal menyambung ke pelayan penampungan</string>
+	<string name="file_not_found">Fail tidak dijumpai</string>
 
 	<string name="monday">Isnin</string>
 	<string name="tuesday">Selasa</string>

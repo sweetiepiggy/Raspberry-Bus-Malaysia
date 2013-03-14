@@ -68,6 +68,8 @@
 	<string name="reviews">意见回复</string>
 	<string name="complain">投诉</string>
 
+	<string name="submit_trip_success">评论提交成功</string>
+
 	<string name="sync">同步</string>
 	<string name="syncing">同步中...</string>
 	<string name="updates_found">更新发现</string>
@@ -90,6 +92,7 @@
 
 	<string name="unknown">（未知）</string>
 	<string name="unknown_host">无法连接到互联网</string>
+	<string name="file_not_found">文件未找到</string>
 
 	<string name="monday">星期一</string>
 	<string name="tuesday">星期二</string>
