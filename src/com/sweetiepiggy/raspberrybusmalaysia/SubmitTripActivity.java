@@ -583,8 +583,9 @@ public class SubmitTripActivity extends Activity
 				throw new Error(e);
 			} catch (UnsupportedEncodingException e) {
 				throw new Error(e);
+			/* probably no internet connection? */
 			} catch (IOException e) {
-				throw new Error(e);
+				mStatusCode = 1;
 			}
 
 			return null;
