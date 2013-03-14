@@ -595,8 +595,7 @@ public class SubmitTripActivity extends Activity
 		{
 			if (200 <= mStatusCode && mStatusCode < 300) {
 				Toast.makeText(mCtx,
-						mCtx.getResources().getString(R.string.submit_trip_success) + ": " +
-						Integer.toString(mStatusCode),
+						mCtx.getResources().getString(R.string.submit_trip_success),
 						Toast.LENGTH_SHORT).show();
 			} else {
 				send_email(mMsg);
