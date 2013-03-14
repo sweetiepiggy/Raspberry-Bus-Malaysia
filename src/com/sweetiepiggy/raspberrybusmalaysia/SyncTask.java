@@ -69,24 +69,24 @@ public class SyncTask extends AsyncTask<Void, Integer, Void>
 			dbHelper.close();
 
 			LinkedList<ContentValues> cities = parse_csv(CITIES_URL,
-					lastUpdate, 0, 8);
-			mUpdatesFnd += sync_table(cities, DbAdapter.TABLE_CITIES, 8, 33);
+					lastUpdate, 0, 3);
+			mUpdatesFnd += sync_table(cities, DbAdapter.TABLE_CITIES, 3, 20);
 
 			LinkedList<ContentValues> stations = parse_csv(STATIONS_URL,
-					lastUpdate, 33, 41);
-			mUpdatesFnd += sync_table(stations, DbAdapter.TABLE_STATIONS, 41, 66);
+					lastUpdate, 20, 23);
+			mUpdatesFnd += sync_table(stations, DbAdapter.TABLE_STATIONS, 23, 40);
 
 			LinkedList<ContentValues> trips = parse_csv(TRIPS_URL,
-					lastUpdate, 66, 74);
-			mUpdatesFnd += sync_table(trips, DbAdapter.TABLE_TRIPS, 74, 99);
+					lastUpdate, 40, 43);
+			mUpdatesFnd += sync_table(trips, DbAdapter.TABLE_TRIPS, 43, 60);
 
 			LinkedList<ContentValues> agents = parse_csv(AGENTS_URL,
-					lastUpdate, 66, 74);
-			mUpdatesFnd += sync_table(agents, DbAdapter.TABLE_AGENTS, 74, 99);
+					lastUpdate, 60, 63);
+			mUpdatesFnd += sync_table(agents, DbAdapter.TABLE_AGENTS, 63, 80);
 
 			LinkedList<ContentValues> operators = parse_csv(OPERATORS_URL,
-					lastUpdate, 66, 74);
-			mUpdatesFnd += sync_table(operators, DbAdapter.TABLE_OPERATORS, 74, 99);
+					lastUpdate, 80, 83);
+			mUpdatesFnd += sync_table(operators, DbAdapter.TABLE_OPERATORS, 83, 100);
 
 			//mUpdatesFnd = cities.size() + stations.size() + trips.size();
 
