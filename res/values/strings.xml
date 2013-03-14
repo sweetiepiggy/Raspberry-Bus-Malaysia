@@ -68,6 +68,8 @@
 	<string name="reviews">review(s)</string>
 	<string name="complain">complain</string>
 
+	<string name="submit_trip_success">Successfully submitted review</string>
+
 	<string name="sync">Sync</string>
 	<string name="syncing">Syncing...</string>
 	<string name="updates_found">update(s) found</string>

@@ -19,16 +19,31 @@
 
 package com.sweetiepiggy.raspberrybusmalaysia;
 
+import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
+import java.util.List;
+
+import org.apache.http.HttpResponse;
+import org.apache.http.NameValuePair;
+import org.apache.http.client.ClientProtocolException;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.entity.UrlEncodedFormEntity;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.message.BasicNameValuePair;
 
 import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.app.TimePickerDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.format.DateFormat;
 import android.view.View;
@@ -59,6 +74,7 @@ public class SubmitTripActivity extends Activity
 	/* TODO: move this to Constants.java */
 	private static final String EMAIL_ADDRESS = "sweetiepiggyapps@gmail.com";
 	private static final String EMAIL_SUBJECT = "Raspberry Bus Malaysia Trip Submission";
+	private static final String POST_WEBSITE = "http://raspberrybusmalaysia.appspot.com/submit_trip";
 
 	private class DataWrapper
 	{
@@ -524,7 +540,8 @@ public class SubmitTripActivity extends Activity
 			from_station, to_city, to_station, sched_time,
 			depart_time, arrival_time, counter_num,
 			safety, comfort, overall, comment);
-		send_email(msg);
+
+		new PostTask(this, msg).execute();
 	}
 
 	private void send_email(String msg)
@@ -535,6 +552,56 @@ public class SubmitTripActivity extends Activity
 		intent.putExtra(Intent.EXTRA_TEXT, msg);
 		intent.setType("text/plain");
 		startActivity(Intent.createChooser(intent, getResources().getString(R.string.send_email)));
+	}
+
+	private class PostTask extends AsyncTask<Void, Void, Void>
+	{
+		private Context mCtx;
+		private String mMsg;
+		private int mStatusCode = 0;
+
+		public PostTask(Context ctx, String msg)
+		{
+			mCtx = ctx;
+			mMsg = msg;
+		}
+
+		@Override
+		protected Void doInBackground(Void... params)
+		{
+			HttpClient hc = new DefaultHttpClient();
+			HttpPost hp = new HttpPost(POST_WEBSITE);
+			List<NameValuePair> l = new ArrayList<NameValuePair>(2);
+			l.add(new BasicNameValuePair("msg", mMsg));
+
+			try {
+				hp.setEntity(new UrlEncodedFormEntity(l, "UTF-8"));
+				HttpResponse response = hc.execute(hp);
+				mStatusCode = response.getStatusLine().getStatusCode();
+
+			} catch (ClientProtocolException e) {
+				throw new Error(e);
+			} catch (UnsupportedEncodingException e) {
+				throw new Error(e);
+			} catch (IOException e) {
+				throw new Error(e);
+			}
+
+			return null;
+		}
+
+		@Override
+		protected void onPostExecute(Void result)
+		{
+			if (200 <= mStatusCode && mStatusCode < 300) {
+				Toast.makeText(mCtx,
+						mCtx.getResources().getString(R.string.submit_trip_success) + ": " +
+						Integer.toString(mStatusCode),
+						Toast.LENGTH_SHORT).show();
+			} else {
+				send_email(mMsg);
+			}
+		}
 	}
 
 	private String format_email(String agent, String operator,
