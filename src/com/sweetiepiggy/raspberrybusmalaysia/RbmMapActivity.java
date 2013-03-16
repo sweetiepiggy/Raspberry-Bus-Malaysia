@@ -21,8 +21,12 @@ package com.sweetiepiggy.raspberrybusmalaysia;
 
 import java.util.List;
 
+import android.content.Context;
 import android.database.Cursor;
 import android.graphics.drawable.Drawable;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.os.Bundle;
 
 import com.google.android.maps.GeoPoint;
@@ -79,6 +83,38 @@ public class RbmMapActivity extends MapActivity
 		} while (c.moveToNext());
 		c.close();
 		dbHelper.close();
+
+		LocationManager locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
+		// Define a listener that responds to location updates
+		LocationListener locationListener = new LocationListener() {
+			public void onLocationChanged(Location location) {
+				GeoPoint gp = new GeoPoint((int) (location.getLatitude() * 1E6),
+						(int) (location.getLongitude() * 1E6));
+				OverlayItem oi = new OverlayItem(gp, "last updated", "location");
+				Drawable drawable = getResources().getDrawable(R.drawable.ic_launcher);
+				RbmItemizedOverlay itemizedoverlay = new RbmItemizedOverlay(drawable, RbmMapActivity.this, false);
+				itemizedoverlay.addOverlay(oi);
+				MapView mv = (MapView) findViewById(R.id.mapview);
+				List<Overlay> mapOverlays = mv.getOverlays();
+				mapOverlays.add(itemizedoverlay);
+			}
+
+			public void onStatusChanged(String provider, int status, Bundle extras) {}
+
+			public void onProviderEnabled(String provider) {}
+
+			public void onProviderDisabled(String provider) {}
+		};
+
+		// Register the listener with the Location Manager to receive location updates
+		locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, locationListener);
+		//Location lastKnownLocation = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+		//if (lastKnownLocation != null) {
+		//	GeoPoint gp = new GeoPoint((int) (lastKnownLocation.getLatitude() * 1E6),
+		//			(int) (lastKnownLocation.getLongitude() * 1E6));
+		//	OverlayItem oi = new OverlayItem(gp, "last known", "location");
+		//	itemizedoverlay.addOverlay(oi);
+		//}
 
 		mapOverlays.add(itemizedoverlay);
 
