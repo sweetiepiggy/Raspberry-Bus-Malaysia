@@ -27,6 +27,7 @@
 		<activity android:name="TripsActivity"></activity>
 		<activity android:name="TextViewActivity"></activity>
 		<activity android:name="RbmMapActivity"
+			android:hardwareAccelerated="false"
 			android:theme="@android:style/Theme.NoTitleBar"></activity>
 		<activity android:name="ComplainActivity"></activity>
 	</application>
