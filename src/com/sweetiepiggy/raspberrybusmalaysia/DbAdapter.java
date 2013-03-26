@@ -212,17 +212,6 @@ public class DbAdapter
 			db.execSQL(DATABASE_CREATE_TMP_COMPLAINT);
 			db.execSQL(DATABASE_CREATE_TMP);
 			db.execSQL(DATABASE_CREATE_LAST_UPDATE);
-
-			ContentValues cv = new ContentValues();
-			cv.put(KEY_LAST_UPDATE, "1970-01-01 00:00:00");
-
-			db.delete(TABLE_LAST_UPDATE, null, null);
-			db.insert(TABLE_LAST_UPDATE, null, cv);
-
-			//if (mAllowSync) {
-			//	SyncTask sync = new SyncTask(mCtx);
-			//	sync.execute();
-			//}
 		}
 
 		@Override
@@ -285,7 +274,8 @@ public class DbAdapter
 	public void check_last_update_and_sync()
 	{
 		if (sec_since_last_update() > SEC_BETWEEN_UPDATES) {
-			SyncTask sync = new SyncTask(mDbHelper.mCtx);
+			boolean showProgress = never_updated();
+			SyncTask sync = new SyncTask(mDbHelper.mCtx, showProgress);
 			sync.execute();
 		}
 	}
@@ -1282,6 +1272,15 @@ public class DbAdapter
 		c.close();
 
 		return ret;
+	}
+
+	/** @return true if database has never been synced */
+	private boolean never_updated()
+	{
+		Cursor c = mDbHelper.mDb.query(TABLE_LAST_UPDATE,
+				new String[] { KEY_LAST_UPDATE },
+				null, null, null, null, null, "1");
+		return !c.moveToFirst();
 	}
 
 	/** @return last update in YYYY-mm-DD HH:MM:SS format */
