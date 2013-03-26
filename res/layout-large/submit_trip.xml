@@ -106,19 +106,6 @@
 			android:hint="@string/agent_hint" />
 
 		<TextView
-			android:id="@+id/counter_num_label"
-			android:layout_width="fill_parent"
-			android:layout_height="wrap_content"
-			android:paddingTop="10dp"
-			style="@android:style/TextAppearance.Large"
-			android:text="@string/counter_num" />
-		<AutoCompleteTextView
-			android:id="@+id/counter_num_entry"
-			android:layout_width="fill_parent"
-			android:layout_height="wrap_content"
-			android:hint="@string/counter_num_hint" />
-
-		<TextView
 			android:id="@+id/operator_label"
 			android:layout_width="fill_parent"
 			android:layout_height="wrap_content"

@@ -1190,7 +1190,7 @@ public class DbAdapter
 			String from_city, String from_station, String to_city,
 			String to_station, String scheduled_departure,
 			String actual_departure, String arrival_time,
-			String counter, int safety, int comfort, int overall,
+			int safety, int comfort, int overall,
 			String comment)
 	{
 		ContentValues cv = new ContentValues();
@@ -1203,7 +1203,6 @@ public class DbAdapter
 		cv.put(KEY_SCHED_DEP, scheduled_departure);
 		cv.put(KEY_ACTUAL_DEP, actual_departure);
 		cv.put(KEY_ARRIVAL, arrival_time);
-		cv.put(KEY_CTR, counter);
 		cv.put(KEY_SAFETY, safety);
 		cv.put(KEY_COMFORT, comfort);
 		cv.put(KEY_OVERALL, overall);

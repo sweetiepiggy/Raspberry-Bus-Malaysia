@@ -129,7 +129,6 @@ public class SubmitTripActivity extends Activity
 		String from_station = ((AutoCompleteTextView) findViewById(R.id.from_station_entry)).getText().toString();
 		String to_city = ((AutoCompleteTextView) findViewById(R.id.to_city_entry)).getText().toString();
 		String to_station = ((AutoCompleteTextView) findViewById(R.id.to_station_entry)).getText().toString();
-		String counter_num = ((AutoCompleteTextView) findViewById(R.id.counter_num_entry)).getText().toString();
 		int safety = (int) ((RatingBar) findViewById(R.id.safety_bar)).getRating();
 		int comfort = (int) ((RatingBar) findViewById(R.id.comfort_bar)).getRating();
 		int overall = (int) ((RatingBar) findViewById(R.id.overall_bar)).getRating();
@@ -138,8 +137,8 @@ public class SubmitTripActivity extends Activity
 		if (mDbHelper != null) {
 			mDbHelper.save_tmp(agent, operator, from_city,
 					from_station, to_city, to_station, sched_time,
-					depart_time, arrival_time, counter_num,
-					safety, comfort, overall, comment);
+					depart_time, arrival_time, safety,
+					comfort, overall, comment);
 			mDbHelper.close();
 		}
 		super.onDestroy();
@@ -317,7 +316,6 @@ public class SubmitTripActivity extends Activity
 		update_station_autocomplete(R.id.from_station_entry);
 		update_agent_autocomplete(R.id.agent_entry);
 		update_operator_autocomplete(R.id.operator_entry);
-		update_counter_num_autocomplete(R.id.counter_num_entry);
 
 		String from_city = mDbHelper.fetch_tmp(DbAdapter.KEY_FROM_CITY);
 		String from_station = mDbHelper.fetch_tmp(DbAdapter.KEY_FROM_STN);
@@ -325,7 +323,6 @@ public class SubmitTripActivity extends Activity
 		String to_station = mDbHelper.fetch_tmp(DbAdapter.KEY_TO_STN);
 		String agent = mDbHelper.fetch_tmp(DbAdapter.KEY_AGENT);
 		String operator = mDbHelper.fetch_tmp(DbAdapter.KEY_OPERATOR);
-		String counter_num = mDbHelper.fetch_tmp(DbAdapter.KEY_CTR);
 		String comment = mDbHelper.fetch_tmp(DbAdapter.KEY_COMMENT);
 		int safety = mDbHelper.fetch_safety();
 		int comfort = mDbHelper.fetch_comfort();
@@ -337,7 +334,6 @@ public class SubmitTripActivity extends Activity
 		((AutoCompleteTextView) findViewById(R.id.to_station_entry)).setText(to_station);
 		((AutoCompleteTextView) findViewById(R.id.agent_entry)).setText(agent);
 		((AutoCompleteTextView) findViewById(R.id.operator_entry)).setText(operator);
-		((AutoCompleteTextView) findViewById(R.id.counter_num_entry)).setText(counter_num);
 
 		((RatingBar) findViewById(R.id.safety_bar)).setRating(safety);
 		((RatingBar) findViewById(R.id.comfort_bar)).setRating(comfort);
@@ -395,19 +391,6 @@ public class SubmitTripActivity extends Activity
 		AutoCompleteTextView operators_entry = (AutoCompleteTextView) findViewById(id);
 		operators_entry.setThreshold(1);
 		operators_entry.setAdapter(operators);
-	}
-
-	private void update_counter_num_autocomplete(int id)
-	{
-		ArrayAdapter<String> counter_nums = new ArrayAdapter<String>(this, android.R.layout.simple_dropdown_item_1line);
-		Cursor c = mDbHelper.fetch_counter_nums();
-		if (c.moveToFirst()) do {
-			counter_nums.add(c.getString(c.getColumnIndex(DbAdapter.KEY_CTR)));
-		} while (c.moveToNext());
-		c.close();
-		AutoCompleteTextView counter_nums_entry = (AutoCompleteTextView) findViewById(id);
-		counter_nums_entry.setThreshold(1);
-		counter_nums_entry.setAdapter(counter_nums);
 	}
 
 	private void update_date_label(int button_id, Calendar cal)
@@ -530,7 +513,6 @@ public class SubmitTripActivity extends Activity
 		String from_station = ((AutoCompleteTextView) findViewById(R.id.from_station_entry)).getText().toString();
 		String to_city = ((AutoCompleteTextView) findViewById(R.id.to_city_entry)).getText().toString();
 		String to_station = ((AutoCompleteTextView) findViewById(R.id.to_station_entry)).getText().toString();
-		String counter_num = ((AutoCompleteTextView) findViewById(R.id.counter_num_entry)).getText().toString();
 		String safety = Integer.toString((int) ((RatingBar) findViewById(R.id.safety_bar)).getRating());
 		String comfort = Integer.toString((int) ((RatingBar) findViewById(R.id.comfort_bar)).getRating());
 		String overall = Integer.toString((int) ((RatingBar) findViewById(R.id.overall_bar)).getRating());
@@ -538,8 +520,8 @@ public class SubmitTripActivity extends Activity
 
 		String msg = format_email(agent, operator, from_city,
 			from_station, to_city, to_station, sched_time,
-			depart_time, arrival_time, counter_num,
-			safety, comfort, overall, comment);
+			depart_time, arrival_time, safety, comfort, overall,
+			comment);
 
 		new PostTask(this, msg).execute();
 	}
@@ -608,8 +590,8 @@ public class SubmitTripActivity extends Activity
 			String from_city, String from_station, String to_city,
 			String to_station, String scheduled_departure,
 			String actual_departure, String arrival_time,
-			String counter, String safety, String comfort,
-			String overall, String comment)
+			String safety, String comfort, String overall,
+			String comment)
 	{
 		return "Agent: " + agent + "\n" +
 			"Operator: " + operator + "\n" +
@@ -620,7 +602,6 @@ public class SubmitTripActivity extends Activity
 			"Scheduled departure: " + scheduled_departure + "\n" +
 			"Actual departure: " + actual_departure + "\n" +
 			"Arrival time: " + arrival_time + "\n" +
-			"Counter: " + counter + "\n" +
 			"Safety: " + safety + "\n" +
 			"Comfort: " + comfort + "\n" +
 			"Overall: " + overall + "\n" +
