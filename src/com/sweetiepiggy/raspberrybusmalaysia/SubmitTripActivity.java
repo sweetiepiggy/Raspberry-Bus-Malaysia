@@ -37,10 +37,12 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.app.TimePickerDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.AsyncTask;
@@ -510,26 +512,47 @@ public class SubmitTripActivity extends Activity
 
 	private void submit()
 	{
-		String sched_time = format_time(mData.sched_time);
-		String depart_time = format_time(mData.depart_time);
-		String arrival_time = format_time(mData.arrival_time);
-		String agent = ((AutoCompleteTextView) findViewById(R.id.agent_entry)).getText().toString();
-		String operator = ((AutoCompleteTextView) findViewById(R.id.operator_entry)).getText().toString();
-		String from_city = ((AutoCompleteTextView) findViewById(R.id.from_city_entry)).getText().toString();
-		String from_station = ((AutoCompleteTextView) findViewById(R.id.from_station_entry)).getText().toString();
-		String to_city = ((AutoCompleteTextView) findViewById(R.id.to_city_entry)).getText().toString();
-		String to_station = ((AutoCompleteTextView) findViewById(R.id.to_station_entry)).getText().toString();
-		String safety = Integer.toString((int) ((RatingBar) findViewById(R.id.safety_bar)).getRating());
-		String comfort = Integer.toString((int) ((RatingBar) findViewById(R.id.comfort_bar)).getRating());
-		String overall = Integer.toString((int) ((RatingBar) findViewById(R.id.overall_bar)).getRating());
-		String comment = ((EditText) findViewById(R.id.comment_entry)).getText().toString();
+		final String sched_time = format_time(mData.sched_time);
+		final String depart_time = format_time(mData.depart_time);
+		final String arrival_time = format_time(mData.arrival_time);
+		final String agent = ((AutoCompleteTextView) findViewById(R.id.agent_entry)).getText().toString();
+		final String operator = ((AutoCompleteTextView) findViewById(R.id.operator_entry)).getText().toString();
+		final String from_city = ((AutoCompleteTextView) findViewById(R.id.from_city_entry)).getText().toString();
+		final String from_station = ((AutoCompleteTextView) findViewById(R.id.from_station_entry)).getText().toString();
+		final String to_city = ((AutoCompleteTextView) findViewById(R.id.to_city_entry)).getText().toString();
+		final String to_station = ((AutoCompleteTextView) findViewById(R.id.to_station_entry)).getText().toString();
+		final String safety = Integer.toString((int) ((RatingBar) findViewById(R.id.safety_bar)).getRating());
+		final String comfort = Integer.toString((int) ((RatingBar) findViewById(R.id.comfort_bar)).getRating());
+		final String overall = Integer.toString((int) ((RatingBar) findViewById(R.id.overall_bar)).getRating());
+		final String comment = ((EditText) findViewById(R.id.comment_entry)).getText().toString();
 
-		String msg = format_email(agent, operator, from_city,
-			from_station, to_city, to_station, sched_time,
-			depart_time, arrival_time, safety, comfort, overall,
-			comment);
+		String disp_sched = DateFormat.getTimeFormat(getApplicationContext()).format(mData.sched_time.getTime());
+		String trip_time = format_time((mData.arrival_time.getTimeInMillis() -
+				mData.sched_time.getTimeInMillis()) / 1000);
+		String delay = format_time_min((mData.depart_time.getTimeInMillis() -
+				mData.sched_time.getTimeInMillis()) / 1000);
+		String info = getResources().getString(R.string.sched_time) + ": " + disp_sched + "\n" +
+			getResources().getString(R.string.trip_time) + ": " + trip_time + "\n" +
+			getResources().getString(R.string.delay) + ": " + delay;
 
-		new PostTask(this, msg).execute();
+		AlertDialog.Builder alert = new AlertDialog.Builder(this);
+		alert.setTitle(R.string.confirm_submit);
+		alert.setMessage(info);
+		alert.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+			public void onClick(DialogInterface dialog, int which) {
+				String msg = format_email(agent, operator, from_city,
+					from_station, to_city, to_station, sched_time,
+					depart_time, arrival_time, safety, comfort, overall,
+					comment);
+
+				new PostTask(getApplicationContext(), msg).execute();
+			}
+		});
+		alert.setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
+			public void onClick(DialogInterface dialog, int which) {
+			}
+		});
+		alert.show();
 	}
 
 	private void send_email(String msg)
@@ -617,6 +640,34 @@ public class SubmitTripActivity extends Activity
 	private String format_time(Calendar cal)
 	{
 		return new SimpleDateFormat("yyyy-MM-dd HH:mm").format(cal.getTime());
+	}
+
+	/* TODO: move format_time() and format_time_min() to their own class */
+	private String format_time_min(long time)
+	{
+		String negative = "";
+		if (time < 0) {
+			negative = "-";
+			time *= -1;
+		}
+
+		long min = time / 60;
+		return String.format("%s%d%s", negative, min, getResources().getString(R.string.minute_abbr));
+	}
+
+	private String format_time(long time)
+	{
+		String negative = "";
+		if (time < 0) {
+			negative = "-";
+			time *= -1;
+		}
+
+		long hr = time / 3600;
+		time -= hr * 3600;
+		long min = time / 60;
+		return String.format("%s%d%s %02d%s", negative, hr, getResources().getString(R.string.hour_abbr),
+				min, getResources().getString(R.string.minute_abbr));
 	}
 
 	@Override

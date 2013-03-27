@@ -41,6 +41,8 @@
 	<string name="depart_time">Actual Departure Time</string>
 	<string name="arrival_time">Arrival Time</string>
 
+	<string name="confirm_submit">Confirm</string>
+
 	<string name="agent_hint">Enter agent name, e.g. United Travel</string>
 	<string name="operator">Operator</string>
 	<string name="operator_hint">Enter bus operator, e.g. Seasons</string>
