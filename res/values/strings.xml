@@ -37,7 +37,7 @@
 	<string name="num_trips">Trips</string>
 	<string name="now">Now</string>
 
-	<string name="sched_time">Scheduled Departure Time</string>
+	<string name="sched_time">Departure Time on Ticket</string>
 	<string name="depart_time">Actual Departure Time</string>
 	<string name="arrival_time">Arrival Time</string>
 
@@ -77,6 +77,9 @@
 	<string name="missing_from_city">Enter departure city</string>
 	<string name="missing_to_city">Enter destination city</string>
 	<string name="depart_before_arrival">Arrival Time must be later than Departure Time</string>
+	<string name="future_arrival">Arrival time cannot be in the future</string>
+	<string name="future_departure">Departure time cannot be in the future</string>
+	<string name="future_scheduled">Scheduled time cannot be in the future</string>
 
 	<string name="search_hint">Search agents</string>
 

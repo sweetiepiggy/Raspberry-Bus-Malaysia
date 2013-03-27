@@ -436,18 +436,24 @@ public class SubmitTripActivity extends Activity
 		Button submit_button = (Button) findViewById(R.id.submit_button);
 		submit_button.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
-				boolean results_complete = true;
+				boolean results_complete = false;
 				String incomplete_msg = "";
+				Calendar now = new GregorianCalendar();
 
 				if (((AutoCompleteTextView) findViewById(R.id.from_city_entry)).getText().toString().length() == 0) {
-					results_complete = false;
 					incomplete_msg = getResources().getString(R.string.missing_from_city);
 				} else if (((AutoCompleteTextView) findViewById(R.id.to_city_entry)).getText().toString().length() == 0) {
-					results_complete = false;
 					incomplete_msg = getResources().getString(R.string.missing_to_city);
 				} else if (!mData.arrival_time.after(mData.depart_time)) {
-					results_complete = false;
 					incomplete_msg = getResources().getString(R.string.depart_before_arrival);
+				} else if (mData.arrival_time.after(now)) {
+					incomplete_msg = getResources().getString(R.string.future_arrival);
+				} else if (mData.depart_time.after(now)) {
+					incomplete_msg = getResources().getString(R.string.future_departure);
+				} else if (mData.sched_time.after(now)) {
+					incomplete_msg = getResources().getString(R.string.future_scheduled);
+				} else {
+					results_complete = true;
 				}
 
 				if (results_complete) {
