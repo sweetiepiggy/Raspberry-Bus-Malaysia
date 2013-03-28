@@ -41,6 +41,8 @@
 	<string name="depart_time">实际出发时间</string>
 	<string name="arrival_time">到达时间</string>
 
+	<string name="confirm_submit">确认</string>
+
 	<string name="agent_hint">输入代理商名称，例如United Travel</string>
 	<string name="operator">经营者</string>
 	<string name="operator_hint">输入巴士经营者，例如Seasons</string>

@@ -41,6 +41,8 @@
 	<string name="depart_time">Waktu Bertolak</string>
 	<string name="arrival_time">Waktu Ketibaan</string>
 
+	<string name="confirm_submit">Menegaskan</string>
+
 	<string name="agent_hint">Masukkan nama agen, contoh: United Travel</string>
 	<string name="operator">Operator</string>
 	<string name="operator_hint">Masukkan operator bis, contoh: Seasons</string>

@@ -41,6 +41,8 @@
 	<string name="depart_time">Masa Bertolak</string>
 	<string name="arrival_time">Masa Ketibaan</string>
 
+	<string name="confirm_submit">Mengesahkan</string>
+
 	<string name="agent_hint">Masukkan nama ejen, contoh: United Travel</string>
 	<string name="operator">Juruoperasi</string>
 	<string name="operator_hint">Masukkan juruoperasi bas, contoh: Seasons</string>
