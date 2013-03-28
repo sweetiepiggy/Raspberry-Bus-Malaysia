@@ -48,11 +48,6 @@
 				android:text="@string/map" />
 		</LinearLayout>
 		<AutoCompleteTextView
-			android:id="@+id/from_city_entry"
-			android:layout_width="fill_parent"
-			android:layout_height="wrap_content"
-			android:hint="@string/from_city_hint" />
-		<AutoCompleteTextView
 			android:id="@+id/from_station_entry"
 			android:layout_width="fill_parent"
 			android:layout_height="wrap_content"
@@ -76,11 +71,6 @@
 				android:drawableLeft="@android:drawable/ic_dialog_map"
 				android:text="@string/map" />
 		</LinearLayout>
-		<AutoCompleteTextView
-			android:id="@+id/to_city_entry"
-			android:layout_width="fill_parent"
-			android:layout_height="wrap_content"
-			android:hint="@string/to_city_hint" />
 		<AutoCompleteTextView
 			android:id="@+id/to_station_entry"
 			android:layout_width="fill_parent"

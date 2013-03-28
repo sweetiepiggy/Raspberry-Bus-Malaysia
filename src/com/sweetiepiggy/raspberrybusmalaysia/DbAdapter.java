@@ -120,9 +120,7 @@ public class DbAdapter
 		KEY_ROWID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
 		KEY_AGENT + " TEXT, " +
 		KEY_OPERATOR + " TEXT, " +
-		KEY_FROM_CITY + " TEXT, " +
 		KEY_FROM_STN + " TEXT, " +
-		KEY_TO_CITY + " TEXT, " +
 		KEY_TO_STN + " TEXT, " +
 		KEY_SCHED_DEP + " TEXT, " +
 		KEY_ACTUAL_DEP + " TEXT, " +
@@ -1187,18 +1185,15 @@ public class DbAdapter
 	}
 
 	public void save_tmp(String agent, String operator,
-			String from_city, String from_station, String to_city,
-			String to_station, String scheduled_departure,
-			String actual_departure, String arrival_time,
-			int safety, int comfort, int overall,
-			String comment)
+			String from_station, String to_station,
+			String scheduled_departure, String actual_departure,
+			String arrival_time, int safety, int comfort,
+			int overall, String comment)
 	{
 		ContentValues cv = new ContentValues();
 		cv.put(KEY_AGENT, agent);
 		cv.put(KEY_OPERATOR, operator);
-		cv.put(KEY_FROM_CITY, from_city);
 		cv.put(KEY_FROM_STN, from_station);
-		cv.put(KEY_TO_CITY, to_city);
 		cv.put(KEY_TO_STN, to_station);
 		cv.put(KEY_SCHED_DEP, scheduled_departure);
 		cv.put(KEY_ACTUAL_DEP, actual_departure);

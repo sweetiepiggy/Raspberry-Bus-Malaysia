@@ -127,9 +127,7 @@ public class SubmitTripActivity extends Activity
 		String arrival_time = format_time(mData.arrival_time);
 		String agent = ((AutoCompleteTextView) findViewById(R.id.agent_entry)).getText().toString();
 		String operator = ((AutoCompleteTextView) findViewById(R.id.operator_entry)).getText().toString();
-		String from_city = ((AutoCompleteTextView) findViewById(R.id.from_city_entry)).getText().toString();
 		String from_station = ((AutoCompleteTextView) findViewById(R.id.from_station_entry)).getText().toString();
-		String to_city = ((AutoCompleteTextView) findViewById(R.id.to_city_entry)).getText().toString();
 		String to_station = ((AutoCompleteTextView) findViewById(R.id.to_station_entry)).getText().toString();
 		int safety = (int) ((RatingBar) findViewById(R.id.safety_bar)).getRating();
 		int comfort = (int) ((RatingBar) findViewById(R.id.comfort_bar)).getRating();
@@ -137,10 +135,10 @@ public class SubmitTripActivity extends Activity
 		String comment = ((EditText) findViewById(R.id.comment_entry)).getText().toString();
 
 		if (mDbHelper != null) {
-			mDbHelper.save_tmp(agent, operator, from_city,
-					from_station, to_city, to_station, sched_time,
-					depart_time, arrival_time, safety,
-					comfort, overall, comment);
+			mDbHelper.save_tmp(agent, operator, from_station,
+					to_station, sched_time, depart_time,
+					arrival_time, safety, comfort, overall,
+					comment);
 			mDbHelper.close();
 		}
 		super.onDestroy();
@@ -312,16 +310,12 @@ public class SubmitTripActivity extends Activity
 
 	private void init_entries()
 	{
-		update_city_autocomplete(R.id.from_city_entry);
-		update_city_autocomplete(R.id.to_city_entry);
 		update_station_autocomplete(R.id.to_station_entry);
 		update_station_autocomplete(R.id.from_station_entry);
 		update_agent_autocomplete(R.id.agent_entry);
 		update_operator_autocomplete(R.id.operator_entry);
 
-		String from_city = mDbHelper.fetch_tmp(DbAdapter.KEY_FROM_CITY);
 		String from_station = mDbHelper.fetch_tmp(DbAdapter.KEY_FROM_STN);
-		String to_city = mDbHelper.fetch_tmp(DbAdapter.KEY_TO_CITY);
 		String to_station = mDbHelper.fetch_tmp(DbAdapter.KEY_TO_STN);
 		String agent = mDbHelper.fetch_tmp(DbAdapter.KEY_AGENT);
 		String operator = mDbHelper.fetch_tmp(DbAdapter.KEY_OPERATOR);
@@ -330,9 +324,7 @@ public class SubmitTripActivity extends Activity
 		int comfort = mDbHelper.fetch_comfort();
 		int overall = mDbHelper.fetch_overall();
 
-		((AutoCompleteTextView) findViewById(R.id.from_city_entry)).setText(from_city);
 		((AutoCompleteTextView) findViewById(R.id.from_station_entry)).setText(from_station);
-		((AutoCompleteTextView) findViewById(R.id.to_city_entry)).setText(to_city);
 		((AutoCompleteTextView) findViewById(R.id.to_station_entry)).setText(to_station);
 		((AutoCompleteTextView) findViewById(R.id.agent_entry)).setText(agent);
 		((AutoCompleteTextView) findViewById(R.id.operator_entry)).setText(operator);
@@ -341,19 +333,6 @@ public class SubmitTripActivity extends Activity
 		((RatingBar) findViewById(R.id.comfort_bar)).setRating(comfort);
 		((RatingBar) findViewById(R.id.overall_bar)).setRating(overall);
 		((EditText) findViewById(R.id.comment_entry)).setText(comment);
-	}
-
-	private void update_city_autocomplete(int id)
-	{
-		ArrayAdapter<String> cities = new ArrayAdapter<String>(this, android.R.layout.simple_dropdown_item_1line);
-		Cursor c = mDbHelper.fetch_cities();
-		if (c.moveToFirst()) do {
-			cities.add(c.getString(c.getColumnIndex(DbAdapter.KEY_CITY)));
-		} while (c.moveToNext());
-		c.close();
-		AutoCompleteTextView cities_entry = (AutoCompleteTextView) findViewById(id);
-		cities_entry.setThreshold(2);
-		cities_entry.setAdapter(cities);
 	}
 
 	private void update_station_autocomplete(int id)
@@ -442,11 +421,7 @@ public class SubmitTripActivity extends Activity
 				String incomplete_msg = "";
 				Calendar now = new GregorianCalendar();
 
-				if (((AutoCompleteTextView) findViewById(R.id.from_city_entry)).getText().toString().length() == 0) {
-					incomplete_msg = getResources().getString(R.string.missing_from_city);
-				} else if (((AutoCompleteTextView) findViewById(R.id.to_city_entry)).getText().toString().length() == 0) {
-					incomplete_msg = getResources().getString(R.string.missing_to_city);
-				} else if (!mData.arrival_time.after(mData.depart_time)) {
+				if (!mData.arrival_time.after(mData.depart_time)) {
 					incomplete_msg = getResources().getString(R.string.depart_before_arrival);
 				} else if (mData.arrival_time.after(now)) {
 					incomplete_msg = getResources().getString(R.string.future_arrival);
@@ -517,9 +492,7 @@ public class SubmitTripActivity extends Activity
 		final String arrival_time = format_time(mData.arrival_time);
 		final String agent = ((AutoCompleteTextView) findViewById(R.id.agent_entry)).getText().toString();
 		final String operator = ((AutoCompleteTextView) findViewById(R.id.operator_entry)).getText().toString();
-		final String from_city = ((AutoCompleteTextView) findViewById(R.id.from_city_entry)).getText().toString();
 		final String from_station = ((AutoCompleteTextView) findViewById(R.id.from_station_entry)).getText().toString();
-		final String to_city = ((AutoCompleteTextView) findViewById(R.id.to_city_entry)).getText().toString();
 		final String to_station = ((AutoCompleteTextView) findViewById(R.id.to_station_entry)).getText().toString();
 		final String safety = Integer.toString((int) ((RatingBar) findViewById(R.id.safety_bar)).getRating());
 		final String comfort = Integer.toString((int) ((RatingBar) findViewById(R.id.comfort_bar)).getRating());
@@ -540,10 +513,10 @@ public class SubmitTripActivity extends Activity
 		alert.setMessage(info);
 		alert.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
 			public void onClick(DialogInterface dialog, int which) {
-				String msg = format_email(agent, operator, from_city,
-					from_station, to_city, to_station, sched_time,
-					depart_time, arrival_time, safety, comfort, overall,
-					comment);
+				String msg = format_email(agent, operator,
+					from_station, to_station, sched_time,
+					depart_time, arrival_time, safety,
+					comfort, overall, comment);
 
 				new PostTask(getApplicationContext(), msg).execute();
 			}
@@ -616,18 +589,15 @@ public class SubmitTripActivity extends Activity
 	}
 
 	private String format_email(String agent, String operator,
-			String from_city, String from_station, String to_city,
-			String to_station, String scheduled_departure,
-			String actual_departure, String arrival_time,
-			String safety, String comfort, String overall,
-			String comment)
+			String from_station, String to_station,
+			String scheduled_departure, String actual_departure,
+			String arrival_time, String safety, String comfort,
+			String overall, String comment)
 	{
 		return "Agent: " + agent + "\n" +
 			"Operator: " + operator + "\n" +
-			"From city: " + from_city + "\n" +
-			"From station: " + from_station + "\n" +
-			"From city: " + to_city + "\n" +
-			"To station: " + to_station + "\n" +
+			"From: " + from_station + "\n" +
+			"To: " + to_station + "\n" +
 			"Scheduled departure: " + scheduled_departure + "\n" +
 			"Actual departure: " + actual_departure + "\n" +
 			"Arrival time: " + arrival_time + "\n" +
@@ -788,8 +758,6 @@ public class SubmitTripActivity extends Activity
 				Bundle b = data.getExtras();
 				if (b != null) {
 					String station = b.getString("station");
-					String city = b.getString("city");
-					((AutoCompleteTextView) findViewById(R.id.from_city_entry)).setText(city);
 					((AutoCompleteTextView) findViewById(R.id.from_station_entry)).setText(station);
 				}
 			}
@@ -799,8 +767,6 @@ public class SubmitTripActivity extends Activity
 				Bundle b = data.getExtras();
 				if (b != null) {
 					String station = b.getString("station");
-					String city = b.getString("city");
-					((AutoCompleteTextView) findViewById(R.id.to_city_entry)).setText(city);
 					((AutoCompleteTextView) findViewById(R.id.to_station_entry)).setText(station);
 				}
 			}
