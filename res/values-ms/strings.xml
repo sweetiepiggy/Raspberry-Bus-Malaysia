@@ -77,6 +77,9 @@
 	<string name="missing_from_city">Masukkan tempat bertolak</string>
 	<string name="missing_to_city">Masukkan tempat ketibaan</string>
 	<string name="depart_before_arrival">Masa Ketibaan mesti lewat daripada Masa Bertolak</string>
+	<string name="future_arrival">Masa ketibaan tidak boleh adalah masa hadapan</string>
+	<string name="future_departure">Masa berlepas tidak boleh adalah masa hadapan</string>
+	<string name="future_scheduled">Masa yang dijadualkan tidak boleh adalah masa hadapan</string>
 
 	<string name="search_hint">Cari ejen</string>
 

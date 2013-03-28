@@ -37,7 +37,7 @@
 	<string name="num_trips">次数</string>
 	<string name="now">现在</string>
 
-	<string name="sched_time">预定时间</string>
+	<string name="sched_time">车票上的出发时间</string>
 	<string name="depart_time">实际出发时间</string>
 	<string name="arrival_time">到达时间</string>
 
@@ -77,6 +77,9 @@
 	<string name="missing_from_city">输入出发城市</string>
 	<string name="missing_to_city">输入到达城市</string>
 	<string name="depart_before_arrival">到达时间不能早过出发时间</string>
+	<string name="future_arrival">到达时间不能是未来时间</string>
+	<string name="future_departure">出发时间不能是未来时间</string>
+	<string name="future_scheduled">预定时间不能是未来时间</string>
 
 	<string name="search_hint">搜索代理商</string>
 
