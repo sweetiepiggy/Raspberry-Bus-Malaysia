@@ -1,7 +1,7 @@
 _id,company,agent_id,bus_brand,operator_id,from_city_id,from_station_id,to_city_id,to_station_id,scheduled_departure,actual_departure,arrival_time,counter,overall,safety,comfort,comment,last_updated
+130,Aeroline,2,Aeroline,2,2,1,3,7,"2013-06-16 15:00","2013-06-16 15:02","2013-06-16 19:42","",4,3,4,"","2013-06-21 17:10"
+129,Aeroline,2,Aeroline,2,2,1,3,11,"2013-06-16 15:00","2013-06-16 15:02","2013-06-16 19:29","",4,3,4,"","2013-06-21 17:10"
 131,"Permata Shamisha Satu Ent",24,"Shamisha Holiday Express",13,21,33,2,6,"2013-06-17 09:30","2013-06-17 09:30","2013-06-17 13:50","",5,5,5,"","2013-06-18 01:50"
-130,Aeroline,2,Aeroline,2,2,1,3,7,"2013-06-16 15:00","2013-06-16 15:02","2013-06-06 19:42","",4,3,4,"","2013-06-17 01:10"
-129,Aeroline,2,Aeroline,2,2,1,3,11,"2013-06-16 15:00","2013-06-16 15:02","2013-06-06 19:29","",4,3,4,"","2013-06-17 01:10"
 128,Transnasional,20,Transnasional,16,3,7,2,6,"2013-06-14 17:30","2013-06-14 17:41","2013-06-14 23:43",9,2,2,1,"bus broke down by side of road, 1 hour delay to change bus","2013-06-17 01:10"
 127,Transnasional,20,Transnasional,16,3,7,2,2,"2013-06-14 17:30","2013-06-14 17:41","2013-06-14 23:21",9,2,2,1,"bus broke down by side of road, 1 hour delay to change bus","2013-06-17 01:10"
 126,Aeroline,2,Aeroline,2,3,11,2,1,"2013-06-13 08:30","2013-06-13 08:45","2013-06-13 13:29","",4,4,4,"","2013-06-13 05:52"
