@@ -24,7 +24,6 @@
 		<activity android:name="RouteActivity"></activity>
 		<activity android:name="CompanyResultActivity"></activity>
 		<activity android:name="SubmitTripActivity"></activity>
-		<activity android:name="TripsActivity"></activity>
 		<activity android:name="TextViewActivity"></activity>
 		<activity android:name="RbmMapActivity"
 			android:hardwareAccelerated="false"

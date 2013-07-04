@@ -28,7 +28,7 @@
 
 	<string name="from">From</string>
 	<string name="to">To</string>
-	<string name="route">Route</string>
+	<string name="route">Routes</string>
 	<string name="submit">submit</string>
 	<string name="clear">clear</string>
 	<string name="agent">Agent</string>

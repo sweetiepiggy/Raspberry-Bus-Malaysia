@@ -85,18 +85,7 @@ public class CompanyResultActivity extends Activity
 			if (c_to.moveToFirst()) do {
 				String to_city = c_to.getString(c_to.getColumnIndex(DbAdapter.KEY_TO_CITY));
 
-				Cursor c_avg = m_is_operator ?
-					mDbHelper.fetch_operator_avg(from_city, to_city, company) :
-					mDbHelper.fetch_agent_avg(from_city, to_city, company);
-				startManagingCursor(c_avg);
-				if (c_avg.moveToFirst()) {
-					/* TODO: check that getColumnIndex is not -1 */
-					String avg = format_time(c_avg.getInt(c_avg.getColumnIndex(DbAdapter.AVG_TIME)));
-					String avg_delay = format_time_min(c_avg.getInt(c_avg.getColumnIndex(DbAdapter.AVG_DELAY)));
-					String count = c_avg.getString(c_avg.getColumnIndex(DbAdapter.NUM_TRIPS));
-					print_row(company, from_city, to_city, avg, avg_delay, count);
-				}
-
+				print_row(company, from_city, to_city);
 			} while (c_to.moveToNext());
 		} while (c_from.moveToNext());
 	}
@@ -110,70 +99,20 @@ public class CompanyResultActivity extends Activity
 	}
 
 	private void print_row(String company, String from_city,
-			String to_city, String avg, String avg_delay,
-			String count)
+			String to_city)
 	{
-		TextView route_view = new TextView(getApplicationContext());
-		TextView avg_view = new TextView(getApplicationContext());
-		TextView avg_delay_view = new TextView(getApplicationContext());
-		Button count_view = new Button(getApplicationContext());
+		TextView from_view = new TextView(getApplicationContext());
+		TextView to_view = new TextView(getApplicationContext());
 
-		route_view.setGravity(Gravity.CENTER);
-		avg_view.setGravity(Gravity.CENTER);
-		avg_delay_view.setGravity(Gravity.CENTER);
-		count_view.setGravity(Gravity.CENTER);
-
-		route_view.setText(from_city + "\n-> " + to_city);
-		avg_view.setText(avg);
-		avg_delay_view.setText(avg_delay);
-		count_view.setText(count);
-
-		init_count_button(count_view, company, from_city, to_city);
+		from_view.setText(from_city);
+		to_view.setText(to_city);
 
 		TableRow tr = new TableRow(getApplicationContext());
-		tr.addView(route_view);
-		tr.addView(avg_view);
-		tr.addView(avg_delay_view);
-		tr.addView(count_view);
+		tr.addView(from_view);
+		tr.addView(to_view);
 
 		TableLayout results_layout = (TableLayout) findViewById(R.id.results_layout);
 		results_layout.addView(tr);
-	}
-
-	/* TODO: don't duplicate init_count_button() in other files */
-	private void init_count_button(Button b, final String company,
-			final String from_city, final String to_city)
-	{
-		b.setOnClickListener(new View.OnClickListener() {
-			public void onClick(View v)
-			{
-				Intent intent = new Intent(getApplicationContext(),
-					TripsActivity.class);
-				Bundle b = new Bundle();
-				b.putString("company", company);
-				b.putString("from_city", from_city);
-				b.putString("to_city", to_city);
-				b.putBoolean("is_operator", m_is_operator);
-				intent.putExtras(b);
-				startActivity(intent);
-			}
-		});
-	}
-
-	/* TODO: don't duplicate format_time() in other files */
-	private String format_time(int time)
-	{
-		String negative = "";
-		if (time < 0) {
-			negative = "-";
-			time *= -1;
-		}
-
-		int hr = time / 3600;
-		time -= hr * 3600;
-		int min = time / 60;
-		return String.format("%s%d%s %02d%s", negative, hr, getResources().getString(R.string.hour_abbr),
-				min, getResources().getString(R.string.minute_abbr));
 	}
 
 	private String format_time_min(int time)
