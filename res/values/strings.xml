@@ -43,9 +43,9 @@
 
 	<string name="confirm_submit">Confirm</string>
 
-	<string name="agent_hint">Enter agent name, e.g. United Travel</string>
+	<string name="agent_hint">Enter counter name, e.g. United Travel</string>
 	<string name="operator">Operator</string>
-	<string name="operator_hint">Enter bus operator, e.g. Seasons</string>
+	<string name="operator_hint">Enter bus brand, e.g. Seasons</string>
 
 	<string name="from_city_hint">Enter city of departure, e.g. Kuala Lumpur</string>
 	<string name="from_station_hint">Enter station of departure, e.g. Puduraya</string>
@@ -56,7 +56,7 @@
 	<string name="counter_num">Counter Number</string>
 	<string name="counter_num_hint">Enter counter number, e.g. 10</string>
 
-	<string name="comment">Comment</string>
+	<string name="comment">Review</string>
 	<string name="comment_hint">Enter comments about your trip</string>
 
 	<string name="overall">Overall</string>
