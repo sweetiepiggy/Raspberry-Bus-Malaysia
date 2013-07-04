@@ -20,12 +20,9 @@
 package com.sweetiepiggy.raspberrybusmalaysia;
 
 import android.app.Activity;
-import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
-import android.view.Gravity;
-import android.view.View;
-import android.widget.Button;
+import android.view.ViewGroup.LayoutParams;
 import android.widget.RatingBar;
 import android.widget.TableLayout;
 import android.widget.TableRow;
@@ -93,9 +90,19 @@ public class CompanyResultActivity extends Activity
 			if (c_to.moveToFirst()) do {
 				String to_city = c_to.getString(c_to.getColumnIndex(DbAdapter.KEY_TO_CITY));
 
-				print_row(company, from_city, to_city);
+				print_route_row(company, from_city, to_city);
 			} while (c_to.moveToNext());
 		} while (c_from.moveToNext());
+
+		Cursor c_revw = m_is_operator ?
+			mDbHelper.fetchOperatorReviews(company) :
+			mDbHelper.fetchAgentReviews(company);
+		startManagingCursor(c_revw);
+		if (c_revw.moveToFirst()) do {
+			String review = c_revw.getString(c_revw.getColumnIndex(DbAdapter.KEY_COMMENT));
+			print_review_row(review);
+			print_review_row("");
+		} while (c_revw.moveToNext());
 	}
 
 	@Override
@@ -106,7 +113,7 @@ public class CompanyResultActivity extends Activity
 		super.onDestroy();
 	}
 
-	private void print_row(String company, String from_city,
+	private void print_route_row(String company, String from_city,
 			String to_city)
 	{
 		TextView from_view = new TextView(getApplicationContext());
@@ -121,6 +128,21 @@ public class CompanyResultActivity extends Activity
 
 		TableLayout results_layout = (TableLayout) findViewById(R.id.results_layout);
 		results_layout.addView(tr);
+	}
+
+	private void print_review_row(String review)
+	{
+		TextView review_view = new TextView(getApplicationContext());
+		LayoutParams params = new TableRow.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT, 1f);
+		review_view.setLayoutParams(params);
+
+		review_view.setText(review);
+
+		TableRow tr = new TableRow(getApplicationContext());
+		tr.addView(review_view);
+
+		TableLayout review_layout = (TableLayout) findViewById(R.id.review_layout);
+		review_layout.addView(tr);
 	}
 
 	private String format_time_min(int time)

@@ -1187,6 +1187,38 @@ public class DbAdapter
 		return ret;
 	}
 
+	public Cursor fetchOperatorReviews(String operator)
+	{
+		return fetchReviews(operator, KEY_OPERATOR);
+	}
+
+	public Cursor fetchAgentReviews(String agent)
+	{
+		return fetchReviews(agent, KEY_AGENT);
+	}
+
+	private Cursor fetchReviews(String company, String key)
+	{
+		return mDbHelper.mDb.rawQuery(
+				"SELECT " + TABLE_TRIPS +
+					"." + KEY_ROWID + " AS " + KEY_ROWID + ", " + KEY_COMMENT +
+
+				" FROM " + TABLE_TRIPS +
+
+				" JOIN " + TABLE_AGENTS + " ON " +
+					KEY_AGENT_ID + " == " +
+					TABLE_AGENTS + "." + KEY_ROWID +
+
+				" JOIN " + TABLE_OPERATORS + " ON " +
+					KEY_OPERATOR_ID + " == " +
+					TABLE_OPERATORS + "." + KEY_ROWID +
+
+				" WHERE " + key + " == ? AND " +
+					" LENGTH(" + KEY_COMMENT + ") != 0 " +
+				" ORDER BY strftime('%s', " + KEY_SCHED_DEP + ") DESC",
+			new String[] {company});
+	}
+
 	public void save_tmp(String agent, String operator,
 			String from_station, String to_station,
 			String scheduled_departure, String actual_departure,
