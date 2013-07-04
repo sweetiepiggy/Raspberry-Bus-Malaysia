@@ -1387,4 +1387,55 @@ public class DbAdapter
 		c.close();
 		return ret;
 	}
+
+	public float getOperatorComfort(String operator)
+	{
+		return getRatingAvg(operator, KEY_OPERATOR, KEY_COMFORT);
+	}
+
+	public float getAgentComfort(String agent)
+	{
+		return getRatingAvg(agent, KEY_AGENT, KEY_COMFORT);
+	}
+
+	public float getOperatorSafety(String operator)
+	{
+		return getRatingAvg(operator, KEY_OPERATOR, KEY_SAFETY);
+	}
+
+	public float getAgentSafety(String agent)
+	{
+		return getRatingAvg(agent, KEY_AGENT, KEY_SAFETY);
+	}
+
+	private float getRatingAvg(String company, String key, String ratingKey)
+	{
+		Cursor c = mDbHelper.mDb.rawQuery(
+				"SELECT " +
+					key + ", " +
+						" AVG(" + ratingKey + ") " +
+						" AS RESULT " +
+
+					" FROM " + TABLE_TRIPS +
+
+					" JOIN " + TABLE_AGENTS + " ON " +
+						TABLE_TRIPS + "." + KEY_AGENT_ID + " == " +
+						TABLE_AGENTS + "." + KEY_ROWID +
+
+					" JOIN " + TABLE_OPERATORS + " ON " +
+						KEY_OPERATOR_ID + " == " +
+						TABLE_OPERATORS + "." + KEY_ROWID +
+
+					" WHERE " + key + " == ? AND " +
+						" length(" + ratingKey + ") != 0 " +
+
+					" GROUP BY " + key,
+			new String[] {company});
+		float ret = 0f;
+		if (c.moveToFirst()) {
+			ret = c.getFloat(c.getColumnIndex("RESULT"));
+		}
+		c.close();
+		return ret;
+	}
 }

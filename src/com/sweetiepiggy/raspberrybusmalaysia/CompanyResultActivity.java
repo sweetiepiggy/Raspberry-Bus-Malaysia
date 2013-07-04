@@ -61,6 +61,14 @@ public class CompanyResultActivity extends Activity
 			mDbHelper.getOperatorRating(company) :
 			mDbHelper.getAgentRating(company);
 		((RatingBar) findViewById(R.id.rating_bar)).setRating(rating);
+		float comfort = m_is_operator ?
+			mDbHelper.getOperatorComfort(company) :
+			mDbHelper.getAgentComfort(company);
+		((RatingBar) findViewById(R.id.comfort_bar)).setRating(comfort);
+		float safety = m_is_operator ?
+			mDbHelper.getOperatorSafety(company) :
+			mDbHelper.getAgentSafety(company);
+		((RatingBar) findViewById(R.id.safety_bar)).setRating(safety);
 
 		Cursor c_comp = m_is_operator ?
 			mDbHelper.fetch_avg_operator_delay(company) :
