@@ -49,6 +49,11 @@ public class CompanyResultActivity extends Activity
 		String company_display = company.length() == 0 ? getResources().getString(R.string.unknown) : company;
 		((TextView) findViewById(R.id.title)).setText(company_display);
 
+		/* remove newline for delay label */
+		TextView avg_delay_label = (TextView) findViewById(R.id.avg_delay_label);
+		String avg_delay_str = avg_delay_label.getText().toString();
+		avg_delay_label.setText(avg_delay_str.replace('\n', ' '));
+
 		mDbHelper = new DbAdapter();
 		mDbHelper.open(this);
 
