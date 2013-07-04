@@ -86,7 +86,7 @@ public class DbAdapter
 
 	private static HashMap<String, ArrayList<String>> TABLE_MAPS = new HashMap<String, ArrayList<String>>();
 
-	private static final int SEC_BETWEEN_UPDATES = 60 * 60 * 24 * 7;
+	private static final int SEC_BETWEEN_UPDATES = 60 * 60 * 24 * 1;
 
 	private DatabaseHelper mDbHelper;
 
