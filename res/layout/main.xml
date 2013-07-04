@@ -36,18 +36,6 @@
 			style="@android:style/TextAppearance.Large"
 			android:text="@string/route_stat" />
 		<TextView
-			android:id="@+id/map"
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content"
-			android:layout_gravity="center"
-			android:gravity="center"
-			android:padding="25dp"
-			android:drawableTop="@drawable/map"
-			style="@android:style/TextAppearance.Large"
-			android:text="@string/map" />
-	</TableRow>
-	<TableRow>
-		<TextView
 			android:id="@+id/submit_trip"
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
@@ -57,6 +45,18 @@
 			android:drawableTop="@drawable/submit"
 			style="@android:style/TextAppearance.Large"
 			android:text="@string/submit_trip" />
+	</TableRow>
+	<TableRow>
+		<TextView
+			android:id="@+id/map"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_gravity="center"
+			android:gravity="center"
+			android:padding="25dp"
+			android:drawableTop="@drawable/map"
+			style="@android:style/TextAppearance.Large"
+			android:text="@string/map" />
 		<TextView
 			android:id="@+id/complain"
 			android:layout_width="wrap_content"
