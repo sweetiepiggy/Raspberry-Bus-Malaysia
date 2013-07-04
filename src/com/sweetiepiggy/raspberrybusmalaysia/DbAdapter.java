@@ -754,10 +754,10 @@ public class DbAdapter
 					"TIMES." + group_by + " == " +
 					" RATINGS." + group_by +
 
-				" WHERE LENGTH(TIMES." + KEY_OPERATOR + ") != 0 AND " +
-				" LENGTH(TIMES." + KEY_AGENT + ") != 0 " +
-
-				" ORDER BY " + AVG_OVERALL + " DESC, " +
+				" ORDER BY " +
+					" LENGTH(TIMES." + KEY_OPERATOR + ") != 0 AND " +
+					" LENGTH(TIMES." + KEY_AGENT + ") != 0 DESC, " +
+					AVG_OVERALL + " DESC, " +
 					AVG_TIME + " ASC",
 
 			new String[] {from_city, to_city});
