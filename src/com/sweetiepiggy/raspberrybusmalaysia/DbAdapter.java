@@ -754,6 +754,9 @@ public class DbAdapter
 					"TIMES." + group_by + " == " +
 					" RATINGS." + group_by +
 
+				" WHERE LENGTH(TIMES." + KEY_OPERATOR + ") != 0 AND " +
+				" LENGTH(TIMES." + KEY_AGENT + ") != 0 " +
+
 				" ORDER BY " + AVG_OVERALL + " DESC, " +
 					AVG_TIME + " ASC",
 
