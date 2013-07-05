@@ -56,7 +56,7 @@
 	<string name="counter_num">Nomor Konter</string>
 	<string name="counter_num_hint">Masukkan nomor konter, contoh: 10</string>
 
-	<string name="comment">Komentar</string>
+	<string name="comment">Ulasan</string>
 	<string name="comment_hint">Masukkan komentar tentang rute anda</string>
 
 	<string name="overall">Keseluruhan</string>
