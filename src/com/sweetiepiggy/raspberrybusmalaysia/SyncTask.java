@@ -1,4 +1,6 @@
 /*
+    Copyright (C) 2012,2013 Sweetie Piggy Apps <sweetiepiggyapps@gmail.com>
+
     This file is part of Raspberry Bus Malaysia.
 
     Raspberry Bus Malaysia is free software; you can redistribute it and/or modify
