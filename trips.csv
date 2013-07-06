@@ -14,7 +14,7 @@ _id,agent_id,operator_id,from_city_id,from_station_id,to_city_id,to_station_id,s
 125,2,2,3,11,2,1,"2013-05-09 08:30","2013-05-09 08:50","2013-05-09 12:55","",4,4,4,"","2013-05-10 14:42"
 124,22,18,77,93,3,7,"2013-02-16 13:30","2013-02-16 13:15","2013-02-16 18:35","",4,4,4,"","2013-03-29 03:10"
 26,3,9,2,6,3,4,"2012-01-08 23:59","2012-01-09 00:27",Cancelled,"",0,0,0,"lied, said bus stopped at Komtar but it stopped at Sg Nibong instead","2013-03-29 03:10"
-40,19,3,3,7,2,6,"2012-04-13 18:30",Cancelled,Cancelled,34,1,0,0,0,"2013-03-29 03:10"
+40,19,3,3,7,2,6,"2012-04-13 18:30",Cancelled,Cancelled,34,1,0,0,"","2013-03-29 03:10"
 123,23,18,3,4,77,93,"2013-02-15 05:00",Cancelled,Cancelled,"",0,0,0,"Never came! Ended up buying airline ticket! Called number on ticket and was told bus was on its way. Called back later and he had turned off his phone! Terrible, terrible, will never buy from Seasons counter at Komtar again!","2013-03-29 03:10"
 122,22,18,77,93,7,94,"2013-02-16 13:30","2013-02-16 13:15","2013-02-16 18:11","",4,4,4,"","2013-03-29 03:10"
 121,20,16,2,6,3,7,"2013-03-22 16:00","2013-03-22 16:06","2013-03-22 21:09",5,3,4,3,"","2013-03-26 02:45"
