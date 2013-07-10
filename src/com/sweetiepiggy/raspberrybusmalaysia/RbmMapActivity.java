@@ -80,7 +80,9 @@ public class RbmMapActivity extends MapActivity
 		c.close();
 		dbHelper.close();
 
-		mapOverlays.add(itemizedoverlay);
+		if (itemizedoverlay.size() > 0) {
+			mapOverlays.add(itemizedoverlay);
+		}
 
 		if (draw_routes) {
 			mapOverlays.add(new RouteOverlay(this, mv.getProjection()));
