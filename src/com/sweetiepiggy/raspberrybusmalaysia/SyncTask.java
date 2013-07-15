@@ -110,6 +110,9 @@ public class SyncTask extends AsyncTask<Void, Integer, Void>
 			mAlertMsg = mCtx.getResources().getString(R.string.unknown_host);
 		} catch (java.io.FileNotFoundException e) {
 			mAlertMsg = mCtx.getResources().getString(R.string.file_not_found) + ":\n" + e.getMessage();
+		} catch (java.net.SocketTimeoutException e) {
+			/* TODO: create R.string.timed_out */
+			mAlertMsg = e.getMessage();
 		} catch (MalformedURLException e) {
 			throw new Error(e);
 		} catch (UnsupportedEncodingException e) {
