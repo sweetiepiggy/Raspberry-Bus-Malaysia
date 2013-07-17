@@ -29,12 +29,13 @@
 
 	<TextView
 		android:id="@+id/title"
+		style="@style/Label"
 		android:layout_width="fill_parent"
-		android:layout_height="wrap_content"
-		style="@android:style/TextAppearance.Large" />
+		android:layout_height="wrap_content" />
 	<RatingBar
 		android:id="@+id/rating_bar"
 		style="?android:attr/ratingBarStyleIndicator"
+		android:layout_marginLeft="10dp"
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
 		android:numStars="5"
@@ -49,13 +50,14 @@
 
 	<TextView
 		android:id="@+id/comfort_label"
+		style="@style/MinorLabel"
 		android:layout_width="fill_parent"
 		android:layout_height="wrap_content"
-		android:textStyle="bold"
 		android:text="@string/comfort" />
 	<RatingBar
 		android:id="@+id/comfort_bar"
 		style="?android:attr/ratingBarStyleIndicator"
+		android:layout_marginLeft="10dp"
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
 		android:numStars="5"
@@ -63,13 +65,14 @@
 		android:stepSize="0.5" />
 	<TextView
 		android:id="@+id/safety_label"
+		style="@style/MinorLabel"
 		android:layout_width="fill_parent"
 		android:layout_height="wrap_content"
-		android:textStyle="bold"
 		android:text="@string/safety" />
 	<RatingBar
 		android:id="@+id/safety_bar"
 		style="?android:attr/ratingBarStyleIndicator"
+		android:layout_marginLeft="10dp"
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
 		android:numStars="5"
@@ -84,9 +87,9 @@
 
 	<TextView
 		android:id="@+id/avg_delay_label"
+		style="@style/MinorLabel"
 		android:layout_width="fill_parent"
 		android:layout_height="wrap_content"
-		android:textStyle="bold"
 		android:text="@string/avg_delay"/>
 	<TextView
 		android:id="@+id/total_avg_delay"
@@ -101,9 +104,9 @@
 
 	<TextView
 		android:id="@+id/route"
+		style="@style/MinorLabel"
 		android:layout_width="fill_parent"
 		android:layout_height="wrap_content"
-		android:textStyle="bold"
 		android:text="@string/route"/>
 	<TableLayout
 		android:id="@+id/results_layout"
@@ -113,15 +116,15 @@
 		<TableRow>
 			<TextView
 				android:id="@+id/from"
+				style="@style/MinorLabel"
 				android:layout_width="wrap_content"
 				android:layout_height="wrap_content"
-				android:textStyle="bold"
 				android:text="@string/from"/>
 			<TextView
 				android:id="@+id/to"
+				style="@style/MinorLabel"
 				android:layout_width="wrap_content"
 				android:layout_height="wrap_content"
-				android:textStyle="bold"
 				android:text="@string/to"/>
 		</TableRow>
 	</TableLayout>
@@ -134,9 +137,9 @@
 		android:background="@android:color/darker_gray"/>
 	<TextView
 		android:id="@+id/review"
+		style="@style/MinorLabel"
 		android:layout_width="fill_parent"
 		android:layout_height="wrap_content"
-		android:textStyle="bold"
 		android:text="@string/reviews"/>
 	<TableLayout
 		android:id="@+id/review_layout"

@@ -38,10 +38,11 @@
 				android:layout_width="wrap_content"
 				android:layout_height="wrap_content"
 				android:layout_weight="1"
-				style="@android:style/TextAppearance.Large"
+				style="@style/Label"
 				android:text="@string/from" />
 			<Button
 				android:id="@+id/from_map_button"
+				style="@style/Button"
 				android:layout_width="wrap_content"
 				android:layout_height="wrap_content"
 				android:drawableLeft="@android:drawable/ic_dialog_map"
@@ -62,10 +63,11 @@
 				android:layout_width="wrap_content"
 				android:layout_height="wrap_content"
 				android:layout_weight="1"
-				style="@android:style/TextAppearance.Large"
+				style="@style/Label"
 				android:text="@string/to" />
 			<Button
 				android:id="@+id/to_map_button"
+				style="@style/Button"
 				android:layout_width="wrap_content"
 				android:layout_height="wrap_content"
 				android:drawableLeft="@android:drawable/ic_dialog_map"
@@ -83,12 +85,14 @@
 			android:layout_height="wrap_content"
 			android:orientation="horizontal">
 		<RadioButton android:id="@+id/agent_radio"
+			style="@style/Button"
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
 			android:layout_weight="1"
 			android:text="@string/agent"
 			android:onClick="on_radio_button_clicked"/>
 		<RadioButton android:id="@+id/operator_radio"
+			style="@style/Button"
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
 			android:layout_weight="1"

@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!--
+    Copyright (C) 2013 Sweetie Piggy Apps <sweetiepiggyapps@gmail.com>
+
+    This file is part of Raspberry Bus Malaysia.
+
+    Raspberry Bus Malaysia is free software; you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation; either version 3 of the License, or
+    (at your option) any later version.
+
+    Raspberry Bus Malaysia is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with Raspberry Bus Malaysia ; if not, see <http://www.gnu.org/licenses/>.
+-->
+
+<resources>
+	<style name="Label" parent="@android:style/TextAppearance.Large">
+		<item name="android:paddingTop">2dp</item>
+		<item name="android:paddingLeft">10dp</item>
+	</style>
+	<style name="MinorLabel">
+		<item name="android:textStyle">bold</item>
+		<item name="android:paddingTop">10dp</item>
+		<item name="android:paddingLeft">10dp</item>
+	</style>
+	<style name="IconLabel" parent="@android:style/TextAppearance.Large">
+		<item name="android:padding">25dp</item>
+	</style>
+
+	<style name="Button">
+		<item name="android:layout_marginTop">2dp</item>
+		<item name="android:layout_marginBottom">2dp</item>
+		<item name="android:layout_marginLeft">5dp</item>
+		<item name="android:layout_marginRight">5dp</item>
+	</style>
+	<style name="LeftButton">
+		<item name="android:layout_marginTop">2dp</item>
+		<item name="android:layout_marginBottom">2dp</item>
+		<item name="android:layout_marginLeft">5dp</item>
+		<item name="android:layout_marginRight">1dp</item>
+	</style>
+	<style name="MiddleButton">
+		<item name="android:layout_marginTop">2dp</item>
+		<item name="android:layout_marginBottom">2dp</item>
+	</style>
+	<style name="RightButton">
+		<item name="android:layout_marginTop">2dp</item>
+		<item name="android:layout_marginBottom">2dp</item>
+		<item name="android:layout_marginLeft">1dp</item>
+		<item name="android:layout_marginRight">5dp</item>
+	</style>
+</resources>
+

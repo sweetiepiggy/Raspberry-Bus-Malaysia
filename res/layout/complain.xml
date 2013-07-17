@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <!--
-    Copyright (C) 2012 Sweetie Piggy Apps <sweetiepiggyapps@gmail.com>
+    Copyright (C) 2012,2013 Sweetie Piggy Apps <sweetiepiggyapps@gmail.com>
 
     This file is part of Raspberry Bus Malaysia.
 
@@ -33,7 +33,7 @@
 			android:id="@+id/sched_time_label"
 			android:layout_width="fill_parent"
 			android:layout_height="wrap_content"
-			style="@android:style/TextAppearance.Large"
+			style="@style/Label"
 			android:text="@string/sched_time" />
 		<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
 			android:orientation="horizontal"
@@ -41,11 +41,13 @@
 			android:layout_height="fill_parent">
 			<Button
 				android:id="@+id/sched_date_button"
+				style="@style/Button"
 				android:layout_width="wrap_content"
 				android:layout_height="fill_parent"
 				android:layout_weight="1"/>
 			<Button
 				android:id="@+id/sched_time_button"
+				style="@style/Button"
 				android:layout_width="wrap_content"
 				android:layout_height="fill_parent"/>
 		</LinearLayout>
@@ -65,10 +67,11 @@
 				android:layout_width="wrap_content"
 				android:layout_height="wrap_content"
 				android:layout_weight="1"
-				style="@android:style/TextAppearance.Large"
+				style="@style/Label"
 				android:text="@string/from" />
 			<Button
 				android:id="@+id/from_map_button"
+				style="@style/Button"
 				android:layout_width="wrap_content"
 				android:layout_height="wrap_content"
 				android:drawableLeft="@android:drawable/ic_dialog_map"
@@ -94,10 +97,11 @@
 				android:layout_width="wrap_content"
 				android:layout_height="wrap_content"
 				android:layout_weight="1"
-				style="@android:style/TextAppearance.Large"
+				style="@style/Label"
 				android:text="@string/to" />
 			<Button
 				android:id="@+id/to_map_button"
+				style="@style/Button"
 				android:layout_width="wrap_content"
 				android:layout_height="wrap_content"
 				android:drawableLeft="@android:drawable/ic_dialog_map"
@@ -124,7 +128,7 @@
 			android:id="@+id/agent_label"
 			android:layout_width="fill_parent"
 			android:layout_height="wrap_content"
-			style="@android:style/TextAppearance.Large"
+				style="@style/Label"
 			android:text="@string/agent" />
 		<AutoCompleteTextView
 			android:id="@+id/agent_entry"
@@ -136,7 +140,7 @@
 			android:id="@+id/counter_num_label"
 			android:layout_width="fill_parent"
 			android:layout_height="wrap_content"
-			style="@android:style/TextAppearance.Large"
+			style="@style/Label"
 			android:text="@string/counter_num" />
 		<AutoCompleteTextView
 			android:id="@+id/counter_num_entry"
@@ -148,7 +152,7 @@
 			android:id="@+id/operator_label"
 			android:layout_width="fill_parent"
 			android:layout_height="wrap_content"
-			style="@android:style/TextAppearance.Large"
+			style="@style/Label"
 			android:text="@string/operator" />
 		<AutoCompleteTextView
 			android:id="@+id/operator_entry"
@@ -160,7 +164,7 @@
 			android:id="@+id/registration_label"
 			android:layout_width="fill_parent"
 			android:layout_height="wrap_content"
-			style="@android:style/TextAppearance.Large"
+			style="@style/Label"
 			android:text="@string/registration" />
 		<EditText
 			android:id="@+id/reg_entry"
@@ -172,7 +176,7 @@
 			android:id="@+id/offence_label"
 			android:layout_width="fill_parent"
 			android:layout_height="wrap_content"
-			style="@android:style/TextAppearance.Large"
+			style="@style/Label"
 			android:text="@string/offence" />
 		<EditText
 			android:id="@+id/comment_entry"
@@ -184,7 +188,7 @@
 			android:id="@+id/record_label"
 			android:layout_width="fill_parent"
 			android:layout_height="wrap_content"
-			style="@android:style/TextAppearance.Large"
+			style="@style/Label"
 			android:text="@string/record" />
 
 		<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
@@ -198,6 +202,7 @@
 				android:text="" />
 			<Button
 				android:id="@+id/camera_button"
+				style="@style/Button"
 				android:layout_width="wrap_content"
 				android:layout_height="wrap_content"
 				android:layout_weight="1"
@@ -210,6 +215,7 @@
 				android:text="" />
 			<Button
 				android:id="@+id/vidcam_button"
+				style="@style/Button"
 				android:layout_width="wrap_content"
 				android:layout_height="wrap_content"
 				android:layout_weight="1"
@@ -222,6 +228,7 @@
 				android:text="" />
 			<Button
 				android:id="@+id/recorder_button"
+				style="@style/Button"
 				android:layout_width="wrap_content"
 				android:layout_height="wrap_content"
 				android:layout_weight="1"
@@ -235,6 +242,7 @@
 			android:layout_height="fill_parent">
 			<Button
 				android:id="@+id/submit_button"
+				style="@style/Button"
 				android:layout_width="fill_parent"
 				android:layout_height="wrap_content"
 				android:layout_weight="1"
@@ -242,6 +250,7 @@
 				android:text="@string/submit" />
 			<Button
 				android:id="@+id/cancel_button"
+				style="@style/Button"
 				android:layout_width="wrap_content"
 				android:layout_height="fill_parent"
 				android:drawableLeft="@android:drawable/ic_menu_close_clear_cancel"

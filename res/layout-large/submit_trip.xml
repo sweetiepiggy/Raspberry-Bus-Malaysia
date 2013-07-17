@@ -28,6 +28,193 @@
 		android:layout_width="fill_parent"
 		android:layout_height="wrap_content"
 		android:orientation="vertical" >
+		<TextView
+			android:id="@+id/agent_label"
+			android:layout_width="fill_parent"
+			android:layout_height="wrap_content"
+			style="@style/Label"
+			android:text="@string/agent" />
+		<AutoCompleteTextView
+			android:id="@+id/agent_entry"
+			android:layout_width="fill_parent"
+			android:layout_height="wrap_content"
+			android:hint="@string/agent_hint" />
+
+		<TextView
+			android:id="@+id/operator_label"
+			android:layout_width="fill_parent"
+			android:layout_height="wrap_content"
+			style="@style/Label"
+			android:text="@string/operator" />
+		<AutoCompleteTextView
+			android:id="@+id/operator_entry"
+			android:layout_width="fill_parent"
+			android:layout_height="wrap_content"
+			android:hint="@string/operator_hint" />
+		<View
+			android:layout_width="fill_parent"
+			android:layout_height="1dp"
+			android:layout_marginTop="5dp"
+			android:layout_marginBottom="5dp"
+			android:background="@android:color/darker_gray"/>
+
+		<TextView
+			android:id="@+id/overall_label"
+			android:layout_width="fill_parent"
+			android:layout_height="wrap_content"
+			style="@style/Label"
+			android:text="@string/overall" />
+		<RatingBar
+			android:id="@+id/overall_bar"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:numStars="5"
+			android:rating="3"
+			android:stepSize="1.0" />
+
+		<TextView
+			android:id="@+id/safety_label"
+			android:layout_width="fill_parent"
+			android:layout_height="wrap_content"
+			style="@style/Label"
+			android:text="@string/safety" />
+		<RatingBar
+			android:id="@+id/safety_bar"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:numStars="5"
+			android:rating="3"
+			android:stepSize="1.0" />
+
+		<TextView
+			android:id="@+id/comfort_label"
+			android:layout_width="fill_parent"
+			android:layout_height="wrap_content"
+			style="@style/Label"
+			android:text="@string/comfort" />
+		<RatingBar
+			android:id="@+id/comfort_bar"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:numStars="5"
+			android:rating="3"
+			android:stepSize="1.0" />
+		<View
+			android:layout_width="fill_parent"
+			android:layout_height="1dp"
+			android:layout_marginTop="5dp"
+			android:layout_marginBottom="5dp"
+			android:background="@android:color/darker_gray"/>
+
+		<TextView
+			android:id="@+id/comment_label"
+			android:layout_width="fill_parent"
+			android:layout_height="wrap_content"
+			style="@style/Label"
+			android:text="@string/comment" />
+		<EditText
+			android:id="@+id/comment_entry"
+			android:inputType="textMultiLine"
+			android:minLines="3"
+			android:layout_width="fill_parent"
+			android:layout_height="wrap_content"
+			android:hint="@string/comment_hint" />
+		<View
+			android:layout_width="fill_parent"
+			android:layout_height="1dp"
+			android:layout_marginTop="5dp"
+			android:layout_marginBottom="5dp"
+			android:background="@android:color/darker_gray"/>
+
+		<TextView
+			android:id="@+id/sched_time_label"
+			android:layout_width="fill_parent"
+			android:layout_height="wrap_content"
+			style="@style/Label"
+			android:text="@string/sched_time" />
+		<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+			android:orientation="horizontal"
+			android:layout_width="fill_parent"
+			android:layout_height="fill_parent">
+			<Button
+				android:id="@+id/sched_date_button"
+				style="@style/LeftButton"
+				android:layout_width="wrap_content"
+				android:layout_height="fill_parent" />
+			<Button
+				android:id="@+id/sched_time_button"
+				style="@style/MiddleButton"
+				android:layout_width="wrap_content"
+				android:layout_height="fill_parent"/>
+			<Button
+				android:id="@+id/sched_now_button"
+				style="@style/RightButton"
+				android:text="@string/now"
+				android:layout_width="wrap_content"
+				android:layout_height="fill_parent"/>
+		</LinearLayout>
+
+		<TextView
+			android:id="@+id/depart_time_label"
+			android:layout_width="fill_parent"
+			android:layout_height="wrap_content"
+			style="@style/Label"
+			android:text="@string/depart_time" />
+		<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+			android:orientation="horizontal"
+			android:layout_width="fill_parent"
+			android:layout_height="fill_parent">
+			<Button
+				android:id="@+id/depart_date_button"
+				style="@style/LeftButton"
+				android:layout_width="wrap_content"
+				android:layout_height="fill_parent" />
+			<Button
+				android:id="@+id/depart_time_button"
+				style="@style/MiddleButton"
+				android:layout_width="wrap_content"
+				android:layout_height="fill_parent"/>
+			<Button
+				android:id="@+id/depart_now_button"
+				style="@style/RightButton"
+				android:text="@string/now"
+				android:layout_width="wrap_content"
+				android:layout_height="fill_parent"/>
+		</LinearLayout>
+
+		<TextView
+			android:id="@+id/arrival_time_label"
+			android:layout_width="fill_parent"
+			android:layout_height="wrap_content"
+			style="@style/Label"
+			android:text="@string/arrival_time" />
+		<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+			android:orientation="horizontal"
+			android:layout_width="fill_parent"
+			android:layout_height="fill_parent">
+			<Button
+				android:id="@+id/arrival_date_button"
+				style="@style/LeftButton"
+				android:layout_width="wrap_content"
+				android:layout_height="fill_parent" />
+			<Button
+				android:id="@+id/arrival_time_button"
+				style="@style/MiddleButton"
+				android:layout_width="wrap_content"
+				android:layout_height="fill_parent"/>
+			<Button
+				android:id="@+id/arrival_now_button"
+				style="@style/RightButton"
+				android:text="@string/now"
+				android:layout_width="wrap_content"
+				android:layout_height="fill_parent"/>
+		</LinearLayout>
+		<View
+			android:layout_width="fill_parent"
+			android:layout_height="1dp"
+			android:layout_marginTop="5dp"
+			android:layout_marginBottom="5dp"
+			android:background="@android:color/darker_gray"/>
 
 		<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
 			android:layout_width="fill_parent"
@@ -38,10 +225,11 @@
 				android:layout_width="wrap_content"
 				android:layout_height="wrap_content"
 				android:layout_weight="1"
-				style="@android:style/TextAppearance.Large"
+				style="@style/Label"
 				android:text="@string/from" />
 			<Button
 				android:id="@+id/from_map_button"
+				style="@style/Button"
 				android:layout_width="wrap_content"
 				android:layout_height="wrap_content"
 				android:drawableLeft="@android:drawable/ic_dialog_map"
@@ -62,10 +250,11 @@
 				android:layout_width="wrap_content"
 				android:layout_height="wrap_content"
 				android:layout_weight="1"
-				style="@android:style/TextAppearance.Large"
+				style="@style/Label"
 				android:text="@string/to" />
 			<Button
 				android:id="@+id/to_map_button"
+				style="@style/Button"
 				android:layout_width="wrap_content"
 				android:layout_height="wrap_content"
 				android:drawableLeft="@android:drawable/ic_dialog_map"
@@ -83,188 +272,13 @@
 			android:layout_marginBottom="5dp"
 			android:background="@android:color/darker_gray"/>
 
-		<TextView
-			android:id="@+id/agent_label"
-			android:layout_width="fill_parent"
-			android:layout_height="wrap_content"
-			style="@android:style/TextAppearance.Large"
-			android:text="@string/agent" />
-		<AutoCompleteTextView
-			android:id="@+id/agent_entry"
-			android:layout_width="fill_parent"
-			android:layout_height="wrap_content"
-			android:hint="@string/agent_hint" />
-
-		<TextView
-			android:id="@+id/operator_label"
-			android:layout_width="fill_parent"
-			android:layout_height="wrap_content"
-			android:paddingTop="10dp"
-			style="@android:style/TextAppearance.Large"
-			android:text="@string/operator" />
-		<AutoCompleteTextView
-			android:id="@+id/operator_entry"
-			android:layout_width="fill_parent"
-			android:layout_height="wrap_content"
-			android:hint="@string/operator_hint" />
-		<View
-			android:layout_width="fill_parent"
-			android:layout_height="1dp"
-			android:layout_marginTop="5dp"
-			android:layout_marginBottom="5dp"
-			android:background="@android:color/darker_gray"/>
-
-		<TextView
-			android:id="@+id/sched_time_label"
-			android:layout_width="fill_parent"
-			android:layout_height="wrap_content"
-			style="@android:style/TextAppearance.Large"
-			android:text="@string/sched_time" />
-		<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-			android:orientation="horizontal"
-			android:layout_width="fill_parent"
-			android:layout_height="fill_parent">
-			<Button
-				android:id="@+id/sched_date_button"
-				android:layout_width="wrap_content"
-				android:layout_height="fill_parent" />
-			<Button
-				android:id="@+id/sched_time_button"
-				android:layout_width="wrap_content"
-				android:layout_height="fill_parent"/>
-			<Button
-				android:id="@+id/sched_now_button"
-				android:text="@string/now"
-				android:layout_width="wrap_content"
-				android:layout_height="fill_parent"/>
-		</LinearLayout>
-
-		<TextView
-			android:id="@+id/depart_time_label"
-			android:layout_width="fill_parent"
-			android:layout_height="wrap_content"
-			android:paddingTop="10dp"
-			style="@android:style/TextAppearance.Large"
-			android:text="@string/depart_time" />
-		<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-			android:orientation="horizontal"
-			android:layout_width="fill_parent"
-			android:layout_height="fill_parent">
-			<Button
-				android:id="@+id/depart_date_button"
-				android:layout_width="wrap_content"
-				android:layout_height="fill_parent" />
-			<Button
-				android:id="@+id/depart_time_button"
-				android:layout_width="wrap_content"
-				android:layout_height="fill_parent"/>
-			<Button
-				android:id="@+id/depart_now_button"
-				android:text="@string/now"
-				android:layout_width="wrap_content"
-				android:layout_height="fill_parent"/>
-		</LinearLayout>
-
-		<TextView
-			android:id="@+id/arrival_time_label"
-			android:layout_width="fill_parent"
-			android:layout_height="wrap_content"
-			android:paddingTop="10dp"
-			style="@android:style/TextAppearance.Large"
-			android:text="@string/arrival_time" />
-		<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-			android:orientation="horizontal"
-			android:layout_width="fill_parent"
-			android:layout_height="fill_parent">
-			<Button
-				android:id="@+id/arrival_date_button"
-				android:layout_width="wrap_content"
-				android:layout_height="fill_parent" />
-			<Button
-				android:id="@+id/arrival_time_button"
-				android:layout_width="wrap_content"
-				android:layout_height="fill_parent"/>
-			<Button
-				android:id="@+id/arrival_now_button"
-				android:text="@string/now"
-				android:layout_width="wrap_content"
-				android:layout_height="fill_parent"/>
-		</LinearLayout>
-		<View
-			android:layout_width="fill_parent"
-			android:layout_height="1dp"
-			android:layout_marginTop="5dp"
-			android:layout_marginBottom="5dp"
-			android:background="@android:color/darker_gray"/>
-
-		<TextView
-			android:id="@+id/overall_label"
-			android:layout_width="fill_parent"
-			android:layout_height="wrap_content"
-			style="@android:style/TextAppearance.Large"
-			android:text="@string/overall" />
-		<RatingBar
-			android:id="@+id/overall_bar"
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content"
-			android:numStars="5"
-			android:rating="3"
-			android:stepSize="1.0" />
-
-		<TextView
-			android:id="@+id/safety_label"
-			android:layout_width="fill_parent"
-			android:layout_height="wrap_content"
-			android:paddingTop="10dp"
-			style="@android:style/TextAppearance.Large"
-			android:text="@string/safety" />
-		<RatingBar
-			android:id="@+id/safety_bar"
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content"
-			android:numStars="5"
-			android:rating="3"
-			android:stepSize="1.0" />
-
-		<TextView
-			android:id="@+id/comfort_label"
-			android:layout_width="fill_parent"
-			android:layout_height="wrap_content"
-			android:paddingTop="10dp"
-			style="@android:style/TextAppearance.Large"
-			android:text="@string/comfort" />
-		<RatingBar
-			android:id="@+id/comfort_bar"
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content"
-			android:numStars="5"
-			android:rating="3"
-			android:stepSize="1.0" />
-		<View
-			android:layout_width="fill_parent"
-			android:layout_height="1dp"
-			android:layout_marginTop="5dp"
-			android:layout_marginBottom="5dp"
-			android:background="@android:color/darker_gray"/>
-
-		<TextView
-			android:id="@+id/comment_label"
-			android:layout_width="fill_parent"
-			android:layout_height="wrap_content"
-			style="@android:style/TextAppearance.Large"
-			android:text="@string/comment" />
-		<EditText
-			android:id="@+id/comment_entry"
-			android:layout_width="fill_parent"
-			android:layout_height="wrap_content"
-			android:hint="@string/comment_hint" />
-
 		<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
 			android:orientation="horizontal"
 			android:layout_width="fill_parent"
 			android:layout_height="fill_parent">
 			<Button
 				android:id="@+id/submit_button"
+				style="@style/LeftButton"
 				android:layout_width="fill_parent"
 				android:layout_height="wrap_content"
 				android:layout_weight="1"
@@ -272,6 +286,7 @@
 				android:text="@string/submit" />
 			<Button
 				android:id="@+id/cancel_button"
+				style="@style/RightButton"
 				android:layout_width="wrap_content"
 				android:layout_height="fill_parent"
 				android:drawableLeft="@android:drawable/ic_menu_close_clear_cancel"

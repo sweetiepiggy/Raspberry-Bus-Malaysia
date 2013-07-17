@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-    Copyright (C) 2012 Sweetie Piggy Apps <sweetiepiggyapps@gmail.com>
+    Copyright (C) 2012,2013 Sweetie Piggy Apps <sweetiepiggyapps@gmail.com>
 
     This file is part of Raspberry Bus Malaysia.
 
@@ -25,19 +25,21 @@
 	android:layout_height="fill_parent">
 	<TextView
 		android:id="@+id/company"
-		style="@android:style/TextAppearance.Large"
+		style="@style/Label"
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content" />
 	<TextView
 		android:id="@+id/avg"
 		style="@android:style/TextAppearance.Medium"
 		android:text="@string/avg_time"
+		android:paddingRight="10dp"
 		android:layout_alignParentRight="true"
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content" />
 	<RatingBar
 		android:id="@+id/overall_bar"
 		style="?android:attr/ratingBarStyleIndicator"
+		android:layout_marginLeft="10dp"
 		android:layout_below="@id/company"
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
@@ -46,6 +48,8 @@
 		android:stepSize="0.5" />
 	<TextView
 		android:id="@+id/count"
+		android:paddingLeft="10dp"
+		android:paddingBottom="5dp"
 		android:layout_below="@id/overall_bar"
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content" />

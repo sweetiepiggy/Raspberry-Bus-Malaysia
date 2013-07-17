@@ -31,9 +31,8 @@
 			android:layout_height="wrap_content"
 			android:layout_gravity="center"
 			android:gravity="center"
-			android:padding="35dp"
 			android:drawableTop="@drawable/route"
-			android:textSize="40sp"
+			style="@style/IconLabel"
 			android:text="@string/route_stat" />
 		<TextView
 			android:id="@+id/submit_trip"
@@ -41,9 +40,8 @@
 			android:layout_height="wrap_content"
 			android:layout_gravity="center"
 			android:gravity="center"
-			android:padding="35dp"
 			android:drawableTop="@drawable/submit"
-			android:textSize="40sp"
+			style="@style/IconLabel"
 			android:text="@string/submit_trip" />
 	</TableRow>
 	<TableRow>
@@ -53,9 +51,8 @@
 			android:layout_height="wrap_content"
 			android:layout_gravity="center"
 			android:gravity="center"
-			android:padding="35dp"
 			android:drawableTop="@drawable/map"
-			android:textSize="40sp"
+			style="@style/IconLabel"
 			android:text="@string/map" />
 		<TextView
 			android:id="@+id/complain"
@@ -63,9 +60,8 @@
 			android:layout_height="wrap_content"
 			android:layout_gravity="center"
 			android:gravity="center"
-			android:padding="35dp"
 			android:drawableTop="@drawable/complain"
-			android:textSize="40sp"
+			style="@style/IconLabel"
 			android:text="@string/complain" />
 	</TableRow>
 </TableLayout>
