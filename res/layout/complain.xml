@@ -242,7 +242,7 @@
 			<Button
 				android:id="@+id/submit_button"
 				style="@style/LeftButton"
-				android:layout_width="fill_parent"
+				android:layout_width="wrap_content"
 				android:layout_height="wrap_content"
 				android:drawableLeft="@android:drawable/ic_menu_send"
 				android:text="@string/submit" />

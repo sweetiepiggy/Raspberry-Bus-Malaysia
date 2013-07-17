@@ -140,8 +140,7 @@
 				android:id="@+id/sched_date_button"
 				style="@style/LeftButton"
 				android:layout_width="wrap_content"
-				android:layout_height="fill_parent"
-				android:layout_weight="1"/>
+				android:layout_height="fill_parent" />
 			<Button
 				android:id="@+id/sched_time_button"
 				style="@style/MiddleButton"
@@ -169,8 +168,7 @@
 				android:id="@+id/depart_date_button"
 				style="@style/LeftButton"
 				android:layout_width="wrap_content"
-				android:layout_height="fill_parent"
-				android:layout_weight="1"/>
+				android:layout_height="fill_parent" />
 			<Button
 				android:id="@+id/depart_time_button"
 				style="@style/MiddleButton"
@@ -198,8 +196,7 @@
 				android:id="@+id/arrival_date_button"
 				style="@style/LeftButton"
 				android:layout_width="wrap_content"
-				android:layout_height="fill_parent"
-				android:layout_weight="1"/>
+				android:layout_height="fill_parent" />
 			<Button
 				android:id="@+id/arrival_time_button"
 				style="@style/MiddleButton"
@@ -282,9 +279,8 @@
 			<Button
 				android:id="@+id/submit_button"
 				style="@style/LeftButton"
-				android:layout_width="fill_parent"
+				android:layout_width="wrap_content"
 				android:layout_height="wrap_content"
-				android:layout_weight="1"
 				android:drawableLeft="@android:drawable/ic_menu_send"
 				android:text="@string/submit" />
 			<Button
