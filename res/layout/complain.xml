@@ -244,6 +244,7 @@
 				style="@style/LeftButton"
 				android:layout_width="wrap_content"
 				android:layout_height="wrap_content"
+				android:layout_weight="1"
 				android:drawableLeft="@android:drawable/ic_menu_send"
 				android:text="@string/submit" />
 			<Button
