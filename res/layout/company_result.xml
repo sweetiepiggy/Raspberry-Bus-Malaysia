@@ -93,6 +93,7 @@
 		android:text="@string/avg_delay"/>
 	<TextView
 		android:id="@+id/total_avg_delay"
+		style="@style/Text"
 		android:layout_width="fill_parent"
 		android:layout_height="wrap_content"/>
 	<View
@@ -110,19 +111,20 @@
 		android:text="@string/route"/>
 	<TableLayout
 		android:id="@+id/results_layout"
+		style="@style/Table"
 		android:layout_width="fill_parent"
 		android:layout_height="wrap_content"
 		android:stretchColumns="*" >
 		<TableRow>
 			<TextView
 				android:id="@+id/from"
-				style="@style/MinorLabel"
+				android:textStyle="bold"
 				android:layout_width="wrap_content"
 				android:layout_height="wrap_content"
 				android:text="@string/from"/>
 			<TextView
 				android:id="@+id/to"
-				style="@style/MinorLabel"
+				android:textStyle="bold"
 				android:layout_width="wrap_content"
 				android:layout_height="wrap_content"
 				android:text="@string/to"/>
@@ -143,6 +145,7 @@
 		android:text="@string/reviews"/>
 	<TableLayout
 		android:id="@+id/review_layout"
+		style="@style/Table"
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content" >
 	</TableLayout>
