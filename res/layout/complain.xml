@@ -41,13 +41,12 @@
 			android:layout_height="fill_parent">
 			<Button
 				android:id="@+id/sched_date_button"
-				style="@style/Button"
+				style="@style/LeftButton"
 				android:layout_width="wrap_content"
-				android:layout_height="fill_parent"
-				android:layout_weight="1"/>
+				android:layout_height="fill_parent" />
 			<Button
 				android:id="@+id/sched_time_button"
-				style="@style/Button"
+				style="@style/RightButton"
 				android:layout_width="wrap_content"
 				android:layout_height="fill_parent"/>
 		</LinearLayout>
@@ -242,15 +241,14 @@
 			android:layout_height="fill_parent">
 			<Button
 				android:id="@+id/submit_button"
-				style="@style/Button"
+				style="@style/LeftButton"
 				android:layout_width="fill_parent"
 				android:layout_height="wrap_content"
-				android:layout_weight="1"
 				android:drawableLeft="@android:drawable/ic_menu_send"
 				android:text="@string/submit" />
 			<Button
 				android:id="@+id/cancel_button"
-				style="@style/Button"
+				style="@style/RightButton"
 				android:layout_width="wrap_content"
 				android:layout_height="fill_parent"
 				android:drawableLeft="@android:drawable/ic_menu_close_clear_cancel"
